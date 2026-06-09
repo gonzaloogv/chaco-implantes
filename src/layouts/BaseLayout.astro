@@ -1,0 +1,80 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { images, site } from "../data/site";
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+  image?: string;
+}
+
+const {
+  title = "Chaco Implantes — Prótesis, implantes e instrumental",
+  description = "Distribución de prótesis, implantes e instrumental traumatológico en Resistencia, Chaco. Atención a profesionales e instituciones de salud.",
+  canonicalPath = Astro.url.pathname,
+  image = images.logoCircular,
+} = Astro.props;
+
+const canonical = new URL(canonicalPath, site.baseUrl).toString();
+const ogImage = new URL(image, site.baseUrl).toString();
+---
+
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="author" content={site.name} />
+    <meta name="theme-color" content="#31487a" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="preload" as="image" href={images.logoCircular} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Kurale&display=swap"
+    />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: site.name,
+      description: site.activity,
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Corrientes 781",
+        addressLocality: "Resistencia",
+        addressRegion: "Chaco",
+        postalCode: "3500",
+        addressCountry: "AR",
+      },
+      telephone: `+${site.whatsappNumber}`,
+      sameAs: [site.instagramUrl],
+    })} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="flex min-h-screen flex-col">
+      <Header />
+      <main class="flex-1">
+        <slot />
+      </main>
+      <Footer />
+    </div>
+  </body>
+</html>

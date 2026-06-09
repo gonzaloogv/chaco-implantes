@@ -1,0 +1,38 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+import { whatsappLink } from "../data/site";
+---
+
+<BaseLayout
+  title="Capacitaciones y novedades — Chaco Implantes"
+  description="Capacitaciones, jornadas y novedades de Chaco Implantes para profesionales e instituciones de salud en Resistencia, Chaco."
+  canonicalPath="/eventos"
+>
+  <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <header class="max-w-2xl">
+      <h1 class="font-display text-3xl font-bold text-deep sm:text-4xl">Capacitaciones y novedades</h1>
+      <p class="mt-3 text-sm text-muted-foreground">
+        Publicamos jornadas, capacitaciones para equipos de quirófano y novedades de líneas de producto.
+      </p>
+    </header>
+
+    <section class="mt-10 flex flex-col items-center rounded-lg border border-dashed border-border bg-card px-6 py-16 text-center">
+      <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary text-primary ring-1 ring-border">
+        <Icon name="calendar-off" class="h-5 w-5" />
+      </div>
+      <p class="mt-4 font-display text-lg font-semibold text-deep">No hay próximos eventos publicados</p>
+      <p class="mt-1 max-w-md text-sm text-muted-foreground">
+        Escribinos para conocer capacitaciones o coordinar una visita técnica.
+      </p>
+      <a
+        href={whatsappLink("Hola, quisiera información sobre capacitaciones y novedades de Chaco Implantes.")}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-primary mt-6 inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-deep"
+      >
+        <Icon name="message-circle" class="h-4 w-4" /> Consultar por WhatsApp
+      </a>
+    </section>
+  </div>
+</BaseLayout>

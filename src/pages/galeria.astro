@@ -1,0 +1,130 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+import { gallery, galleryFilters } from "../data/site";
+---
+
+<BaseLayout
+  title="Galería — Chaco Implantes"
+  description="Galería de productos, instrumental, eventos, capacitaciones y quirófano de Chaco Implantes."
+  canonicalPath="/galeria"
+>
+  <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <header class="max-w-2xl">
+      <h1 class="font-display text-3xl font-bold text-deep sm:text-4xl">Galería</h1>
+      <p class="mt-3 text-sm text-muted-foreground">
+        Productos, instrumental y actividades con profesionales e instituciones.
+      </p>
+    </header>
+
+    <div class="mt-8 flex flex-wrap gap-2" data-gallery-filters>
+      {["Todos", ...galleryFilters].map((filter) => (
+        <button
+          type="button"
+          data-filter={filter}
+          class:list={[
+            "gallery-filter rounded-full border px-4 py-1.5 text-sm font-medium",
+            filter === "Todos" ? "gallery-filter-active" : "gallery-filter-idle",
+          ]}
+        >
+          {filter}
+        </button>
+      ))}
+    </div>
+
+    <div class="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3" data-gallery-grid>
+      {gallery.map((item) => (
+        <button
+          type="button"
+          data-gallery-item
+          data-category={item.category}
+          data-image={item.image}
+          data-alt={item.alt}
+          class="gallery-card card-link group flex flex-col overflow-hidden rounded-lg border border-border bg-card text-left"
+        >
+          <span class="relative block aspect-[4/3] overflow-hidden">
+            <img
+              src={item.image}
+              alt={item.alt}
+              loading="lazy"
+              width="900"
+              height="675"
+              class="h-full w-full object-cover transition-transform duration-200 ease-out"
+            />
+          </span>
+          <span class="flex items-center gap-2 px-3 py-2.5">
+            <span class="h-3 w-px shrink-0 bg-brand"></span>
+            <span class="text-xs font-medium text-deep">{item.alt}</span>
+          </span>
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <div data-lightbox class="fixed inset-0 z-[80] hidden items-center justify-center bg-deep/80 p-4">
+    <button type="button" data-lightbox-close aria-label="Cerrar" class="icon-button absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-md text-deep-foreground hover:bg-white/10">
+      <Icon name="x" class="h-6 w-6" />
+    </button>
+    <figure class="max-h-[85vh] max-w-3xl overflow-hidden rounded-xl bg-card">
+      <img data-lightbox-image alt="" class="max-h-[78vh] w-full object-contain" />
+      <figcaption data-lightbox-caption class="px-4 py-3 text-sm text-muted-foreground"></figcaption>
+    </figure>
+  </div>
+</BaseLayout>
+
+<script>
+  const filterWrap = document.querySelector("[data-gallery-filters]");
+  const filterButtons = Array.from(document.querySelectorAll("[data-filter]"));
+  const galleryItems = Array.from(document.querySelectorAll("[data-gallery-item]"));
+  const lightbox = document.querySelector("[data-lightbox]");
+  const lightboxImage = document.querySelector("[data-lightbox-image]");
+  const lightboxCaption = document.querySelector("[data-lightbox-caption]");
+  const close = document.querySelector("[data-lightbox-close]");
+
+  filterWrap?.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    const button = target.closest("[data-filter]");
+    if (!(button instanceof HTMLElement)) return;
+    const filter = button.dataset.filter || "Todos";
+
+    filterButtons.forEach((item) => {
+      const active = item === button;
+      item.classList.toggle("gallery-filter-active", active);
+      item.classList.toggle("gallery-filter-idle", !active);
+    });
+
+    galleryItems.forEach((item) => {
+      if (!(item instanceof HTMLElement)) return;
+      const visible = filter === "Todos" || item.dataset.category === filter;
+      item.classList.toggle("hidden", !visible);
+    });
+  });
+
+  galleryItems.forEach((item) => {
+    item.addEventListener("click", () => {
+      if (!(item instanceof HTMLElement)) return;
+      if (lightboxImage instanceof HTMLImageElement) {
+        lightboxImage.src = item.dataset.image || "";
+        lightboxImage.alt = item.dataset.alt || "";
+      }
+      if (lightboxCaption) {
+        lightboxCaption.textContent = `${item.dataset.alt || ""} · ${item.dataset.category || ""}`;
+      }
+      lightbox?.classList.remove("hidden");
+      lightbox?.classList.add("flex");
+    });
+  });
+
+  const hideLightbox = () => {
+    lightbox?.classList.add("hidden");
+    lightbox?.classList.remove("flex");
+  };
+  close?.addEventListener("click", hideLightbox);
+  lightbox?.addEventListener("click", (event) => {
+    if (event.target === lightbox) hideLightbox();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") hideLightbox();
+  });
+</script>

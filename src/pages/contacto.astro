@@ -1,0 +1,196 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+import { site, whatsappLink } from "../data/site";
+---
+
+<BaseLayout
+  title="Contacto — Chaco Implantes"
+  description="Contactá a Chaco Implantes en Resistencia, Chaco. WhatsApp 0362-4571854, Corrientes 781."
+  canonicalPath="/contacto"
+>
+  <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <header class="max-w-2xl">
+      <h1 class="font-display text-3xl font-bold text-deep sm:text-4xl">Contacto</h1>
+      <p class="mt-3 text-muted-foreground">
+        Escribinos tu consulta y la enviamos por WhatsApp o email, o comunicate directamente.
+      </p>
+    </header>
+
+    <div class="mt-10 grid gap-10 lg:grid-cols-[1fr_360px]">
+      <form data-contact-form class="rounded-lg border border-brand/40 bg-surface-2/45 p-6 sm:p-8" novalidate>
+        <div class="grid gap-5 sm:grid-cols-2">
+          <label class="block text-sm font-medium text-deep">
+            Nombre
+            <input name="nombre" required maxlength="100" minlength="2" class="contact-field mt-1.5 w-full rounded-md border px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-primary" placeholder="Tu nombre" />
+            <span data-error-for="nombre" class="mt-1 hidden text-xs text-red-700"></span>
+          </label>
+          <label class="block text-sm font-medium text-deep">
+            Institución / especialidad
+            <input name="institucion" required maxlength="120" minlength="2" class="contact-field mt-1.5 w-full rounded-md border px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-primary" placeholder="Clínica, sanatorio o especialidad" />
+            <span data-error-for="institucion" class="mt-1 hidden text-xs text-red-700"></span>
+          </label>
+          <label class="block text-sm font-medium text-deep">
+            Teléfono
+            <input name="telefono" required maxlength="30" minlength="6" inputmode="tel" class="contact-field mt-1.5 w-full rounded-md border px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-primary" placeholder="Teléfono de contacto" />
+            <span data-error-for="telefono" class="mt-1 hidden text-xs text-red-700"></span>
+          </label>
+          <label class="block text-sm font-medium text-deep">
+            Email
+            <input name="email" required maxlength="255" type="email" class="contact-field mt-1.5 w-full rounded-md border px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-primary" placeholder="correo@ejemplo.com" />
+            <span data-error-for="email" class="mt-1 hidden text-xs text-red-700"></span>
+          </label>
+        </div>
+        <label class="mt-5 block text-sm font-medium text-deep">
+          Mensaje
+          <textarea name="mensaje" required maxlength="1000" minlength="10" class="contact-field mt-1.5 min-h-32 w-full resize-y rounded-md border px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-primary" placeholder="Contanos tu consulta o requerimiento"></textarea>
+          <span data-error-for="mensaje" class="mt-1 hidden text-xs text-red-700"></span>
+        </label>
+
+        <div class="mt-6 flex flex-wrap gap-3">
+          <button type="submit" class="btn-primary inline-flex items-center gap-2 rounded-md bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:bg-deep">
+            <Icon name="message-circle" class="h-4 w-4" /> Enviar por WhatsApp
+          </button>
+          <button type="button" data-email-submit class="btn-email-soft inline-flex items-center gap-2 rounded-md px-5 py-3 text-sm font-semibold">
+            <Icon name="send" class="h-4 w-4" /> Enviar por email
+          </button>
+        </div>
+      </form>
+
+      <aside class="space-y-5">
+        <section class="rounded-lg border border-brand/40 bg-surface-2/45 p-6">
+          <h2 class="font-display text-lg font-semibold text-deep">Datos de contacto</h2>
+          <ul class="mt-4 space-y-3 text-sm text-muted-foreground">
+            <li class="flex items-start gap-2.5">
+              <Icon name="phone" class="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+              <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" class="contact-link">{site.phoneDisplay}</a>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <Icon name="map-pin" class="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+              <span>{site.address}</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <Icon name="instagram" class="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+              <a href={site.instagramUrl} target="_blank" rel="noopener noreferrer" class="contact-link">{site.instagramHandle}</a>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <Icon name="mail" class="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+              <a href={`mailto:${site.email}`} class="contact-link">{site.email}</a>
+            </li>
+          </ul>
+          <a
+            href={whatsappLink("Hola, quisiera hacer una consulta a Chaco Implantes.")}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-primary mt-5 flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground hover:bg-deep"
+          >
+            <Icon name="message-circle" class="h-4 w-4" /> Hablar por WhatsApp
+          </a>
+        </section>
+
+        <section class="rounded-lg border border-brand/40 bg-surface-2/45 p-6">
+          <h2 class="font-display text-lg font-semibold text-deep">Ubicación y horario</h2>
+          <ul class="mt-4 space-y-3 text-sm text-muted-foreground">
+            <li class="flex items-start gap-2.5">
+              <Icon name="map-pin" class="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+              <span>{site.address}</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <Icon name="clock" class="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+              <div class="space-y-0.5 text-sm text-muted-foreground">
+                <p class="font-semibold text-deep">Horario comercial</p>
+                <p>Lun a vie</p>
+                <p>12:30 a 16:30 h</p>
+                <p>16:30 a 20:30 h</p>
+              </div>
+            </li>
+          </ul>
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.address)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="contact-link mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-primary"
+          >
+            <Icon name="map-pin" class="h-4 w-4" /> Cómo llegar
+          </a>
+        </section>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>
+
+<script is:inline define:vars={{ email: site.email, whatsappBase: whatsappLink() }}>
+  const form = document.querySelector("[data-contact-form]");
+  const emailButton = document.querySelector("[data-email-submit]");
+
+  const rules = {
+    nombre: "Ingresá tu nombre",
+    institucion: "Ingresá tu institución o especialidad",
+    telefono: "Ingresá un teléfono válido",
+    email: "Ingresá un email válido",
+    mensaje: "Contanos brevemente tu consulta",
+  };
+
+  const showError = (name, message) => {
+    const field = form?.querySelector(`[name="${name}"]`);
+    const error = document.querySelector(`[data-error-for="${name}"]`);
+    field?.setAttribute("aria-invalid", "true");
+    if (error) {
+      error.textContent = message;
+      error.classList.remove("hidden");
+    }
+  };
+
+  const clearErrors = () => {
+    form?.querySelectorAll("[aria-invalid]").forEach((field) => field.removeAttribute("aria-invalid"));
+    document.querySelectorAll("[data-error-for]").forEach((error) => {
+      error.textContent = "";
+      error.classList.add("hidden");
+    });
+  };
+
+  const validate = () => {
+    if (!(form instanceof HTMLFormElement)) return null;
+    clearErrors();
+    const data = Object.fromEntries(new FormData(form));
+    const values = {
+      nombre: String(data.nombre || "").trim(),
+      institucion: String(data.institucion || "").trim(),
+      telefono: String(data.telefono || "").trim(),
+      email: String(data.email || "").trim(),
+      mensaje: String(data.mensaje || "").trim(),
+    };
+    let valid = true;
+
+    for (const [key, message] of Object.entries(rules)) {
+      if (!values[key] || values[key].length < (key === "mensaje" ? 10 : key === "telefono" ? 6 : 2)) {
+        showError(key, message);
+        valid = false;
+      }
+    }
+    if (values.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
+      showError("email", rules.email);
+      valid = false;
+    }
+    return valid ? values : null;
+  };
+
+  const buildMessage = (values) =>
+    `Hola, soy ${values.nombre} (${values.institucion}).\n` +
+    `Teléfono: ${values.telefono}\nEmail: ${values.email}\n\n${values.mensaje}`;
+
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const values = validate();
+    if (!values) return;
+    window.open(`${whatsappBase}?text=${encodeURIComponent(buildMessage(values))}`, "_blank", "noopener,noreferrer");
+  });
+
+  emailButton?.addEventListener("click", () => {
+    const values = validate();
+    if (!values) return;
+    const subject = encodeURIComponent(`Consulta de ${values.nombre} — ${values.institucion}`);
+    const body = encodeURIComponent(buildMessage(values));
+    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+  });
+</script>

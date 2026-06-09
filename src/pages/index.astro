@@ -1,0 +1,212 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CatalogCard from "../components/CatalogCard.astro";
+import Icon from "../components/Icon.astro";
+import { featuredCategories, images, professionalBlocks, site, whatsappLink } from "../data/site";
+---
+
+<BaseLayout canonicalPath="/">
+  <section class="relative overflow-hidden border-b border-border bg-surface-2/45">
+    <img
+      src={images.bannerMarca}
+      alt=""
+      aria-hidden="true"
+      class="hero-mobile-bg pointer-events-none absolute inset-0 h-full w-full object-cover opacity-[0.08]"
+    />
+    <img
+      src={images.hero}
+      alt=""
+      aria-hidden="true"
+      class="hero-desktop-bg pointer-events-none absolute inset-y-0 right-0 h-full w-[58%] object-cover object-center opacity-[0.1] mix-blend-multiply"
+    />
+    <div aria-hidden="true" class="hero-desktop-fade pointer-events-none absolute inset-y-0 right-[42%] w-40 bg-gradient-to-r from-[#f3f6fb] to-transparent"></div>
+    <div class="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-24">
+      <div class="reveal max-w-xl">
+        <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase text-primary">
+          <span class="h-px w-6 bg-brand"></span>
+          Traumatología
+        </span>
+        <p class="mt-3 font-accent text-xl text-deep">{site.tagline}</p>
+        <h1 class="mt-5 font-display text-3xl font-bold leading-[1.12] text-deep sm:text-4xl lg:text-5xl">
+          Prótesis, implantes e instrumental para traumatología
+        </h1>
+        <p class="mt-4 max-w-xl text-base text-muted-foreground sm:text-lg">
+          Distribución y coordinación comercial para profesionales e instituciones de salud.
+        </p>
+        <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <a href="/catalogos" class="btn-primary-soft inline-flex w-full items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-semibold sm:w-auto">
+            Ver catálogos <Icon name="arrow-right" class="h-4 w-4" />
+          </a>
+          <a
+            href={whatsappLink("Hola, quisiera contactarme con Chaco Implantes.")}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-secondary inline-flex w-full items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-semibold sm:w-auto"
+          >
+            <Icon name="message-circle" class="h-4 w-4" /> Contactar por WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-primary">
+    <div class="mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-6 lg:px-8">
+      <div class="grid grid-cols-2 gap-x-4 gap-y-3 sm:gap-5 lg:grid-cols-4 lg:gap-8">
+        {
+          [
+            ["bone", "Prótesis e implantes"],
+            ["wrench", "Instrumental quirúrgico"],
+            ["shield-check", "Osteosíntesis"],
+            ["map-pin", "Resistencia, Chaco"],
+          ].map(([icon, label]) => (
+            <div class="flex items-center gap-2 sm:gap-3">
+              <div data-specialty-icon class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/10 text-white ring-1 ring-white/20 sm:h-8 sm:w-8">
+                <Icon name={icon} class="h-3.5 w-3.5" />
+              </div>
+              <p class="text-[11px] font-semibold uppercase text-white/90 sm:text-sm">{label}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-border bg-surface-2/45">
+    <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase text-primary">
+            <span class="h-px w-6 bg-brand"></span>
+            Catálogo por especialidad
+          </span>
+          <h2 class="mt-3 font-display text-2xl font-bold text-deep sm:text-3xl">Líneas de productos</h2>
+          <p class="mt-2 max-w-2xl text-muted-foreground">Prótesis, implantes e instrumental organizados por especialidad.</p>
+        </div>
+        <a href="/catalogos" class="link-primary-soft inline-flex items-center gap-1.5 text-sm font-semibold">
+          Ver todos los catálogos <Icon name="arrow-right" class="h-4 w-4" />
+        </a>
+      </div>
+
+      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {featuredCategories.map((category) => <CatalogCard category={category} compact />)}
+      </div>
+    </div>
+  </section>
+
+  <section data-professional-flow-band="deep" class="bg-deep">
+    <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          [
+            ["clipboard-list", "Consulta por línea"],
+            ["handshake", "Coordinación comercial"],
+            ["boxes", "Disponibilidad y requerimientos"],
+            ["building-2", "Atención a profesionales e instituciones"],
+          ].map(([icon, title]) => (
+            <div data-professional-flow-card class="flow-card flex items-center gap-3 rounded-lg p-4">
+              <div data-professional-flow-icon class="flow-card-icon flex h-9 w-9 shrink-0 items-center justify-center rounded-lg">
+                <Icon name={icon} class="h-4 w-4" />
+              </div>
+              <p class="text-sm font-semibold leading-tight text-white">{title}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section id="profesionales" class="scroll-mt-20 border-b border-border bg-surface">
+    <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div class="max-w-2xl">
+        <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase text-primary">
+          <span class="h-px w-6 bg-brand"></span>
+          Profesionales e instituciones
+        </span>
+        <h2 class="mt-3 font-display text-2xl font-bold text-deep sm:text-3xl">
+          Trabajamos con traumatólogos, cirujanos, clínicas y sanatorios
+        </h2>
+      </div>
+
+      <div class="mt-8 grid gap-4 sm:grid-cols-2">
+        {
+          professionalBlocks.map((block) => (
+            <article class="lift-card flex items-start gap-4 rounded-lg border border-border bg-card p-5">
+              <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-primary ring-1 ring-border">
+                <Icon name={block.icon} class="h-4 w-4" />
+              </div>
+              <div>
+                <h3 class="font-display text-base font-semibold text-deep">{block.title}</h3>
+                <p class="mt-1 text-sm text-muted-foreground">{block.text}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="mt-8 flex flex-col items-start gap-4 rounded-lg border border-border bg-secondary/40 px-6 py-8 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h3 class="font-display text-lg font-semibold text-deep">Coordinación para instituciones</h3>
+          <p class="mt-1 text-sm text-muted-foreground">Escribinos para coordinar el suministro de prótesis, implantes e instrumental.</p>
+        </div>
+        <a
+          href={whatsappLink("Hola, quisiera solicitar contacto institucional con Chaco Implantes.")}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-primary inline-flex shrink-0 items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-deep"
+        >
+          <Icon name="message-circle" class="h-4 w-4" /> Contacto institucional
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section data-commercial-band="primary" class="bg-primary">
+    <div class="mx-auto flex max-w-7xl flex-col items-start gap-5 px-4 py-12 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+      <div class="max-w-xl">
+        <h2 class="font-display text-xl font-semibold text-white sm:text-2xl">Consultas comerciales y catálogos</h2>
+        <p class="mt-2 text-sm text-[#D9E1F1]">Coordinamos pedidos, disponibilidad y requerimientos por línea de producto.</p>
+      </div>
+      <div class="flex w-full flex-col gap-3 sm:flex-row lg:w-auto">
+        <a
+          href={whatsappLink("Hola, quisiera coordinar un pedido con Chaco Implantes.")}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-light inline-flex items-center justify-center gap-2 rounded-md bg-white px-5 py-2.5 text-sm font-semibold text-[#192338] hover:bg-[#D9E1F1]"
+        >
+          <Icon name="message-circle" class="h-4 w-4" /> WhatsApp
+        </a>
+        <a href="/catalogos" class="btn-glass-outline inline-flex items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold">
+          Ver catálogos <Icon name="arrow-right" class="h-4 w-4" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-border bg-surface">
+    <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div class="max-w-2xl">
+        <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase text-primary">
+          <span class="h-px w-6 bg-brand"></span>
+          Actividad institucional
+        </span>
+        <h2 class="mt-3 font-display text-2xl font-bold text-deep sm:text-3xl">Eventos y capacitaciones</h2>
+      </div>
+
+      <div class="mt-8 flex flex-col items-start gap-5 rounded-lg border border-dashed border-border bg-card px-6 py-10 sm:flex-row sm:items-center sm:justify-between">
+        <div class="flex items-start gap-4">
+          <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-secondary text-primary ring-1 ring-border">
+            <Icon name="calendar-clock" class="h-5 w-5" />
+          </div>
+          <div>
+            <p class="font-display text-base font-semibold text-deep">Próximamente publicaremos nuevas fechas y actividades profesionales.</p>
+            <p class="mt-1 text-sm text-muted-foreground">Jornadas, capacitaciones para equipos de quirófano y novedades de líneas de producto.</p>
+          </div>
+        </div>
+        <a href="/eventos" class="btn-primary inline-flex shrink-0 items-center justify-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-deep">
+          Ver eventos <Icon name="arrow-right" class="h-4 w-4" />
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

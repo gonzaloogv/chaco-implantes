@@ -1,0 +1,82 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+import { images, site } from "../data/site";
+
+const features = [
+  {
+    icon: "package-check",
+    title: "Distribución traumatológica",
+    text: "Prótesis, implantes e instrumental nacional e importado.",
+  },
+  {
+    icon: "map-pin",
+    title: "Atención en Resistencia",
+    text: "Base en Corrientes 781, Resistencia, Chaco.",
+  },
+  {
+    icon: "stethoscope",
+    title: "Coordinación con profesionales",
+    text: "Traumatólogos, cirujanos, clínicas y sanatorios.",
+  },
+  {
+    icon: "file-text",
+    title: "Catálogos por línea",
+    text: "Cadera, rodilla, columna y osteosíntesis.",
+  },
+];
+---
+
+<BaseLayout
+  title="Nosotros — Chaco Implantes"
+  description="Chaco Implantes: distribución de prótesis, implantes e instrumental traumatológico en Resistencia, Chaco, con atención a profesionales e instituciones."
+  canonicalPath="/nosotros"
+>
+  <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="grid items-center gap-10 lg:grid-cols-2">
+      <div>
+        <h1 class="font-display text-3xl font-bold text-deep sm:text-4xl">Nosotros</h1>
+        <p class="mt-4 text-base text-muted-foreground">
+          {site.name} distribuye prótesis, implantes e instrumental traumatológico en Resistencia, Chaco,
+          acompañando a profesionales e instituciones de salud en cada procedimiento.
+        </p>
+        <p class="mt-4 font-accent text-xl text-primary">{site.tagline}</p>
+      </div>
+
+      <div class="overflow-hidden rounded-lg border border-border">
+        <img
+          src={images.quirofano}
+          alt="Quirófano equipado para cirugía traumatológica"
+          loading="lazy"
+          width="1200"
+          height="900"
+          class="h-full w-full object-cover"
+        />
+      </div>
+    </div>
+
+    <section class="mt-14">
+      <div class="grid gap-4 sm:grid-cols-2">
+        {
+          features.map((feature) => (
+            <article class="lift-card flex items-start gap-4 rounded-lg border border-border bg-card p-5">
+              <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-primary ring-1 ring-border">
+                <Icon name={feature.icon} class="h-4 w-4" />
+              </div>
+              <div>
+                <h2 class="font-display text-base font-semibold text-deep">{feature.title}</h2>
+                <p class="mt-1 text-sm text-muted-foreground">{feature.text}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <div class="mt-12">
+      <a href="/contacto" class="btn-primary inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-deep">
+        Contactar a Chaco Implantes <Icon name="arrow-right" class="h-4 w-4" />
+      </a>
+    </div>
+  </div>
+</BaseLayout>
