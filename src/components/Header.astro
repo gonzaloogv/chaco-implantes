@@ -3,14 +3,21 @@ import Icon from "./Icon.astro";
 import { images, nav, site, whatsappLink } from "../data/site";
 
 const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isHome = currentPath === "/";
 const isActive = (href: string) => {
   const cleanHref = href.split("#")[0].replace(/\/$/, "") || "/";
   return cleanHref === "/" ? currentPath === "/" : currentPath === cleanHref;
 };
 ---
 
-<header class="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-md">
-  <div class="flex h-16 w-full items-center justify-between px-4 lg:px-10">
+<header
+  data-site-header
+  data-home-header={isHome ? "true" : "false"}
+  data-transparent={isHome ? "true" : "false"}
+  data-transparent-header={isHome ? "true" : "false"}
+  class="site-header fixed inset-x-0 top-0 z-50 border-b transition-[height,background-color,border-color,backdrop-filter] duration-300"
+>
+  <div class="site-header-inner flex w-full items-center justify-between px-4 transition-[height] duration-300 lg:px-10">
     <a href="/" class="flex items-center gap-3" aria-label={`${site.name} - inicio`}>
       <img
         src={images.logoCircular}
@@ -37,8 +44,8 @@ const isActive = (href: string) => {
             data-nav-link
             data-active={isActive(item.href) ? "true" : "false"}
             class:list={[
-              "nav-link rounded-md px-3 py-2 text-sm font-medium transition-[color,opacity] duration-200 ease-out",
-              isActive(item.href) && "font-semibold",
+              "nav-link rounded-md px-3 py-2 text-sm font-medium transition-[background-color,color,opacity] duration-200 ease-out",
+              isActive(item.href) && "bg-secondary font-semibold",
             ]}
           >
             {item.label}
@@ -52,7 +59,7 @@ const isActive = (href: string) => {
         href={whatsappLink("Hola, me comunico desde el sitio de Chaco Implantes.")}
         target="_blank"
         rel="noopener noreferrer"
-        class="btn-primary hidden items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-deep sm:inline-flex"
+        class="btn-primary hidden items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold sm:inline-flex"
       >
         <Icon name="message-circle" class="h-4 w-4" />
         WhatsApp
@@ -70,7 +77,7 @@ const isActive = (href: string) => {
     </div>
   </div>
 
-  <nav data-mobile-menu class="hidden overflow-hidden border-t border-border bg-background lg:hidden" aria-label="Principal móvil">
+  <nav data-mobile-menu class="mobile-menu hidden overflow-hidden border-t border-border bg-background lg:hidden" aria-label="Principal móvil">
     <div class="space-y-1 px-4 py-4">
       {
         nav.map((item) => (
@@ -91,7 +98,7 @@ const isActive = (href: string) => {
         href={whatsappLink("Hola, me comunico desde el sitio de Chaco Implantes.")}
         target="_blank"
         rel="noopener noreferrer"
-        class="btn-primary mt-2 flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground"
+        class="btn-primary mt-2 flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-semibold"
       >
         <Icon name="message-circle" class="h-4 w-4" />
         WhatsApp
@@ -101,13 +108,28 @@ const isActive = (href: string) => {
 </header>
 
 <script>
+  const header = document.querySelector("[data-site-header]");
   const toggle = document.querySelector("[data-menu-toggle]");
   const menu = document.querySelector("[data-mobile-menu]");
+
+  const syncHeader = () => {
+    if (!(header instanceof HTMLElement)) return;
+    const isHomeHeader = header.dataset.homeHeader === "true";
+    const menuOpen = toggle?.getAttribute("aria-expanded") === "true";
+    const transparent = isHomeHeader && window.scrollY < 60 && !menuOpen;
+    header.dataset.transparent = String(transparent);
+    header.dataset.transparentHeader = String(transparent);
+  };
+
   toggle?.addEventListener("click", () => {
     const expanded = toggle.getAttribute("aria-expanded") === "true";
     toggle.setAttribute("aria-expanded", String(!expanded));
     toggle.querySelector("[data-menu-open-icon]")?.classList.toggle("hidden", !expanded);
     toggle.querySelector("[data-menu-close-icon]")?.classList.toggle("hidden", expanded);
     menu?.classList.toggle("hidden", expanded);
+    syncHeader();
   });
+
+  window.addEventListener("scroll", syncHeader, { passive: true });
+  syncHeader();
 </script>

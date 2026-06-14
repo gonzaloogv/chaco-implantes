@@ -1,26 +1,47 @@
-export const images = {
-  hero: "/assets/images/hero.jpg",
-  heroBg: "/assets/images/hero-instrumental.JPG",
-  heroMobile: "/assets/images/hero-mobile.JPG",
-  quirofano: "/assets/images/quirofano.jpg",
-  evento: "/assets/images/evento.jpg",
-  congreso: "/assets/images/congreso-traumatologia-2024.JPG",
-  productos: "/assets/images/productos.jpg",
-  logo: "/assets/brand/logo.png",
-  logoCircular: "/assets/brand/logo-circular.png",
-  bannerMarca: "/assets/brand/banner-marca.jpg",
-} as const;
+import heroAsset from "@/assets/hero.jpg.asset.json";
+import quirofanoAsset from "@/assets/quirofano.jpg.asset.json";
+import eventoAsset from "@/assets/evento.jpg.asset.json";
+import productosAsset from "@/assets/productos.jpg.asset.json";
+import logoAsset from "@/assets/logo.png.asset.json";
+import logoCircularAsset from "@/assets/logo-circular.png.asset.json";
+import bannerMarcaAsset from "@/assets/banner-marca.jpg.asset.json";
+import heroBgAsset from "@/assets/hero-instrumental.jpg.asset.json";
+import heroMobileAsset from "@/assets/hero-mobile.jpg.asset.json";
 
-export const categoryImages = {
-  cadera: "/assets/images/cat-cadera.jpg",
-  rodilla: "/assets/images/cat-rodilla.jpg",
-  columna: "/assets/images/cat-columna.jpg",
-  maxilofacial: "/assets/images/cat-maxilofacial.jpg",
-  "osteosintesis-placas": "/assets/images/cat-osteosintesis-placas.jpg",
-  "osteosintesis-tornillos": "/assets/images/cat-osteosintesis-tornillos.jpg",
-  "instrumental-quirurgico": "/assets/images/cat-instrumental-quirurgico.jpg",
-  "otros-productos": "/assets/images/cat-otros-productos.jpg",
-} as const;
+import catCadera from "@/assets/cat-cadera.jpg";
+import catRodilla from "@/assets/cat-rodilla.jpg";
+import catColumna from "@/assets/cat-columna.jpg";
+import catMaxilofacial from "@/assets/cat-maxilofacial.jpg";
+import catPlacas from "@/assets/cat-osteosintesis-placas.jpg";
+import catTornillos from "@/assets/cat-osteosintesis-tornillos.jpg";
+import catInstrumental from "@/assets/cat-instrumental-quirurgico.jpg";
+import catOtros from "@/assets/cat-otros-productos.jpg";
+
+export const images = {
+  hero: heroAsset.url,
+  /** Imagen de fondo del hero (apaisada, foco a la derecha). */
+  heroBg: heroBgAsset.url,
+  /** Imagen de fondo del hero para mobile (vertical). */
+  heroMobile: heroMobileAsset.url,
+  quirofano: quirofanoAsset.url,
+  evento: eventoAsset.url,
+  productos: productosAsset.url,
+  logo: logoAsset.url,
+  logoCircular: logoCircularAsset.url,
+  bannerMarca: bannerMarcaAsset.url,
+};
+
+/** Imagen de fondo por categoría de catálogo. */
+export const categoryImages: Record<string, string> = {
+  cadera: catCadera,
+  rodilla: catRodilla,
+  columna: catColumna,
+  maxilofacial: catMaxilofacial,
+  "osteosintesis-placas": catPlacas,
+  "osteosintesis-tornillos": catTornillos,
+  "instrumental-quirurgico": catInstrumental,
+  "otros-productos": catOtros,
+};
 
 export const site = {
   name: "Chaco Implantes",
@@ -32,53 +53,23 @@ export const site = {
   address: "Corrientes 781, Resistencia, Chaco 3500",
   instagramHandle: "@chacoimplanteok",
   instagramUrl: "https://www.instagram.com/chacoimplanteok/",
-  email: "chacoimplantes@gmail.com",
-  baseUrl: "https://chacoimplantes.com.ar",
-} as const;
+  email: "contacto@chacoimplantes.com.ar",
+  hours: "Lunes a viernes, 8:30 a 12:30h y de 16:30 a 22:30",
+};
 
+/** Build a wa.me link with an optional prefilled message. */
 export function whatsappLink(message?: string) {
   const base = `https://wa.me/${site.whatsappNumber}`;
   return message ? `${base}?text=${encodeURIComponent(message)}` : base;
 }
 
-// Links de WhatsApp nombrados — evita strings duplicados en templates
-export const wa = {
-  general:       whatsappLink("Hola, quisiera contactarme con Chaco Implantes."),
-  pedido:        whatsappLink("Hola, quisiera coordinar un pedido con Chaco Implantes."),
-  institucional: whatsappLink("Hola, quisiera solicitar contacto institucional con Chaco Implantes."),
-} as const;
-
 export const nav = [
-  { label: "Inicio",    href: "/" },
-  { label: "Catálogos", href: "/catalogos" },
-  { label: "Galería",   href: "/galeria" },
-  { label: "Eventos",   href: "/eventos" },
-  { label: "Nosotros",  href: "/nosotros" },
-  { label: "Contacto",  href: "/contacto" },
-] as const;
-
-export const footerNav = [
-  { label: "Catálogos", href: "/catalogos" },
-  { label: "Galería",   href: "/galeria" },
-  { label: "Eventos",   href: "/eventos" },
-  { label: "Nosotros",  href: "/nosotros" },
-  { label: "Contacto",  href: "/contacto" },
-] as const;
-
-// Badges de la franja superior del hero
-export const specialtyBadges = [
-  { icon: "bone",         label: "Prótesis e implantes" },
-  { icon: "wrench",       label: "Instrumental quirúrgico" },
-  { icon: "shield-check", label: "Osteosíntesis" },
-  { icon: "map-pin",      label: "Resistencia, Chaco" },
-] as const;
-
-// Items de la franja divisora entre catálogos y profesionales
-export const professionalFlow = [
-  { icon: "clipboard-list", title: "Consulta por línea" },
-  { icon: "handshake",      title: "Coordinación comercial" },
-  { icon: "boxes",          title: "Disponibilidad y stock" },
-  { icon: "building-2",     title: "Atención profesional" },
+  { label: "Inicio", to: "/" },
+  { label: "Catálogos", to: "/catalogos" },
+  { label: "Galería", to: "/galeria" },
+  { label: "Eventos", to: "/eventos" },
+  { label: "Nosotros", to: "/nosotros" },
+  { label: "Contacto", to: "/contacto" },
 ] as const;
 
 export type Category = {
@@ -88,7 +79,6 @@ export type Category = {
   tag: string;
   description: string;
   pages: number;
-  icon: "bone" | "layers" | "shield-check" | "wrench" | "package-check";
 };
 
 export const categories: Category[] = [
@@ -99,7 +89,6 @@ export const categories: Category[] = [
     tag: "Artroplastia",
     description: "Prótesis de cadera primarias y de revisión, vástagos y cotilos nacionales e importados.",
     pages: 6,
-    icon: "bone",
   },
   {
     slug: "rodilla",
@@ -108,7 +97,6 @@ export const categories: Category[] = [
     tag: "Artroplastia",
     description: "Prótesis total y parcial, componentes femorales, tibiales y de polietileno.",
     pages: 6,
-    icon: "bone",
   },
   {
     slug: "columna",
@@ -117,7 +105,6 @@ export const categories: Category[] = [
     tag: "Fijación",
     description: "Fijación espinal, tornillos pediculares, barras y conectores.",
     pages: 5,
-    icon: "layers",
   },
   {
     slug: "maxilofacial",
@@ -126,7 +113,6 @@ export const categories: Category[] = [
     tag: "Osteosíntesis",
     description: "Placas y tornillos de bajo perfil para fijación maxilofacial.",
     pages: 4,
-    icon: "shield-check",
   },
   {
     slug: "osteosintesis-placas",
@@ -135,7 +121,6 @@ export const categories: Category[] = [
     tag: "Osteosíntesis",
     description: "Placas anatómicas y de compresión para traumatología.",
     pages: 7,
-    icon: "shield-check",
   },
   {
     slug: "osteosintesis-tornillos",
@@ -144,7 +129,6 @@ export const categories: Category[] = [
     tag: "Osteosíntesis",
     description: "Tornillos corticales, esponjosos y canulados en distintas medidas.",
     pages: 5,
-    icon: "shield-check",
   },
   {
     slug: "instrumental-quirurgico",
@@ -153,7 +137,6 @@ export const categories: Category[] = [
     tag: "Instrumental",
     description: "Cajas e instrumental específico por sistema y procedimiento.",
     pages: 8,
-    icon: "wrench",
   },
   {
     slug: "otros-productos",
@@ -162,37 +145,33 @@ export const categories: Category[] = [
     tag: "Insumos",
     description: "Insumos, descartables y productos complementarios.",
     pages: 4,
-    icon: "package-check",
   },
 ];
 
-export const featuredCatalogSlugs = [
-  "cadera",
-  "rodilla",
-  "columna",
-  "maxilofacial",
-  "osteosintesis-placas",
-  "osteosintesis-tornillos",
-] as const;
-
-export const featuredCategories = featuredCatalogSlugs
-  .map((slug) => categories.find((category) => category.slug === slug))
-  .filter((category): category is Category => Boolean(category));
-
-export type GalleryCategory = "Productos" | "Instrumental" | "Eventos" | "Quirófano";
+export type GalleryCategory =
+  | "Productos"
+  | "Instrumental"
+  | "Quirófano"
+  | "Eventos";
 
 export type GalleryItem = {
   id: string;
   category: GalleryCategory;
+  /** Miniatura liviana para la grilla (lazy). */
   thumb: string;
+  /** Imagen grande, sólo se carga al abrir el lightbox. */
   full: string;
   alt: string;
 };
 
 export const galleryFilters = ["Productos", "Instrumental", "Quirófano", "Eventos"] as const;
 
+/** Cuántas imágenes mostrar antes del botón "Cargar más". */
 export const GALLERY_PAGE_SIZE = 12;
 
+// Pool base de imágenes disponibles. Cuando el cliente cargue su material real
+// (200+ fotos), basta con reemplazar/ampliar este arreglo: la grilla pagina,
+// hace lazy-load y abre la imagen grande sólo en el lightbox.
 const galleryPool: { category: GalleryCategory; image: string; alt: string }[] = [
   { category: "Productos", image: images.productos, alt: "Placas y tornillos de osteosíntesis" },
   { category: "Productos", image: categoryImages.cadera, alt: "Prótesis de cadera" },
@@ -208,10 +187,11 @@ const galleryPool: { category: GalleryCategory; image: string; alt: string }[] =
   { category: "Eventos", image: images.evento, alt: "Jornada con profesionales de la región" },
 ];
 
-export const gallery: GalleryItem[] = Array.from({ length: 24 }, (_, index) => {
-  const base = galleryPool[index % galleryPool.length];
+// Genera un set demostrativo paginable. Reemplazable por material real.
+export const gallery: GalleryItem[] = Array.from({ length: 24 }, (_, i) => {
+  const base = galleryPool[i % galleryPool.length];
   return {
-    id: `g${index + 1}`,
+    id: `g${i + 1}`,
     category: base.category,
     thumb: base.image,
     full: base.image,
@@ -222,32 +202,24 @@ export const gallery: GalleryItem[] = Array.from({ length: 24 }, (_, index) => {
 export type VideoItem = {
   id: string;
   category: GalleryCategory | "Capacitaciones";
+  /** Póster liviano (no carga el video hasta reproducir). */
   poster: string;
+  /** URL del video; vacío = aún sin material. */
   src: string;
   title: string;
 };
 
+/** Videos institucionales. preload="none" + carga al reproducir. */
 export const videos: VideoItem[] = [];
 
-export const professionalBlocks = [
-  {
-    icon: "calendar-clock",
-    title: "Pedidos programados",
-    text: "Coordinación de implantes e instrumental para cirugías programadas.",
-  },
-  {
-    icon: "building-2",
-    title: "Clínicas y sanatorios",
-    text: "Atención a instituciones de salud de Resistencia y la región.",
-  },
-  {
-    icon: "wrench",
-    title: "Instrumental para quirófano",
-    text: "Cajas e instrumental específico por sistema de implantes.",
-  },
-  {
-    icon: "briefcase",
-    title: "Coordinación comercial",
-    text: "Disponibilidad, reposición y seguimiento de requerimientos.",
-  },
-] as const;
+
+export type EventItem = {
+  id: string;
+  date: string;
+  title: string;
+  place: string;
+  description: string;
+};
+
+/** Próximos eventos / capacitaciones. Vacío = sin actividades publicadas. */
+export const events: EventItem[] = [];

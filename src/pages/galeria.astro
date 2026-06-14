@@ -1,15 +1,15 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Icon from "../components/Icon.astro";
-import { gallery, galleryFilters } from "../data/site";
+import { GALLERY_PAGE_SIZE, gallery, galleryFilters } from "../data/site";
 ---
 
 <BaseLayout
   title="Galería — Chaco Implantes"
-  description="Galería de productos, instrumental, eventos, capacitaciones y quirófano de Chaco Implantes."
+  description="Galería de productos, instrumental, quirófano y eventos de Chaco Implantes."
   canonicalPath="/galeria"
 >
-  <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8" data-gallery-page-size={GALLERY_PAGE_SIZE}>
     <header class="max-w-2xl">
       <h1 class="font-display text-3xl font-bold text-deep sm:text-4xl">Galería</h1>
       <p class="mt-3 text-sm text-muted-foreground">
@@ -17,7 +17,22 @@ import { gallery, galleryFilters } from "../data/site";
       </p>
     </header>
 
-    <div class="mt-8 flex flex-wrap gap-2" data-gallery-filters>
+    <div class="mt-6 flex flex-col gap-3 rounded-xl bg-deep p-5 text-deep-foreground sm:flex-row sm:items-center sm:justify-between">
+      <div class="flex items-center gap-3">
+        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10">
+          <Icon name="play-circle" class="h-5 w-5" />
+        </div>
+        <div>
+          <p class="font-display text-sm font-semibold">¿Buscás material audiovisual?</p>
+          <p class="text-xs text-white/70">Encontrá videos institucionales y de productos.</p>
+        </div>
+      </div>
+      <a href="/videos" class="inline-flex items-center justify-center gap-2 rounded-lg bg-brand px-5 py-2.5 text-sm font-semibold text-deep transition-colors hover:bg-brand/90">
+        <Icon name="play-circle" class="h-4 w-4" /> Ver videos
+      </a>
+    </div>
+
+    <div class="mt-8 flex flex-wrap items-center gap-2" data-gallery-filters>
       {["Todos", ...galleryFilters].map((filter) => (
         <button
           type="button"
@@ -32,40 +47,61 @@ import { gallery, galleryFilters } from "../data/site";
       ))}
     </div>
 
-    <div class="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3" data-gallery-grid>
-      {gallery.map((item) => (
+    <div class="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4" data-gallery-grid>
+      {gallery.map((item, index) => (
         <button
           type="button"
           data-gallery-item
+          data-index={index}
           data-category={item.category}
-          data-image={item.image}
+          data-image={item.full}
           data-alt={item.alt}
-          class="gallery-card card-link group flex flex-col overflow-hidden rounded-lg border border-border bg-card text-left"
+          class:list={[
+            "gallery-card card-link group flex flex-col overflow-hidden rounded-lg border border-border bg-card text-left",
+            index >= GALLERY_PAGE_SIZE && "hidden",
+          ]}
         >
-          <span class="relative block aspect-[4/3] overflow-hidden">
+          <span class="relative block aspect-[4/3] overflow-hidden bg-secondary/50">
             <img
-              src={item.image}
+              src={item.thumb}
               alt={item.alt}
               loading="lazy"
-              width="900"
-              height="675"
+              decoding="async"
+              width="400"
+              height="300"
               class="h-full w-full object-cover transition-transform duration-200 ease-out"
             />
           </span>
           <span class="flex items-center gap-2 px-3 py-2.5">
             <span class="h-3 w-px shrink-0 bg-brand"></span>
-            <span class="text-xs font-medium text-deep">{item.alt}</span>
+            <span class="line-clamp-1 text-xs font-medium text-deep">{item.alt}</span>
           </span>
         </button>
       ))}
     </div>
+
+    <div class="mt-10 flex justify-center" data-load-more-wrap>
+      <button
+        type="button"
+        data-load-more
+        class="inline-flex items-center justify-center rounded-md border border-border bg-card px-6 py-3 text-sm font-semibold text-deep transition-colors hover:border-primary hover:text-primary"
+      >
+        Cargar más <span data-load-more-count class="ml-1">({gallery.length - GALLERY_PAGE_SIZE})</span>
+      </button>
+    </div>
   </div>
 
-  <div data-lightbox class="fixed inset-0 z-[80] hidden items-center justify-center bg-deep/80 p-4">
+  <div data-lightbox class="fixed inset-0 z-[80] hidden items-center justify-center bg-deep/85 p-4">
     <button type="button" data-lightbox-close aria-label="Cerrar" class="icon-button absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-md text-deep-foreground hover:bg-white/10">
       <Icon name="x" class="h-6 w-6" />
     </button>
-    <figure class="max-h-[85vh] max-w-3xl overflow-hidden rounded-xl bg-card">
+    <button type="button" data-lightbox-prev aria-label="Anterior" class="icon-button absolute left-3 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full text-deep-foreground hover:bg-white/10 sm:left-6">
+      <Icon name="chevron-left" class="h-6 w-6" />
+    </button>
+    <button type="button" data-lightbox-next aria-label="Siguiente" class="icon-button absolute right-3 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full text-deep-foreground hover:bg-white/10 sm:right-6">
+      <Icon name="chevron-right" class="h-6 w-6" />
+    </button>
+    <figure class="lightbox-panel max-h-[85vh] max-w-3xl overflow-hidden rounded-xl bg-card">
       <img data-lightbox-image alt="" class="max-h-[78vh] w-full object-contain" />
       <figcaption data-lightbox-caption class="px-4 py-3 text-sm text-muted-foreground"></figcaption>
     </figure>
@@ -73,20 +109,71 @@ import { gallery, galleryFilters } from "../data/site";
 </BaseLayout>
 
 <script>
+  const page = document.querySelector("[data-gallery-page-size]");
+  const pageSize = Number(page?.getAttribute("data-gallery-page-size") || "12");
   const filterWrap = document.querySelector("[data-gallery-filters]");
   const filterButtons = Array.from(document.querySelectorAll("[data-filter]"));
   const galleryItems = Array.from(document.querySelectorAll("[data-gallery-item]"));
+  const loadMore = document.querySelector("[data-load-more]");
+  const loadMoreWrap = document.querySelector("[data-load-more-wrap]");
+  const loadMoreCount = document.querySelector("[data-load-more-count]");
   const lightbox = document.querySelector("[data-lightbox]");
   const lightboxImage = document.querySelector("[data-lightbox-image]");
   const lightboxCaption = document.querySelector("[data-lightbox-caption]");
   const close = document.querySelector("[data-lightbox-close]");
+  const prev = document.querySelector("[data-lightbox-prev]");
+  const next = document.querySelector("[data-lightbox-next]");
+
+  let activeFilter = "Todos";
+  let visible = pageSize;
+  let activeIndex = -1;
+
+  const filteredItems = () =>
+    galleryItems.filter((item) => item instanceof HTMLElement && (activeFilter === "Todos" || item.dataset.category === activeFilter));
+
+  const syncGallery = () => {
+    const items = filteredItems();
+    galleryItems.forEach((item) => {
+      if (!(item instanceof HTMLElement)) return;
+      const filtered = activeFilter === "Todos" || item.dataset.category === activeFilter;
+      const index = items.indexOf(item);
+      item.classList.toggle("hidden", !filtered || index >= visible);
+    });
+
+    const remaining = Math.max(items.length - visible, 0);
+    loadMoreWrap?.classList.toggle("hidden", remaining === 0);
+    if (loadMoreCount) loadMoreCount.textContent = `(${remaining})`;
+  };
+
+  const openLightbox = (index: number) => {
+    const items = filteredItems();
+    const item = items[index];
+    if (!(item instanceof HTMLElement)) return;
+    activeIndex = index;
+    if (lightboxImage instanceof HTMLImageElement) {
+      lightboxImage.src = item.dataset.image || "";
+      lightboxImage.alt = item.dataset.alt || "";
+    }
+    if (lightboxCaption) {
+      lightboxCaption.textContent = `${item.dataset.alt || ""} · ${item.dataset.category || ""}`;
+    }
+    lightbox?.classList.remove("hidden");
+    lightbox?.classList.add("flex");
+  };
+
+  const go = (delta: number) => {
+    const items = filteredItems();
+    if (!items.length || activeIndex < 0) return;
+    openLightbox((activeIndex + delta + items.length) % items.length);
+  };
 
   filterWrap?.addEventListener("click", (event) => {
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
     const button = target.closest("[data-filter]");
     if (!(button instanceof HTMLElement)) return;
-    const filter = button.dataset.filter || "Todos";
+    activeFilter = button.dataset.filter || "Todos";
+    visible = pageSize;
 
     filterButtons.forEach((item) => {
       const active = item === button;
@@ -94,37 +181,44 @@ import { gallery, galleryFilters } from "../data/site";
       item.classList.toggle("gallery-filter-idle", !active);
     });
 
-    galleryItems.forEach((item) => {
-      if (!(item instanceof HTMLElement)) return;
-      const visible = filter === "Todos" || item.dataset.category === filter;
-      item.classList.toggle("hidden", !visible);
-    });
+    syncGallery();
   });
 
   galleryItems.forEach((item) => {
     item.addEventListener("click", () => {
-      if (!(item instanceof HTMLElement)) return;
-      if (lightboxImage instanceof HTMLImageElement) {
-        lightboxImage.src = item.dataset.image || "";
-        lightboxImage.alt = item.dataset.alt || "";
-      }
-      if (lightboxCaption) {
-        lightboxCaption.textContent = `${item.dataset.alt || ""} · ${item.dataset.category || ""}`;
-      }
-      lightbox?.classList.remove("hidden");
-      lightbox?.classList.add("flex");
+      const items = filteredItems();
+      openLightbox(items.indexOf(item));
     });
   });
 
+  loadMore?.addEventListener("click", () => {
+    visible += pageSize;
+    syncGallery();
+  });
+
   const hideLightbox = () => {
+    activeIndex = -1;
     lightbox?.classList.add("hidden");
     lightbox?.classList.remove("flex");
   };
+
   close?.addEventListener("click", hideLightbox);
+  prev?.addEventListener("click", (event) => {
+    event.stopPropagation();
+    go(-1);
+  });
+  next?.addEventListener("click", (event) => {
+    event.stopPropagation();
+    go(1);
+  });
   lightbox?.addEventListener("click", (event) => {
     if (event.target === lightbox) hideLightbox();
   });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") hideLightbox();
+    if (event.key === "ArrowLeft") go(-1);
+    if (event.key === "ArrowRight") go(1);
   });
+
+  syncGallery();
 </script>

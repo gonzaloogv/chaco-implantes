@@ -6,6 +6,7 @@ export function GET() {
     "/catalogos",
     ...categories.map((category) => `/catalogos/${category.slug}`),
     "/galeria",
+    "/videos",
     "/eventos",
     "/nosotros",
     "/contacto",

@@ -2,25 +2,39 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CatalogCard from "../components/CatalogCard.astro";
 import Icon from "../components/Icon.astro";
-import { featuredCategories, images, professionalBlocks, site, whatsappLink } from "../data/site";
+import {
+  categoryImages,
+  featuredCategories,
+  images,
+  professionalBlocks,
+  professionalFlow,
+  site,
+  specialtyBadges,
+  whatsappLink,
+} from "../data/site";
 ---
 
 <BaseLayout canonicalPath="/">
   <section class="relative overflow-hidden border-b border-border bg-surface-2/45">
     <img
-      src={images.bannerMarca}
-      alt=""
-      aria-hidden="true"
-      class="hero-mobile-bg pointer-events-none absolute inset-0 h-full w-full object-cover opacity-[0.08]"
+      src={images.heroBg}
+      alt="Instrumental quirúrgico e implantes traumatológicos"
+      fetchpriority="high"
+      decoding="async"
+      class="hero-desktop-image pointer-events-none absolute inset-0 h-full w-full object-cover object-right"
     />
     <img
-      src={images.hero}
-      alt=""
-      aria-hidden="true"
-      class="hero-desktop-bg pointer-events-none absolute inset-y-0 right-0 h-full w-[58%] object-cover object-center opacity-[0.1] mix-blend-multiply"
+      src={images.heroMobile}
+      alt="Instrumental quirúrgico e implantes traumatológicos"
+      fetchpriority="high"
+      decoding="async"
+      class="hero-mobile-image pointer-events-none absolute inset-0 h-full w-full object-cover object-[center_top]"
     />
-    <div aria-hidden="true" class="hero-desktop-fade pointer-events-none absolute inset-y-0 right-[42%] w-40 bg-gradient-to-r from-[#f3f6fb] to-transparent"></div>
-    <div class="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-24">
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-surface-2 from-30% via-surface-2/80 to-transparent lg:block"></div>
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-gradient-to-t from-surface-2 via-surface-2/92 to-surface-2/70 lg:hidden"></div>
+    <div aria-hidden="true" class="brand-medallion pointer-events-none absolute -right-24 -top-24 h-[420px] w-[420px] rounded-full opacity-40"></div>
+
+    <div class="relative mx-auto grid max-w-7xl items-center gap-10 px-4 pb-12 pt-24 sm:px-6 lg:grid-cols-[0.95fr_1.05fr] lg:gap-12 lg:px-8 lg:py-28 lg:pt-28">
       <div class="reveal max-w-xl">
         <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase text-primary">
           <span class="h-px w-6 bg-brand"></span>
@@ -51,20 +65,15 @@ import { featuredCategories, images, professionalBlocks, site, whatsappLink } fr
   </section>
 
   <section class="bg-primary">
-    <div class="mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-6 lg:px-8">
-      <div class="grid grid-cols-2 gap-x-4 gap-y-3 sm:gap-5 lg:grid-cols-4 lg:gap-8">
+    <div class="mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-8 lg:px-8">
+      <div class="grid grid-cols-2 gap-x-4 gap-y-3 sm:gap-6 lg:grid-cols-4 lg:gap-8">
         {
-          [
-            ["bone", "Prótesis e implantes"],
-            ["wrench", "Instrumental quirúrgico"],
-            ["shield-check", "Osteosíntesis"],
-            ["map-pin", "Resistencia, Chaco"],
-          ].map(([icon, label]) => (
+          specialtyBadges.map((item) => (
             <div class="flex items-center gap-2 sm:gap-3">
               <div data-specialty-icon class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/10 text-white ring-1 ring-white/20 sm:h-8 sm:w-8">
-                <Icon name={icon} class="h-3.5 w-3.5" />
+                <Icon name={item.icon} class="h-3.5 w-3.5" />
               </div>
-              <p class="text-[11px] font-semibold uppercase text-white/90 sm:text-sm">{label}</p>
+              <p class="text-[11px] font-semibold uppercase text-white/90 sm:text-sm">{item.label}</p>
             </div>
           ))
         }
@@ -88,27 +97,29 @@ import { featuredCategories, images, professionalBlocks, site, whatsappLink } fr
         </a>
       </div>
 
-      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {featuredCategories.map((category) => <CatalogCard category={category} compact />)}
       </div>
     </div>
   </section>
 
-  <section data-professional-flow-band="deep" class="bg-deep">
-    <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+  <section class="bg-deep">
+    <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 lg:grid-cols-4">
         {
-          [
-            ["clipboard-list", "Consulta por línea"],
-            ["handshake", "Coordinación comercial"],
-            ["boxes", "Disponibilidad y requerimientos"],
-            ["building-2", "Atención a profesionales e instituciones"],
-          ].map(([icon, title]) => (
-            <div data-professional-flow-card class="flow-card flex items-center gap-3 rounded-lg p-4">
-              <div data-professional-flow-icon class="flow-card-icon flex h-9 w-9 shrink-0 items-center justify-center rounded-lg">
-                <Icon name={icon} class="h-4 w-4" />
-              </div>
-              <p class="text-sm font-semibold leading-tight text-white">{title}</p>
+          professionalFlow.map((item, index) => (
+            <div
+              data-professional-flow-item
+              class:list={[
+                "flex items-center gap-3 border-white/10 px-4 py-3 lg:flex-col lg:items-center lg:gap-2 lg:px-6",
+                index % 2 === 0 && "border-r",
+                index < 2 && "border-b",
+                "lg:border-b-0",
+                index < 3 ? "lg:border-r" : "lg:border-r-0",
+              ]}
+            >
+              <Icon name={item.icon} class="h-5 w-5 shrink-0 text-white lg:h-6 lg:w-6" />
+              <p class="text-sm font-medium leading-tight text-white/75 lg:text-center lg:text-white/65">{item.title}</p>
             </div>
           ))
         }
@@ -153,9 +164,77 @@ import { featuredCategories, images, professionalBlocks, site, whatsappLink } fr
           href={whatsappLink("Hola, quisiera solicitar contacto institucional con Chaco Implantes.")}
           target="_blank"
           rel="noopener noreferrer"
-          class="btn-primary inline-flex shrink-0 items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-deep"
+          class="btn-primary inline-flex shrink-0 items-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold"
         >
           <Icon name="message-circle" class="h-4 w-4" /> Contacto institucional
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-ink">
+    <div class="mx-auto max-w-3xl px-4 py-12 text-center sm:px-6 sm:py-14 lg:px-8">
+      <div class="reveal">
+        <span class="mx-auto block h-px w-10 bg-brand"></span>
+        <p class="mt-5 font-display text-lg font-medium leading-snug text-white/90 sm:text-2xl">
+          Acompañamos a clínicas y sanatorios con logística confiable de prótesis, implantes e instrumental.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-b border-border bg-surface-2/45">
+    <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div class="max-w-2xl">
+        <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase text-primary">
+          <span class="h-px w-6 bg-brand"></span>
+          Material visual
+        </span>
+        <h2 class="mt-3 font-display text-2xl font-bold text-deep sm:text-3xl">Galería y videos</h2>
+        <p class="mt-2 text-muted-foreground">
+          Recorré nuestras fotos de productos e instrumental, y nuestros videos institucionales.
+        </p>
+      </div>
+
+      <div class="mt-8 grid gap-5 sm:grid-cols-2">
+        <a href="/galeria" class="catalog-image-card card-link group relative flex h-60 flex-col justify-end overflow-hidden rounded-xl border border-border bg-deep">
+          <img
+            src={categoryImages["instrumental-quirurgico"]}
+            alt="Galería de productos e instrumental"
+            loading="lazy"
+            decoding="async"
+            width="1024"
+            height="768"
+            class="absolute inset-0 h-full w-full object-cover"
+          />
+          <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-deep via-deep/55 to-deep/5"></div>
+          <div class="relative p-6">
+            <h3 class="font-display text-lg font-semibold text-white">Galería de imágenes</h3>
+            <span class="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-white">
+              <Icon name="images" class="h-4 w-4" /> Ver galería
+              <Icon name="arrow-right" class="h-4 w-4 transition-transform duration-200 ease-out group-hover:translate-x-1" />
+            </span>
+          </div>
+        </a>
+
+        <a href="/videos" class="catalog-image-card card-link group relative flex h-60 flex-col justify-end overflow-hidden rounded-xl border border-border bg-deep">
+          <img
+            src={images.quirofano}
+            alt="Videos institucionales"
+            loading="lazy"
+            decoding="async"
+            width="1024"
+            height="768"
+            class="absolute inset-0 h-full w-full object-cover"
+          />
+          <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-deep via-deep/55 to-deep/5"></div>
+          <div class="relative p-6">
+            <h3 class="font-display text-lg font-semibold text-white">Videos</h3>
+            <span class="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-white">
+              <Icon name="play-circle" class="h-4 w-4" /> Ver videos
+              <Icon name="arrow-right" class="h-4 w-4 transition-transform duration-200 ease-out group-hover:translate-x-1" />
+            </span>
+          </div>
         </a>
       </div>
     </div>
@@ -172,7 +251,7 @@ import { featuredCategories, images, professionalBlocks, site, whatsappLink } fr
           href={whatsappLink("Hola, quisiera coordinar un pedido con Chaco Implantes.")}
           target="_blank"
           rel="noopener noreferrer"
-          class="btn-light inline-flex items-center justify-center gap-2 rounded-md bg-white px-5 py-2.5 text-sm font-semibold text-[#192338] hover:bg-[#D9E1F1]"
+          class="btn-light inline-flex items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold"
         >
           <Icon name="message-circle" class="h-4 w-4" /> WhatsApp
         </a>
@@ -193,7 +272,46 @@ import { featuredCategories, images, professionalBlocks, site, whatsappLink } fr
         <h2 class="mt-3 font-display text-2xl font-bold text-deep sm:text-3xl">Eventos y capacitaciones</h2>
       </div>
 
-      <div class="mt-8 flex flex-col items-start gap-5 rounded-lg border border-dashed border-border bg-card px-6 py-10 sm:flex-row sm:items-center sm:justify-between">
+      <article class="reveal mt-8 overflow-hidden rounded-2xl border border-border bg-card shadow-sm md:grid md:grid-cols-2">
+        <div class="relative aspect-[16/10] md:aspect-auto">
+          <img
+            src={images.congreso}
+            alt="Equipo de Chaco Implantes en el 61° Congreso Argentino de Ortopedia y Traumatología, Hotel Hilton Buenos Aires 2024"
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover"
+          />
+        </div>
+        <div class="flex flex-col justify-center p-6 sm:p-8">
+          <span class="inline-flex w-fit items-center rounded-full bg-secondary px-3 py-1 text-xs font-medium text-primary ring-1 ring-border">
+            Noviembre 2024
+          </span>
+          <h3 class="mt-3 font-display text-xl font-semibold text-deep">
+            61° Congreso Argentino de Ortopedia y Traumatología
+          </h3>
+          <p class="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
+            <Icon name="map-pin" class="h-4 w-4 text-primary" /> Hotel Hilton, Buenos Aires
+          </p>
+          <p class="mt-4 text-sm leading-relaxed text-muted-foreground">
+            Participamos del 61° Congreso Argentino de Ortopedia y Traumatología, un encuentro dedicado a la innovación y la medicina personalizada para mejorar el bienestar de los pacientes. Junto a destacados expositores y referentes del rubro, compartimos los productos y el servicio de calidad que ofrecemos.
+          </p>
+          <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+            <a
+              href={whatsappLink("Hola, vi que participaron del Congreso Argentino de Ortopedia y Traumatología. Quisiera más información.")}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-primary inline-flex w-fit items-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold"
+            >
+              <Icon name="message-circle" class="h-4 w-4" /> Consultanos
+            </a>
+            <a href="/eventos" class="btn-secondary inline-flex w-fit items-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold">
+              Ver todos los eventos <Icon name="arrow-right" class="h-4 w-4" />
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <div class="reveal mt-6 flex flex-col items-start gap-5 rounded-lg border border-dashed border-border bg-card px-6 py-8 sm:flex-row sm:items-center sm:justify-between">
         <div class="flex items-start gap-4">
           <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-secondary text-primary ring-1 ring-border">
             <Icon name="calendar-clock" class="h-5 w-5" />
@@ -203,7 +321,7 @@ import { featuredCategories, images, professionalBlocks, site, whatsappLink } fr
             <p class="mt-1 text-sm text-muted-foreground">Jornadas, capacitaciones para equipos de quirófano y novedades de líneas de producto.</p>
           </div>
         </div>
-        <a href="/eventos" class="btn-primary inline-flex shrink-0 items-center justify-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-deep">
+        <a href="/eventos" class="btn-primary inline-flex shrink-0 items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold">
           Ver eventos <Icon name="arrow-right" class="h-4 w-4" />
         </a>
       </div>
