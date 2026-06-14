@@ -26,7 +26,7 @@ import { GALLERY_PAGE_SIZE, gallery, galleryFilters } from "../data/site";
 
     <div class="mt-6 flex flex-col gap-3 rounded-xl bg-deep p-5 text-deep-foreground sm:flex-row sm:items-center sm:justify-between">
       <div class="flex items-center gap-3">
-        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10">
+        <div class="accent-icon-chip flex h-10 w-10 shrink-0 items-center justify-center rounded-full border">
           <Icon name="play-circle" class="h-5 w-5" />
         </div>
         <div>
@@ -100,13 +100,13 @@ import { GALLERY_PAGE_SIZE, gallery, galleryFilters } from "../data/site";
   </section>
 
   <div data-lightbox class="fixed inset-0 z-[80] hidden items-center justify-center bg-deep/85 p-4">
-    <button type="button" data-lightbox-close aria-label="Cerrar" class="icon-button absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-md text-deep-foreground hover:bg-white/10">
+    <button type="button" data-lightbox-close aria-label="Cerrar" class="icon-button absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-md text-deep-foreground hover:bg-primary/20">
       <Icon name="x" class="h-6 w-6" />
     </button>
-    <button type="button" data-lightbox-prev aria-label="Anterior" class="icon-button absolute left-3 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full text-deep-foreground hover:bg-white/10 sm:left-6">
+    <button type="button" data-lightbox-prev aria-label="Anterior" class="icon-button absolute left-3 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full text-deep-foreground hover:bg-primary/20 sm:left-6">
       <Icon name="chevron-left" class="h-6 w-6" />
     </button>
-    <button type="button" data-lightbox-next aria-label="Siguiente" class="icon-button absolute right-3 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full text-deep-foreground hover:bg-white/10 sm:right-6">
+    <button type="button" data-lightbox-next aria-label="Siguiente" class="icon-button absolute right-3 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full text-deep-foreground hover:bg-primary/20 sm:right-6">
       <Icon name="chevron-right" class="h-6 w-6" />
     </button>
     <figure class="lightbox-panel max-h-[85vh] max-w-3xl overflow-hidden rounded-xl bg-card">

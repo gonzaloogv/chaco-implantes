@@ -32,13 +32,13 @@ const image = categoryImages[category.slug as keyof typeof categoryImages];
   <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-deep via-deep/60 to-deep/10"></div>
 
   <div class="relative p-5">
-    <span class="inline-block rounded border border-white/25 bg-white/10 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-white/90 backdrop-blur-sm">
+    <span class="catalog-chip inline-block rounded border bg-primary/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-white/90 backdrop-blur-sm">
       {category.tag}
     </span>
     <h2 class="mt-3 font-display text-lg font-semibold text-white">{category.title}</h2>
     <p class="mt-1 line-clamp-2 text-sm leading-relaxed text-white/75">{category.description}</p>
 
-    <div class:list={["mt-4 flex items-center gap-3 pt-4", !compact && "justify-between border-t border-white/15"]}>
+    <div class:list={["mt-4 flex items-center gap-3 pt-4", !compact && "catalog-card-divider justify-between border-t"]}>
       <a
         href={`/catalogos/${category.slug}`}
         class="catalog-card-link inline-flex items-center gap-1.5 text-sm font-semibold text-white transition-colors duration-200 ease-out hover:text-brand"

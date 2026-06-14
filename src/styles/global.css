@@ -390,6 +390,7 @@ svg {
 }
 
 .hero-bg-slide {
+  backface-visibility: hidden;
   opacity: 0;
   transform: scale(1.02);
   transition:
@@ -404,6 +405,7 @@ svg {
 
 .mobile-menu {
   background-color: rgba(15, 23, 42, 0.98);
+  border-top-color: rgba(74, 144, 196, 0.3);
   box-shadow: 0 18px 30px -24px rgba(0, 0, 0, 0.7);
 }
 
@@ -411,19 +413,36 @@ svg {
   transition: transform 300ms var(--ease-out);
 }
 
+.catalog-image-card {
+  border-color: color-mix(in srgb, var(--primary) 36%, transparent);
+}
+
+.catalog-chip {
+  border-color: color-mix(in srgb, var(--primary) 46%, transparent);
+}
+
+.catalog-card-divider {
+  border-top-color: color-mix(in srgb, var(--primary) 28%, transparent);
+}
+
+.accent-icon-chip {
+  background-color: color-mix(in srgb, var(--primary) 15%, transparent);
+  border-color: color-mix(in srgb, var(--primary) 28%, transparent);
+}
+
 .lightbox-panel {
   animation: lightbox-in 180ms var(--ease-out) both;
 }
 
 .flow-card {
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  background-color: rgba(74, 144, 196, 0.12);
+  border: 1px solid color-mix(in srgb, var(--primary) 34%, transparent);
+  box-shadow: inset 0 1px 0 rgba(143, 179, 226, 0.08);
 }
 
 .flow-card-icon {
-  background-color: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(74, 144, 196, 0.16);
+  border: 1px solid color-mix(in srgb, var(--primary) 42%, transparent);
   color: var(--primary-foreground);
 }
 
@@ -449,6 +468,7 @@ svg {
 
 .hero-shell {
   background: linear-gradient(150deg, #0f172a 0%, #192338 42%, #1e2e4f 72%, #2b6cb8 100%);
+  isolation: isolate;
   min-height: 100vh;
 }
 
@@ -463,7 +483,7 @@ svg {
 }
 
 .hero-photo-glow {
-  filter: drop-shadow(0 0 34px rgba(96, 165, 250, 0.42));
+  filter: none;
 }
 
 .section-dark-gradient {
@@ -498,7 +518,7 @@ svg {
     linear-gradient(180deg, rgba(143, 179, 226, 0.12), rgba(15, 23, 42, 0.22)),
     rgba(25, 35, 56, 0.88);
   border-color: rgba(143, 179, 226, 0.22);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(143, 179, 226, 0.08);
 }
 
 .catalog-detail-shell {
@@ -544,17 +564,36 @@ svg {
 }
 
 .value-pillars-band {
+  background-color: #17325a;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 rgba(143, 179, 226, 0.08),
     inset 0 -1px 0 rgba(15, 23, 42, 0.26);
+  overflow: hidden;
+  position: relative;
+  transform: translateZ(0);
+  z-index: 2;
 }
 
 .value-pillar-card {
-  border-color: color-mix(in srgb, var(--primary) 58%, transparent);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  background-color: rgba(74, 144, 196, 0.1);
+  border-color: rgba(74, 144, 196, 0.58);
+  box-shadow: inset 0 1px 0 rgba(143, 179, 226, 0.08);
+}
+
+.value-pillar-icon {
+  background-color: rgba(74, 144, 196, 0.24);
+  box-shadow: inset 0 0 0 1px rgba(74, 144, 196, 0.4);
+}
+
+.value-pillar-label {
+  color: rgba(255, 255, 255, 0.88);
 }
 
 @media (min-width: 64rem) {
+  .hero-photo-glow {
+    filter: drop-shadow(0 0 34px rgba(96, 165, 250, 0.42));
+  }
+
   .hero-mobile-bg,
   .hero-mobile-image {
     display: none !important;
