@@ -1,24 +1,44 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import CatalogCard from "../../components/CatalogCard.astro";
-import { categories } from "../../data/site";
+import Icon from "../../components/Icon.astro";
+import { categories, whatsappLink } from "../../data/site";
 ---
 
 <BaseLayout
-  title="Catálogos — Chaco Implantes"
+  title="Catálogos - Chaco Implantes"
   description="Catálogos de cadera, rodilla, columna, maxilofacial, osteosíntesis e instrumental quirúrgico."
   canonicalPath="/catalogos"
 >
-  <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-    <header class="max-w-2xl">
-      <h1 class="font-display text-3xl font-bold text-deep sm:text-4xl">Catálogos</h1>
-      <p class="mt-3 text-sm text-muted-foreground">
-        Líneas de prótesis, implantes e instrumental por especialidad.
-      </p>
-    </header>
-
-    <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {categories.map((category) => <CatalogCard category={category} />)}
+  <section class="page-hero-dark border-b border-white/10 px-4 pb-14 pt-32 text-white sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl">
+      <span class="inline-flex items-center gap-2 rounded-full border border-primary-glow/30 bg-primary/15 px-3 py-2 text-xs font-bold uppercase text-brand">
+        Catálogo técnico por especialidad
+      </span>
+      <div class="mt-5 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+        <div class="max-w-3xl">
+          <h1 class="font-display text-4xl font-black sm:text-5xl">Catálogos</h1>
+          <p class="mt-3 max-w-2xl text-brand">
+            Líneas de prótesis, implantes e instrumental organizadas por especialidad, con imágenes de referencia para explorar cada familia de producto.
+          </p>
+        </div>
+        <a
+          href={whatsappLink("Hola, quisiera solicitar información sobre los catálogos de Chaco Implantes.")}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-primary inline-flex w-full items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-bold sm:w-auto"
+        >
+          <Icon name="message-circle" class="h-4 w-4" /> Consultar catálogos
+        </a>
+      </div>
     </div>
-  </div>
+  </section>
+
+  <section class="page-surface">
+    <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {categories.map((category) => <CatalogCard category={category} />)}
+      </div>
+    </div>
+  </section>
 </BaseLayout>

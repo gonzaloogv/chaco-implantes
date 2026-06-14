@@ -5,75 +5,101 @@ import Icon from "../components/Icon.astro";
 import {
   categoryImages,
   featuredCategories,
+  heroSlides,
   images,
   professionalBlocks,
-  professionalFlow,
-  site,
-  specialtyBadges,
+  supplierSystems,
+  valuePillars,
   whatsappLink,
 } from "../data/site";
 ---
 
 <BaseLayout canonicalPath="/">
-  <section class="relative overflow-hidden border-b border-border bg-surface-2/45">
-    <img
-      src={images.heroBg}
-      alt="Instrumental quirúrgico e implantes traumatológicos"
-      fetchpriority="high"
-      decoding="async"
-      class="hero-desktop-image pointer-events-none absolute inset-0 h-full w-full object-cover object-right"
-    />
-    <img
-      src={images.heroMobile}
-      alt="Instrumental quirúrgico e implantes traumatológicos"
-      fetchpriority="high"
-      decoding="async"
-      class="hero-mobile-image pointer-events-none absolute inset-0 h-full w-full object-cover object-[center_top]"
-    />
-    <div aria-hidden="true" class="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-surface-2 from-30% via-surface-2/80 to-transparent lg:block"></div>
-    <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-gradient-to-t from-surface-2 via-surface-2/92 to-surface-2/70 lg:hidden"></div>
-    <div aria-hidden="true" class="brand-medallion pointer-events-none absolute -right-24 -top-24 h-[420px] w-[420px] rounded-full opacity-40"></div>
+  <section id="inicio" data-hero-carousel class="hero-shell relative flex min-h-screen overflow-hidden">
+    <h1 class="sr-only">Prótesis, implantes e instrumental para equipos quirúrgicos</h1>
+    {heroSlides.map((slide, index) => (
+      <img
+        src={slide.image}
+        alt={slide.imageAlt}
+        fetchpriority={index === 0 ? "high" : "auto"}
+        loading={index === 0 ? "eager" : "lazy"}
+        decoding="async"
+        data-hero-bg
+        data-active={index === 0 ? "true" : "false"}
+        class="hero-bg-slide hero-photo-glow pointer-events-none absolute inset-0 h-full w-full object-cover"
+      />
+    ))}
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#0f172a_0%,rgba(15,23,42,0.94)_34%,rgba(25,35,56,0.74)_62%,rgba(25,35,56,0.28)_100%)]"></div>
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_22%_38%,rgba(74,144,196,0.22),transparent_28rem)]"></div>
 
-    <div class="relative mx-auto grid max-w-7xl items-center gap-10 px-4 pb-12 pt-24 sm:px-6 lg:grid-cols-[0.95fr_1.05fr] lg:gap-12 lg:px-8 lg:py-28 lg:pt-28">
-      <div class="reveal max-w-xl">
-        <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase text-primary">
-          <span class="h-px w-6 bg-brand"></span>
-          Traumatología
-        </span>
-        <p class="mt-3 font-accent text-xl text-deep">{site.tagline}</p>
-        <h1 class="mt-5 font-display text-3xl font-bold leading-[1.12] text-deep sm:text-4xl lg:text-5xl">
-          Prótesis, implantes e instrumental para traumatología
-        </h1>
-        <p class="mt-4 max-w-xl text-base text-muted-foreground sm:text-lg">
-          Distribución y coordinación comercial para profesionales e instituciones de salud.
-        </p>
-        <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-          <a href="/catalogos" class="btn-primary-soft inline-flex w-full items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-semibold sm:w-auto">
-            Ver catálogos <Icon name="arrow-right" class="h-4 w-4" />
-          </a>
-          <a
-            href={whatsappLink("Hola, quisiera contactarme con Chaco Implantes.")}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-secondary inline-flex w-full items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-semibold sm:w-auto"
-          >
-            <Icon name="message-circle" class="h-4 w-4" /> Contactar por WhatsApp
-          </a>
+    <div class="relative z-10 mx-auto flex w-full max-w-7xl items-center px-4 pb-12 pt-32 sm:px-6 lg:px-8 lg:pb-20 lg:pt-36">
+      <div class="w-full max-w-3xl">
+        <div class="relative min-h-[35rem] sm:min-h-[34rem] lg:min-h-[36rem]">
+          {heroSlides.map((slide, index) => (
+            <article
+              data-hero-slide
+              data-active={index === 0 ? "true" : "false"}
+              aria-hidden={index === 0 ? "false" : "true"}
+              class:list={[
+                "hero-slide absolute inset-0 flex flex-col justify-center transition-[opacity,transform] duration-300 ease-out",
+                index !== 0 && "pointer-events-none",
+              ]}
+            >
+              <span class="inline-flex w-fit items-center gap-2 rounded-full border border-primary/35 bg-primary/15 px-3 py-2 text-xs font-bold uppercase text-brand shadow-[0_0_24px_rgba(74,144,196,0.18)]">
+                <span class="h-2 w-2 rounded-full bg-primary shadow-[0_0_10px_rgba(74,144,196,0.9)]"></span>
+                {slide.eyebrow}
+              </span>
+              <h2 class="mt-5 font-display text-4xl font-black leading-[1.02] text-white sm:text-5xl lg:text-7xl">
+                {slide.title}
+              </h2>
+              <p class="mt-5 max-w-2xl text-base leading-relaxed text-brand sm:text-xl">{slide.text}</p>
+              <p class="mt-5 max-w-2xl font-display text-xl font-black leading-tight text-white sm:text-2xl">
+                Calidad que se siente. Confianza que se nota.
+              </p>
+              <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <a href={slide.href} class="btn-primary-soft inline-flex w-full items-center justify-center gap-2 rounded-md px-6 py-3.5 text-sm font-bold sm:w-auto">
+                  {slide.ctaLabel} <Icon name="arrow-right" class="h-4 w-4" />
+                </a>
+                <a
+                  href={whatsappLink("Hola, quisiera contactarme con Chaco Implantes.")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-glass-outline inline-flex w-full items-center justify-center gap-2 rounded-md px-6 py-3.5 text-sm font-bold sm:w-auto"
+                >
+                  <Icon name="message-circle" class="h-4 w-4" /> Contactar por WhatsApp
+                </a>
+              </div>
+            </article>
+          ))}
         </div>
+      </div>
+    </div>
+    <div class="hero-dot-controls absolute bottom-6 left-1/2 z-20 -translate-x-1/2 lg:bottom-10" aria-label="Diferenciadores">
+      <div class="flex items-center gap-2 py-2">
+        {heroSlides.map((slide, index) => (
+          <button
+            type="button"
+            data-hero-dot
+            data-index={index}
+            aria-label={`Ver ${slide.title}`}
+            aria-pressed={index === 0 ? "true" : "false"}
+            class="hero-dot h-2.5 rounded-full transition-[width,background-color,opacity] duration-200 ease-out"
+          ></button>
+        ))}
       </div>
     </div>
   </section>
 
-  <section class="bg-primary">
-    <div class="mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-8 lg:px-8">
-      <div class="grid grid-cols-2 gap-x-4 gap-y-3 sm:gap-6 lg:grid-cols-4 lg:gap-8">
+  <section data-value-pillars class="value-pillars-band bg-[#17325a]">
+    <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3">
         {
-          specialtyBadges.map((item) => (
-            <div class="flex items-center gap-2 sm:gap-3">
-              <div data-specialty-icon class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/10 text-white ring-1 ring-white/20 sm:h-8 sm:w-8">
+          valuePillars.map((item) => (
+            <div data-value-pillar class="value-pillar-card flex items-center gap-2 rounded-md border bg-white/[0.04] px-3 py-2">
+              <div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/20 text-white ring-1 ring-primary/30">
                 <Icon name={item.icon} class="h-3.5 w-3.5" />
               </div>
-              <p class="text-[11px] font-semibold uppercase text-white/90 sm:text-sm">{item.label}</p>
+              <p class="text-[11px] font-semibold uppercase leading-snug text-white/88 sm:text-xs">{item.label}</p>
             </div>
           ))
         }
@@ -81,7 +107,7 @@ import {
     </div>
   </section>
 
-  <section class="border-b border-border bg-surface-2/45">
+  <section class="section-dark-gradient">
     <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
       <div class="flex flex-wrap items-end justify-between gap-4">
         <div>
@@ -89,7 +115,7 @@ import {
             <span class="h-px w-6 bg-brand"></span>
             Catálogo por especialidad
           </span>
-          <h2 class="mt-3 font-display text-2xl font-bold text-deep sm:text-3xl">Líneas de productos</h2>
+          <h2 class="mt-3 font-display text-2xl font-black text-deep sm:text-4xl">Líneas de productos</h2>
           <p class="mt-2 max-w-2xl text-muted-foreground">Prótesis, implantes e instrumental organizados por especialidad.</p>
         </div>
         <a href="/catalogos" class="link-primary-soft inline-flex items-center gap-1.5 text-sm font-semibold">
@@ -103,26 +129,28 @@ import {
     </div>
   </section>
 
-  <section class="bg-deep">
-    <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-2 lg:grid-cols-4">
-        {
-          professionalFlow.map((item, index) => (
-            <div
-              data-professional-flow-item
-              class:list={[
-                "flex items-center gap-3 border-white/10 px-4 py-3 lg:flex-col lg:items-center lg:gap-2 lg:px-6",
-                index % 2 === 0 && "border-r",
-                index < 2 && "border-b",
-                "lg:border-b-0",
-                index < 3 ? "lg:border-r" : "lg:border-r-0",
-              ]}
-            >
-              <Icon name={item.icon} class="h-5 w-5 shrink-0 text-white lg:h-6 lg:w-6" />
-              <p class="text-sm font-medium leading-tight text-white/75 lg:text-center lg:text-white/65">{item.title}</p>
-            </div>
-          ))
-        }
+  <section data-suppliers-section class="bg-[#17243d]">
+    <div class="mx-auto max-w-7xl px-4 py-16 text-white sm:px-6 lg:px-8">
+      <div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+        <div>
+          <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase text-brand">
+            <span class="h-px w-6 bg-primary"></span>
+            Proveedores y sistemas
+          </span>
+          <h2 class="mt-3 font-display text-2xl font-black sm:text-4xl">Líneas destacadas para resolver cada procedimiento</h2>
+          <p class="mt-3 text-sm leading-relaxed text-brand sm:text-base">
+            Combinamos sistemas internacionales, líneas exclusivas y productos nacionales para dar respuesta comercial, disponibilidad e instrumental según cada caso.
+          </p>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2">
+          {supplierSystems.map((item) => (
+            <article class="dark-card rounded-xl border p-5">
+              <p class="font-display text-xl font-black text-white">{item.name}</p>
+              <p class="mt-1 text-xs font-bold uppercase text-primary-glow">{item.label}</p>
+              <p class="mt-3 text-sm leading-relaxed text-brand">{item.text}</p>
+            </article>
+          ))}
+        </div>
       </div>
     </div>
   </section>
@@ -155,7 +183,7 @@ import {
         }
       </div>
 
-      <div class="mt-8 flex flex-col items-start gap-4 rounded-lg border border-border bg-secondary/40 px-6 py-8 sm:flex-row sm:items-center sm:justify-between">
+      <div data-institution-card class="lift-card mt-8 flex flex-col items-start gap-4 rounded-lg border border-border bg-card px-6 py-8 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h3 class="font-display text-lg font-semibold text-deep">Coordinación para instituciones</h3>
           <p class="mt-1 text-sm text-muted-foreground">Escribinos para coordinar el suministro de prótesis, implantes e instrumental.</p>
@@ -328,3 +356,39 @@ import {
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  const carousel = document.querySelector("[data-hero-carousel]");
+  if (carousel instanceof HTMLElement) {
+    const slides = Array.from(carousel.querySelectorAll("[data-hero-slide]"));
+    const backgrounds = Array.from(carousel.querySelectorAll("[data-hero-bg]"));
+    const dots = Array.from(carousel.querySelectorAll("[data-hero-dot]"));
+    let active = 0;
+
+    const setActive = (index: number) => {
+      active = (index + slides.length) % slides.length;
+      slides.forEach((slide, slideIndex) => {
+        const isActive = slideIndex === active;
+        if (slide instanceof HTMLElement) {
+          slide.dataset.active = String(isActive);
+          slide.setAttribute("aria-hidden", String(!isActive));
+          slide.classList.toggle("pointer-events-none", !isActive);
+        }
+      });
+      backgrounds.forEach((background, backgroundIndex) => {
+        if (background instanceof HTMLElement) {
+          background.dataset.active = String(backgroundIndex === active);
+        }
+      });
+      dots.forEach((dot, dotIndex) => {
+        dot.setAttribute("aria-pressed", String(dotIndex === active));
+      });
+    };
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener("click", () => setActive(index));
+    });
+
+    window.setInterval(() => setActive(active + 1), 6500);
+  }
+</script>

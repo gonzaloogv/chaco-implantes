@@ -1,31 +1,35 @@
 @import "tailwindcss";
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
   --radius: 0.5rem;
-  --background: #f3f6fb;
-  --foreground: #192338;
+  --background: #0f172a;
+  --foreground: #d9e1f1;
   --ink: #192338;
-  --card: #f8fbff;
+  --card: #ffffff;
   --card-foreground: #192338;
-  --surface: #f3f6fb;
+  --surface: #eef2f9;
   --surface-2: #d9e1f1;
   --popover: #ffffff;
-  --primary: #31487a;
+  --primary: #4a90c4;
+  --primary-strong: #2b6cb8;
+  --primary-muted: #2b6cb8;
+  --primary-glow: #60a5fa;
+  --primary-electric: #0088ff;
   --primary-foreground: #ffffff;
   --deep: #1e2e4f;
   --deep-foreground: #ffffff;
   --brand: #8fb3e2;
-  --secondary: #f3f6fb;
+  --secondary: #eaf2ff;
   --secondary-foreground: #1e2e4f;
-  --muted: #f3f6fb;
+  --muted: #eef2f9;
   --muted-foreground: #5d6b88;
   --accent: #d9e1f1;
   --accent-foreground: #1e2e4f;
   --destructive: #b42318;
-  --border: #e4eaf4;
+  --border: #d7e2f2;
   --input: #e4eaf4;
-  --ring: #31487a;
+  --ring: #0088ff;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --border-white-subtle: rgba(255, 255, 255, 0.15);
 }
@@ -41,6 +45,9 @@
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-primary: var(--primary);
+  --color-primary-strong: var(--primary-strong);
+  --color-primary-muted: var(--primary-muted);
+  --color-primary-glow: var(--primary-glow);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -58,7 +65,7 @@
   --color-surface-2: var(--surface-2);
   --color-ink: var(--ink);
   --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Montserrat", "Poppins", ui-sans-serif, system-ui, sans-serif;
   --font-accent: "Kurale", Georgia, ui-serif, serif;
   --color-border-white-subtle: var(--border-white-subtle);
 }
@@ -76,7 +83,9 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--background);
+  background:
+    radial-gradient(circle at 20% 0%, rgba(74, 144, 196, 0.2), transparent 34rem),
+    linear-gradient(150deg, #0f172a 0%, #192338 46%, #1e2e4f 100%);
   color: var(--foreground);
   font-family:
     "Poppins", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -98,6 +107,15 @@ a {
   text-decoration: none;
 }
 
+main {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+main > div:first-child {
+  padding-top: 7rem;
+}
+
 img,
 svg {
   display: block;
@@ -105,7 +123,7 @@ svg {
 }
 
 ::selection {
-  background: rgba(15, 118, 110, 0.18);
+  background: rgba(0, 136, 255, 0.28);
 }
 
 :focus-visible {
@@ -145,9 +163,10 @@ svg {
 }
 
 .btn-primary {
-  background-color: var(--primary);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-strong) 100%);
   border: 1px solid transparent;
   color: var(--primary-foreground);
+  box-shadow: 0 0 20px rgba(74, 144, 196, 0.34);
 }
 
 .btn-primary svg {
@@ -155,9 +174,10 @@ svg {
 }
 
 .btn-primary-soft {
-  background-color: color-mix(in srgb, var(--primary) 82%, white);
+  background-color: color-mix(in srgb, var(--primary) 84%, white);
   border: 1px solid transparent;
   color: var(--primary-foreground);
+  box-shadow: 0 0 18px rgba(74, 144, 196, 0.28);
 }
 
 .btn-primary-soft svg {
@@ -184,7 +204,7 @@ svg {
 
 .btn-outline-light {
   background-color: transparent;
-  border-color: color-mix(in srgb, var(--brand) 80%, transparent);
+  border-color: rgba(217, 225, 241, 0.38);
   color: var(--primary-foreground);
   min-width: 10rem;
   white-space: nowrap;
@@ -195,8 +215,8 @@ svg {
 }
 
 .btn-glass-outline {
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  background-color: rgba(217, 225, 241, 0.08);
+  border: 1px solid rgba(143, 179, 226, 0.28);
   color: var(--primary-foreground);
 }
 
@@ -205,7 +225,7 @@ svg {
 }
 
 .link-primary-soft {
-  color: color-mix(in srgb, var(--primary) 76%, white);
+  color: color-mix(in srgb, var(--primary) 72%, white);
   transition:
     color 200ms var(--ease-out),
     opacity 200ms var(--ease-out);
@@ -244,6 +264,7 @@ svg {
   background-color: var(--primary);
   border-color: var(--primary);
   color: var(--primary-foreground);
+  box-shadow: 0 0 18px rgba(74, 144, 196, 0.24);
 }
 
 .gallery-filter-idle {
@@ -269,49 +290,121 @@ svg {
 }
 
 .nav-link {
-  color: var(--deep);
-  opacity: 0.68;
+  color: var(--surface-2);
+  opacity: 0.76;
+  position: relative;
+}
+
+.nav-link::after {
+  background: var(--primary);
+  border-radius: 999px;
+  bottom: 0.25rem;
+  box-shadow: 0 0 12px rgba(74, 144, 196, 0.65);
+  content: "";
+  height: 2px;
+  left: 0.75rem;
+  position: absolute;
+  right: 0.75rem;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 200ms var(--ease-out);
 }
 
 .nav-link:hover,
 .nav-link[data-active="true"] {
-  color: var(--deep);
+  color: var(--primary-foreground);
   opacity: 1;
 }
 
+.nav-link:hover::after,
+.nav-link[data-active="true"]::after {
+  transform: scaleX(1);
+}
+
 .nav-link-mobile {
-  color: var(--deep);
-  opacity: 0.72;
+  color: var(--surface-2);
+  opacity: 0.78;
 }
 
 .nav-link-mobile:hover,
 .nav-link-mobile[data-active="true"] {
-  color: var(--deep);
+  color: var(--primary-foreground);
   opacity: 1;
 }
 
 .site-header {
-  background-color: color-mix(in srgb, var(--background) 85%, transparent);
-  border-color: var(--border);
-  backdrop-filter: blur(12px);
+  background-color: rgba(30, 46, 79, 0.94);
+  border-color: rgba(143, 179, 226, 0.18);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 12px 32px -24px rgba(0, 0, 0, 0.75);
 }
 
 .site-header[data-transparent="true"] {
-  background-color: transparent;
-  border-color: transparent;
-  backdrop-filter: blur(0);
+  background-color: rgba(15, 23, 42, 0.28);
+  border-color: rgba(143, 179, 226, 0.08);
+  backdrop-filter: blur(10px);
+  box-shadow: none;
 }
 
 .site-header-inner {
-  height: 4rem;
+  height: 4.5rem;
 }
 
 .site-header[data-transparent="true"] .site-header-inner {
-  height: 5rem;
+  height: 15vh;
+  min-height: 8.5rem;
+}
+
+.site-logo-mark {
+  filter: drop-shadow(0 0 8px rgba(74, 144, 196, 0.5));
+  height: 2.75rem;
+  transition:
+    height 300ms var(--ease-out),
+    width 300ms var(--ease-out),
+    filter 200ms var(--ease-out);
+  width: 2.75rem;
+}
+
+.site-header[data-transparent="true"] .site-logo-mark {
+  filter: drop-shadow(0 0 14px rgba(74, 144, 196, 0.82));
+  height: clamp(5rem, 10vh, 7.5rem);
+  width: clamp(5rem, 10vh, 7.5rem);
+}
+
+.site-logo-title {
+  color: var(--primary-foreground);
+  transition: font-size 300ms var(--ease-out);
+}
+
+.site-logo-subtitle {
+  color: var(--brand);
+  transition: font-size 300ms var(--ease-out);
+}
+
+.site-header[data-transparent="true"] .site-logo-title {
+  font-size: clamp(1.45rem, 2vw, 2.35rem);
+}
+
+.site-header[data-transparent="true"] .site-logo-subtitle {
+  font-size: clamp(0.8rem, 1vw, 1rem);
+}
+
+.hero-bg-slide {
+  opacity: 0;
+  transform: scale(1.02);
+  transition:
+    opacity 420ms var(--ease-out),
+    transform 1200ms var(--ease-out);
+}
+
+.hero-bg-slide[data-active="true"] {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .mobile-menu {
-  box-shadow: 0 18px 30px -24px rgba(25, 35, 56, 0.45);
+  background-color: rgba(15, 23, 42, 0.98);
+  box-shadow: 0 18px 30px -24px rgba(0, 0, 0, 0.7);
 }
 
 .catalog-image-card img {
@@ -354,6 +447,113 @@ svg {
   display: block;
 }
 
+.hero-shell {
+  background: linear-gradient(150deg, #0f172a 0%, #192338 42%, #1e2e4f 72%, #2b6cb8 100%);
+  min-height: 100vh;
+}
+
+.hero-shell::before {
+  background:
+    radial-gradient(circle at 76% 42%, rgba(74, 144, 196, 0.42), transparent 22rem),
+    radial-gradient(circle at 12% 12%, rgba(0, 136, 255, 0.14), transparent 28rem);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.hero-photo-glow {
+  filter: drop-shadow(0 0 34px rgba(96, 165, 250, 0.42));
+}
+
+.section-dark-gradient {
+  background:
+    radial-gradient(circle at 85% 8%, rgba(74, 144, 196, 0.16), transparent 22rem),
+    linear-gradient(180deg, #eef5fb 0%, #dceaf5 100%);
+  color: var(--ink);
+}
+
+.page-hero-dark {
+  background:
+    radial-gradient(circle at 82% 10%, rgba(96, 165, 250, 0.26), transparent 24rem),
+    linear-gradient(150deg, #0f172a 0%, #192338 50%, #1e2e4f 100%);
+  border-bottom-color: color-mix(in srgb, var(--primary) 72%, transparent);
+}
+
+.page-surface {
+  background:
+    linear-gradient(180deg, rgba(217, 225, 241, 0.08) 0%, transparent 12rem),
+    var(--surface);
+  color: var(--ink);
+}
+
+.premium-card {
+  background: rgba(255, 255, 255, 0.94);
+  border-color: rgba(143, 179, 226, 0.46);
+  box-shadow: 0 18px 42px -34px rgba(15, 23, 42, 0.5);
+}
+
+.dark-card {
+  background:
+    linear-gradient(180deg, rgba(143, 179, 226, 0.12), rgba(15, 23, 42, 0.22)),
+    rgba(25, 35, 56, 0.88);
+  border-color: rgba(143, 179, 226, 0.22);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.catalog-detail-shell {
+  background:
+    radial-gradient(circle at 90% 10%, rgba(0, 136, 255, 0.16), transparent 20rem),
+    var(--surface);
+}
+
+.hero-slide {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.hero-slide[data-active="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-dot {
+  background-color: rgba(217, 225, 241, 0.42);
+  opacity: 0.76;
+  min-width: 0.75rem;
+  outline-offset: 4px;
+  width: 0.75rem;
+}
+
+.hero-dot[aria-pressed="true"] {
+  background-color: var(--primary);
+  opacity: 1;
+  width: 2rem;
+}
+
+.hero-carousel-link {
+  color: var(--primary-foreground);
+}
+
+.hero-dot-controls {
+  pointer-events: none;
+}
+
+.hero-dot-controls button {
+  pointer-events: auto;
+}
+
+.value-pillars-band {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(15, 23, 42, 0.26);
+}
+
+.value-pillar-card {
+  border-color: color-mix(in srgb, var(--primary) 58%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
 @media (min-width: 64rem) {
   .hero-mobile-bg,
   .hero-mobile-image {
@@ -367,11 +567,35 @@ svg {
   }
 }
 
+@media (max-width: 63.999rem) {
+  .hero-dot-controls {
+    bottom: 1.25rem;
+  }
+
+  .site-header[data-transparent="true"] .site-header-inner {
+    height: 5.5rem;
+    min-height: 5.5rem;
+  }
+
+  .site-header[data-transparent="true"] .site-logo-mark {
+    height: 3.25rem;
+    width: 3.25rem;
+  }
+
+  .site-header[data-transparent="true"] .site-logo-title {
+    font-size: 1.2rem;
+  }
+
+  .site-header[data-transparent="true"] .site-logo-subtitle {
+    font-size: 0.68rem;
+  }
+}
+
 @media (hover: hover) and (pointer: fine) {
   .btn-primary:hover {
-    background-color: var(--deep);
-    border-color: color-mix(in srgb, var(--brand) 52%, transparent);
-    box-shadow: 0 10px 24px -16px rgba(25, 35, 56, 0.68);
+    background: linear-gradient(135deg, var(--primary-strong) 0%, var(--primary-electric) 100%);
+    border-color: color-mix(in srgb, var(--primary-glow) 52%, transparent);
+    box-shadow: 0 0 28px rgba(74, 144, 196, 0.46);
     color: var(--primary-foreground);
   }
 
@@ -389,6 +613,7 @@ svg {
 
   .btn-primary-soft:hover {
     background-color: var(--primary);
+    box-shadow: 0 0 28px rgba(74, 144, 196, 0.44);
     color: var(--primary-foreground);
   }
 
@@ -400,13 +625,14 @@ svg {
 
   .btn-outline-light:hover {
     background-color: var(--primary);
-    border-color: var(--primary-foreground);
+    border-color: var(--primary-glow);
+    box-shadow: 0 0 20px rgba(74, 144, 196, 0.28);
     color: var(--primary-foreground);
   }
 
   .btn-glass-outline:hover {
-    background-color: rgba(255, 255, 255, 0.16);
-    border-color: rgba(255, 255, 255, 0.38);
+    background-color: rgba(96, 165, 250, 0.16);
+    border-color: rgba(96, 165, 250, 0.48);
     color: var(--primary-foreground);
   }
 
@@ -427,6 +653,10 @@ svg {
   .contact-link:hover {
     color: var(--deep);
     opacity: 1;
+  }
+
+  .dark-card .contact-link:hover {
+    color: var(--primary-glow);
   }
 
   .icon-button:hover {
@@ -462,8 +692,8 @@ svg {
   }
 
   .catalog-image-card:hover {
-    border-color: var(--brand);
-    box-shadow: 0 10px 30px -12px rgba(15, 23, 42, 0.35);
+    border-color: color-mix(in srgb, var(--primary-glow) 72%, transparent);
+    box-shadow: 0 18px 42px -18px rgba(74, 144, 196, 0.38);
     transform: translateY(-2px);
   }
 

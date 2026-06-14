@@ -2,12 +2,16 @@ export const images = {
   hero: "/assets/images/hero.jpg",
   heroBg: "/assets/images/hero-instrumental.JPG",
   heroMobile: "/assets/images/hero-mobile.JPG",
+  heroNextAR: "/assets/images/nextar-hero.png",
+  heroAmis: "/assets/images/amis-hero.png",
+  heroEventos: "/assets/images/eventos-hero.jpg",
   quirofano: "/assets/images/quirofano.jpg",
   evento: "/assets/images/evento.jpg",
   congreso: "/assets/images/congreso-traumatologia-2024.JPG",
   productos: "/assets/images/productos.jpg",
   logo: "/assets/brand/logo.png",
   logoCircular: "/assets/brand/logo-circular.png",
+  logoCircularWhite: "/assets/brand/logo-circular-white.png",
   bannerMarca: "/assets/brand/banner-marca.jpg",
 } as const;
 
@@ -24,7 +28,7 @@ export const categoryImages = {
 
 export const site = {
   name: "Chaco Implantes",
-  tagline: "Al servicio de la salud",
+  tagline: "Productos para traumatología",
   activity:
     "Comercialización y distribución de prótesis, implantes e instrumental traumatológico nacional e importado.",
   phoneDisplay: "0362-4571854",
@@ -73,12 +77,88 @@ export const specialtyBadges = [
   { icon: "map-pin",      label: "Resistencia, Chaco" },
 ] as const;
 
+export const valuePillars = [
+  { icon: "handshake", label: "Asesoramiento personalizado" },
+  { icon: "shield-check", label: "Tecnología y materiales de primera línea" },
+  { icon: "boxes", label: "Soluciones adaptadas a cada necesidad" },
+  { icon: "building-2", label: "Atención humana y profesional" },
+] as const;
+
 // Items de la franja divisora entre catálogos y profesionales
 export const professionalFlow = [
   { icon: "clipboard-list", title: "Consulta por línea" },
   { icon: "handshake",      title: "Coordinación comercial" },
   { icon: "boxes",          title: "Disponibilidad y stock" },
   { icon: "building-2",     title: "Atención profesional" },
+] as const;
+
+export type HeroSlide = {
+  eyebrow: string;
+  title: string;
+  text: string;
+  ctaLabel: string;
+  href: string;
+  image: string;
+  imageAlt: string;
+};
+
+export const heroSlides: HeroSlide[] = [
+  {
+    eyebrow: "NextAR · Planificación 3D",
+    title: "Tecnología aplicada a procedimientos de alta precisión",
+    text: "Planificación personalizada, realidad aumentada y soporte visual para acompañar el flujo quirúrgico con información clara en cada etapa.",
+    ctaLabel: "Consultar tecnología",
+    href: "/contacto",
+    image: images.heroNextAR,
+    imageAlt: "Sistema NextAR con planificación 3D y realidad aumentada",
+  },
+  {
+    eyebrow: "Cadera · AMIS",
+    title: "Sistemas para abordajes modernos de cadera",
+    text: "Acompañamos procedimientos de cadera con productos, instrumental y coordinación comercial para equipos que requieren precisión y disponibilidad.",
+    ctaLabel: "Ver línea de cadera",
+    href: "/catalogos/cadera",
+    image: images.heroAmis,
+    imageAlt: "Sistema AMIS para abordaje anterior de cadera",
+  },
+  {
+    eyebrow: "Actividad profesional",
+    title: "Actualización constante junto a profesionales",
+    text: "Participamos en congresos, capacitaciones y espacios de intercambio para acercar novedades, productos y soporte a instituciones de salud.",
+    ctaLabel: "Ver eventos",
+    href: "/eventos",
+    image: images.heroEventos,
+    imageAlt: "Equipo de Chaco Implantes en eventos y congresos profesionales",
+  },
+] as const;
+
+export type SupplierSystem = {
+  name: string;
+  label: string;
+  text: string;
+};
+
+export const supplierSystems: SupplierSystem[] = [
+  {
+    name: "MEDACTA",
+    label: "Sistemas internacionales",
+    text: "Sistemas para cadera, rodilla y columna, con líneas orientadas a procedimientos de alta complejidad.",
+  },
+  {
+    name: "BONSS",
+    label: "Productos exclusivos",
+    text: "Líneas seleccionadas de implantes e instrumental para ampliar opciones según necesidad quirúrgica.",
+  },
+  {
+    name: "Implantes Villalba",
+    label: "Industria nacional",
+    text: "Implantes y sistemas nacionales para osteosíntesis y traumatología, con acompañamiento en pedidos.",
+  },
+  {
+    name: "Nacionales e importados",
+    label: "Cobertura de catálogo",
+    text: "Combinamos proveedores y líneas de producto para resolver disponibilidad e instrumental por procedimiento.",
+  },
 ] as const;
 
 export type Category = {

@@ -6,12 +6,15 @@ const root = fileURLToPath(new URL("..", import.meta.url));
 const dist = join(root, "dist");
 const globalCss = readFileSync(join(root, "src/styles/global.css"), "utf8");
 const expectedPublicAssets = [
-  "public/assets/brand/logo.png",
   "public/assets/brand/logo-circular.png",
+  "public/assets/brand/logo-circular-white.png",
   "public/assets/brand/banner-marca.jpg",
   "public/assets/images/hero.jpg",
   "public/assets/images/hero-instrumental.JPG",
   "public/assets/images/hero-mobile.JPG",
+  "public/assets/images/nextar-hero.png",
+  "public/assets/images/amis-hero.png",
+  "public/assets/images/eventos-hero.jpg",
   "public/assets/images/productos.jpg",
   "public/assets/images/quirofano.jpg",
   "public/assets/images/evento.jpg",
@@ -27,7 +30,7 @@ const expectedPublicAssets = [
 ];
 
 const pages = [
-  ["index.html", "Prótesis, implantes e instrumental para traumatología"],
+  ["index.html", "Prótesis, implantes e instrumental para equipos quirúrgicos"],
   ["catalogos/index.html", "Catálogos"],
   ["catalogos/cadera/index.html", "Cadera"],
   ["galeria/index.html", "Galería"],
@@ -76,29 +79,49 @@ for (const asset of expectedPublicAssets) {
 
 const home = readFileSync(join(dist, "index.html"), "utf8");
 const catalogos = readFileSync(join(dist, "catalogos/index.html"), "utf8");
+const catalogoCadera = readFileSync(join(dist, "catalogos/cadera/index.html"), "utf8");
 const galeria = readFileSync(join(dist, "galeria/index.html"), "utf8");
+const eventos = readFileSync(join(dist, "eventos/index.html"), "utf8");
+const nosotros = readFileSync(join(dist, "nosotros/index.html"), "utf8");
 const contacto = readFileSync(join(dist, "contacto/index.html"), "utf8");
 const videos = readFileSync(join(dist, "videos/index.html"), "utf8");
-assert(
-  (home.match(/data-specialty-icon/g) ?? []).length === 4,
-  "Home specialty band should render exactly one icon per item",
-);
+assert((home.match(/data-value-pillar(?=[\s>])/g) ?? []).length === 4, "Home should render four compact value pillars");
 assert(
   (home.match(/data-catalog-card/g) ?? []).length >= 6,
   "Home should render catalog cards with stable card markers",
 );
 assert(!home.includes("data-catalog-card-icon"), "Catalog cards should not render decorative icons");
-assert(home.includes("/assets/images/hero-instrumental.JPG"), "Home should use the updated desktop hero image");
-assert(home.includes("/assets/images/hero-mobile.JPG"), "Home should use the updated mobile hero image");
+assert(home.includes("/assets/images/nextar-hero.png"), "Home should use the NextAR full-hero image");
+assert(home.includes("/assets/images/amis-hero.png"), "Home should use the AMIS full-hero image");
+assert(home.includes("/assets/images/eventos-hero.jpg"), "Home should use the events full-hero image");
+assert(home.includes("data-hero-carousel"), "Home hero should include the differentiator carousel");
+assert((home.match(/<article data-hero-slide/g) ?? []).length === 3, "Hero carousel should render three differentiator slides");
+assert(home.includes("NextAR"), "Hero carousel should describe the NextAR differentiator");
+assert(home.includes("AMIS"), "Hero carousel should describe the AMIS differentiator");
+assert(home.includes("Calidad que se siente. Confianza que se nota."), "Home should integrate the client slogan");
+assert(home.includes("Asesoramiento personalizado"), "Home should include the client value pillars");
+assert(!home.includes("TecnologÃ­a Medacta"), "NextAR hero copy should not mention Medacta");
+assert(!home.includes("Consultar sistemas Medacta"), "NextAR hero CTA should not mention Medacta");
+assert(home.includes("Productos para traumatología"), "Home should clarify the product category without the old tagline");
+assert(!home.includes("Al servicio de la salud"), "Home should not render the old health-service tagline");
 assert(home.includes("/assets/images/cat-cadera.jpg"), "Home catalog cards should use category photography");
 assert((home.match(/data-catalog-image-card/g) ?? []).length >= 6, "Home should render image-backed catalog cards");
 assert(home.includes("catalog-card-link"), "Catalog cards should render a text-style CTA link");
 assert(!home.includes("catalog-card-cta"), "Catalog cards should not render the catalog action as a button");
 assert((catalogos.match(/data-catalog-image-card/g) ?? []).length === 8, "Catalog page should render every category as an image-backed card");
-assert((home.match(/data-professional-flow-item/g) ?? []).length === 4, "Professional flow should render four compact divider items");
+assert(catalogos.includes("page-hero-dark"), "Catalog page should use the dark premium page hero");
+assert(catalogos.includes("/assets/images/cat-cadera.jpg"), "Catalog page should preserve category background photography");
+assert(catalogoCadera.includes("Descargar PDF"), "Catalog detail should keep the PDF download placeholder while prototyping");
+assert(catalogoCadera.includes("catalog-detail-shell"), "Catalog detail should use the redesigned dark/light layout shell");
+assert(!home.includes("data-professional-flow-item"), "Home should avoid the extra professional divider strip");
+assert(home.includes("data-suppliers-section"), "Home should include a brands and systems section");
+assert(home.includes("MEDACTA"), "Brands section should mention Medacta");
+assert(home.includes("BONSS"), "Brands section should mention BONSS");
+assert(home.includes("Implantes Villalba"), "Brands section should mention Implantes Villalba");
+assert(home.includes("data-institution-card"), "Institutional CTA should render as a card in the professionals section");
 assert(home.includes("Galería y videos"), "Home should include the updated gallery and videos section");
 assert(home.includes("61° Congreso Argentino de Ortopedia y Traumatología"), "Home should highlight the latest institutional event");
-assert(home.includes('data-commercial-band="primary"'), "Commercial CTA band should match the specialty band background");
+assert(home.includes('data-commercial-band="primary"'), "Commercial CTA band should retain a clear blue commercial cue");
 assert(home.includes("btn-primary-soft"), "Hero catalog CTA should use the softer primary treatment by default");
 assert(home.includes("link-primary-soft"), "Catalog text CTA should use the softer primary link treatment by default");
 assert(home.includes("btn-glass-outline"), "Commercial catalog CTA should use the glass card outline treatment");
@@ -107,6 +130,7 @@ assert(home.includes('data-active="true"'), "Current nav item should be marked a
 assert(home.includes('data-transparent-header="true"'), "Home header should start in the transparent hero state");
 assert(catalogos.includes("catalog-info-link"), "Catalog request information links should have a visible hover treatment");
 assert(galeria.includes("Ver videos"), "Gallery should link to the videos page");
+assert(galeria.includes("page-hero-dark"), "Gallery page should use the dark premium page hero");
 assert(galeria.includes('data-gallery-page-size="12"'), "Gallery should expose the first-page size");
 assert((galeria.match(/<button type="button" data-gallery-item/g) ?? []).length === 24, "Gallery should render a paginable 24-item set");
 assert(galeria.includes("Cargar más"), "Gallery should include a load-more control");
@@ -116,6 +140,24 @@ assert(contacto.includes("contact-field"), "Contact fields should use the unifie
 assert(contacto.includes("btn-email-soft"), "Contact email action should use a subtly tinted secondary button");
 assert((contacto.match(/contact-link/g) ?? []).length >= 4, "Contact phone, email, social and map links should share subtle hover feedback");
 assert(videos.includes("Pronto publicaremos nuestros videos"), "Videos page should provide an empty state until videos are available");
+assert(videos.includes("data-videos-page"), "Videos page should expose the redesigned page marker");
+assert(videos.includes("page-hero-dark"), "Videos page should use the dark premium page hero");
+assert(videos.includes("page-surface"), "Videos page should use the shared light content surface");
+assert(videos.includes("premium-card"), "Videos page empty state should use premium card treatment");
+assert(eventos.includes("data-eventos-page"), "Events page should expose the redesigned page marker");
+assert(eventos.includes("page-hero-dark"), "Events page should use the dark premium page hero");
+assert(eventos.includes("page-surface"), "Events page should use the shared light content surface");
+assert(eventos.includes("data-featured-event"), "Events page should highlight the latest institutional event");
+assert(eventos.includes("/assets/images/eventos-hero.jpg"), "Events page should use the updated events hero image");
+assert(nosotros.includes("data-nosotros-page"), "About page should expose the redesigned page marker");
+assert(nosotros.includes("page-hero-dark"), "About page should use the dark premium page hero");
+assert(nosotros.includes("page-surface"), "About page should use the shared light content surface");
+assert(nosotros.includes("Calidad que se siente. Confianza que se nota."), "About page should carry the client slogan");
+assert(contacto.includes("data-contacto-page"), "Contact page should expose the redesigned page marker");
+assert(contacto.includes("page-hero-dark"), "Contact page should use the dark premium page hero");
+assert(contacto.includes("page-surface"), "Contact page should use the shared light content surface");
+assert(contacto.includes("premium-card"), "Contact form should use premium card treatment");
+assert(contacto.includes("dark-card"), "Contact sidebar should use dark card treatment");
 
 assert(!existsSync(join(dist, "profesionales/index.html")), "Unexpected /profesionales route output");
 
@@ -132,8 +174,8 @@ assert(home.includes('id="profesionales"'), "Professionals section should remain
 assert(!output.includes('href="/#profesionales"'), "Professionals should not be exposed as a global navigation destination");
 assert(!output.includes("/profesionales"), "Unexpected /profesionales route reference in build output");
 assert(
-  /\.btn-primary\s*{[\s\S]*background-color:\s*var\(--primary\)/.test(globalCss),
-  "Primary buttons should define a stable readable background",
+  /\.btn-primary\s*{[\s\S]*background:\s*linear-gradient\(135deg, var\(--primary\)/.test(globalCss),
+  "Primary buttons should define a stable readable signature-blue gradient",
 );
 assert(
   /\.btn-secondary\s*{[\s\S]*background-color:\s*var\(--popover\)/.test(globalCss),
@@ -143,17 +185,20 @@ assert(
   /\.btn-light\s*{[\s\S]*background-color:\s*var\(--popover\)/.test(globalCss),
   "Light buttons should use a white surface background",
 );
-assert(/\.nav-link\s*{[\s\S]*opacity:\s*0\.68/.test(globalCss), "Desktop nav links should have a lower default opacity");
+assert(/\.nav-link::after\s*{[\s\S]*background:\s*var\(--primary\)/.test(globalCss), "Desktop nav links should use the signature-blue active underline");
 assert(/\.nav-link\[data-active="true"\][\s\S]*opacity:\s*1/.test(globalCss), "Active desktop nav links should render at full opacity");
-assert(/\.site-header\[data-transparent="true"\][\s\S]*background-color:\s*transparent/.test(globalCss), "Home header should support a transparent hero state");
-assert(/\.hero-desktop-image\s*{[\s\S]*display:\s*none/.test(globalCss), "Desktop hero image should be hidden by default");
-assert(/\.hero-mobile-image\s*{[\s\S]*display:\s*block/.test(globalCss), "Mobile hero image should be visible by default");
-assert(/@media\s*\(min-width:\s*64rem\)\s*{[\s\S]*\.hero-mobile-bg,\s*\.hero-mobile-image\s*{[\s\S]*display:\s*none !important/.test(globalCss), "Desktop breakpoint should hide the mobile hero image");
-assert(/\.btn-primary-soft\s*{[\s\S]*background-color:\s*color-mix\(in srgb, var\(--primary\) 82%, white\)/.test(globalCss), "Soft primary buttons should start below full primary strength");
-assert(/\.btn-primary:hover\s*{[\s\S]*background-color:\s*var\(--deep\)/.test(globalCss), "Primary CTA buttons should have a clearly visible hover state");
+assert(/\.site-header\[data-transparent="true"\][\s\S]*background-color:\s*rgba\(15, 23, 42, 0\.28\)/.test(globalCss), "Home header should start as a dark glass surface");
+assert(/\.site-header\[data-transparent="true"\]\s*\.site-header-inner\s*{[\s\S]*height:\s*15vh/.test(globalCss), "Home header should use the larger 15vh desktop top state");
+assert(/\.site-header\[data-transparent="true"\]\s*\.site-logo-mark\s*{[\s\S]*height:\s*clamp\(5rem, 10vh, 7\.5rem\)/.test(globalCss), "Home logo should scale up in the larger top state");
+assert(/\.hero-shell\s*{[\s\S]*min-height:\s*100vh/.test(globalCss), "Hero should occupy the full viewport height");
+assert(/\.hero-shell\s*{[\s\S]*background:\s*linear-gradient\(150deg, #0f172a/.test(globalCss), "Hero should use the deep blue gradient direction");
+assert(/\.hero-bg-slide\s*{[\s\S]*opacity:\s*0/.test(globalCss), "Hero background slides should fade from hidden state");
+assert(/\.hero-bg-slide\[data-active="true"\]\s*{[\s\S]*opacity:\s*1/.test(globalCss), "Active hero background slide should be visible");
+assert(/\.btn-primary-soft\s*{[\s\S]*background-color:\s*color-mix\(in srgb, var\(--primary\) 84%, white\)/.test(globalCss), "Soft primary buttons should start below full primary strength");
+assert(/\.btn-primary:hover\s*{[\s\S]*background:\s*linear-gradient\(135deg, var\(--primary-strong\)/.test(globalCss), "Primary CTA buttons should have a clearly visible blue hover state");
 assert(/\.btn-primary-soft:hover\s*{[\s\S]*background-color:\s*var\(--primary\)/.test(globalCss), "Soft primary buttons should hover to full primary");
 assert(/\.link-primary-soft:hover\s*{[\s\S]*color:\s*var\(--primary\)/.test(globalCss), "Soft primary links should hover to full primary");
-assert(/\.btn-glass-outline\s*{[\s\S]*background-color:\s*rgba\(255, 255, 255, 0\.1\)/.test(globalCss), "Glass outline buttons should match flow card surface");
+assert(/\.btn-glass-outline\s*{[\s\S]*background-color:\s*rgba\(217, 225, 241, 0\.08\)/.test(globalCss), "Glass outline buttons should match the dark premium glass surface");
 assert(/\.footer-link:hover\s*{[\s\S]*color:\s*var\(--brand\)/.test(globalCss), "Footer links should use the subtle brand hover");
 assert(/\.catalog-info-link:hover\s*{[\s\S]*background-color:\s*var\(--surface-2\)/.test(globalCss), "Catalog info links should gain a subtle surface hover");
 assert(/\.gallery-filter-active:hover\s*{[\s\S]*background-color:\s*var\(--primary\)/.test(globalCss), "Active gallery filters should not change away from selected colors on hover");
@@ -167,8 +212,10 @@ assert(/\.btn-email-soft\s*{[\s\S]*background-color:\s*color-mix\(in srgb, var\(
 assert(/\.contact-link:hover\s*{[\s\S]*color:\s*var\(--deep\)/.test(globalCss), "Contact links should have a clearly visible dark-blue hover");
 assert(!/letter-spacing:\s*-/.test(globalCss), "Typography should not use negative letter spacing");
 assert(!/tracking-(wide|tight|\[)/.test(source), "Source should keep letter spacing at the default value");
-assert(/--background:\s*#f3f6fb;/i.test(globalCss), "Default page background should be the light neutral surface");
-assert(/--surface:\s*#f3f6fb;/i.test(globalCss), "Default surface should be the light neutral surface");
+assert(/--primary:\s*#4a90c4;/i.test(globalCss), "Primary accent should use the client-facing blue signature");
+assert(/--primary-glow:\s*#60a5fa;/i.test(globalCss), "Glow accent should use the electric blue highlight");
+assert(/--background:\s*#0f172a;/i.test(globalCss), "Default page background should move to the dark premium foundation");
+assert(/--surface:\s*#eef2f9;/i.test(globalCss), "Main content surface should remain readable over the dark foundation");
 assert(/--surface-2:\s*#d9e1f1;/i.test(globalCss), "Ice color should remain reserved for emphasized sections");
 for (const term of forbidden) {
   assert(!output.includes(term), `Forbidden trace found in build output: ${term}`);

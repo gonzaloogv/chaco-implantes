@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Icon from "../../components/Icon.astro";
-import { categories, whatsappLink } from "../../data/site";
+import { categories, categoryImages, whatsappLink } from "../../data/site";
 
 export function getStaticPaths() {
   return categories.map((category) => ({
@@ -11,26 +11,51 @@ export function getStaticPaths() {
 }
 
 const { category } = Astro.props;
+const image = categoryImages[category.slug as keyof typeof categoryImages];
 ---
 
 <BaseLayout
-  title={`${category.title} — Catálogo | Chaco Implantes`}
+  title={`${category.title} - Catálogo | Chaco Implantes`}
   description={category.description}
   canonicalPath={`/catalogos/${category.slug}`}
 >
-  <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-    <a href="/catalogos" class="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-primary">
-      <Icon name="arrow-left" class="h-4 w-4" /> Volver a catálogos
-    </a>
+  <section class="page-hero-dark relative overflow-hidden border-b border-white/10 px-4 pb-14 pt-32 text-white sm:px-6 lg:px-8">
+    <img
+      src={image}
+      alt={category.title}
+      loading="eager"
+      decoding="async"
+      width="1024"
+      height="768"
+      class="pointer-events-none absolute inset-y-0 right-0 hidden h-full w-1/2 object-cover opacity-[0.24] lg:block"
+    />
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[#0f172a] via-[#192338]/96 to-[#192338]/20 lg:block"></div>
 
-    <div class="mt-6 grid gap-8 lg:grid-cols-[1fr_320px]">
-      <section class="rounded-lg border border-border bg-card p-4 sm:p-6" data-catalog-viewer data-total={category.pages}>
-        <div class="relative mx-auto aspect-[3/4] max-w-md overflow-hidden rounded-lg border border-border bg-secondary/50">
+    <div class="relative mx-auto max-w-7xl">
+      <a href="/catalogos" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand transition-colors hover:text-white">
+        <Icon name="arrow-left" class="h-4 w-4" /> Volver a catálogos
+      </a>
+      <div class="mt-6 max-w-3xl">
+        <span class="inline-flex rounded-full border border-primary-glow/30 bg-primary/15 px-3 py-1.5 text-xs font-bold uppercase text-brand">
+          {category.type}
+        </span>
+        <h1 class="mt-4 font-display text-4xl font-black sm:text-5xl">{category.title}</h1>
+        <p class="mt-4 max-w-2xl text-brand">{category.description}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="catalog-detail-shell px-4 py-12 sm:px-6 lg:px-8">
+    <div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1fr_340px]">
+      <section class="premium-card rounded-xl border p-4 sm:p-6" data-catalog-viewer data-total={category.pages}>
+        <div class="relative mx-auto aspect-[3/4] max-w-md overflow-hidden rounded-xl border border-border bg-secondary/50">
+          <img src={image} alt="" aria-hidden="true" class="absolute inset-0 h-full w-full object-cover opacity-[0.16]" />
+          <div class="absolute inset-0 bg-gradient-to-br from-white/95 via-white/90 to-brand/25"></div>
           <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 p-8 text-center">
-            <Icon name="file-text" class="h-10 w-10 text-primary/70" />
-            <p class="font-display text-lg font-semibold text-deep">{category.title}</p>
+            <Icon name="file-text" class="h-10 w-10 text-primary" />
+            <p class="font-display text-lg font-black text-deep">{category.title}</p>
             <p class="text-sm text-muted-foreground">Vista previa de página <span data-current-page>1</span></p>
-            <p class="mt-2 text-xs text-muted-foreground/80">Catálogo técnico — contenido de muestra</p>
+            <p class="mt-2 text-xs text-muted-foreground/80">Catálogo técnico - contenido de muestra</p>
           </div>
         </div>
 
@@ -44,7 +69,7 @@ const { category } = Astro.props;
           >
             <Icon name="chevron-left" class="h-5 w-5" />
           </button>
-          <span class="text-sm font-medium text-muted-foreground">
+          <span class="text-sm font-semibold text-muted-foreground">
             <span data-page-count>1</span> / {category.pages}
           </span>
           <button
@@ -59,19 +84,19 @@ const { category } = Astro.props;
       </section>
 
       <aside class="space-y-5">
-        <section class="rounded-lg border border-border bg-card p-6">
-          <p class="text-xs font-medium uppercase text-primary">{category.type}</p>
-          <h1 class="mt-1 font-display text-2xl font-bold text-deep">{category.title}</h1>
+        <section class="premium-card rounded-xl border p-6">
+          <p class="text-xs font-bold uppercase text-primary">{category.type}</p>
+          <h2 class="mt-1 font-display text-2xl font-black text-deep">{category.title}</h2>
           <p class="mt-3 text-sm text-muted-foreground">{category.description}</p>
 
           <dl class="mt-5 space-y-2 border-t border-border pt-5 text-sm">
             <div class="flex justify-between gap-4">
               <dt class="text-muted-foreground">Tipo de producto</dt>
-              <dd class="text-right font-medium text-deep">{category.type}</dd>
+              <dd class="text-right font-semibold text-deep">{category.type}</dd>
             </div>
             <div class="flex justify-between">
               <dt class="text-muted-foreground">Páginas</dt>
-              <dd class="font-medium text-deep">{category.pages}</dd>
+              <dd class="font-semibold text-deep">{category.pages}</dd>
             </div>
           </dl>
         </section>
@@ -79,7 +104,7 @@ const { category } = Astro.props;
         <div class="space-y-3">
           <a
             href="/contacto"
-            class="btn-secondary flex w-full items-center justify-center gap-2 rounded-md px-4 py-3 text-sm font-semibold"
+            class="btn-secondary flex w-full items-center justify-center gap-2 rounded-md px-4 py-3 text-sm font-bold"
           >
             <Icon name="download" class="h-4 w-4" /> Descargar PDF
           </a>
@@ -87,14 +112,14 @@ const { category } = Astro.props;
             href={whatsappLink(`Hola, quisiera información sobre el catálogo de ${category.title}.`)}
             target="_blank"
             rel="noopener noreferrer"
-            class="btn-primary flex w-full items-center justify-center gap-2 rounded-md bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground hover:bg-deep"
+            class="btn-primary flex w-full items-center justify-center gap-2 rounded-md px-4 py-3 text-sm font-bold"
           >
             <Icon name="message-circle" class="h-4 w-4" /> Contactar por WhatsApp
           </a>
         </div>
       </aside>
     </div>
-  </div>
+  </section>
 </BaseLayout>
 
 <script>

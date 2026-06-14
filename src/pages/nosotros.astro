@@ -7,22 +7,22 @@ const features = [
   {
     icon: "package-check",
     title: "Distribución traumatológica",
-    text: "Prótesis, implantes e instrumental nacional e importado.",
+    text: "Prótesis, implantes e instrumental nacional e importado para distintas especialidades.",
   },
   {
     icon: "map-pin",
-    title: "Atención en Resistencia",
-    text: "Base en Corrientes 781, Resistencia, Chaco.",
+    title: "Base en Resistencia",
+    text: "Atención comercial desde Corrientes 781, Resistencia, Chaco.",
   },
   {
     icon: "stethoscope",
-    title: "Coordinación con profesionales",
-    text: "Traumatólogos, cirujanos, clínicas y sanatorios.",
+    title: "Acompañamiento profesional",
+    text: "Coordinación con traumatólogos, cirujanos, clínicas y sanatorios.",
   },
   {
     icon: "file-text",
     title: "Catálogos por línea",
-    text: "Cadera, rodilla, columna y osteosíntesis.",
+    text: "Cadera, rodilla, columna, osteosíntesis, maxilofacial e instrumental.",
   },
 ];
 ---
@@ -32,51 +32,86 @@ const features = [
   description="Chaco Implantes: distribución de prótesis, implantes e instrumental traumatológico en Resistencia, Chaco, con atención a profesionales e instituciones."
   canonicalPath="/nosotros"
 >
-  <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-    <div class="grid items-center gap-10 lg:grid-cols-2">
+  <section data-nosotros-page class="page-hero-dark border-b border-white/10 px-4 pb-14 pt-32 text-white sm:px-6 lg:px-8">
+    <div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
       <div>
-        <h1 class="font-display text-3xl font-bold text-deep sm:text-4xl">Nosotros</h1>
-        <p class="mt-4 text-base text-muted-foreground">
-          {site.name} distribuye prótesis, implantes e instrumental traumatológico en Resistencia, Chaco,
-          acompañando a profesionales e instituciones de salud en cada procedimiento.
+        <span class="inline-flex items-center gap-2 rounded-full border border-primary-glow/30 bg-primary/15 px-3 py-2 text-xs font-bold uppercase text-brand">
+          Chaco Implantes
+        </span>
+        <h1 class="mt-5 font-display text-4xl font-black sm:text-5xl">Nosotros</h1>
+        <p class="mt-3 max-w-2xl text-brand">
+          Distribuimos prótesis, implantes e instrumental traumatológico para profesionales e instituciones de salud.
         </p>
-        <p class="mt-4 font-accent text-xl text-primary">{site.tagline}</p>
+        <p class="mt-5 max-w-xl font-display text-xl font-black leading-tight text-white sm:text-2xl">
+          Calidad que se siente. Confianza que se nota.
+        </p>
       </div>
 
-      <div class="overflow-hidden rounded-lg border border-border">
+      <div class="catalog-image-card relative hidden h-64 overflow-hidden rounded-xl border border-white/10 bg-deep lg:block">
         <img
           src={images.quirofano}
           alt="Quirófano equipado para cirugía traumatológica"
           loading="lazy"
+          decoding="async"
           width="1200"
           height="900"
-          class="h-full w-full object-cover"
+          class="absolute inset-0 h-full w-full object-cover"
         />
+        <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-deep via-deep/40 to-transparent"></div>
+        <div class="relative flex h-full items-end p-6">
+          <p class="max-w-sm text-sm font-semibold text-white">
+            Coordinación comercial, disponibilidad e instrumental para procedimientos programados.
+          </p>
+        </div>
       </div>
     </div>
+  </section>
 
-    <section class="mt-14">
-      <div class="grid gap-4 sm:grid-cols-2">
-        {
-          features.map((feature) => (
-            <article class="lift-card flex items-start gap-4 rounded-lg border border-border bg-card p-5">
-              <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-primary ring-1 ring-border">
-                <Icon name={feature.icon} class="h-4 w-4" />
-              </div>
-              <div>
-                <h2 class="font-display text-base font-semibold text-deep">{feature.title}</h2>
-                <p class="mt-1 text-sm text-muted-foreground">{feature.text}</p>
-              </div>
-            </article>
-          ))
-        }
+  <section class="page-surface">
+    <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+      <div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <div class="premium-card rounded-xl border p-6 sm:p-8">
+          <span class="inline-flex items-center gap-2 text-xs font-bold uppercase text-primary">
+            <span class="h-px w-6 bg-brand"></span>
+            Propuesta institucional
+          </span>
+          <h2 class="mt-3 font-display text-2xl font-black text-deep">Productos traumatológicos con atención profesional</h2>
+          <p class="mt-4 text-sm leading-relaxed text-muted-foreground">
+            {site.name} acompaña a equipos médicos e instituciones con coordinación de implantes, instrumental y líneas de producto para traumatología.
+          </p>
+          <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
+            Nuestra tarea combina disponibilidad comercial, respuesta cercana y seguimiento de cada requerimiento para que el profesional pueda consultar por especialidad, sistema o procedimiento.
+          </p>
+          <a href="/contacto" class="btn-primary mt-6 inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-bold">
+            Contactar a Chaco Implantes <Icon name="arrow-right" class="h-4 w-4" />
+          </a>
+        </div>
+
+        <div class="grid gap-4 sm:grid-cols-2">
+          {
+            features.map((feature) => (
+              <article class="lift-card premium-card flex items-start gap-4 rounded-xl border p-5">
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-secondary text-primary ring-1 ring-border">
+                  <Icon name={feature.icon} class="h-4 w-4" />
+                </div>
+                <div>
+                  <h2 class="font-display text-base font-bold text-deep">{feature.title}</h2>
+                  <p class="mt-1 text-sm leading-relaxed text-muted-foreground">{feature.text}</p>
+                </div>
+              </article>
+            ))
+          }
+        </div>
       </div>
-    </section>
 
-    <div class="mt-12">
-      <a href="/contacto" class="btn-primary inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-deep">
-        Contactar a Chaco Implantes <Icon name="arrow-right" class="h-4 w-4" />
-      </a>
+      <div class="dark-card mt-10 grid gap-6 rounded-xl border p-6 text-white lg:grid-cols-[0.75fr_1.25fr] lg:items-center">
+        <div>
+          <p class="font-display text-2xl font-black">Atención cercana, criterio técnico y respuesta comercial</p>
+        </div>
+        <p class="text-sm leading-relaxed text-brand">
+          Trabajamos desde Resistencia para acompañar a profesionales, clínicas y sanatorios con productos para traumatología, coordinación de pedidos y consultas por catálogo.
+        </p>
+      </div>
     </div>
-  </div>
+  </section>
 </BaseLayout>
