@@ -13,7 +13,7 @@ import catRodilla from "@/assets/cat-rodilla.jpg";
 import catColumna from "@/assets/cat-columna.jpg";
 import catMaxilofacial from "@/assets/cat-maxilofacial.jpg";
 import catPlacas from "@/assets/cat-osteosintesis-placas.jpg";
-import catTornillos from "@/assets/cat-osteosintesis-tornillos.jpg";
+import catTornillos from "@/assets/cat-osteosintesis-tornillos.png";
 import catInstrumental from "@/assets/cat-instrumental-quirurgico.jpg";
 import catOtros from "@/assets/cat-otros-productos.jpg";
 
