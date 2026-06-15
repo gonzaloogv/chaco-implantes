@@ -340,9 +340,9 @@ svg {
 }
 
 .site-header[data-transparent="true"] {
-  background-color: rgba(15, 23, 42, 0.28);
-  border-color: rgba(143, 179, 226, 0.08);
-  backdrop-filter: blur(10px);
+  background-color: transparent;
+  border-color: transparent;
+  backdrop-filter: none;
   box-shadow: none;
 }
 

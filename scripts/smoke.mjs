@@ -187,7 +187,9 @@ assert(
 );
 assert(/\.nav-link::after\s*{[\s\S]*background:\s*var\(--primary\)/.test(globalCss), "Desktop nav links should use the signature-blue active underline");
 assert(/\.nav-link\[data-active="true"\][\s\S]*opacity:\s*1/.test(globalCss), "Active desktop nav links should render at full opacity");
-assert(/\.site-header\[data-transparent="true"\][\s\S]*background-color:\s*rgba\(15, 23, 42, 0\.28\)/.test(globalCss), "Home header should start as a dark glass surface");
+assert(/\.site-header\[data-transparent="true"\][\s\S]*background-color:\s*transparent/.test(globalCss), "Home header should start with an invisible background");
+assert(/\.site-header\[data-transparent="true"\][\s\S]*border-color:\s*transparent/.test(globalCss), "Home header should not show a top-state border");
+assert(/\.site-header\[data-transparent="true"\][\s\S]*backdrop-filter:\s*none/.test(globalCss), "Home header should not blur the hero while at top");
 assert(/\.site-header\[data-transparent="true"\]\s*\.site-header-inner\s*{[\s\S]*height:\s*15vh/.test(globalCss), "Home header should use the larger 15vh desktop top state");
 assert(/\.site-header\[data-transparent="true"\]\s*\.site-logo-mark\s*{[\s\S]*height:\s*clamp\(5rem, 10vh, 7\.5rem\)/.test(globalCss), "Home logo should scale up in the larger top state");
 assert(/\.hero-shell\s*{[\s\S]*min-height:\s*100vh/.test(globalCss), "Hero should occupy the full viewport height");
