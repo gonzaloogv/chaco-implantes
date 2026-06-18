@@ -1,0 +1,61 @@
+---
+import CatalogViewer from "../../../../components/CatalogViewer.astro";
+import Icon from "../../../../components/Icon.astro";
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import { catalogProducts, categories } from "../../../../data/site";
+
+const cadera = categories.find((category) => category.slug === "cadera");
+
+export function getStaticPaths() {
+  return catalogProducts
+    .filter((product) => product.categorySlug === "cadera")
+    .map((product) => ({
+      params: { producto: product.slug },
+      props: { product },
+    }));
+}
+
+const { product } = Astro.props;
+---
+
+<BaseLayout
+  title={`${product.title} - Cadera | Chaco Implantes`}
+  description={product.description}
+  canonicalPath={product.href}
+>
+  <section class="page-hero-dark relative overflow-hidden border-b border-white/10 px-4 pb-14 pt-32 text-white sm:px-6 lg:px-8">
+    <img
+      src={product.image}
+      alt={product.title}
+      loading="eager"
+      decoding="async"
+      width="1024"
+      height="768"
+      class="pointer-events-none absolute inset-y-0 right-0 hidden h-full w-1/2 object-cover opacity-[0.24] lg:block"
+    />
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[#0f172a] via-[#192338]/96 to-[#192338]/20 lg:block"></div>
+
+    <div class="relative mx-auto max-w-7xl">
+      <a href="/catalogos/cadera" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand transition-colors hover:text-white">
+        <Icon name="arrow-left" class="h-4 w-4" /> Volver a productos de cadera
+      </a>
+      <div class="mt-6 max-w-3xl">
+        <span class="inline-flex rounded-full border border-primary-glow/30 bg-primary/15 px-3 py-1.5 text-xs font-bold uppercase text-brand">
+          {product.label}
+        </span>
+        <h1 class="mt-4 font-display text-4xl font-black sm:text-5xl">{product.title}</h1>
+      </div>
+    </div>
+  </section>
+
+  <section class="catalog-detail-shell px-4 py-12 sm:px-6 lg:px-8">
+    <CatalogViewer
+      title={product.title}
+      eyebrow={product.label}
+      description={product.description}
+      pages={product.pages}
+      image={product.image}
+      whatsappMessage={`Hola, quisiera información sobre el producto ${product.title} del catálogo de ${cadera?.title ?? "Cadera"}.`}
+    />
+  </section>
+</BaseLayout>

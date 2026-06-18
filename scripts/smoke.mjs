@@ -6,6 +6,7 @@ const root = fileURLToPath(new URL("..", import.meta.url));
 const dist = join(root, "dist");
 const globalCss = readFileSync(join(root, "src/styles/global.css"), "utf8");
 const eventHeroImage = "https://res.cloudinary.com/dz9tuwczf/image/upload/t_Optimization/foto-evento_d0eg2f.jpg";
+const oldProductTerm = String.fromCharCode(115, 117, 98, 99, 97, 116, 101, 103, 111, 114);
 const expectedPublicAssets = [
   "public/assets/brand/logo-circular.png",
   "public/assets/brand/logo-circular-white.png",
@@ -34,6 +35,7 @@ const pages = [
   ["index.html", "Prótesis, implantes e instrumental para equipos quirúrgicos"],
   ["catalogos/index.html", "Catálogos"],
   ["catalogos/cadera/index.html", "Cadera"],
+  ["catalogos/cadera/productos/cotilo-doble/index.html", "Cotilo doble"],
   ["galeria/index.html", "Galería"],
   ["eventos/index.html", "Capacitaciones y novedades"],
   ["nosotros/index.html", "Nosotros"],
@@ -81,11 +83,31 @@ for (const asset of expectedPublicAssets) {
 const home = readFileSync(join(dist, "index.html"), "utf8");
 const catalogos = readFileSync(join(dist, "catalogos/index.html"), "utf8");
 const catalogoCadera = readFileSync(join(dist, "catalogos/cadera/index.html"), "utf8");
+const catalogoCotiloDoble = readFileSync(join(dist, "catalogos/cadera/productos/cotilo-doble/index.html"), "utf8");
 const galeria = readFileSync(join(dist, "galeria/index.html"), "utf8");
 const eventos = readFileSync(join(dist, "eventos/index.html"), "utf8");
 const nosotros = readFileSync(join(dist, "nosotros/index.html"), "utf8");
 const contacto = readFileSync(join(dist, "contacto/index.html"), "utf8");
 const videos = readFileSync(join(dist, "videos/index.html"), "utf8");
+assert(catalogoCadera.includes("data-catalog-products"), "Cadera catalog should expose the product grid");
+assert(
+  (catalogoCadera.match(/data-catalog-product(?=[\s>])/g) ?? []).length === 15,
+  "Cadera catalog should render fifteen product cards",
+);
+assert(catalogoCadera.includes("Cotilo doble"), "Cadera catalog should include the Cotilo doble product");
+assert(catalogoCadera.includes("Tallo delta"), "Cadera catalog should include the Tallo delta product");
+assert(catalogoCadera.includes("/catalogos/cadera/productos/cotilo-doble"), "Cadera products should link to viewer pages");
+assert(!catalogoCadera.toLowerCase().includes(oldProductTerm), "Cadera catalog should use product terminology");
+assert(!catalogoCadera.includes("Ver PDF"), "Cadera product grid should not expose PDF actions");
+assert(!catalogoCadera.includes("Opciones de cotilo para artroplastia"), "Cadera product grid should not render descriptions");
+assert(!catalogoCadera.includes("data-catalog-viewer"), "Cadera catalog should not use the single PDF viewer");
+assert(catalogoCotiloDoble.includes("data-catalog-viewer"), "Cadera product detail should use the catalog viewer");
+assert(catalogoCotiloDoble.includes("Opciones de cotilo para artroplastia"), "Cadera product detail should render the description");
+assert(catalogoCotiloDoble.includes("Descargar PDF"), "Cadera product detail should keep the PDF placeholder action");
+assert(
+  !existsSync(join(dist, "catalogos/cadera/productos/cotilo-doble.pdf")),
+  "Cadera product should not generate static PDF output",
+);
 assert((home.match(/data-value-pillar(?=[\s>])/g) ?? []).length === 4, "Home should render four compact value pillars");
 assert(
   (home.match(/data-catalog-card/g) ?? []).length >= 6,
@@ -112,7 +134,7 @@ assert(!home.includes("catalog-card-cta"), "Catalog cards should not render the 
 assert((catalogos.match(/data-catalog-image-card/g) ?? []).length === 8, "Catalog page should render every category as an image-backed card");
 assert(catalogos.includes("page-hero-dark"), "Catalog page should use the dark premium page hero");
 assert(catalogos.includes("/assets/images/cat-cadera.jpg"), "Catalog page should preserve category background photography");
-assert(catalogoCadera.includes("Descargar PDF"), "Catalog detail should keep the PDF download placeholder while prototyping");
+assert(catalogoCotiloDoble.includes("Descargar PDF"), "Cadera product detail should expose the PDF placeholder");
 assert(catalogoCadera.includes("catalog-detail-shell"), "Catalog detail should use the redesigned dark/light layout shell");
 assert(!home.includes("data-professional-flow-item"), "Home should avoid the extra professional divider strip");
 assert(home.includes("data-suppliers-section"), "Home should include a brands and systems section");

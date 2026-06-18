@@ -16,12 +16,12 @@ export const images = {
 } as const;
 
 export const categoryImages = {
-  cadera: "/assets/images/cat-cadera.png",
-  rodilla: "/assets/images/cat-rodilla.png",
-  columna: "/assets/images/cat-columna.png",
-  maxilofacial: "/assets/images/cat-maxilofacial.png",
-  "osteosintesis-placas": "/assets/images/cat-osteosintesis-placas.png",
-  "osteosintesis-tornillos": "/assets/images/cat-osteosintesis-tornillos.png",
+  cadera: "/assets/images/cat-cadera.jpg",
+  rodilla: "/assets/images/cat-rodilla.jpg",
+  columna: "/assets/images/cat-columna.jpg",
+  maxilofacial: "/assets/images/cat-maxilofacial.jpg",
+  "osteosintesis-placas": "/assets/images/cat-osteosintesis-placas.jpg",
+  "osteosintesis-tornillos": "/assets/images/cat-osteosintesis-tornillos.jpg",
   "instrumental-quirurgico": "/assets/images/cat-instrumental-quirurgico.jpg",
   "otros-productos": "/assets/images/cat-otros-productos.jpg",
 } as const;
@@ -243,6 +243,185 @@ export const categories: Category[] = [
     description: "Insumos, descartables y productos complementarios.",
     pages: 4,
     icon: "package-check",
+  },
+];
+
+export type CatalogProduct = {
+  categorySlug: string;
+  slug: string;
+  title: string;
+  label: string;
+  description: string;
+  pages: number;
+  image: string;
+  href: string;
+};
+
+export const catalogProducts: CatalogProduct[] = [
+  {
+    categorySlug: "cadera",
+    slug: "cotilo-doble",
+    title: "Cotilo doble",
+    label: "Cotilo",
+    description:
+      "Opciones de cotilo para artroplastia de cadera, con foco en estabilidad, disponibilidad de medidas y coordinación de instrumental.",
+    pages: 8,
+    image: categoryImages.cadera,
+    href: "/catalogos/cadera/productos/cotilo-doble",
+  },
+  {
+    categorySlug: "cadera",
+    slug: "charnley-muller",
+    title: "Charnley-Müller",
+    label: "Caja de instrumental",
+    description:
+      "Instrumental asociado a sistemas Charnley-Müller para procedimientos de cadera y recambios planificados.",
+    pages: 10,
+    image: images.productos,
+    href: "/catalogos/cadera/productos/charnley-muller",
+  },
+  {
+    categorySlug: "cadera",
+    slug: "thompson",
+    title: "Thompson",
+    label: "Caja de instrumental",
+    description:
+      "Caja de instrumental Thompson para resolver preparación, prueba y asistencia intraoperatoria en procedimientos de cadera.",
+    pages: 8,
+    image: images.hero,
+    href: "/catalogos/cadera/productos/thompson",
+  },
+  {
+    categorySlug: "cadera",
+    slug: "judett-plus",
+    title: "Judett Plus",
+    label: "Caja de instrumental",
+    description:
+      "Instrumental Judett Plus orientado a equipos que requieren organización clara de componentes y disponibilidad por cirugía.",
+    pages: 8,
+    image: images.productos,
+    href: "/catalogos/cadera/productos/judett-plus",
+  },
+  {
+    categorySlug: "cadera",
+    slug: "cadera-xl",
+    title: "Cadera XL",
+    label: "Espaciadores de cadera",
+    description:
+      "Espaciadores de cadera para planificación y soporte en procedimientos que requieren alternativas temporales o de revisión.",
+    pages: 6,
+    image: images.heroAmis,
+    href: "/catalogos/cadera/productos/cadera-xl",
+  },
+  {
+    categorySlug: "cadera",
+    slug: "explant",
+    title: "Explant",
+    label: "Caja de instrumental",
+    description:
+      "Caja de instrumental Explant para extracción, recambio y asistencia técnica en escenarios de mayor complejidad.",
+    pages: 9,
+    image: images.heroBg,
+    href: "/catalogos/cadera/productos/explant",
+  },
+  {
+    categorySlug: "cadera",
+    slug: "giliberty",
+    title: "Giliberty",
+    label: "Caja de instrumental",
+    description:
+      "Instrumental Giliberty para acompañar procedimientos de cadera con componentes identificables y flujo de trabajo ordenado.",
+    pages: 8,
+    image: categoryImages.cadera,
+    href: "/catalogos/cadera/productos/giliberty",
+  },
+  {
+    categorySlug: "cadera",
+    slug: "refuerzo-acetabular",
+    title: "Refuerzo acetabular",
+    label: "Caja de instrumental",
+    description:
+      "Opciones de refuerzo acetabular para casos que requieren soporte adicional, planificación de medidas y coordinación previa.",
+    pages: 7,
+    image: categoryImages["osteosintesis-placas"],
+    href: "/catalogos/cadera/productos/refuerzo-acetabular",
+  },
+  {
+    categorySlug: "cadera",
+    slug: "endoprotesis-modular-cadera",
+    title: "Endoprótesis modular de cadera",
+    label: "Endoprótesis modular",
+    description:
+      "Sistema modular para reconstrucción y reemplazo de cadera en procedimientos que exigen configuración por necesidad quirúrgica.",
+    pages: 9,
+    image: images.heroAmis,
+    href: "/catalogos/cadera/productos/endoprotesis-modular-cadera",
+  },
+  {
+    categorySlug: "cadera",
+    slug: "hip-lock",
+    title: "Hip-Lock",
+    label: "Cúpula no cementada",
+    description:
+      "Cúpula no cementada Hip-Lock con información de referencia para selección, medidas disponibles y componentes asociados.",
+    pages: 8,
+    image: categoryImages.cadera,
+    href: "/catalogos/cadera/productos/hip-lock",
+  },
+  {
+    categorySlug: "cadera",
+    slug: "monoblock",
+    title: "Monoblock",
+    label: "Caja de instrumental",
+    description:
+      "Instrumental Monoblock para preparación y asistencia en procedimientos de cadera con necesidades de caja específica.",
+    pages: 7,
+    image: images.hero,
+    href: "/catalogos/cadera/productos/monoblock",
+  },
+  {
+    categorySlug: "cadera",
+    slug: "cadera-no-cementada-hip-lock",
+    title: "Cadera no cementada Hip-Lock",
+    label: "Prótesis para reemplazo total de cadera",
+    description:
+      "Línea no cementada Hip-Lock para reemplazo total de cadera, con referencias para planificación y consulta comercial.",
+    pages: 10,
+    image: images.heroAmis,
+    href: "/catalogos/cadera/productos/cadera-no-cementada-hip-lock",
+  },
+  {
+    categorySlug: "cadera",
+    slug: "tallo-spotorno",
+    title: "Tallo Spotorno",
+    label: "Tallo",
+    description:
+      "Tallo Spotorno para procedimientos de cadera, con descripción técnica inicial y acceso al PDF de referencia.",
+    pages: 6,
+    image: categoryImages.cadera,
+    href: "/catalogos/cadera/productos/tallo-spotorno",
+  },
+  {
+    categorySlug: "cadera",
+    slug: "tallo-sp",
+    title: "Tallo SP",
+    label: "Tallo no cementado",
+    description:
+      "Tallo SP no cementado con información organizada para consulta de características, medidas y coordinación de pedidos.",
+    pages: 6,
+    image: images.heroAmis,
+    href: "/catalogos/cadera/productos/tallo-sp",
+  },
+  {
+    categorySlug: "cadera",
+    slug: "tallo-delta",
+    title: "Tallo delta",
+    label: "Tallo no cementado",
+    description:
+      "Tallo delta para reemplazo de cadera no cementado, con acceso rápido al PDF y detalle de uso comercial inicial.",
+    pages: 6,
+    image: images.productos,
+    href: "/catalogos/cadera/productos/tallo-delta",
   },
 ];
 
