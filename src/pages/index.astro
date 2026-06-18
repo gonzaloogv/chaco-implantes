@@ -9,7 +9,6 @@ import {
   images,
   professionalBlocks,
   supplierSystems,
-  valuePillars,
   whatsappLink,
 } from "../data/site";
 ---
@@ -87,23 +86,6 @@ import {
           ></button>
         ))}
       </div>
-    </div>
-  </section>
-
-  <section data-value-pillars class="border-y border-primary/25 bg-[#101b2f] px-4 py-5 sm:px-6 lg:px-8">
-    <div class="mx-auto grid max-w-7xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
-      {valuePillars.map((pillar) => (
-        <article
-          data-value-pillar
-          class="flex min-h-24 items-center gap-4 rounded-xl border p-4 text-white shadow-[inset_0_1px_0_rgba(143,179,226,0.08)]"
-          style="background-color: rgba(74, 144, 196, 0.12); border-color: rgba(74, 144, 196, 0.58);"
-        >
-          <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border text-brand" style="background-color: rgba(74, 144, 196, 0.16); border-color: rgba(74, 144, 196, 0.42);">
-            <Icon name={pillar.icon} class="h-5 w-5" />
-          </div>
-          <p class="font-display text-sm font-black leading-tight text-white">{pillar.label}</p>
-        </article>
-      ))}
     </div>
   </section>
 
