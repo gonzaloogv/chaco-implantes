@@ -16,12 +16,12 @@ export const images = {
 } as const;
 
 export const categoryImages = {
-  cadera: "/assets/images/cat-cadera.jpg",
-  rodilla: "/assets/images/cat-rodilla.jpg",
-  columna: "/assets/images/cat-columna.jpg",
-  maxilofacial: "/assets/images/cat-maxilofacial.jpg",
-  "osteosintesis-placas": "/assets/images/cat-osteosintesis-placas.jpg",
-  "osteosintesis-tornillos": "/assets/images/cat-osteosintesis-tornillos.jpg",
+  cadera: "/assets/images/cat-cadera.png",
+  rodilla: "/assets/images/cat-rodilla.png",
+  columna: "/assets/images/cat-columna.png",
+  maxilofacial: "/assets/images/cat-maxilofacial.png",
+  "osteosintesis-placas": "/assets/images/cat-osteosintesis-placas.png",
+  "osteosintesis-tornillos": "/assets/images/cat-osteosintesis-tornillos.png",
   "instrumental-quirurgico": "/assets/images/cat-instrumental-quirurgico.jpg",
   "otros-productos": "/assets/images/cat-otros-productos.jpg",
 } as const;
