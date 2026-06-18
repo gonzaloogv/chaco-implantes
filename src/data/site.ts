@@ -4,7 +4,7 @@ export const images = {
   heroMobile: "/assets/images/hero-mobile.JPG",
   heroNextAR: "/assets/images/nextar-hero.png",
   heroAmis: "/assets/images/amis-hero.png",
-  heroEventos: "/assets/images/eventos-hero.jpg",
+  heroEventos: "https://res.cloudinary.com/dz9tuwczf/image/upload/t_Optimization/foto-evento_d0eg2f.jpg",
   quirofano: "/assets/images/quirofano.jpg",
   evento: "/assets/images/evento.jpg",
   congreso: "/assets/images/congreso-traumatologia-2024.JPG",

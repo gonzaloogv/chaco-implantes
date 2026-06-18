@@ -5,6 +5,7 @@ import { join } from "node:path";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const dist = join(root, "dist");
 const globalCss = readFileSync(join(root, "src/styles/global.css"), "utf8");
+const eventHeroImage = "https://res.cloudinary.com/dz9tuwczf/image/upload/t_Optimization/foto-evento_d0eg2f.jpg";
 const expectedPublicAssets = [
   "public/assets/brand/logo-circular.png",
   "public/assets/brand/logo-circular-white.png",
@@ -93,7 +94,7 @@ assert(
 assert(!home.includes("data-catalog-card-icon"), "Catalog cards should not render decorative icons");
 assert(home.includes("/assets/images/nextar-hero.png"), "Home should use the NextAR full-hero image");
 assert(home.includes("/assets/images/amis-hero.png"), "Home should use the AMIS full-hero image");
-assert(home.includes("/assets/images/eventos-hero.jpg"), "Home should use the events full-hero image");
+assert(home.includes(eventHeroImage), "Home should use the events full-hero image");
 assert(home.includes("data-hero-carousel"), "Home hero should include the differentiator carousel");
 assert((home.match(/<article data-hero-slide/g) ?? []).length === 3, "Hero carousel should render three differentiator slides");
 assert(home.includes("NextAR"), "Hero carousel should describe the NextAR differentiator");
@@ -148,7 +149,7 @@ assert(eventos.includes("data-eventos-page"), "Events page should expose the red
 assert(eventos.includes("page-hero-dark"), "Events page should use the dark premium page hero");
 assert(eventos.includes("page-surface"), "Events page should use the shared light content surface");
 assert(eventos.includes("data-featured-event"), "Events page should highlight the latest institutional event");
-assert(eventos.includes("/assets/images/eventos-hero.jpg"), "Events page should use the updated events hero image");
+assert(eventos.includes(eventHeroImage), "Events page should use the updated events hero image");
 assert(nosotros.includes("data-nosotros-page"), "About page should expose the redesigned page marker");
 assert(nosotros.includes("page-hero-dark"), "About page should use the dark premium page hero");
 assert(nosotros.includes("page-surface"), "About page should use the shared light content surface");
