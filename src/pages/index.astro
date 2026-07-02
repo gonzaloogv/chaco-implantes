@@ -9,6 +9,7 @@ import {
   images,
   professionalBlocks,
   supplierSystems,
+  valuePillars,
   whatsappLink,
 } from "../data/site";
 ---
@@ -86,6 +87,20 @@ import {
           ></button>
         ))}
       </div>
+    </div>
+  </section>
+
+  <section data-value-pillars class="value-pillars-band px-4 py-4 sm:px-6 lg:px-8">
+    <h2 class="sr-only">Diferenciales de Chaco Implantes</h2>
+    <div class="mx-auto grid max-w-7xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {valuePillars.map((pillar) => (
+        <article data-value-pillar class="value-pillar-card flex min-h-20 items-center gap-3 rounded-lg border px-4 py-3">
+          <span class="value-pillar-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-white">
+            <Icon name={pillar.icon} class="h-5 w-5" />
+          </span>
+          <p class="value-pillar-label text-sm font-semibold leading-snug">{pillar.label}</p>
+        </article>
+      ))}
     </div>
   </section>
 
