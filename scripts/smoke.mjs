@@ -21,12 +21,12 @@ const expectedPublicAssets = [
   "public/assets/images/quirofano.jpg",
   "public/assets/images/evento.jpg",
   "public/assets/images/congreso-traumatologia-2024.JPG",
-  "public/assets/images/cat-cadera.jpg",
-  "public/assets/images/cat-rodilla.jpg",
-  "public/assets/images/cat-columna.jpg",
-  "public/assets/images/cat-maxilofacial.jpg",
-  "public/assets/images/cat-osteosintesis-placas.jpg",
-  "public/assets/images/cat-osteosintesis-tornillos.jpg",
+  "public/assets/images/cat-cadera.png",
+  "public/assets/images/cat-rodilla.png",
+  "public/assets/images/cat-columna.png",
+  "public/assets/images/cat-maxilofacial.png",
+  "public/assets/images/cat-osteosintesis-placas.png",
+  "public/assets/images/cat-osteosintesis-tornillos.png",
   "public/assets/images/cat-instrumental-quirurgico.jpg",
   "public/assets/images/cat-otros-productos.jpg",
 ];
@@ -36,6 +36,10 @@ const pages = [
   ["catalogos/index.html", "Catálogos"],
   ["catalogos/cadera/index.html", "Cadera"],
   ["catalogos/cadera/productos/cotilo-doble/index.html", "Cotilo doble"],
+  ["catalogos/rodilla/productos/rodilla-anv-ii/index.html", "Rodilla ANV II"],
+  ["catalogos/osteosintesis-placas/productos/placa-bloqueada-35mm/index.html", "Ø3,5mm"],
+  ["catalogos/osteosintesis-tornillos/productos/de-tobillo/index.html", "De tobillo"],
+  ["catalogos/otros-productos/productos/perforador-sierra/index.html", "Perforador y Sierra"],
   ["galeria/index.html", "Galería"],
   ["eventos/index.html", "Capacitaciones y novedades"],
   ["nosotros/index.html", "Nosotros"],
@@ -84,6 +88,14 @@ const home = readFileSync(join(dist, "index.html"), "utf8");
 const catalogos = readFileSync(join(dist, "catalogos/index.html"), "utf8");
 const catalogoCadera = readFileSync(join(dist, "catalogos/cadera/index.html"), "utf8");
 const catalogoCotiloDoble = readFileSync(join(dist, "catalogos/cadera/productos/cotilo-doble/index.html"), "utf8");
+const catalogoRodilla = readFileSync(join(dist, "catalogos/rodilla/index.html"), "utf8");
+const catalogoRodillaAnv = readFileSync(join(dist, "catalogos/rodilla/productos/rodilla-anv-ii/index.html"), "utf8");
+const catalogoPlacas = readFileSync(join(dist, "catalogos/osteosintesis-placas/index.html"), "utf8");
+const catalogoPlaca35 = readFileSync(join(dist, "catalogos/osteosintesis-placas/productos/placa-bloqueada-35mm/index.html"), "utf8");
+const catalogoTornillos = readFileSync(join(dist, "catalogos/osteosintesis-tornillos/index.html"), "utf8");
+const catalogoDeTobillo = readFileSync(join(dist, "catalogos/osteosintesis-tornillos/productos/de-tobillo/index.html"), "utf8");
+const catalogoOtros = readFileSync(join(dist, "catalogos/otros-productos/index.html"), "utf8");
+const catalogoPerforador = readFileSync(join(dist, "catalogos/otros-productos/productos/perforador-sierra/index.html"), "utf8");
 const galeria = readFileSync(join(dist, "galeria/index.html"), "utf8");
 const eventos = readFileSync(join(dist, "eventos/index.html"), "utf8");
 const nosotros = readFileSync(join(dist, "nosotros/index.html"), "utf8");
@@ -108,6 +120,83 @@ assert(
   !existsSync(join(dist, "catalogos/cadera/productos/cotilo-doble.pdf")),
   "Cadera product should not generate static PDF output",
 );
+assert(catalogoRodilla.includes("data-catalog-products"), "Rodilla catalog should expose the product grid");
+assert(
+  (catalogoRodilla.match(/data-catalog-product(?=[\s>])/g) ?? []).length === 4,
+  "Rodilla catalog should render four product cards",
+);
+assert(catalogoRodilla.includes("Rodilla ANV II"), "Rodilla catalog should include the Rodilla ANV II product");
+assert(catalogoRodilla.includes("Suplementos ANV II"), "Rodilla catalog should include the Suplementos ANV II product");
+assert(catalogoRodilla.includes("Rodilla MF"), "Rodilla catalog should include the Rodilla MF product");
+assert(catalogoRodilla.includes("Rodilla Modular"), "Rodilla catalog should include the Rodilla Modular product");
+assert(catalogoRodilla.includes("/catalogos/rodilla/productos/rodilla-anv-ii"), "Rodilla products should link to viewer pages");
+assert(!catalogoRodilla.includes("Sistema de rodilla ANV II"), "Rodilla product grid should not render descriptions");
+assert(!catalogoRodilla.includes("Ver PDF"), "Rodilla product grid should not expose PDF actions");
+assert(!catalogoRodilla.includes("data-catalog-viewer"), "Rodilla catalog should not use the single PDF viewer");
+assert(catalogoRodillaAnv.includes("data-catalog-viewer"), "Rodilla product detail should use the catalog viewer");
+assert(catalogoRodillaAnv.includes("Sistema de rodilla ANV II"), "Rodilla product detail should render the description");
+assert(catalogoRodillaAnv.includes("Descargar PDF"), "Rodilla product detail should keep the PDF placeholder action");
+assert(catalogoPlacas.includes("data-catalog-products"), "Osteosynthesis plates catalog should expose the product grid");
+assert(
+  (catalogoPlacas.match(/data-catalog-product(?=[\s>])/g) ?? []).length === 17,
+  "Osteosynthesis plates catalog should render seventeen product cards",
+);
+assert(catalogoPlacas.includes("Ø3,5mm"), "Osteosynthesis plates catalog should include the 3.5mm blocked plate product");
+assert(catalogoPlacas.includes("Ø4,5mm"), "Osteosynthesis plates catalog should include the 4.5mm blocked plate product");
+assert(catalogoPlacas.includes("Clavícula"), "Osteosynthesis plates catalog should include the clavicle product");
+assert(catalogoPlacas.includes("Proximal"), "Osteosynthesis plates catalog should include the proximal tibia product");
+assert(catalogoPlacas.includes("Húmero distal"), "Osteosynthesis plates catalog should include the distal humerus product");
+assert(catalogoPlacas.includes("Volar poliaxial"), "Osteosynthesis plates catalog should include the polyaxial volar product");
+assert(catalogoPlacas.includes("Herbert-Barouk"), "Osteosynthesis plates catalog should include the Herbert-Barouk product");
+assert(
+  catalogoPlacas.includes("/catalogos/osteosintesis-placas/productos/placa-bloqueada-35mm"),
+  "Osteosynthesis plates products should link to viewer pages",
+);
+assert(!catalogoPlacas.includes("Placa bloqueada de Ø3,5 mm"), "Osteosynthesis plates product grid should not render descriptions");
+assert(!catalogoPlacas.includes("Ver PDF"), "Osteosynthesis plates product grid should not expose PDF actions");
+assert(!catalogoPlacas.includes("data-catalog-viewer"), "Osteosynthesis plates catalog should not use the single PDF viewer");
+assert(catalogoPlaca35.includes("data-catalog-viewer"), "Osteosynthesis plates product detail should use the catalog viewer");
+assert(catalogoPlaca35.includes("Placa bloqueada de Ø3,5 mm"), "Osteosynthesis plates product detail should render the description");
+assert(catalogoPlaca35.includes("Descargar PDF"), "Osteosynthesis plates product detail should keep the PDF placeholder action");
+assert(catalogoTornillos.includes("data-catalog-products"), "Osteosynthesis screws catalog should expose the product grid");
+assert(
+  (catalogoTornillos.match(/data-catalog-product(?=[\s>])/g) ?? []).length === 6,
+  "Osteosynthesis screws catalog should render six product cards",
+);
+assert(catalogoTornillos.includes("De tobillo"), "Osteosynthesis screws catalog should include the De tobillo product");
+assert(catalogoTornillos.includes("Multidireccional"), "Osteosynthesis screws catalog should include the Multidireccional product");
+assert(catalogoTornillos.includes("Retrógrado"), "Osteosynthesis screws catalog should include the Retrógrado product");
+assert(catalogoTornillos.includes("Gamma GN"), "Osteosynthesis screws catalog should include the Gamma GN product");
+assert(catalogoTornillos.includes("Clavo acerrojado de húmero"), "Osteosynthesis screws catalog should include the humerus nail product");
+assert(catalogoTornillos.includes("Clavo placa tubo deslizante (Richard)"), "Osteosynthesis screws catalog should include the Richard product");
+assert(
+  catalogoTornillos.includes("/catalogos/osteosintesis-tornillos/productos/de-tobillo"),
+  "Osteosynthesis screws products should link to viewer pages",
+);
+assert(!catalogoTornillos.includes("Clavo para artrodesis de tobillo"), "Osteosynthesis screws product grid should not render descriptions");
+assert(!catalogoTornillos.includes("Ver PDF"), "Osteosynthesis screws product grid should not expose PDF actions");
+assert(!catalogoTornillos.includes("data-catalog-viewer"), "Osteosynthesis screws catalog should not use the single PDF viewer");
+assert(catalogoDeTobillo.includes("data-catalog-viewer"), "Osteosynthesis screws product detail should use the catalog viewer");
+assert(catalogoDeTobillo.includes("Clavo para artrodesis de tobillo"), "Osteosynthesis screws product detail should render the description");
+assert(catalogoDeTobillo.includes("Descargar PDF"), "Osteosynthesis screws product detail should keep the PDF placeholder action");
+assert(catalogoOtros.includes("data-catalog-products"), "Other trauma products catalog should expose the product grid");
+assert(
+  (catalogoOtros.match(/data-catalog-product(?=[\s>])/g) ?? []).length === 3,
+  "Other trauma products catalog should render three product cards",
+);
+assert(catalogoOtros.includes("Perforador y Sierra"), "Other trauma products catalog should include the drill and saw product");
+assert(catalogoOtros.includes("Universal"), "Other trauma products catalog should include the extraction system product");
+assert(catalogoOtros.includes("Emergencia"), "Other trauma products catalog should include the emergency instrument product");
+assert(
+  catalogoOtros.includes("/catalogos/otros-productos/productos/perforador-sierra"),
+  "Other trauma products should link to viewer pages",
+);
+assert(!catalogoOtros.includes("Motor Overfix para perforación"), "Other trauma product grid should not render descriptions");
+assert(!catalogoOtros.includes("Ver PDF"), "Other trauma product grid should not expose PDF actions");
+assert(!catalogoOtros.includes("data-catalog-viewer"), "Other trauma catalog should not use the single PDF viewer");
+assert(catalogoPerforador.includes("data-catalog-viewer"), "Other trauma product detail should use the catalog viewer");
+assert(catalogoPerforador.includes("Motor Overfix para perforación"), "Other trauma product detail should render the description");
+assert(catalogoPerforador.includes("Descargar PDF"), "Other trauma product detail should keep the PDF placeholder action");
 assert((home.match(/data-value-pillar(?=[\s>])/g) ?? []).length === 4, "Home should render four compact value pillars");
 assert(
   (home.match(/data-catalog-card/g) ?? []).length >= 6,
@@ -127,13 +216,13 @@ assert(!home.includes("TecnologÃ­a Medacta"), "NextAR hero copy should not men
 assert(!home.includes("Consultar sistemas Medacta"), "NextAR hero CTA should not mention Medacta");
 assert(home.includes("Productos para traumatología"), "Home should clarify the product category without the old tagline");
 assert(!home.includes("Al servicio de la salud"), "Home should not render the old health-service tagline");
-assert(home.includes("/assets/images/cat-cadera.jpg"), "Home catalog cards should use category photography");
+assert(home.includes("/assets/images/cat-cadera.png"), "Home catalog cards should use category photography");
 assert((home.match(/data-catalog-image-card/g) ?? []).length >= 6, "Home should render image-backed catalog cards");
 assert(home.includes("catalog-card-link"), "Catalog cards should render a text-style CTA link");
 assert(!home.includes("catalog-card-cta"), "Catalog cards should not render the catalog action as a button");
 assert((catalogos.match(/data-catalog-image-card/g) ?? []).length === 8, "Catalog page should render every category as an image-backed card");
 assert(catalogos.includes("page-hero-dark"), "Catalog page should use the dark premium page hero");
-assert(catalogos.includes("/assets/images/cat-cadera.jpg"), "Catalog page should preserve category background photography");
+assert(catalogos.includes("/assets/images/cat-cadera.png"), "Catalog page should preserve category background photography");
 assert(catalogoCotiloDoble.includes("Descargar PDF"), "Cadera product detail should expose the PDF placeholder");
 assert(catalogoCadera.includes("catalog-detail-shell"), "Catalog detail should use the redesigned dark/light layout shell");
 assert(!home.includes("data-professional-flow-item"), "Home should avoid the extra professional divider strip");
@@ -190,7 +279,7 @@ assert(!existsSync(join(root, "prototipo")), "Prototype folder should not remain
 assert(!output.includes("prototipo"), "Build output should not reference prototype material");
 assert(output.includes("/assets/brand/logo-circular.png"), "Build output should use organized brand asset paths");
 assert(output.includes("/assets/images/hero.jpg"), "Build output should use organized image asset paths");
-assert(output.includes("/assets/images/cat-cadera.jpg"), "Build output should include category image assets");
+assert(output.includes("/assets/images/cat-cadera.png"), "Build output should include category image assets");
 assert(!output.includes("/assets/logo-circular.png"), "Build output should not use old flat logo asset path");
 assert(!output.includes("/assets/hero.jpg"), "Build output should not use old flat hero asset path");
 assert(home.includes('id="profesionales"'), "Professionals section should remain only as a home section");

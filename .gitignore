@@ -13,6 +13,9 @@ yarn-error.log*
 pnpm-debug.log*
 .astro-dev*.log
 
+# generated demo videos
+videos/
+
 
 # environment variables
 .env
