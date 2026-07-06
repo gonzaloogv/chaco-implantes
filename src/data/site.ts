@@ -781,6 +781,105 @@ export type GalleryItem = {
 export const galleryFilters = ["Productos", "Instrumental", "Quirófano", "Eventos"] as const;
 
 export const GALLERY_PAGE_SIZE = 12;
+const CLOUDINARY_UPLOAD_SEGMENT = "/image/upload/";
+const GALLERY_THUMB_TRANSFORM = "f_auto,q_auto,c_fill,g_auto,w_600,h_400";
+const GALLERY_FULL_TRANSFORM = "f_auto,q_auto,c_limit,w_1920";
+const EVENT_GALLERY_TITLE = "61° Congreso Argentino de Ortopedia y Traumatología";
+
+const isCloudinaryTransformSegment = (segment: string) =>
+  segment.startsWith("t_") || segment.split(",").every((part) => /^[a-z]{1,3}_/.test(part));
+
+const cloudinaryVariant = (url: string, transformation: string) => {
+  const [base, rest] = url.split(CLOUDINARY_UPLOAD_SEGMENT);
+  if (!rest) return url;
+
+  const parts = rest.split("/");
+  const assetPath = isCloudinaryTransformSegment(parts[0] || "") ? parts.slice(1).join("/") : rest;
+  return `${base}${CLOUDINARY_UPLOAD_SEGMENT}${transformation}/${assetPath}`;
+};
+
+const eventGalleryImages = [
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-99_ocnsrl.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-98_yxjvqv.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-97_fvfbip.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-96_jy442k.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-94_cayape.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-95_ksf5oj.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-93_qk6t7z.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-91_vrn8qd.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-92_z3fruw.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-90_eo21jt.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-89_av3hws.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-88_xmmnzc.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-86_a01tji.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-87_ecangz.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-85_ltfxq8.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-82_cc6z1u.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-84_pcshmz.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-81_zyiozh.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-80_nwifrl.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-78_ttvgtb.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-79_ydqllb.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-76_ujchpi.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-77_ramqm2.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-75_iv6ite.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-74_usnp9z.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-71_uzxx19.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-73_n3nixf.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-72_r3fony.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-70_h6yuzj.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-68_ehzk0m.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-69_biecuk.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-66_jsiowk.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-67_vzjbhc.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-65_yvgqxc.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-64_ahtkgt.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-63_lgxc8v.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-62_c0j6nb.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-61_ha4yc5.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-60_vmhgvf.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-57_nrmroe.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-59_khgscc.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-58_a2sxpw.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-56_qkfcvb.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-54_vqi90v.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-55_j6q3sh.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-53_dm9ssd.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-52_v7poi1.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-51_rh6qee.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-50_j8feme.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-49_kfw1hy.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-48_ukylmv.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-47_ckpt6m.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-46_tdc8lt.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-45_e7n3of.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-44_jajceb.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-43_actk4v.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_traumato-252_h6b0t7.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_traumato-249_r5clgj.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_traumato-251_vp0buq.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_traumato-250_aiwhft.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_traumato-248_c7chsc.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_traumato-247_mszrpf.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_traumato-246_ctyda9.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_traumato-245_pzogyw.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_traumato-244_xw1ycj.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_traumato-241_dxamgn.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_traumato-243_y8nriq.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_traumato-240_rdglqt.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_traumato-239_i06352.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_traumato-238_taa9gp.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_traumato-235_qm5qzw.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_traumato-236_fteaqx.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_traumato-234_elmhde.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_traumato-231_eptjtt.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_traumato-232_eiiphi.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_traumato-233_s0j08g.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-100_jvbmaf.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-102_xfshwn.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_Traumato-101_ho2aad.jpg",
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/t_optimize/Congreso_traumato-230_m0ssnq.jpg",
+] as const;
 
 const galleryPool: { category: GalleryCategory; image: string; alt: string }[] = [
   { category: "Productos", image: images.productos, alt: "Placas y tornillos de osteosíntesis" },
@@ -797,13 +896,18 @@ const galleryPool: { category: GalleryCategory; image: string; alt: string }[] =
   { category: "Eventos", image: images.evento, alt: "Jornada con profesionales de la región" },
 ];
 
-export const gallery: GalleryItem[] = Array.from({ length: 24 }, (_, index) => {
-  const base = galleryPool[index % galleryPool.length];
+const eventGalleryPool: { category: GalleryCategory; image: string; alt: string }[] = eventGalleryImages.map((image) => ({
+  category: "Eventos",
+  image,
+  alt: EVENT_GALLERY_TITLE,
+}));
+
+export const gallery: GalleryItem[] = [...galleryPool, ...eventGalleryPool].map((base, index) => {
   return {
     id: `g${index + 1}`,
     category: base.category,
-    thumb: base.image,
-    full: base.image,
+    thumb: cloudinaryVariant(base.image, GALLERY_THUMB_TRANSFORM),
+    full: cloudinaryVariant(base.image, GALLERY_FULL_TRANSFORM),
     alt: base.alt,
   };
 });

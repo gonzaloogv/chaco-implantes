@@ -11,10 +11,7 @@ import { GALLERY_PAGE_SIZE, gallery, galleryFilters } from "../data/site";
 >
   <section class="page-hero-dark border-b border-white/10 px-4 pb-14 pt-32 text-white sm:px-6 lg:px-8">
     <div class="mx-auto max-w-7xl">
-      <span class="inline-flex items-center gap-2 rounded-full border border-primary-glow/30 bg-primary/15 px-3 py-2 text-xs font-bold uppercase text-brand">
-        Material visual
-      </span>
-      <h1 class="mt-5 font-display text-4xl font-black sm:text-5xl">Galería</h1>
+      <h1 class="font-display text-4xl font-black sm:text-5xl">Galería</h1>
       <p class="mt-3 max-w-2xl text-brand">
         Productos, instrumental y actividades con profesionales e instituciones.
       </p>
@@ -68,14 +65,15 @@ import { GALLERY_PAGE_SIZE, gallery, galleryFilters } from "../data/site";
             index >= GALLERY_PAGE_SIZE && "hidden",
           ]}
         >
-          <span class="relative block aspect-[4/3] overflow-hidden bg-secondary/50">
+          <span class="relative block aspect-[3/2] overflow-hidden bg-secondary/50">
             <img
               src={item.thumb}
               alt={item.alt}
-              loading="lazy"
+              loading={index < GALLERY_PAGE_SIZE ? "eager" : "lazy"}
+              fetchpriority={index < 4 ? "high" : "auto"}
               decoding="async"
-              width="400"
-              height="300"
+              width="600"
+              height="400"
               class="h-full w-full object-cover transition-transform duration-200 ease-out"
             />
           </span>
@@ -99,21 +97,24 @@ import { GALLERY_PAGE_SIZE, gallery, galleryFilters } from "../data/site";
   </div>
   </section>
 
-  <div data-lightbox class="fixed inset-0 z-[80] hidden items-center justify-center bg-deep/85 p-4">
-    <button type="button" data-lightbox-close aria-label="Cerrar" class="icon-button absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-md text-deep-foreground hover:bg-primary/20">
+  <dialog data-lightbox role="dialog" aria-modal="true" aria-labelledby="lightbox-title" class="lightbox-dialog fixed z-[80] text-deep-foreground">
+    <button type="button" data-lightbox-close aria-label="Cerrar" class="icon-button absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-md text-deep-foreground hover:bg-primary/20">
       <Icon name="x" class="h-6 w-6" />
     </button>
-    <button type="button" data-lightbox-prev aria-label="Anterior" class="icon-button absolute left-3 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full text-deep-foreground hover:bg-primary/20 sm:left-6">
+    <button type="button" data-lightbox-prev aria-label="Imagen anterior" class="icon-button absolute left-3 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full text-deep-foreground hover:bg-primary/20 sm:left-6">
       <Icon name="chevron-left" class="h-6 w-6" />
     </button>
-    <button type="button" data-lightbox-next aria-label="Siguiente" class="icon-button absolute right-3 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full text-deep-foreground hover:bg-primary/20 sm:right-6">
+    <button type="button" data-lightbox-next aria-label="Imagen siguiente" class="icon-button absolute right-3 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full text-deep-foreground hover:bg-primary/20 sm:right-6">
       <Icon name="chevron-right" class="h-6 w-6" />
     </button>
-    <figure class="lightbox-panel max-h-[85vh] max-w-3xl overflow-hidden rounded-xl bg-card">
+    <figure class="lightbox-panel max-h-[85vh] max-w-3xl overflow-hidden rounded-xl bg-card text-deep">
       <img data-lightbox-image alt="" class="max-h-[78vh] w-full object-contain" />
-      <figcaption data-lightbox-caption class="px-4 py-3 text-sm text-muted-foreground"></figcaption>
+      <figcaption class="space-y-0.5 px-4 py-3 text-sm">
+        <span id="lightbox-title" data-lightbox-caption-title class="block font-semibold text-deep"></span>
+        <span data-lightbox-caption-category class="block text-xs text-muted-foreground"></span>
+      </figcaption>
     </figure>
-  </div>
+  </dialog>
 </BaseLayout>
 
 <script>
@@ -121,20 +122,44 @@ import { GALLERY_PAGE_SIZE, gallery, galleryFilters } from "../data/site";
   const pageSize = Number(page?.getAttribute("data-gallery-page-size") || "12");
   const filterWrap = document.querySelector("[data-gallery-filters]");
   const filterButtons = Array.from(document.querySelectorAll("[data-filter]"));
+  const galleryGrid = document.querySelector("[data-gallery-grid]");
   const galleryItems = Array.from(document.querySelectorAll("[data-gallery-item]"));
   const loadMore = document.querySelector("[data-load-more]");
   const loadMoreWrap = document.querySelector("[data-load-more-wrap]");
   const loadMoreCount = document.querySelector("[data-load-more-count]");
   const lightbox = document.querySelector("[data-lightbox]");
+  const lightboxPanel = document.querySelector(".lightbox-panel");
   const lightboxImage = document.querySelector("[data-lightbox-image]");
-  const lightboxCaption = document.querySelector("[data-lightbox-caption]");
+  const lightboxCaptionTitle = document.querySelector("[data-lightbox-caption-title]");
+  const lightboxCaptionCategory = document.querySelector("[data-lightbox-caption-category]");
   const close = document.querySelector("[data-lightbox-close]");
   const prev = document.querySelector("[data-lightbox-prev]");
   const next = document.querySelector("[data-lightbox-next]");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   let activeFilter = "Todos";
   let visible = pageSize;
   let activeIndex = -1;
+  let lastTrigger: HTMLElement | null = null;
+  let galleryFilterTimer: number | undefined;
+  let lightboxRequestId = 0;
+  const prefetchedThumbs = new Set<string>();
+  const prefetchedImages: HTMLImageElement[] = [];
+  const prefetchedLightboxImages = new Map<string, HTMLImageElement>();
+
+  type IdleWindow = Window &
+    typeof globalThis & {
+      requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
+    };
+
+  const normalizeFilter = (value: string) =>
+    value
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+
+  const findFilterButton = (filter: string) =>
+    filterButtons.find((item) => item instanceof HTMLElement && normalizeFilter(item.dataset.filter || "") === normalizeFilter(filter));
 
   const filteredItems = () =>
     galleryItems.filter((item) => item instanceof HTMLElement && (activeFilter === "Todos" || item.dataset.category === activeFilter));
@@ -153,20 +178,199 @@ import { GALLERY_PAGE_SIZE, gallery, galleryFilters } from "../data/site";
     if (loadMoreCount) loadMoreCount.textContent = `(${remaining})`;
   };
 
-  const openLightbox = (index: number) => {
-    const items = filteredItems();
-    const item = items[index];
+  const pulseGallery = () => {
+    if (!(galleryGrid instanceof HTMLElement) || reduceMotion.matches) return;
+    window.clearTimeout(galleryFilterTimer);
+    galleryGrid.setAttribute("data-filtering", "true");
+    galleryFilterTimer = window.setTimeout(() => {
+      galleryGrid.removeAttribute("data-filtering");
+    }, 140);
+  };
+
+  const requestWhenIdle = (callback: () => void) => {
+    const idleWindow = window as IdleWindow;
+    if (typeof idleWindow.requestIdleCallback === "function") {
+      idleWindow.requestIdleCallback(callback, { timeout: 1200 });
+      return;
+    }
+    window.setTimeout(callback, 180);
+  };
+
+  const getItemThumb = (item: Element) => {
+    const image = item.querySelector("img");
+    return image instanceof HTMLImageElement ? image.currentSrc || image.src : "";
+  };
+
+  const getItemFullImage = (item: HTMLElement) => item.dataset.image || "";
+
+  const prefetchThumb = (url: string) => {
+    if (!url || prefetchedThumbs.has(url)) return;
+    prefetchedThumbs.add(url);
+    const warmImage = new Image();
+    warmImage.decoding = "async";
+    warmImage.src = url;
+    prefetchedImages.push(warmImage);
+    if (prefetchedImages.length > pageSize * 3) prefetchedImages.shift();
+  };
+
+  const prefetchNextBatch = () => {
+    const nextItems = filteredItems().slice(visible, visible + pageSize);
+    if (!nextItems.length) return;
+
+    requestWhenIdle(() => {
+      nextItems.forEach((item) => {
+        if (item instanceof HTMLElement) prefetchThumb(getItemThumb(item));
+      });
+    });
+  };
+
+  const trimLightboxImageCache = (latestUrl: string) => {
+    if (prefetchedLightboxImages.size <= pageSize) return;
+    const oldestUrl = prefetchedLightboxImages.keys().next().value;
+    if (typeof oldestUrl === "string" && oldestUrl !== latestUrl) {
+      prefetchedLightboxImages.delete(oldestUrl);
+    }
+  };
+
+  const getLightboxImage = (url: string) => {
+    const cachedImage = prefetchedLightboxImages.get(url);
+    if (cachedImage) return cachedImage;
+
+    const image = new Image();
+    image.decoding = "async";
+    image.src = url;
+    prefetchedLightboxImages.set(url, image);
+    trimLightboxImageCache(url);
+    return image;
+  };
+
+  const waitForImage = (image: HTMLImageElement) =>
+    new Promise<void>((resolve) => {
+      if (image.complete) {
+        resolve();
+        return;
+      }
+
+      image.addEventListener("load", () => resolve(), { once: true });
+      image.addEventListener("error", () => resolve(), { once: true });
+    });
+
+  const loadLightboxImage = async (item: HTMLElement) => {
+    const url = getItemFullImage(item);
+    if (!url) return;
+
+    const image = getLightboxImage(url);
+    try {
+      if (typeof image.decode === "function") {
+        await image.decode();
+        return;
+      }
+    } catch {
+      // Broken or interrupted image requests should not trap the lightbox in loading state.
+    }
+
+    await waitForImage(image);
+  };
+
+  const prefetchLightboxItem = (item: Element | undefined) => {
     if (!(item instanceof HTMLElement)) return;
-    activeIndex = index;
+    const url = getItemFullImage(item);
+    if (!url) return;
+
+    const image = getLightboxImage(url);
+    if (typeof image.decode === "function") {
+      image.decode().catch(() => undefined);
+    }
+  };
+
+  const prefetchLightboxNeighbors = (index: number) => {
+    const items = filteredItems();
+    if (!items.length) return;
+
+    requestWhenIdle(() => {
+      [index, index - 1, index + 1].forEach((position) => {
+        const item = items[(position + items.length) % items.length];
+        prefetchLightboxItem(item);
+      });
+    });
+  };
+
+  const prioritizeVisibleImages = () => {
+    filteredItems()
+      .slice(0, pageSize)
+      .forEach((item, index) => {
+        if (!(item instanceof HTMLElement)) return;
+        const image = item.querySelector("img");
+        if (!(image instanceof HTMLImageElement)) return;
+        image.loading = "eager";
+        image.setAttribute("fetchpriority", index < 4 ? "high" : "auto");
+      });
+  };
+
+  const setActiveFilter = (filter: string, shouldPulse = true) => {
+    const button = findFilterButton(filter) || findFilterButton("Todos");
+    if (!(button instanceof HTMLElement)) return;
+
+    activeFilter = button.dataset.filter || "Todos";
+    visible = pageSize;
+
+    filterButtons.forEach((item) => {
+      const active = item === button;
+      item.classList.toggle("gallery-filter-active", active);
+      item.classList.toggle("gallery-filter-idle", !active);
+    });
+
+    syncGallery();
+    prioritizeVisibleImages();
+    if (shouldPulse) pulseGallery();
+    prefetchNextBatch();
+  };
+
+  const setLightboxContent = (item: HTMLElement) => {
     if (lightboxImage instanceof HTMLImageElement) {
       lightboxImage.src = item.dataset.image || "";
       lightboxImage.alt = item.dataset.alt || "";
     }
-    if (lightboxCaption) {
-      lightboxCaption.textContent = `${item.dataset.alt || ""} · ${item.dataset.category || ""}`;
+    if (lightboxCaptionTitle) {
+      lightboxCaptionTitle.textContent = item.dataset.alt || "Imagen de galería";
     }
-    lightbox?.classList.remove("hidden");
-    lightbox?.classList.add("flex");
+    if (lightboxCaptionCategory) {
+      lightboxCaptionCategory.textContent = item.dataset.category ? `Categoría: ${item.dataset.category}` : "";
+    }
+  };
+
+  const openLightbox = async (index: number) => {
+    const items = filteredItems();
+    const item = items[index];
+    if (!(item instanceof HTMLElement)) return;
+    const wasOpen = lightbox instanceof HTMLDialogElement && lightbox.open;
+    const requestId = ++lightboxRequestId;
+    activeIndex = index;
+
+    if (lightboxPanel instanceof HTMLElement) {
+      lightboxPanel.setAttribute("data-lightbox-loading", "true");
+    }
+
+    if (!wasOpen) {
+      setLightboxContent(item);
+    }
+
+    if (lightbox instanceof HTMLDialogElement && !lightbox.open) {
+      document.body.style.overflow = "hidden";
+      lightbox.showModal();
+      if (close instanceof HTMLElement) close.focus({ preventScroll: true });
+    }
+
+    await loadLightboxImage(item);
+    if (requestId !== lightboxRequestId) return;
+
+    if (wasOpen) {
+      setLightboxContent(item);
+    }
+    if (lightboxPanel instanceof HTMLElement) {
+      lightboxPanel.removeAttribute("data-lightbox-loading");
+    }
+    prefetchLightboxNeighbors(index);
   };
 
   const go = (delta: number) => {
@@ -180,21 +384,13 @@ import { GALLERY_PAGE_SIZE, gallery, galleryFilters } from "../data/site";
     if (!(target instanceof HTMLElement)) return;
     const button = target.closest("[data-filter]");
     if (!(button instanceof HTMLElement)) return;
-    activeFilter = button.dataset.filter || "Todos";
-    visible = pageSize;
-
-    filterButtons.forEach((item) => {
-      const active = item === button;
-      item.classList.toggle("gallery-filter-active", active);
-      item.classList.toggle("gallery-filter-idle", !active);
-    });
-
-    syncGallery();
+    setActiveFilter(button.dataset.filter || "Todos");
   });
 
   galleryItems.forEach((item) => {
     item.addEventListener("click", () => {
       const items = filteredItems();
+      lastTrigger = item instanceof HTMLElement ? item : null;
       openLightbox(items.indexOf(item));
     });
   });
@@ -202,15 +398,29 @@ import { GALLERY_PAGE_SIZE, gallery, galleryFilters } from "../data/site";
   loadMore?.addEventListener("click", () => {
     visible += pageSize;
     syncGallery();
+    prioritizeVisibleImages();
+    prefetchNextBatch();
   });
 
   const hideLightbox = () => {
     activeIndex = -1;
-    lightbox?.classList.add("hidden");
-    lightbox?.classList.remove("flex");
+    lightboxRequestId += 1;
+    if (lightboxPanel instanceof HTMLElement) {
+      lightboxPanel.removeAttribute("data-lightbox-loading");
+    }
+    if (lightbox instanceof HTMLDialogElement && lightbox.open) {
+      lightbox.close();
+    }
+    document.body.style.overflow = "";
+    if (lastTrigger instanceof HTMLElement) lastTrigger.focus({ preventScroll: true });
+    lastTrigger = null;
   };
 
   close?.addEventListener("click", hideLightbox);
+  lightbox?.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    hideLightbox();
+  });
   prev?.addEventListener("click", (event) => {
     event.stopPropagation();
     go(-1);
@@ -223,10 +433,12 @@ import { GALLERY_PAGE_SIZE, gallery, galleryFilters } from "../data/site";
     if (event.target === lightbox) hideLightbox();
   });
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") hideLightbox();
+    if (!(lightbox instanceof HTMLDialogElement) || !lightbox.open) return;
     if (event.key === "ArrowLeft") go(-1);
     if (event.key === "ArrowRight") go(1);
   });
 
-  syncGallery();
+  const initialParams = new URLSearchParams(window.location.search);
+  const initialFilter = initialParams.get("categoria") || initialParams.get("category") || initialParams.get("filter") || "Todos";
+  setActiveFilter(initialFilter, false);
 </script>

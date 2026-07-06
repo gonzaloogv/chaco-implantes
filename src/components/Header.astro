@@ -71,13 +71,15 @@ const isActive = (href: string) => {
         data-menu-toggle
         class="icon-button inline-flex h-10 w-10 items-center justify-center rounded-md border border-primary-glow/40 bg-primary text-white shadow-[0_0_18px_rgba(0,136,255,0.35)] lg:hidden"
       >
-        <span data-menu-open-icon><Icon name="menu" class="h-5 w-5" /></span>
-        <span data-menu-close-icon class="hidden"><Icon name="x" class="h-5 w-5" /></span>
+        <span class="menu-icon-frame">
+          <span data-menu-open-icon class="menu-icon-state"><Icon name="menu" class="h-5 w-5" /></span>
+          <span data-menu-close-icon class="menu-icon-state"><Icon name="x" class="h-5 w-5" /></span>
+        </span>
       </button>
     </div>
   </div>
 
-  <nav data-mobile-menu class="mobile-menu hidden overflow-hidden border-t border-primary/30 lg:hidden" aria-label="Principal movil">
+  <nav data-mobile-menu data-state="closed" class="mobile-menu overflow-hidden border-t border-primary/30 lg:hidden" aria-label="Principal movil" aria-hidden="true" inert>
     <div class="space-y-1 px-4 py-4">
       {
         nav.map((item) => (
@@ -111,23 +113,45 @@ const isActive = (href: string) => {
   const header = document.querySelector("[data-site-header]");
   const toggle = document.querySelector("[data-menu-toggle]");
   const menu = document.querySelector("[data-mobile-menu]");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let menuCloseTimer: number | undefined;
 
   const syncHeader = () => {
     if (!(header instanceof HTMLElement)) return;
     const isHomeHeader = header.dataset.homeHeader === "true";
     const menuOpen = toggle?.getAttribute("aria-expanded") === "true";
     const transparent = isHomeHeader && window.scrollY < 60 && !menuOpen;
+    header.dataset.menuOpen = String(menuOpen);
     header.dataset.transparent = String(transparent);
     header.dataset.transparentHeader = String(transparent);
   };
 
+  const setMenuState = (open: boolean) => {
+    if (!(toggle instanceof HTMLElement) || !(menu instanceof HTMLElement)) return;
+    window.clearTimeout(menuCloseTimer);
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "Cerrar menu" : "Abrir menu");
+    menu.setAttribute("aria-hidden", String(!open));
+
+    if (open) {
+      menu.removeAttribute("inert");
+      menu.dataset.state = "open";
+    } else {
+      menu.setAttribute("inert", "");
+      menu.dataset.state = reduceMotion.matches ? "closed" : "closing";
+      if (!reduceMotion.matches) {
+        menuCloseTimer = window.setTimeout(() => {
+          menu.dataset.state = "closed";
+        }, 160);
+      }
+    }
+
+    syncHeader();
+  };
+
   toggle?.addEventListener("click", () => {
     const expanded = toggle.getAttribute("aria-expanded") === "true";
-    toggle.setAttribute("aria-expanded", String(!expanded));
-    toggle.querySelector("[data-menu-open-icon]")?.classList.toggle("hidden", !expanded);
-    toggle.querySelector("[data-menu-close-icon]")?.classList.toggle("hidden", expanded);
-    menu?.classList.toggle("hidden", expanded);
-    syncHeader();
+    setMenuState(!expanded);
   });
 
   window.addEventListener("scroll", syncHeader, { passive: true });

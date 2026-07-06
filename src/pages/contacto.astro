@@ -12,10 +12,7 @@ import { site, whatsappLink } from "../data/site";
   <section data-contacto-page class="page-hero-dark border-b border-white/10 px-4 pb-14 pt-32 text-white sm:px-6 lg:px-8">
     <div class="mx-auto flex max-w-7xl flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
       <div>
-        <span class="inline-flex items-center gap-2 rounded-full border border-primary-glow/30 bg-primary/15 px-3 py-2 text-xs font-bold uppercase text-brand">
-          Contacto directo
-        </span>
-        <h1 class="mt-5 font-display text-4xl font-black sm:text-5xl">Contacto</h1>
+        <h1 class="font-display text-4xl font-black sm:text-5xl">Contacto</h1>
         <p class="mt-3 max-w-2xl text-brand">
           Escribinos para consultas comerciales, catálogos, disponibilidad de productos o coordinación institucional.
         </p>
@@ -49,29 +46,29 @@ import { site, whatsappLink } from "../data/site";
           <div class="mt-8 grid gap-5 sm:grid-cols-2">
             <label class="block text-sm font-semibold text-deep">
               Nombre
-              <input name="nombre" required maxlength="100" minlength="2" class="contact-field mt-1.5 w-full rounded-md border px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-primary" placeholder="Tu nombre" />
-              <span data-error-for="nombre" class="mt-1 hidden text-xs text-red-700"></span>
+              <input id="contact-nombre" name="nombre" required maxlength="100" minlength="2" autocomplete="name" aria-describedby="contact-nombre-error" class="contact-field mt-1.5 w-full rounded-md border px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-primary" placeholder="Tu nombre" />
+              <span id="contact-nombre-error" data-error-for="nombre" class="mt-1 hidden text-xs text-red-700" aria-live="polite"></span>
             </label>
             <label class="block text-sm font-semibold text-deep">
               Institución / especialidad
-              <input name="institucion" required maxlength="120" minlength="2" class="contact-field mt-1.5 w-full rounded-md border px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-primary" placeholder="Clínica, sanatorio o especialidad" />
-              <span data-error-for="institucion" class="mt-1 hidden text-xs text-red-700"></span>
+              <input id="contact-institucion" name="institucion" required maxlength="120" minlength="2" autocomplete="organization" aria-describedby="contact-institucion-error" class="contact-field mt-1.5 w-full rounded-md border px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-primary" placeholder="Clínica, sanatorio o especialidad" />
+              <span id="contact-institucion-error" data-error-for="institucion" class="mt-1 hidden text-xs text-red-700" aria-live="polite"></span>
             </label>
             <label class="block text-sm font-semibold text-deep">
               Teléfono
-              <input name="telefono" required maxlength="30" minlength="6" inputmode="tel" class="contact-field mt-1.5 w-full rounded-md border px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-primary" placeholder="Teléfono de contacto" />
-              <span data-error-for="telefono" class="mt-1 hidden text-xs text-red-700"></span>
+              <input id="contact-telefono" name="telefono" required maxlength="30" minlength="6" inputmode="tel" autocomplete="tel" aria-describedby="contact-telefono-error" class="contact-field mt-1.5 w-full rounded-md border px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-primary" placeholder="Teléfono de contacto" />
+              <span id="contact-telefono-error" data-error-for="telefono" class="mt-1 hidden text-xs text-red-700" aria-live="polite"></span>
             </label>
             <label class="block text-sm font-semibold text-deep">
               Email
-              <input name="email" required maxlength="255" type="email" class="contact-field mt-1.5 w-full rounded-md border px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-primary" placeholder="correo@ejemplo.com" />
-              <span data-error-for="email" class="mt-1 hidden text-xs text-red-700"></span>
+              <input id="contact-email" name="email" required maxlength="255" type="email" autocomplete="email" aria-describedby="contact-email-error" class="contact-field mt-1.5 w-full rounded-md border px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-primary" placeholder="correo@ejemplo.com" />
+              <span id="contact-email-error" data-error-for="email" class="mt-1 hidden text-xs text-red-700" aria-live="polite"></span>
             </label>
           </div>
           <label class="mt-5 block text-sm font-semibold text-deep">
             Mensaje
-            <textarea name="mensaje" required maxlength="1000" minlength="10" class="contact-field mt-1.5 min-h-36 w-full resize-y rounded-md border px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-primary" placeholder="Contanos tu consulta, línea de producto o requerimiento"></textarea>
-            <span data-error-for="mensaje" class="mt-1 hidden text-xs text-red-700"></span>
+            <textarea id="contact-mensaje" name="mensaje" required maxlength="1000" minlength="10" aria-describedby="contact-mensaje-error" class="contact-field mt-1.5 min-h-36 w-full resize-y rounded-md border px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-primary" placeholder="Contanos tu consulta, línea de producto o requerimiento"></textarea>
+            <span id="contact-mensaje-error" data-error-for="mensaje" class="mt-1 hidden text-xs text-red-700" aria-live="polite"></span>
           </label>
 
           <div class="mt-6 flex flex-wrap gap-3">
@@ -158,22 +155,29 @@ import { site, whatsappLink } from "../data/site";
     email: "Ingresá un email válido",
     mensaje: "Contanos brevemente tu consulta",
   };
+  let firstInvalidField = null;
 
   const showError = (name, message) => {
     const field = form?.querySelector(`[name="${name}"]`);
     const error = document.querySelector(`[data-error-for="${name}"]`);
     field?.setAttribute("aria-invalid", "true");
+    if (!firstInvalidField && field instanceof HTMLElement) firstInvalidField = field;
     if (error) {
       error.textContent = message;
       error.classList.remove("hidden");
+      error.setAttribute("role", "alert");
+      window.requestAnimationFrame(() => error.setAttribute("data-visible", "true"));
     }
   };
 
   const clearErrors = () => {
+    firstInvalidField = null;
     form?.querySelectorAll("[aria-invalid]").forEach((field) => field.removeAttribute("aria-invalid"));
     document.querySelectorAll("[data-error-for]").forEach((error) => {
       error.textContent = "";
+      error.removeAttribute("data-visible");
       error.classList.add("hidden");
+      error.removeAttribute("role");
     });
   };
 
@@ -200,6 +204,7 @@ import { site, whatsappLink } from "../data/site";
       showError("email", rules.email);
       valid = false;
     }
+    if (!valid) firstInvalidField?.focus();
     return valid ? values : null;
   };
 

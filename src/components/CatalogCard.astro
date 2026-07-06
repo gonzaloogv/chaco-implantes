@@ -1,7 +1,7 @@
 ---
 import Icon from "./Icon.astro";
 import type { Category } from "../data/site";
-import { categoryImages, whatsappLink } from "../data/site";
+import { categoryImages } from "../data/site";
 
 interface Props {
   category: Category;
@@ -12,7 +12,9 @@ const { category, compact = false } = Astro.props;
 const image = categoryImages[category.slug as keyof typeof categoryImages];
 ---
 
-<article
+<a
+  href={`/catalogos/${category.slug}`}
+  aria-label={`Ver catálogo de ${category.title}`}
   data-catalog-card
   data-catalog-image-card
   class:list={[
@@ -38,23 +40,10 @@ const image = categoryImages[category.slug as keyof typeof categoryImages];
     <h2 class="mt-3 font-display text-lg font-semibold text-white">{category.title}</h2>
     <p class="mt-1 line-clamp-2 text-sm leading-relaxed text-white/75">{category.description}</p>
 
-    <div class:list={["mt-4 flex items-center gap-3 pt-4", !compact && "catalog-card-divider justify-between border-t"]}>
-      <a
-        href={`/catalogos/${category.slug}`}
-        class="catalog-card-link inline-flex items-center gap-1.5 text-sm font-semibold text-white transition-colors duration-200 ease-out hover:text-brand"
-      >
-        Ver catálogo <Icon name="arrow-right" class="h-4 w-4 transition-transform duration-200 ease-out group-hover:translate-x-1" />
-      </a>
-      {!compact && (
-        <a
-          href={whatsappLink(`Hola, quisiera información sobre la categoría ${category.title}.`)}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="catalog-info-link rounded-md px-2 py-1 text-xs font-medium text-white/70 hover:text-white"
-        >
-          Solicitar información
-        </a>
-      )}
+    <div class:list={["mt-4 flex items-center gap-3 pt-4", !compact && "catalog-card-divider border-t"]}>
+      <span class="catalog-card-link inline-flex items-center gap-1.5 text-sm font-semibold text-white transition-colors duration-200 ease-out group-hover:text-brand">
+        Ver catálogo <Icon name="arrow-right" class="catalog-card-arrow h-4 w-4 transition-transform duration-200 ease-out group-hover:translate-x-1" />
+      </span>
     </div>
   </div>
-</article>
+</a>

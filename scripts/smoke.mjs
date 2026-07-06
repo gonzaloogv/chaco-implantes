@@ -101,6 +101,7 @@ const eventos = readFileSync(join(dist, "eventos/index.html"), "utf8");
 const nosotros = readFileSync(join(dist, "nosotros/index.html"), "utf8");
 const contacto = readFileSync(join(dist, "contacto/index.html"), "utf8");
 const videos = readFileSync(join(dist, "videos/index.html"), "utf8");
+const source = readOutputFiles(join(root, "src")).join("\n");
 assert(catalogoCadera.includes("data-catalog-products"), "Cadera catalog should expose the product grid");
 assert(
   (catalogoCadera.match(/data-catalog-product(?=[\s>])/g) ?? []).length === 15,
@@ -115,7 +116,8 @@ assert(!catalogoCadera.includes("Opciones de cotilo para artroplastia"), "Cadera
 assert(!catalogoCadera.includes("data-catalog-viewer"), "Cadera catalog should not use the single PDF viewer");
 assert(catalogoCotiloDoble.includes("data-catalog-viewer"), "Cadera product detail should use the catalog viewer");
 assert(catalogoCotiloDoble.includes("Opciones de cotilo para artroplastia"), "Cadera product detail should render the description");
-assert(catalogoCotiloDoble.includes("Descargar PDF"), "Cadera product detail should keep the PDF placeholder action");
+assert(catalogoCotiloDoble.includes("Solicitar catálogo PDF"), "Cadera product detail should use the catalog request label");
+assert(!catalogoCotiloDoble.includes("Descargar PDF"), "Cadera product detail should not expose a misleading download action");
 assert(
   !existsSync(join(dist, "catalogos/cadera/productos/cotilo-doble.pdf")),
   "Cadera product should not generate static PDF output",
@@ -135,7 +137,7 @@ assert(!catalogoRodilla.includes("Ver PDF"), "Rodilla product grid should not ex
 assert(!catalogoRodilla.includes("data-catalog-viewer"), "Rodilla catalog should not use the single PDF viewer");
 assert(catalogoRodillaAnv.includes("data-catalog-viewer"), "Rodilla product detail should use the catalog viewer");
 assert(catalogoRodillaAnv.includes("Sistema de rodilla ANV II"), "Rodilla product detail should render the description");
-assert(catalogoRodillaAnv.includes("Descargar PDF"), "Rodilla product detail should keep the PDF placeholder action");
+assert(catalogoRodillaAnv.includes("Solicitar catálogo PDF"), "Rodilla product detail should expose the catalog request action");
 assert(catalogoPlacas.includes("data-catalog-products"), "Osteosynthesis plates catalog should expose the product grid");
 assert(
   (catalogoPlacas.match(/data-catalog-product(?=[\s>])/g) ?? []).length === 17,
@@ -157,7 +159,7 @@ assert(!catalogoPlacas.includes("Ver PDF"), "Osteosynthesis plates product grid 
 assert(!catalogoPlacas.includes("data-catalog-viewer"), "Osteosynthesis plates catalog should not use the single PDF viewer");
 assert(catalogoPlaca35.includes("data-catalog-viewer"), "Osteosynthesis plates product detail should use the catalog viewer");
 assert(catalogoPlaca35.includes("Placa bloqueada de Ø3,5 mm"), "Osteosynthesis plates product detail should render the description");
-assert(catalogoPlaca35.includes("Descargar PDF"), "Osteosynthesis plates product detail should keep the PDF placeholder action");
+assert(catalogoPlaca35.includes("Solicitar catálogo PDF"), "Osteosynthesis plates product detail should expose the catalog request action");
 assert(catalogoTornillos.includes("data-catalog-products"), "Osteosynthesis screws catalog should expose the product grid");
 assert(
   (catalogoTornillos.match(/data-catalog-product(?=[\s>])/g) ?? []).length === 6,
@@ -178,7 +180,7 @@ assert(!catalogoTornillos.includes("Ver PDF"), "Osteosynthesis screws product gr
 assert(!catalogoTornillos.includes("data-catalog-viewer"), "Osteosynthesis screws catalog should not use the single PDF viewer");
 assert(catalogoDeTobillo.includes("data-catalog-viewer"), "Osteosynthesis screws product detail should use the catalog viewer");
 assert(catalogoDeTobillo.includes("Clavo para artrodesis de tobillo"), "Osteosynthesis screws product detail should render the description");
-assert(catalogoDeTobillo.includes("Descargar PDF"), "Osteosynthesis screws product detail should keep the PDF placeholder action");
+assert(catalogoDeTobillo.includes("Solicitar catálogo PDF"), "Osteosynthesis screws product detail should expose the catalog request action");
 assert(catalogoOtros.includes("data-catalog-products"), "Other trauma products catalog should expose the product grid");
 assert(
   (catalogoOtros.match(/data-catalog-product(?=[\s>])/g) ?? []).length === 3,
@@ -196,8 +198,9 @@ assert(!catalogoOtros.includes("Ver PDF"), "Other trauma product grid should not
 assert(!catalogoOtros.includes("data-catalog-viewer"), "Other trauma catalog should not use the single PDF viewer");
 assert(catalogoPerforador.includes("data-catalog-viewer"), "Other trauma product detail should use the catalog viewer");
 assert(catalogoPerforador.includes("Motor Overfix para perforación"), "Other trauma product detail should render the description");
-assert(catalogoPerforador.includes("Descargar PDF"), "Other trauma product detail should keep the PDF placeholder action");
+assert(catalogoPerforador.includes("Solicitar catálogo PDF"), "Other trauma product detail should expose the catalog request action");
 assert((home.match(/data-value-pillar(?=[\s>])/g) ?? []).length === 4, "Home should render four compact value pillars");
+assert((home.match(/lift-card flex items-start/g) ?? []).length >= 4, "Home should render four professional support cards");
 assert(
   (home.match(/data-catalog-card/g) ?? []).length >= 6,
   "Home should render catalog cards with stable card markers",
@@ -211,7 +214,7 @@ assert((home.match(/<article data-hero-slide/g) ?? []).length === 3, "Hero carou
 assert(home.includes("NextAR"), "Hero carousel should describe the NextAR differentiator");
 assert(home.includes("AMIS"), "Hero carousel should describe the AMIS differentiator");
 assert(home.includes("Calidad que se siente. Confianza que se nota."), "Home should integrate the client slogan");
-assert(home.includes("Asesoramiento personalizado"), "Home should include the client value pillars");
+assert(home.includes("Pedidos programados"), "Home should include the professional support pillars");
 assert(!home.includes("TecnologÃ­a Medacta"), "NextAR hero copy should not mention Medacta");
 assert(!home.includes("Consultar sistemas Medacta"), "NextAR hero CTA should not mention Medacta");
 assert(home.includes("Productos para traumatología"), "Home should clarify the product category without the old tagline");
@@ -223,7 +226,9 @@ assert(!home.includes("catalog-card-cta"), "Catalog cards should not render the 
 assert((catalogos.match(/data-catalog-image-card/g) ?? []).length === 8, "Catalog page should render every category as an image-backed card");
 assert(catalogos.includes("page-hero-dark"), "Catalog page should use the dark premium page hero");
 assert(catalogos.includes("/assets/images/cat-cadera.png"), "Catalog page should preserve category background photography");
-assert(catalogoCotiloDoble.includes("Descargar PDF"), "Cadera product detail should expose the PDF placeholder");
+assert(catalogos.includes("No encontrás la línea que buscás?"), "Catalog page should include the institutional request CTA");
+assert(catalogos.includes("Consulta por WhatsApp"), "Catalog page should include the WhatsApp CTA copy");
+assert(!catalogos.includes("Solicitar información"), "Catalog cards should not keep secondary WhatsApp links inside each card");
 assert(catalogoCadera.includes("catalog-detail-shell"), "Catalog detail should use the redesigned dark/light layout shell");
 assert(!home.includes("data-professional-flow-item"), "Home should avoid the extra professional divider strip");
 assert(home.includes("data-suppliers-section"), "Home should include a brands and systems section");
@@ -240,15 +245,32 @@ assert(home.includes("btn-glass-outline"), "Commercial catalog CTA should use th
 assert((home.match(/data-nav-link/g) ?? []).length >= 6, "Header should expose nav link markers for state styling");
 assert(home.includes('data-active="true"'), "Current nav item should be marked active");
 assert(home.includes('data-transparent-header="true"'), "Home header should start in the transparent hero state");
-assert(catalogos.includes("catalog-info-link"), "Catalog request information links should have a visible hover treatment");
+assert(home.includes('data-mobile-menu') && home.includes('data-state="closed"'), "Mobile menu should expose a closed state for native motion");
+assert(home.includes("menu-icon-state"), "Mobile menu icons should be crossfade-ready");
+assert((catalogos.match(/data-catalog-card/g) ?? []).length === 8, "Catalog page should keep every catalog card directly clickable");
 assert(galeria.includes("Ver videos"), "Gallery should link to the videos page");
 assert(galeria.includes("page-hero-dark"), "Gallery page should use the dark premium page hero");
+assert(galeria.includes("<dialog") && galeria.includes('aria-modal="true"'), "Gallery lightbox should use an accessible modal dialog");
+assert(galeria.includes("data-lightbox-caption-title"), "Gallery lightbox should expose a useful caption title");
+assert(source.includes("showModal"), "Gallery lightbox should open with the native modal API");
+assert(!galeria.includes("Material visual"), "Gallery hero should not duplicate its title with a generic eyebrow");
 assert(galeria.includes('data-gallery-page-size="12"'), "Gallery should expose the first-page size");
-assert((galeria.match(/<button type="button" data-gallery-item/g) ?? []).length === 24, "Gallery should render a paginable 24-item set");
+assert((galeria.match(/<button type="button" data-gallery-item/g) ?? []).length === 92, "Gallery should render the base gallery and event photo set");
+assert((galeria.match(/data-category="Eventos"/g) ?? []).length >= 80, "Gallery should categorize the stand photos as event images");
+assert(galeria.includes("Congreso_Traumato-99_ocnsrl.jpg"), "Gallery should include the event images listed in stand.txt");
+assert(galeria.includes("61° Congreso Argentino de Ortopedia y Traumatología"), "Event gallery images should use the institutional congress title");
+assert(!galeria.includes("Chaco Implantes en evento profesional - foto"), "Event gallery images should not expose numbered placeholder titles");
+assert(galeria.includes("f_auto,q_auto,c_fill,g_auto,w_600,h_400"), "Gallery thumbnails should use bounded Cloudinary 600x400 variants");
+assert(galeria.includes("f_auto,q_auto,c_limit,w_1920"), "Gallery lightbox images should use Cloudinary 1920px capped variants");
+assert((galeria.match(/loading="eager"/g) ?? []).length === 12, "Gallery should eager-load only the first visible batch");
+assert((galeria.match(/fetchpriority="high"/g) ?? []).length === 4, "Gallery should give high priority only to the first visible row");
 assert(galeria.includes("Cargar más"), "Gallery should include a load-more control");
 assert(galeria.includes("gallery-filter-active"), "Gallery filters should use a stable active style");
 assert(galeria.includes("gallery-filter-idle"), "Gallery filters should use a stronger idle border style");
 assert(contacto.includes("contact-field"), "Contact fields should use the unified field treatment");
+assert(contacto.includes('aria-describedby="contact-nombre-error"'), "Contact form fields should connect inputs with validation messages");
+assert(contacto.includes('id="contact-mensaje-error"'), "Contact form should expose stable error message ids");
+assert(!contacto.includes("Contacto directo"), "Contact hero should not duplicate its title with a generic eyebrow");
 assert(contacto.includes("btn-email-soft"), "Contact email action should use a subtly tinted secondary button");
 assert((contacto.match(/contact-link/g) ?? []).length >= 4, "Contact phone, email, social and map links should share subtle hover feedback");
 assert(videos.includes("Pronto publicaremos nuestros videos"), "Videos page should provide an empty state until videos are available");
@@ -261,10 +283,12 @@ assert(eventos.includes("page-hero-dark"), "Events page should use the dark prem
 assert(eventos.includes("page-surface"), "Events page should use the shared light content surface");
 assert(eventos.includes("data-featured-event"), "Events page should highlight the latest institutional event");
 assert(eventos.includes(eventHeroImage), "Events page should use the updated events hero image");
+assert(eventos.includes('href="/galeria?categoria=Eventos"'), "Events page image CTA should open the gallery with the Events filter");
 assert(nosotros.includes("data-nosotros-page"), "About page should expose the redesigned page marker");
 assert(nosotros.includes("page-hero-dark"), "About page should use the dark premium page hero");
 assert(nosotros.includes("page-surface"), "About page should use the shared light content surface");
 assert(nosotros.includes("Calidad que se siente. Confianza que se nota."), "About page should carry the client slogan");
+assert(!nosotros.includes("Propuesta institucional"), "About page should not keep a generic eyebrow above the institutional heading");
 assert(contacto.includes("data-contacto-page"), "Contact page should expose the redesigned page marker");
 assert(contacto.includes("page-hero-dark"), "Contact page should use the dark premium page hero");
 assert(contacto.includes("page-surface"), "Contact page should use the shared light content surface");
@@ -274,7 +298,16 @@ assert(contacto.includes("dark-card"), "Contact sidebar should use dark card tre
 assert(!existsSync(join(dist, "profesionales/index.html")), "Unexpected /profesionales route output");
 
 const output = readOutputFiles(dist).join("\n").toLowerCase();
-const source = readOutputFiles(join(root, "src")).join("\n");
+assert(source.includes("data-filtering"), "Gallery filter changes should expose a short opacity transition state");
+assert(source.includes("data-lightbox-loading"), "Gallery lightbox should expose a decoded image-loading state");
+assert(source.includes("prefetchLightboxNeighbors"), "Gallery lightbox should warm neighboring full-size images for rapid navigation");
+assert(source.includes(".decode()"), "Gallery lightbox should decode full images before swapping visible content");
+assert(source.includes("lightboxRequestId"), "Gallery lightbox should ignore stale rapid navigation requests");
+assert(source.includes("new URLSearchParams(window.location.search)"), "Gallery should read an initial filter from the URL");
+assert((source.match(/Congreso_[Tt]raumato-/g) ?? []).length === 80, "Source should keep the stand image list as event-only gallery content");
+assert(source.includes("prefetchNextBatch"), "Gallery should progressively prefetch the next image batch");
+assert(source.includes("requestIdleCallback"), "Gallery prefetch should wait for idle time when available");
+assert(source.includes("new Image()"), "Gallery should warm upcoming thumbnail requests without rendering them");
 assert(!existsSync(join(root, "prototipo")), "Prototype folder should not remain in the project root");
 assert(!output.includes("prototipo"), "Build output should not reference prototype material");
 assert(output.includes("/assets/brand/logo-circular.png"), "Build output should use organized brand asset paths");
@@ -308,7 +341,10 @@ assert(/\.hero-shell\s*{[\s\S]*min-height:\s*100vh/.test(globalCss), "Hero shoul
 assert(/\.hero-shell\s*{[\s\S]*background:\s*linear-gradient\(150deg, #0f172a/.test(globalCss), "Hero should use the deep blue gradient direction");
 assert(/\.hero-bg-slide\s*{[\s\S]*opacity:\s*0/.test(globalCss), "Hero background slides should fade from hidden state");
 assert(/\.hero-bg-slide\[data-active="true"\]\s*{[\s\S]*opacity:\s*1/.test(globalCss), "Active hero background slide should be visible");
-assert(/\.btn-primary-soft\s*{[\s\S]*background-color:\s*color-mix\(in srgb, var\(--primary\) 84%, white\)/.test(globalCss), "Soft primary buttons should start below full primary strength");
+assert(/\.mobile-menu\[data-state="open"\]\s*{[\s\S]*transform:\s*translateY\(0\)/.test(globalCss), "Mobile menu should enter with a small transform-to-rest transition");
+assert(/\.mobile-menu\[data-state="closed"\]\s*{[\s\S]*transform:\s*translateY\(-0\.375rem\)/.test(globalCss), "Mobile menu should rest hidden with a minimal upward offset");
+assert(/\.menu-icon-state\s*{[\s\S]*transition:[\s\S]*opacity 150ms/.test(globalCss), "Mobile menu icons should crossfade quickly");
+assert(/\.btn-primary-soft\s*{[\s\S]*background-color:\s*var\(--primary\)/.test(globalCss), "Soft primary buttons should keep accessible white text contrast");
 assert(/\.btn-primary:hover\s*{[\s\S]*background:\s*linear-gradient\(135deg, var\(--primary-strong\)/.test(globalCss), "Primary CTA buttons should have a clearly visible blue hover state");
 assert(/\.btn-primary-soft:hover\s*{[\s\S]*background-color:\s*var\(--primary\)/.test(globalCss), "Soft primary buttons should hover to full primary");
 assert(/\.link-primary-soft:hover\s*{[\s\S]*color:\s*var\(--primary\)/.test(globalCss), "Soft primary links should hover to full primary");
@@ -317,16 +353,26 @@ assert(/\.footer-link:hover\s*{[\s\S]*color:\s*var\(--brand\)/.test(globalCss), 
 assert(/\.catalog-info-link:hover\s*{[\s\S]*background-color:\s*var\(--surface-2\)/.test(globalCss), "Catalog info links should gain a subtle surface hover");
 assert(/\.gallery-filter-active:hover\s*{[\s\S]*background-color:\s*var\(--primary\)/.test(globalCss), "Active gallery filters should not change away from selected colors on hover");
 assert(/\.gallery-filter-idle\s*{[\s\S]*border-color:\s*color-mix\(in srgb, var\(--brand\) 48%, white\)/.test(globalCss), "Idle gallery filters should have a slightly more visible border");
+assert(/\[data-gallery-grid\]\[data-filtering="true"\]\s*\.gallery-card:not\(\.hidden\)\s*{[\s\S]*opacity:\s*0\.72/.test(globalCss), "Gallery visible items should fade briefly during filter changes");
 assert(/\.catalog-image-card:hover img[\s\S]*transform:\s*scale\(1\.05\)/.test(globalCss), "Image catalog cards should zoom their photography subtly on hover");
+assert(/\.catalog-image-card:focus-visible[\s\S]*border-color/.test(globalCss), "Catalog image cards should have a clear focus motion state");
+assert(/\.catalog-product-card:focus-within[\s\S]*border-color/.test(globalCss), "Catalog product cards should have a clear focus-within motion state");
 assert(/\.catalog-card-link\s*{[\s\S]*color:\s*var\(--primary-foreground\)/.test(globalCss), "Catalog card links should render as white text over image cards");
 assert(/\.contact-field\s*{[\s\S]*background-color:\s*var\(--popover\)/.test(globalCss), "Contact fields should use a white background");
 assert(/\.contact-field\s*{[\s\S]*border-color:\s*color-mix\(in srgb, var\(--brand\) 48%, white\)/.test(globalCss), "Contact fields should use a soft brand border");
 assert(/\.contact-field::placeholder\s*{[\s\S]*color:\s*var\(--deep\)/.test(globalCss), "Contact field placeholders should render dark blue");
+assert(/\.contact-field\[aria-invalid="true"\][\s\S]*border-color:\s*var\(--destructive\)/.test(globalCss), "Contact invalid fields should transition to a clear error border");
+assert(/\[data-error-for\]\[data-visible="true"\]\s*{[\s\S]*opacity:\s*1/.test(globalCss), "Contact error messages should fade in without delaying validation");
+assert(/\.lightbox-panel\[data-lightbox-loading="true"\]\s*{[\s\S]*cursor:\s*progress/.test(globalCss), "Lightbox should expose a subtle loading state while keeping the current image visible");
+assert(!/\.lightbox-panel\[data-lightbox-transitioning="true"\][\s\S]*opacity:\s*0/.test(globalCss), "Lightbox should not fade the current image to transparent before the next image is decoded");
 assert(/\.btn-email-soft\s*{[\s\S]*background-color:\s*color-mix\(in srgb, var\(--surface-2\) 72%, white\)/.test(globalCss), "Email button should sit subtly apart from white/card backgrounds");
 assert(/\.contact-link:hover\s*{[\s\S]*color:\s*var\(--deep\)/.test(globalCss), "Contact links should have a clearly visible dark-blue hover");
 assert(!/letter-spacing:\s*-/.test(globalCss), "Typography should not use negative letter spacing");
 assert(!/tracking-(wide|tight|\[)/.test(source), "Source should keep letter spacing at the default value");
-assert(/--primary:\s*#4a90c4;/i.test(globalCss), "Primary accent should use the client-facing blue signature");
+assert(!/transition:\s*all\b/.test(source), "Motion should not use transition: all");
+assert(!/scale\(0\)/.test(source), "Motion should not animate from scale(0)");
+assert(source.includes('matchMedia("(prefers-reduced-motion: reduce)")'), "Interaction scripts should respect reduced motion for approved motion");
+assert(/--primary:\s*#2b6cb8;/i.test(globalCss), "Primary accent should use an accessible client-facing blue signature");
 assert(/--primary-glow:\s*#60a5fa;/i.test(globalCss), "Glow accent should use the electric blue highlight");
 assert(/--background:\s*#0f172a;/i.test(globalCss), "Default page background should move to the dark premium foundation");
 assert(/--surface:\s*#eef2f9;/i.test(globalCss), "Main content surface should remain readable over the dark foundation");
