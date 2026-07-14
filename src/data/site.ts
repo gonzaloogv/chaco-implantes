@@ -134,30 +134,50 @@ export const heroSlides: HeroSlide[] = [
 
 export type SupplierSystem = {
   name: string;
-  label: string;
-  text: string;
+  href: string;
+  logo: string;
+  logoAlt: string;
+  logoWidth: number;
+  logoHeight: number;
+  logoClass: "supplier-logo-mark" | "supplier-logo-wide" | "supplier-logo-tall" | "supplier-logo-ross";
 };
 
 export const supplierSystems: SupplierSystem[] = [
   {
     name: "MEDACTA",
-    label: "Sistemas internacionales",
-    text: "Sistemas para cadera, rodilla y columna, con líneas orientadas a procedimientos de alta complejidad.",
+    href: "https://www.medacta.com/",
+    logo: "/assets/brands/medacta-brand-color.png",
+    logoAlt: "Logo de MEDACTA",
+    logoWidth: 858,
+    logoHeight: 699,
+    logoClass: "supplier-logo-mark",
   },
   {
     name: "BONSS",
-    label: "Productos exclusivos",
-    text: "Líneas seleccionadas de implantes e instrumental para ampliar opciones según necesidad quirúrgica.",
+    href: "https://es.bonss.com.cn/",
+    logo: "/assets/brands/bonss-medical-brand-color.png",
+    logoAlt: "Logo de BONSS Medical",
+    logoWidth: 900,
+    logoHeight: 258,
+    logoClass: "supplier-logo-wide",
   },
   {
     name: "Implantes Villalba",
-    label: "Industria nacional",
-    text: "Implantes y sistemas nacionales para osteosíntesis y traumatología, con acompañamiento en pedidos.",
+    href: "https://implantesvillalba.com.ar/",
+    logo: "/assets/brands/implantes-villalba-brand-color.png",
+    logoAlt: "Logo de Implantes Villalba",
+    logoWidth: 900,
+    logoHeight: 780,
+    logoClass: "supplier-logo-tall",
   },
   {
-    name: "Nacionales e importados",
-    label: "Cobertura de catálogo",
-    text: "Combinamos proveedores y líneas de producto para resolver disponibilidad e instrumental por procedimiento.",
+    name: "RosMedical",
+    href: "https://ros-medical.com/",
+    logo: "/assets/brands/ross-medical-brand-color.png",
+    logoAlt: "Logo de RosMedical",
+    logoWidth: 900,
+    logoHeight: 210,
+    logoClass: "supplier-logo-ross",
   },
 ] as const;
 

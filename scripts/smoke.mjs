@@ -235,6 +235,10 @@ assert(home.includes("data-suppliers-section"), "Home should include a brands an
 assert(home.includes("MEDACTA"), "Brands section should mention Medacta");
 assert(home.includes("BONSS"), "Brands section should mention BONSS");
 assert(home.includes("Implantes Villalba"), "Brands section should mention Implantes Villalba");
+assert(home.includes('href="https://www.medacta.com/"'), "Medacta brand card should link to the official site");
+assert(home.includes('href="https://es.bonss.com.cn/"'), "BONSS brand card should link to the official site");
+assert(home.includes('href="https://implantesvillalba.com.ar/"'), "Villalba brand card should link to the official site");
+assert(home.includes('href="https://ros-medical.com/"'), "RosMedical brand card should link to the official site");
 assert(home.includes("data-institution-card"), "Institutional CTA should render as a card in the professionals section");
 assert(home.includes("Galería y videos"), "Home should include the updated gallery and videos section");
 assert(home.includes("61° Congreso Argentino de Ortopedia y Traumatología"), "Home should highlight the latest institutional event");
@@ -271,7 +275,11 @@ assert(contacto.includes("contact-field"), "Contact fields should use the unifie
 assert(contacto.includes('aria-describedby="contact-nombre-error"'), "Contact form fields should connect inputs with validation messages");
 assert(contacto.includes('id="contact-mensaje-error"'), "Contact form should expose stable error message ids");
 assert(!contacto.includes("Contacto directo"), "Contact hero should not duplicate its title with a generic eyebrow");
-assert(contacto.includes("btn-email-soft"), "Contact email action should use a subtly tinted secondary button");
+assert(!contacto.includes('id="contact-telefono"'), "Contact form should not ask for a phone field");
+assert(!contacto.includes('id="contact-email"'), "Contact form should not ask for an email field");
+assert(!contacto.includes("data-email-submit"), "Contact form should not expose an email action");
+assert(!contacto.includes("Enviar por email"), "Contact form should not render an email submit button");
+assert(contacto.includes("Enviar por WhatsApp"), "Contact form should keep WhatsApp as the only submit action");
 assert((contacto.match(/contact-link/g) ?? []).length >= 4, "Contact phone, email, social and map links should share subtle hover feedback");
 assert(videos.includes("Pronto publicaremos nuestros videos"), "Videos page should provide an empty state until videos are available");
 assert(videos.includes("data-videos-page"), "Videos page should expose the redesigned page marker");
@@ -293,7 +301,7 @@ assert(contacto.includes("data-contacto-page"), "Contact page should expose the 
 assert(contacto.includes("page-hero-dark"), "Contact page should use the dark premium page hero");
 assert(contacto.includes("page-surface"), "Contact page should use the shared light content surface");
 assert(contacto.includes("premium-card"), "Contact form should use premium card treatment");
-assert(contacto.includes("dark-card"), "Contact sidebar should use dark card treatment");
+assert(!contacto.includes("dark-card"), "Contact sidebar should share the light premium card treatment");
 
 assert(!existsSync(join(dist, "profesionales/index.html")), "Unexpected /profesionales route output");
 
@@ -365,7 +373,6 @@ assert(/\.contact-field\[aria-invalid="true"\][\s\S]*border-color:\s*var\(--dest
 assert(/\[data-error-for\]\[data-visible="true"\]\s*{[\s\S]*opacity:\s*1/.test(globalCss), "Contact error messages should fade in without delaying validation");
 assert(/\.lightbox-panel\[data-lightbox-loading="true"\]\s*{[\s\S]*cursor:\s*progress/.test(globalCss), "Lightbox should expose a subtle loading state while keeping the current image visible");
 assert(!/\.lightbox-panel\[data-lightbox-transitioning="true"\][\s\S]*opacity:\s*0/.test(globalCss), "Lightbox should not fade the current image to transparent before the next image is decoded");
-assert(/\.btn-email-soft\s*{[\s\S]*background-color:\s*color-mix\(in srgb, var\(--surface-2\) 72%, white\)/.test(globalCss), "Email button should sit subtly apart from white/card backgrounds");
 assert(/\.contact-link:hover\s*{[\s\S]*color:\s*var\(--deep\)/.test(globalCss), "Contact links should have a clearly visible dark-blue hover");
 assert(!/letter-spacing:\s*-/.test(globalCss), "Typography should not use negative letter spacing");
 assert(!/tracking-(wide|tight|\[)/.test(source), "Source should keep letter spacing at the default value");

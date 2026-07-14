@@ -39,7 +39,7 @@ import { site, whatsappLink } from "../data/site";
             </span>
             <h2 class="mt-3 font-display text-2xl font-black text-deep">Contanos qué necesitás coordinar</h2>
             <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
-              Enviamos tu consulta por WhatsApp o email con los datos cargados para responder con mayor precisión.
+              Enviamos tu consulta por WhatsApp con los datos cargados para responder con mayor precisión.
             </p>
           </div>
 
@@ -54,16 +54,6 @@ import { site, whatsappLink } from "../data/site";
               <input id="contact-institucion" name="institucion" required maxlength="120" minlength="2" autocomplete="organization" aria-describedby="contact-institucion-error" class="contact-field mt-1.5 w-full rounded-md border px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-primary" placeholder="Clínica, sanatorio o especialidad" />
               <span id="contact-institucion-error" data-error-for="institucion" class="mt-1 hidden text-xs text-red-700" aria-live="polite"></span>
             </label>
-            <label class="block text-sm font-semibold text-deep">
-              Teléfono
-              <input id="contact-telefono" name="telefono" required maxlength="30" minlength="6" inputmode="tel" autocomplete="tel" aria-describedby="contact-telefono-error" class="contact-field mt-1.5 w-full rounded-md border px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-primary" placeholder="Teléfono de contacto" />
-              <span id="contact-telefono-error" data-error-for="telefono" class="mt-1 hidden text-xs text-red-700" aria-live="polite"></span>
-            </label>
-            <label class="block text-sm font-semibold text-deep">
-              Email
-              <input id="contact-email" name="email" required maxlength="255" type="email" autocomplete="email" aria-describedby="contact-email-error" class="contact-field mt-1.5 w-full rounded-md border px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-primary" placeholder="correo@ejemplo.com" />
-              <span id="contact-email-error" data-error-for="email" class="mt-1 hidden text-xs text-red-700" aria-live="polite"></span>
-            </label>
           </div>
           <label class="mt-5 block text-sm font-semibold text-deep">
             Mensaje
@@ -75,31 +65,28 @@ import { site, whatsappLink } from "../data/site";
             <button type="submit" class="btn-primary inline-flex items-center gap-2 rounded-md px-5 py-3 text-sm font-bold">
               <Icon name="message-circle" class="h-4 w-4" /> Enviar por WhatsApp
             </button>
-            <button type="button" data-email-submit class="btn-email-soft inline-flex items-center gap-2 rounded-md px-5 py-3 text-sm font-bold">
-              <Icon name="send" class="h-4 w-4" /> Enviar por email
-            </button>
           </div>
         </form>
 
         <aside class="space-y-5">
-          <section class="dark-card rounded-xl border p-6 text-white">
-            <h2 class="font-display text-lg font-black">Datos de contacto</h2>
-            <ul class="mt-4 space-y-3 text-sm text-brand">
+          <section class="premium-card rounded-xl border p-6">
+            <h2 class="font-display text-lg font-black text-deep">Datos de contacto</h2>
+            <ul class="mt-4 space-y-3 text-sm text-muted-foreground">
               <li class="flex items-start gap-2.5">
-                <Icon name="phone" class="mt-0.5 h-4 w-4 shrink-0 text-primary-glow" />
-                <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" class="contact-link text-white">{site.phoneDisplay}</a>
+                <Icon name="phone" class="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" class="contact-link font-semibold text-deep">{site.phoneDisplay}</a>
               </li>
               <li class="flex items-start gap-2.5">
-                <Icon name="map-pin" class="mt-0.5 h-4 w-4 shrink-0 text-primary-glow" />
+                <Icon name="map-pin" class="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                 <span>{site.address}</span>
               </li>
               <li class="flex items-start gap-2.5">
-                <Icon name="instagram" class="mt-0.5 h-4 w-4 shrink-0 text-primary-glow" />
-                <a href={site.instagramUrl} target="_blank" rel="noopener noreferrer" class="contact-link text-white">{site.instagramHandle}</a>
+                <Icon name="instagram" class="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                <a href={site.instagramUrl} target="_blank" rel="noopener noreferrer" class="contact-link font-semibold text-deep">{site.instagramHandle}</a>
               </li>
               <li class="flex items-start gap-2.5">
-                <Icon name="mail" class="mt-0.5 h-4 w-4 shrink-0 text-primary-glow" />
-                <a href={`mailto:${site.email}`} class="contact-link text-white">{site.email}</a>
+                <Icon name="mail" class="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                <a href={`mailto:${site.email}`} class="contact-link font-semibold text-deep">{site.email}</a>
               </li>
             </ul>
             <a
@@ -144,15 +131,12 @@ import { site, whatsappLink } from "../data/site";
   </section>
 </BaseLayout>
 
-<script is:inline define:vars={{ email: site.email, whatsappBase: whatsappLink() }}>
+<script is:inline define:vars={{ whatsappBase: whatsappLink() }}>
   const form = document.querySelector("[data-contact-form]");
-  const emailButton = document.querySelector("[data-email-submit]");
 
   const rules = {
     nombre: "Ingresá tu nombre",
     institucion: "Ingresá tu institución o especialidad",
-    telefono: "Ingresá un teléfono válido",
-    email: "Ingresá un email válido",
     mensaje: "Contanos brevemente tu consulta",
   };
   let firstInvalidField = null;
@@ -188,21 +172,15 @@ import { site, whatsappLink } from "../data/site";
     const values = {
       nombre: String(data.nombre || "").trim(),
       institucion: String(data.institucion || "").trim(),
-      telefono: String(data.telefono || "").trim(),
-      email: String(data.email || "").trim(),
       mensaje: String(data.mensaje || "").trim(),
     };
     let valid = true;
 
     for (const [key, message] of Object.entries(rules)) {
-      if (!values[key] || values[key].length < (key === "mensaje" ? 10 : key === "telefono" ? 6 : 2)) {
+      if (!values[key] || values[key].length < (key === "mensaje" ? 10 : 2)) {
         showError(key, message);
         valid = false;
       }
-    }
-    if (values.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
-      showError("email", rules.email);
-      valid = false;
     }
     if (!valid) firstInvalidField?.focus();
     return valid ? values : null;
@@ -210,20 +188,12 @@ import { site, whatsappLink } from "../data/site";
 
   const buildMessage = (values) =>
     `Hola, soy ${values.nombre} (${values.institucion}).\n` +
-    `Teléfono: ${values.telefono}\nEmail: ${values.email}\n\n${values.mensaje}`;
+    `Consulta:\n${values.mensaje}`;
 
   form?.addEventListener("submit", (event) => {
     event.preventDefault();
     const values = validate();
     if (!values) return;
     window.open(`${whatsappBase}?text=${encodeURIComponent(buildMessage(values))}`, "_blank", "noopener,noreferrer");
-  });
-
-  emailButton?.addEventListener("click", () => {
-    const values = validate();
-    if (!values) return;
-    const subject = encodeURIComponent(`Consulta de ${values.nombre} — ${values.institucion}`);
-    const body = encodeURIComponent(buildMessage(values));
-    window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
   });
 </script>
