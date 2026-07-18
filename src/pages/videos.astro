@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Icon from "../components/Icon.astro";
-import { categoryImages, videos } from "../data/site";
+import { categoryImages, galleryFilters, videos } from "../data/site";
 ---
 
 <BaseLayout
@@ -55,17 +55,33 @@ import { categoryImages, videos } from "../data/site";
         </a>
       </div>
 
+      <div class="mt-8 flex flex-wrap items-center gap-2" data-video-filters>
+        {["Todos", ...galleryFilters].map((filter) => (
+          <button
+            type="button"
+            data-video-filter={filter}
+            aria-pressed={filter === "Todos" ? "true" : "false"}
+            class:list={[
+              "gallery-filter rounded-full border px-4 py-1.5 text-sm font-medium",
+              filter === "Todos" ? "gallery-filter-active" : "gallery-filter-idle",
+            ]}
+          >
+            {filter}
+          </button>
+        ))}
+      </div>
+
       {videos.length === 0 ? (
-        <div class="premium-card mt-10 flex flex-col items-start gap-5 rounded-xl border px-6 py-10 sm:flex-row sm:items-center sm:justify-between">
+        <div data-videos-empty class="premium-card mt-8 flex flex-col items-start gap-5 rounded-xl border px-6 py-10 sm:flex-row sm:items-center sm:justify-between">
           <div class="flex items-start gap-4">
             <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-secondary text-primary ring-1 ring-border">
               <Icon name="calendar-clock" class="h-5 w-5" />
             </div>
             <div>
-              <p class="font-display text-base font-bold text-deep">
+              <p data-videos-empty-title class="font-display text-base font-bold text-deep">
                 Pronto publicaremos nuestros videos institucionales y de productos.
               </p>
-              <p class="mt-1 max-w-xl text-sm text-muted-foreground">
+              <p data-videos-empty-description class="mt-1 max-w-xl text-sm text-muted-foreground">
                 Mientras tanto, podés explorar imágenes de productos, instrumental y actividades profesionales.
               </p>
             </div>
@@ -75,26 +91,32 @@ import { categoryImages, videos } from "../data/site";
           </a>
         </div>
       ) : (
-        <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {videos.map((video) => (
-            <article class="premium-card overflow-hidden rounded-xl border">
-              <div class="relative aspect-video bg-secondary/50">
-                <video
-                  src={video.src}
-                  poster={video.poster}
-                  controls
-                  preload="none"
-                  playsinline
-                  class="h-full w-full object-cover"
-                ></video>
-              </div>
-              <div class="px-4 py-3">
-                <h2 class="font-display text-sm font-semibold text-deep">{video.title}</h2>
-                <p class="mt-0.5 text-xs text-muted-foreground">{video.category}</p>
-              </div>
-            </article>
-          ))}
-        </div>
+        <>
+          <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-videos-grid>
+            {videos.map((video) => (
+              <article data-video-item data-category={video.category} class="premium-card overflow-hidden rounded-xl border">
+                <div class="relative aspect-video bg-secondary/50">
+                  <video
+                    src={video.src}
+                    poster={video.poster}
+                    controls
+                    preload="none"
+                    playsinline
+                    class="h-full w-full object-cover"
+                  ></video>
+                </div>
+                <div class="px-4 py-3">
+                  <h2 class="font-display text-sm font-semibold text-deep">{video.title}</h2>
+                  <p class="mt-0.5 text-xs text-muted-foreground">{video.category}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+          <div data-videos-empty class="premium-card mt-8 hidden rounded-xl border px-6 py-10 text-center">
+            <p data-videos-empty-title class="font-display text-base font-bold text-deep"></p>
+            <p data-videos-empty-description class="mt-1 text-sm text-muted-foreground"></p>
+          </div>
+        </>
       )}
 
       <div class="mt-10 grid gap-5 sm:grid-cols-2">
@@ -114,3 +136,89 @@ import { categoryImages, videos } from "../data/site";
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  const filterWrap = document.querySelector("[data-video-filters]");
+  const filterButtons = Array.from(document.querySelectorAll("[data-video-filter]"));
+  const videoItems = Array.from(document.querySelectorAll("[data-video-item]"));
+  const emptyState = document.querySelector("[data-videos-empty]");
+  const emptyTitle = emptyState?.querySelector("[data-videos-empty-title]");
+  const emptyDescription = emptyState?.querySelector("[data-videos-empty-description]");
+  const defaultEmptyTitle = emptyTitle?.textContent?.trim() || "Pronto publicaremos nuevos videos.";
+  const defaultEmptyDescription = emptyDescription?.textContent?.trim() || "Podés recorrer la galería mientras incorporamos nuevo material.";
+
+  const normalizeFilter = (value: string) =>
+    value
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+
+  const findFilterButton = (filter: string) =>
+    filterButtons.find(
+      (item) =>
+        item instanceof HTMLElement &&
+        normalizeFilter(item.dataset.videoFilter || "") === normalizeFilter(filter),
+    );
+
+  const updateEmptyState = (filter: string, hasVisibleVideos: boolean) => {
+    if (!(emptyState instanceof HTMLElement)) return;
+
+    const hasVideos = videoItems.length > 0;
+    emptyState.classList.toggle("hidden", hasVideos && hasVisibleVideos);
+
+    if (!hasVideos && filter === "Todos") {
+      if (emptyTitle) emptyTitle.textContent = defaultEmptyTitle;
+      if (emptyDescription) emptyDescription.textContent = defaultEmptyDescription;
+      return;
+    }
+
+    if (emptyTitle) {
+      emptyTitle.textContent = `Todavía no hay videos de ${filter.toLowerCase()}.`;
+    }
+    if (emptyDescription) {
+      emptyDescription.textContent = "Podés elegir otra categoría o recorrer la galería mientras incorporamos nuevo material.";
+    }
+  };
+
+  const setActiveFilter = (filter: string) => {
+    const button = findFilterButton(filter) || findFilterButton("Todos");
+    if (!(button instanceof HTMLElement)) return;
+
+    const activeFilter = button.dataset.videoFilter || "Todos";
+    let visibleVideos = 0;
+
+    filterButtons.forEach((item) => {
+      if (!(item instanceof HTMLElement)) return;
+      const active = item === button;
+      item.classList.toggle("gallery-filter-active", active);
+      item.classList.toggle("gallery-filter-idle", !active);
+      item.setAttribute("aria-pressed", String(active));
+    });
+
+    videoItems.forEach((item) => {
+      if (!(item instanceof HTMLElement)) return;
+      const visible = activeFilter === "Todos" || item.dataset.category === activeFilter;
+      item.classList.toggle("hidden", !visible);
+      if (visible) visibleVideos += 1;
+
+      if (!visible) {
+        const video = item.querySelector("video");
+        if (video instanceof HTMLVideoElement) video.pause();
+      }
+    });
+
+    updateEmptyState(activeFilter, visibleVideos > 0);
+  };
+
+  filterWrap?.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    const button = target.closest("[data-video-filter]");
+    if (!(button instanceof HTMLElement)) return;
+    setActiveFilter(button.dataset.videoFilter || "Todos");
+  });
+
+  const initialParams = new URLSearchParams(window.location.search);
+  const initialFilter = initialParams.get("categoria") || initialParams.get("category") || initialParams.get("filter") || "Todos";
+  setActiveFilter(initialFilter);
+</script>

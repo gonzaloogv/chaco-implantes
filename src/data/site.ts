@@ -913,7 +913,6 @@ const galleryPool: { category: GalleryCategory; image: string; alt: string }[] =
   { category: "Instrumental", image: images.hero, alt: "Instrumental traumatológico" },
   { category: "Instrumental", image: categoryImages["otros-productos"], alt: "Insumos y descartables" },
   { category: "Quirófano", image: images.quirofano, alt: "Quirófano equipado para cirugía" },
-  { category: "Eventos", image: images.evento, alt: "Jornada con profesionales de la región" },
 ];
 
 const eventGalleryPool: { category: GalleryCategory; image: string; alt: string }[] = eventGalleryImages.map((image) => ({

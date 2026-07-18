@@ -259,8 +259,9 @@ assert(galeria.includes("data-lightbox-caption-title"), "Gallery lightbox should
 assert(source.includes("showModal"), "Gallery lightbox should open with the native modal API");
 assert(!galeria.includes("Material visual"), "Gallery hero should not duplicate its title with a generic eyebrow");
 assert(galeria.includes('data-gallery-page-size="12"'), "Gallery should expose the first-page size");
-assert((galeria.match(/<button type="button" data-gallery-item/g) ?? []).length === 92, "Gallery should render the base gallery and event photo set");
+assert((galeria.match(/<button type="button" data-gallery-item/g) ?? []).length === 91, "Gallery should render the base gallery and event photo set");
 assert((galeria.match(/data-category="Eventos"/g) ?? []).length >= 80, "Gallery should categorize the stand photos as event images");
+assert(!galeria.includes("/assets/images/evento.jpg"), "Gallery should not render the old local event image");
 assert(galeria.includes("Congreso_Traumato-99_ocnsrl.jpg"), "Gallery should include the event images listed in stand.txt");
 assert(galeria.includes("61° Congreso Argentino de Ortopedia y Traumatología"), "Event gallery images should use the institutional congress title");
 assert(!galeria.includes("Chaco Implantes en evento profesional - foto"), "Event gallery images should not expose numbered placeholder titles");
@@ -286,6 +287,11 @@ assert(videos.includes("data-videos-page"), "Videos page should expose the redes
 assert(videos.includes("page-hero-dark"), "Videos page should use the dark premium page hero");
 assert(videos.includes("page-surface"), "Videos page should use the shared light content surface");
 assert(videos.includes("premium-card"), "Videos page empty state should use premium card treatment");
+assert(videos.includes("data-video-filters"), "Videos page should expose category filters");
+assert((videos.match(/data-video-filter=/g) ?? []).length === 5, "Videos page should mirror the five gallery filter options");
+assert(videos.includes('data-video-filter="Instrumental"'), "Videos page should include the Instrumental filter");
+assert(videos.includes('data-video-filter="Eventos"'), "Videos page should include the Events filter");
+assert(source.includes("item.dataset.category === activeFilter"), "Videos page should filter cards by their category");
 assert(eventos.includes("data-eventos-page"), "Events page should expose the redesigned page marker");
 assert(eventos.includes("page-hero-dark"), "Events page should use the dark premium page hero");
 assert(eventos.includes("page-surface"), "Events page should use the shared light content surface");
