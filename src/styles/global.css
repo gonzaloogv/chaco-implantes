@@ -550,11 +550,24 @@ svg {
 }
 
 .lightbox-dialog::backdrop {
+  animation: lightbox-backdrop-in 180ms var(--ease-out) both;
   background: rgba(30, 46, 79, 0.86);
 }
 
 .lightbox-panel {
   animation: lightbox-in 180ms var(--ease-out) both;
+}
+
+/* Evita el "fantasma" translúcido del arrastre nativo de imágenes: sobre el
+   backdrop azul del modal ese ghost se veía como un tinte celeste doblado. */
+.lightbox-image,
+.gallery-card img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  user-drag: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .lightbox-panel [data-lightbox-image],
@@ -570,6 +583,56 @@ svg {
 
 .lightbox-panel[data-lightbox-loading="true"] [data-lightbox-image] {
   opacity: 1;
+}
+
+/* Círculo de carga: se muestra mientras la imagen no llega */
+.img-spinner {
+  display: grid;
+  inset: 0;
+  place-items: center;
+  pointer-events: none;
+  position: absolute;
+}
+
+.img-spinner::after {
+  animation: spinner-rotate 0.7s linear infinite;
+  border: 3px solid color-mix(in srgb, currentColor 26%, transparent);
+  border-radius: 9999px;
+  border-top-color: currentColor;
+  content: "";
+  height: 1.9rem;
+  width: 1.9rem;
+}
+
+/* Miniaturas del grid: el spinner queda detrás del <img>, que lo tapa al cargar */
+.gallery-thumb .img-spinner {
+  color: var(--primary);
+}
+
+.gallery-thumb[data-loaded="true"] .img-spinner {
+  display: none;
+}
+
+/* Visor ampliado: el spinner aparece sobre la imagen mientras carga la siguiente.
+   Se conmuta con display (no opacity) porque el <dialog> en top-layer no asienta
+   de forma confiable las transiciones de opacity al quitar el atributo de carga. */
+.lightbox-spinner {
+  color: #fff;
+  display: none;
+}
+
+.lightbox-spinner::after {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+
+.lightbox-panel[data-lightbox-loading="true"] .lightbox-spinner {
+  display: grid;
+}
+
+@keyframes spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .footer-link {
@@ -629,6 +692,13 @@ svg {
   box-shadow: 0 18px 42px -34px rgba(15, 23, 42, 0.5);
 }
 
+/* Cards de la sección "profesionales": el realce (borde + sombra) queda FIJO,
+   sin depender del hover. */
+.pro-card {
+  border-color: var(--brand);
+  box-shadow: 0 4px 16px -10px rgba(15, 23, 42, 0.2);
+}
+
 .dark-card {
   background:
     linear-gradient(180deg, rgba(143, 179, 226, 0.12), rgba(15, 23, 42, 0.22)),
@@ -682,14 +752,16 @@ svg {
   max-width: 86%;
 }
 
+/* Solo Medacta (única card con esta clase): se agranda respecto al resto */
 .supplier-logo-mark {
-  max-height: 3.1rem;
-  max-width: 66%;
+  max-height: 3.9rem;
+  max-width: 88%;
 }
 
+/* Solo Implantes Villalba (única card con esta clase): también agrandado */
 .supplier-logo-tall {
-  max-height: 3.1rem;
-  max-width: 62%;
+  max-height: 3.6rem;
+  max-width: 78%;
 }
 
 .supplier-logo-ross {
@@ -733,6 +805,12 @@ svg {
 
 .hero-dot-controls button {
   pointer-events: auto;
+}
+
+/* Los controles interactivos del hero muestran el cursor de "clickeable" */
+.hero-shell a,
+.hero-shell button {
+  cursor: pointer;
 }
 
 .value-pillars-band {
@@ -875,12 +953,23 @@ svg {
   }
 
   .supplier-brand-card:hover {
-    background-color: rgba(13, 38, 66, 0.9);
     border-color: rgba(143, 179, 226, 0.52);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.08),
       0 18px 36px -30px rgba(0, 0, 0, 0.9);
     transform: translateY(-2px);
+  }
+
+  /* Hover claro solo en las cards con logo: el fondo hace visibles los detalles
+     del logo en color, que sobre el azul oscuro no se distinguen. Tono hielo
+     (blanco frío con leve tinte azulado) en vez de blanco puro. */
+  .supplier-brand-card:not(.supplier-brand-card-muted):hover {
+    background: rgba(207, 225, 255, 0.95);
+  }
+
+  /* "+ otras líneas" (sin logo) conserva el realce oscuro original */
+  .supplier-brand-card-muted:hover {
+    background-color: rgba(13, 38, 66, 0.9);
   }
 
   .supplier-brand-card:hover .supplier-logo {
@@ -930,14 +1019,24 @@ svg {
   }
 }
 
+/* La imagen entra solo con escala: NO se anima la opacity del panel, porque el
+   panel blanco semi-transparente se mezclaba con el backdrop azul del <dialog> y
+   teñía la imagen de celeste al abrir/cambiar. El fundido va en el ::backdrop. */
 @keyframes lightbox-in {
   from {
-    opacity: 0;
     transform: scale(0.96);
   }
   to {
-    opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes lightbox-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 

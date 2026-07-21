@@ -13,7 +13,7 @@ export const images = {
   heroBg: "/assets/images/hero-instrumental.JPG",
   heroNextAR: `${CLOUDINARY_BASE}/${HERO_TRANSFORM}/v1781474473/nextar-hero_pdfhha.png`,
   heroAmis: `${CLOUDINARY_BASE}/${HERO_TRANSFORM}/v1781474563/amis-hero_snoht3.png`,
-  heroEventos: "https://res.cloudinary.com/dz9tuwczf/image/upload/t_Optimization/foto-evento_d0eg2f.jpg",
+  heroEventos: `${CLOUDINARY_BASE}/${HERO_TRANSFORM}/foto-evento_d0eg2f.jpg`,
   quirofano: "/assets/images/quirofano.jpg",
   congreso: "/assets/images/congreso-traumatologia-2024.JPG",
   productos: "/assets/images/productos.jpg",

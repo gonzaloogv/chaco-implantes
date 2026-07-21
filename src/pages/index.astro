@@ -23,8 +23,8 @@ import {
       <img
         src={slide.image}
         alt={slide.imageAlt}
-        fetchpriority={index === 0 ? "high" : "auto"}
-        loading={index === 0 ? "eager" : "lazy"}
+        fetchpriority={index === 0 ? "high" : "low"}
+        loading="eager"
         decoding="async"
         data-hero-bg
         data-active={index === 0 ? "true" : "false"}
@@ -186,7 +186,7 @@ import {
       <div class="mt-8 grid gap-4 sm:grid-cols-2">
         {
           professionalBlocks.map((block) => (
-            <article class="lift-card flex items-start gap-4 rounded-lg border border-border bg-card p-5">
+            <article class="pro-card flex items-start gap-4 rounded-lg border bg-card p-5">
               <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-primary ring-1 ring-border">
                 <Icon name={block.icon} class="h-4 w-4" />
               </div>
@@ -360,9 +360,19 @@ import {
 
     let active = 0;
     let timer: number | undefined;
-    let manuallyPaused = false;
-    let pointerInside = false;
+    // "auto": el hover sobre el hero pausa. Al presionar el botón, el usuario toma
+    // control y su decisión tiene prioridad sobre el hover ("playing" | "paused").
+    let manualState: "auto" | "playing" | "paused" = "auto";
+    let heroHover = false;
     let inView = true;
+
+    // ¿Está rotando de verdad ahora mismo?
+    const isPlaying = () => {
+      if (!inView || reduceMotion.matches) return false; // restricciones del entorno
+      if (manualState === "playing") return true;         // el botón manda sobre el hover
+      if (manualState === "paused") return false;
+      return !heroHover;                                  // auto: el hover pausa
+    };
 
     const setActive = (index: number) => {
       active = (index + slides.length) % slides.length;
@@ -391,11 +401,25 @@ import {
       }
     };
 
-    // Un solo punto de decisión: solo rota si nada lo frena
+    // El ícono/label del botón refleja el estado REAL (reproduciendo vs pausado)
+    const syncButton = (playing: boolean) => {
+      if (!(autoplayToggle instanceof HTMLElement)) return;
+      // reproduciendo → ícono de pausa (acción disponible); pausado → ícono de play
+      pauseIcon?.classList.toggle("hidden", !playing);
+      playIcon?.classList.toggle("hidden", playing);
+      autoplayToggle.setAttribute("aria-pressed", String(!playing));
+      autoplayToggle.setAttribute(
+        "aria-label",
+        playing ? "Pausar rotación automática" : "Reanudar rotación automática",
+      );
+    };
+
+    // Un solo punto de decisión: rota solo si isPlaying(), y sincroniza el indicador
     const syncAuto = () => {
       stopAuto();
-      if (manuallyPaused || pointerInside || !inView || reduceMotion.matches) return;
-      timer = window.setInterval(() => setActive(active + 1), AUTO_ADVANCE_MS);
+      const playing = isPlaying();
+      if (playing) timer = window.setInterval(() => setActive(active + 1), AUTO_ADVANCE_MS);
+      syncButton(playing);
     };
 
     dots.forEach((dot, index) => {
@@ -405,24 +429,19 @@ import {
       });
     });
 
+    // El botón fija la decisión del usuario y tiene prioridad sobre el hover:
+    // si está pausado (por el motivo que sea) y se presiona, fuerza reproducción.
     autoplayToggle?.addEventListener("click", () => {
-      manuallyPaused = !manuallyPaused;
-      autoplayToggle.setAttribute("aria-pressed", String(manuallyPaused));
-      autoplayToggle.setAttribute(
-        "aria-label",
-        manuallyPaused ? "Reanudar rotación automática" : "Pausar rotación automática",
-      );
-      pauseIcon?.classList.toggle("hidden", manuallyPaused);
-      playIcon?.classList.toggle("hidden", !manuallyPaused);
+      manualState = isPlaying() ? "paused" : "playing";
       syncAuto();
     });
 
     carousel.addEventListener("pointerenter", () => {
-      pointerInside = true;
+      heroHover = true;
       syncAuto();
     });
     carousel.addEventListener("pointerleave", () => {
-      pointerInside = false;
+      heroHover = false;
       syncAuto();
     });
 

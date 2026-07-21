@@ -5,7 +5,7 @@ import { join } from "node:path";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const dist = join(root, "dist");
 const globalCss = readFileSync(join(root, "src/styles/global.css"), "utf8");
-const eventHeroImage = "https://res.cloudinary.com/dz9tuwczf/image/upload/t_Optimization/foto-evento_d0eg2f.jpg";
+const eventHeroImage = "https://res.cloudinary.com/dz9tuwczf/image/upload/f_auto,q_auto,c_limit,w_1920/foto-evento_d0eg2f.jpg";
 const oldProductTerm = String.fromCharCode(115, 117, 98, 99, 97, 116, 101, 103, 111, 114);
 const expectedPublicAssets = [
   "public/favicon.ico",
@@ -190,7 +190,7 @@ assert(catalogoPerforador.includes("data-catalog-viewer"), "Other trauma product
 assert(catalogoPerforador.includes("Motor Overfix para perforación"), "Other trauma product detail should render the description");
 assert(catalogoPerforador.includes("Solicitar catálogo PDF"), "Other trauma product detail should expose the catalog request action");
 assert((home.match(/data-value-pillar(?=[\s>])/g) ?? []).length === 4, "Home should render four compact value pillars");
-assert((home.match(/lift-card flex items-start/g) ?? []).length >= 4, "Home should render four professional support cards");
+assert((home.match(/pro-card flex items-start/g) ?? []).length >= 4, "Home should render four professional support cards");
 assert(
   (home.match(/data-catalog-card/g) ?? []).length >= 6,
   "Home should render catalog cards with stable card markers",
@@ -268,6 +268,9 @@ assert(galeria.includes("f_auto,q_auto,c_limit,w_1920"), "Gallery lightbox image
 assert((galeria.match(/loading="eager"/g) ?? []).length === 12, "Gallery should eager-load only the first visible batch");
 assert((galeria.match(/fetchpriority="high"/g) ?? []).length === 4, "Gallery should give high priority only to the first visible row");
 assert(galeria.includes("Cargar más"), "Gallery should include a load-more control");
+assert(galeria.includes("data-thumb-spinner"), "Gallery thumbnails should show a loading spinner until the image arrives");
+assert(galeria.includes("data-lightbox-spinner"), "Gallery lightbox should show a loading spinner while a new image loads");
+assert(source.includes("markThumbLoaded"), "Gallery should hide each thumbnail spinner once its image loads");
 assert(galeria.includes("gallery-filter-active"), "Gallery filters should use a stable active style");
 assert(galeria.includes("gallery-filter-idle"), "Gallery filters should use a stronger idle border style");
 assert(contacto.includes("contact-field"), "Contact fields should use the unified field treatment");

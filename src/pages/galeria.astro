@@ -68,16 +68,18 @@ import { GALLERY_PAGE_SIZE, gallery, galleryFilters, videos } from "../data/site
             index >= GALLERY_PAGE_SIZE && "hidden",
           ]}
         >
-          <span class="relative block aspect-[3/2] overflow-hidden bg-secondary/50">
+          <span class="gallery-thumb relative block aspect-[3/2] overflow-hidden bg-secondary/50">
+            <span class="img-spinner" data-thumb-spinner aria-hidden="true"></span>
             <img
               src={item.thumb}
               alt={item.alt}
               loading={index < GALLERY_PAGE_SIZE ? "eager" : "lazy"}
               fetchpriority={index < 4 ? "high" : "auto"}
               decoding="async"
+              draggable={false}
               width="600"
               height="400"
-              class="h-full w-full object-cover transition-transform duration-200 ease-out"
+              class="relative h-full w-full object-cover transition-transform duration-200 ease-out"
             />
           </span>
           <span class="flex items-center gap-2 px-3 py-2.5">
@@ -111,7 +113,10 @@ import { GALLERY_PAGE_SIZE, gallery, galleryFilters, videos } from "../data/site
       <Icon name="chevron-right" class="h-6 w-6" />
     </button>
     <figure class="lightbox-panel max-h-[85vh] max-w-3xl overflow-hidden rounded-xl bg-card text-deep">
-      <img data-lightbox-image alt="" class="max-h-[78vh] w-full object-contain" />
+      <span class="relative block bg-card">
+        <img data-lightbox-image alt="" draggable={false} class="lightbox-image max-h-[78vh] w-full object-contain" />
+        <span class="img-spinner lightbox-spinner" data-lightbox-spinner aria-hidden="true"></span>
+      </span>
       <figcaption class="space-y-0.5 px-4 py-3 text-sm">
         <span id="lightbox-title" data-lightbox-caption-title class="block font-semibold text-deep"></span>
         <span data-lightbox-caption-category class="block text-xs text-muted-foreground"></span>
@@ -130,6 +135,22 @@ import { GALLERY_PAGE_SIZE, gallery, galleryFilters, videos } from "../data/site
   const loadMore = document.querySelector("[data-load-more]");
   const loadMoreWrap = document.querySelector("[data-load-more-wrap]");
   const loadMoreCount = document.querySelector("[data-load-more-count]");
+
+  // Oculta el spinner de cada miniatura cuando su imagen termina de cargar (o falla)
+  const markThumbLoaded = (image: HTMLImageElement) => {
+    const wrap = image.closest(".gallery-thumb");
+    if (wrap instanceof HTMLElement) wrap.dataset.loaded = "true";
+  };
+  galleryItems.forEach((item) => {
+    const image = item.querySelector("img");
+    if (!(image instanceof HTMLImageElement)) return;
+    if (image.complete && image.naturalWidth > 0) {
+      markThumbLoaded(image);
+      return;
+    }
+    image.addEventListener("load", () => markThumbLoaded(image), { once: true });
+    image.addEventListener("error", () => markThumbLoaded(image), { once: true });
+  });
   const lightbox = document.querySelector("[data-lightbox]");
   const lightboxPanel = document.querySelector(".lightbox-panel");
   const lightboxImage = document.querySelector("[data-lightbox-image]");
@@ -139,6 +160,16 @@ import { GALLERY_PAGE_SIZE, gallery, galleryFilters, videos } from "../data/site
   const prev = document.querySelector("[data-lightbox-prev]");
   const next = document.querySelector("[data-lightbox-next]");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  // Red de seguridad para el spinner: si la imagen visible ya cargó, ocultalo aunque
+  // el decode() previo no haya resuelto (algunos renderers lo dejan colgado).
+  const clearLightboxLoading = () => {
+    if (lightboxPanel instanceof HTMLElement) lightboxPanel.removeAttribute("data-lightbox-loading");
+  };
+  if (lightboxImage instanceof HTMLImageElement) {
+    lightboxImage.addEventListener("load", clearLightboxLoading);
+    lightboxImage.addEventListener("error", clearLightboxLoading);
+  }
 
   let activeFilter = "Todos";
   let visible = pageSize;
@@ -263,16 +294,20 @@ import { GALLERY_PAGE_SIZE, gallery, galleryFilters, videos } from "../data/site
     if (!url) return;
 
     const image = getLightboxImage(url);
-    try {
-      if (typeof image.decode === "function") {
-        await image.decode();
+    // Esperamos a que la imagen esté lista, pero corremos decode() en carrera con el
+    // evento load real: si decode() se cuelga (algunos renderers lo hacen), el load
+    // igual resuelve y el visor nunca queda atrapado en estado de carga.
+    const loaded = waitForImage(image);
+    if (typeof image.decode === "function") {
+      try {
+        await Promise.race([image.decode(), loaded]);
         return;
+      } catch {
+        // Broken or interrupted image requests should not trap the lightbox in loading state.
       }
-    } catch {
-      // Broken or interrupted image requests should not trap the lightbox in loading state.
     }
 
-    await waitForImage(image);
+    await loaded;
   };
 
   const prefetchLightboxItem = (item: Element | undefined) => {
