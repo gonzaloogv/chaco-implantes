@@ -677,6 +677,34 @@ svg {
     radial-gradient(circle at 82% 10%, rgba(96, 165, 250, 0.26), transparent 24rem),
     linear-gradient(150deg, #0f172a 0%, #192338 50%, #1e2e4f 100%);
   border-bottom-color: color-mix(in srgb, var(--primary) 72%, transparent);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Marca de agua del logo asomando desde el margen izquierdo de los heroes
+   oscuros. Opacidad baja y detrás del contenido para no afectar la legibilidad. */
+.page-hero-dark::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -4rem;
+  z-index: -1;
+  width: clamp(15rem, 26vw, 23rem);
+  aspect-ratio: 1;
+  transform: translateY(-50%);
+  background:
+    url("https://res.cloudinary.com/dz9tuwczf/image/upload/f_auto,q_auto,w_600/v1784654455/00_icono_globo_CHACO_IMPLANTES_zxpybc.png")
+    no-repeat center / contain;
+  opacity: 0.13;
+  pointer-events: none;
+}
+
+@media (max-width: 40rem) {
+  .page-hero-dark::before {
+    left: -6rem;
+    opacity: 0.1;
+  }
 }
 
 .page-surface {
@@ -739,7 +767,7 @@ svg {
   height: auto;
   max-width: 100%;
   object-fit: contain;
-  opacity: 0.76;
+  opacity: 1;
   transition:
     filter 200ms var(--ease-out),
     opacity 200ms var(--ease-out),
@@ -754,7 +782,7 @@ svg {
 
 /* Solo Medacta (única card con esta clase): se agranda respecto al resto */
 .supplier-logo-mark {
-  max-height: 3.9rem;
+  max-height: 4.2rem;
   max-width: 88%;
 }
 
