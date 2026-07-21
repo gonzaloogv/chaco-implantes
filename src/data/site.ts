@@ -1,29 +1,36 @@
+const CLOUDINARY_BASE = "https://res.cloudinary.com/dz9tuwczf/image/upload";
+
+// Fondos a pantalla completa / media pantalla
+const HERO_TRANSFORM = "f_auto,q_auto,c_limit,w_1920";
+// Fotos de categoría usadas en cards y heros de catálogo
+const CATEGORY_TRANSFORM = "f_auto,q_auto,c_limit,w_1600";
+// Logos del header (≤120px) y footer (40px)
+const LOGO_HEADER_TRANSFORM = "f_auto,q_auto,w_256";
+const LOGO_FOOTER_TRANSFORM = "f_auto,q_auto,w_128";
+
 export const images = {
   hero: "/assets/images/hero.jpg",
   heroBg: "/assets/images/hero-instrumental.JPG",
-  heroMobile: "/assets/images/hero-mobile.JPG",
-  heroNextAR: "/assets/images/nextar-hero.png",
-  heroAmis: "/assets/images/amis-hero.png",
+  heroNextAR: `${CLOUDINARY_BASE}/${HERO_TRANSFORM}/v1781474473/nextar-hero_pdfhha.png`,
+  heroAmis: `${CLOUDINARY_BASE}/${HERO_TRANSFORM}/v1781474563/amis-hero_snoht3.png`,
   heroEventos: "https://res.cloudinary.com/dz9tuwczf/image/upload/t_Optimization/foto-evento_d0eg2f.jpg",
   quirofano: "/assets/images/quirofano.jpg",
-  evento: "/assets/images/evento.jpg",
   congreso: "/assets/images/congreso-traumatologia-2024.JPG",
   productos: "/assets/images/productos.jpg",
-  logo: "/assets/brand/logo.png",
-  logoCircular: "/assets/brand/logo-circular.png",
-  logoCircularWhite: "/assets/brand/logo-circular-white.png",
-  bannerMarca: "/assets/brand/banner-marca.jpg",
+  logoCircular: `${CLOUDINARY_BASE}/${LOGO_FOOTER_TRANSFORM}/v1784636792/logo-circular_ybzerb.png`,
+  logoCircularWhite: `${CLOUDINARY_BASE}/${LOGO_HEADER_TRANSFORM}/v1784636793/logo-circular-white_saci0q.png`,
+  ogImage: "/assets/brand/og-image.jpg",
 } as const;
 
 export const categoryImages = {
-  cadera: "/assets/images/cat-cadera.png",
-  rodilla: "/assets/images/cat-rodilla.png",
-  columna: "/assets/images/cat-columna.png",
-  maxilofacial: "/assets/images/cat-maxilofacial.png",
-  "osteosintesis-placas": "/assets/images/cat-osteosintesis-placas.png",
-  "osteosintesis-tornillos": "/assets/images/cat-osteosintesis-tornillos.png",
-  "instrumental-quirurgico": "/assets/images/cat-instrumental-quirurgico.jpg",
-  "otros-productos": "/assets/images/cat-otros-productos.jpg",
+  cadera: `${CLOUDINARY_BASE}/${CATEGORY_TRANSFORM}/v1784637756/cat-cadera_gql4el.png`,
+  rodilla: `${CLOUDINARY_BASE}/${CATEGORY_TRANSFORM}/v1784637759/cat-rodilla_in1fhx.png`,
+  columna: `${CLOUDINARY_BASE}/${CATEGORY_TRANSFORM}/v1784637757/cat-columna_eezmaq.png`,
+  maxilofacial: `${CLOUDINARY_BASE}/${CATEGORY_TRANSFORM}/v1784637757/cat-maxilofacial_xdiyvh.png`,
+  "osteosintesis-placas": `${CLOUDINARY_BASE}/${CATEGORY_TRANSFORM}/v1784637758/cat-osteosintesis-placas_qllsio.png`,
+  "osteosintesis-tornillos": `${CLOUDINARY_BASE}/${CATEGORY_TRANSFORM}/v1784637758/cat-osteosintesis-tornillos_ryg1l4.png`,
+  "instrumental-quirurgico": `${CLOUDINARY_BASE}/${CATEGORY_TRANSFORM}/v1784637756/cat-instrumental-quirurgico_se6ozy.jpg`,
+  "otros-productos": `${CLOUDINARY_BASE}/${CATEGORY_TRANSFORM}/v1784637759/cat-otros-productos_pbymtq.jpg`,
 } as const;
 
 export const site = {
@@ -45,11 +52,15 @@ export function whatsappLink(message?: string) {
   return message ? `${base}?text=${encodeURIComponent(message)}` : base;
 }
 
-// Links de WhatsApp nombrados — evita strings duplicados en templates
+// Links de WhatsApp nombrados — único lugar donde se redactan los mensajes estáticos
 export const wa = {
-  general:       whatsappLink("Hola, quisiera contactarme con Chaco Implantes."),
-  pedido:        whatsappLink("Hola, quisiera coordinar un pedido con Chaco Implantes."),
-  institucional: whatsappLink("Hola, quisiera solicitar contacto institucional con Chaco Implantes."),
+  general:        whatsappLink("Hola, quisiera contactarme con Chaco Implantes."),
+  sitio:          whatsappLink("Hola, me comunico desde el sitio de Chaco Implantes."),
+  consulta:       whatsappLink("Hola, quisiera hacer una consulta a Chaco Implantes."),
+  catalogos:      whatsappLink("Hola, quisiera solicitar información sobre los catálogos de Chaco Implantes."),
+  lineaFaltante:  whatsappLink("Hola, no encuentro la línea que busco en los catálogos de Chaco Implantes."),
+  congreso:       whatsappLink("Hola, vi que participaron del Congreso Argentino de Ortopedia y Traumatología. Quisiera más información."),
+  capacitaciones: whatsappLink("Hola, quisiera información sobre capacitaciones y novedades de Chaco Implantes."),
 } as const;
 
 export const nav = [
@@ -69,27 +80,12 @@ export const footerNav = [
   { label: "Contacto",  href: "/contacto" },
 ] as const;
 
-// Badges de la franja superior del hero
-export const specialtyBadges = [
-  { icon: "bone",         label: "Prótesis e implantes" },
-  { icon: "wrench",       label: "Instrumental quirúrgico" },
-  { icon: "shield-check", label: "Osteosíntesis" },
-  { icon: "map-pin",      label: "Resistencia, Chaco" },
-] as const;
-
+// Diferenciales concretos (sugeridos en design-review #13) — confirmar redacción con el cliente
 export const valuePillars = [
-  { icon: "handshake", label: "Asesoramiento personalizado" },
-  { icon: "shield-check", label: "Tecnología y materiales de primera línea" },
-  { icon: "boxes", label: "Soluciones adaptadas a cada necesidad" },
-  { icon: "building-2", label: "Atención humana y profesional" },
-] as const;
-
-// Items de la franja divisora entre catálogos y profesionales
-export const professionalFlow = [
-  { icon: "clipboard-list", title: "Consulta por línea" },
-  { icon: "handshake",      title: "Coordinación comercial" },
-  { icon: "boxes",          title: "Disponibilidad y stock" },
-  { icon: "building-2",     title: "Atención profesional" },
+  { icon: "boxes", label: "Stock e instrumental en Resistencia" },
+  { icon: "calendar-clock", label: "Coordinación para cirugías programadas" },
+  { icon: "wrench", label: "Acompañamiento técnico en quirófano" },
+  { icon: "map-pin", label: "Cobertura en Chaco y el NEA" },
 ] as const;
 
 export type HeroSlide = {
@@ -146,10 +142,10 @@ export const supplierSystems: SupplierSystem[] = [
   {
     name: "MEDACTA",
     href: "https://www.medacta.com/",
-    logo: "/assets/brands/medacta-brand-color.png",
-    logoAlt: "Logo de MEDACTA",
-    logoWidth: 858,
-    logoHeight: 699,
+    logo: `${CLOUDINARY_BASE}/f_auto,q_auto,w_600/v1784641411/Gemini_Generated_Image_13dauo13dauo13da-Photoroom_edbvnf.png`,
+    logoAlt: "Logo de Medacta International",
+    logoWidth: 2400,
+    logoHeight: 1256,
     logoClass: "supplier-logo-mark",
   },
   {
@@ -164,9 +160,9 @@ export const supplierSystems: SupplierSystem[] = [
   {
     name: "Implantes Villalba",
     href: "https://implantesvillalba.com.ar/",
-    logo: "/assets/brands/implantes-villalba-brand-color.png",
+    logo: `${CLOUDINARY_BASE}/f_auto,q_auto,w_600/v1784641387/Implantes_Villalba_sjvhr7.png`,
     logoAlt: "Logo de Implantes Villalba",
-    logoWidth: 900,
+    logoWidth: 1787,
     logoHeight: 780,
     logoClass: "supplier-logo-tall",
   },
@@ -187,7 +183,6 @@ export type Category = {
   type: string;
   tag: string;
   description: string;
-  pages: number;
   icon: "bone" | "layers" | "shield-check" | "wrench" | "package-check";
 };
 
@@ -198,7 +193,6 @@ export const categories: Category[] = [
     type: "Prótesis e implantes",
     tag: "Artroplastia",
     description: "Prótesis de cadera primarias y de revisión, vástagos y cotilos nacionales e importados.",
-    pages: 6,
     icon: "bone",
   },
   {
@@ -207,7 +201,6 @@ export const categories: Category[] = [
     type: "Prótesis e implantes",
     tag: "Artroplastia",
     description: "Prótesis total y parcial, componentes femorales, tibiales y de polietileno.",
-    pages: 6,
     icon: "bone",
   },
   {
@@ -216,7 +209,6 @@ export const categories: Category[] = [
     type: "Sistemas de fijación",
     tag: "Fijación",
     description: "Fijación espinal, tornillos pediculares, barras y conectores.",
-    pages: 5,
     icon: "layers",
   },
   {
@@ -225,7 +217,6 @@ export const categories: Category[] = [
     type: "Osteosíntesis",
     tag: "Osteosíntesis",
     description: "Placas y tornillos de bajo perfil para fijación maxilofacial.",
-    pages: 4,
     icon: "shield-check",
   },
   {
@@ -234,7 +225,6 @@ export const categories: Category[] = [
     type: "Osteosíntesis",
     tag: "Osteosíntesis",
     description: "Placas anatómicas y de compresión para traumatología.",
-    pages: 7,
     icon: "shield-check",
   },
   {
@@ -243,7 +233,6 @@ export const categories: Category[] = [
     type: "Osteosíntesis",
     tag: "Osteosíntesis",
     description: "Tornillos corticales, esponjosos y canulados en distintas medidas.",
-    pages: 5,
     icon: "shield-check",
   },
   {
@@ -252,7 +241,6 @@ export const categories: Category[] = [
     type: "Instrumental",
     tag: "Instrumental",
     description: "Cajas e instrumental específico por sistema y procedimiento.",
-    pages: 8,
     icon: "wrench",
   },
   {
@@ -261,7 +249,6 @@ export const categories: Category[] = [
     type: "Productos varios",
     tag: "Insumos",
     description: "Insumos, descartables y productos complementarios.",
-    pages: 4,
     icon: "package-check",
   },
 ];
@@ -272,7 +259,6 @@ export type CatalogProduct = {
   title: string;
   label: string;
   description: string;
-  pages: number;
   image: string;
   href: string;
 };
@@ -285,7 +271,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Cotilo",
     description:
       "Opciones de cotilo para artroplastia de cadera, con foco en estabilidad, disponibilidad de medidas y coordinación de instrumental.",
-    pages: 8,
     image: categoryImages.cadera,
     href: "/catalogos/cadera/productos/cotilo-doble",
   },
@@ -296,7 +281,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Caja de instrumental",
     description:
       "Instrumental asociado a sistemas Charnley-Müller para procedimientos de cadera y recambios planificados.",
-    pages: 10,
     image: images.productos,
     href: "/catalogos/cadera/productos/charnley-muller",
   },
@@ -307,7 +291,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Caja de instrumental",
     description:
       "Caja de instrumental Thompson para resolver preparación, prueba y asistencia intraoperatoria en procedimientos de cadera.",
-    pages: 8,
     image: images.hero,
     href: "/catalogos/cadera/productos/thompson",
   },
@@ -318,7 +301,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Caja de instrumental",
     description:
       "Instrumental Judett Plus orientado a equipos que requieren organización clara de componentes y disponibilidad por cirugía.",
-    pages: 8,
     image: images.productos,
     href: "/catalogos/cadera/productos/judett-plus",
   },
@@ -329,7 +311,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Espaciadores de cadera",
     description:
       "Espaciadores de cadera para planificación y soporte en procedimientos que requieren alternativas temporales o de revisión.",
-    pages: 6,
     image: images.heroAmis,
     href: "/catalogos/cadera/productos/cadera-xl",
   },
@@ -340,7 +321,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Caja de instrumental",
     description:
       "Caja de instrumental Explant para extracción, recambio y asistencia técnica en escenarios de mayor complejidad.",
-    pages: 9,
     image: images.heroBg,
     href: "/catalogos/cadera/productos/explant",
   },
@@ -351,7 +331,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Caja de instrumental",
     description:
       "Instrumental Giliberty para acompañar procedimientos de cadera con componentes identificables y flujo de trabajo ordenado.",
-    pages: 8,
     image: categoryImages.cadera,
     href: "/catalogos/cadera/productos/giliberty",
   },
@@ -362,7 +341,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Caja de instrumental",
     description:
       "Opciones de refuerzo acetabular para casos que requieren soporte adicional, planificación de medidas y coordinación previa.",
-    pages: 7,
     image: categoryImages["osteosintesis-placas"],
     href: "/catalogos/cadera/productos/refuerzo-acetabular",
   },
@@ -373,7 +351,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Endoprótesis modular",
     description:
       "Sistema modular para reconstrucción y reemplazo de cadera en procedimientos que exigen configuración por necesidad quirúrgica.",
-    pages: 9,
     image: images.heroAmis,
     href: "/catalogos/cadera/productos/endoprotesis-modular-cadera",
   },
@@ -384,7 +361,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Cúpula no cementada",
     description:
       "Cúpula no cementada Hip-Lock con información de referencia para selección, medidas disponibles y componentes asociados.",
-    pages: 8,
     image: categoryImages.cadera,
     href: "/catalogos/cadera/productos/hip-lock",
   },
@@ -395,7 +371,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Caja de instrumental",
     description:
       "Instrumental Monoblock para preparación y asistencia en procedimientos de cadera con necesidades de caja específica.",
-    pages: 7,
     image: images.hero,
     href: "/catalogos/cadera/productos/monoblock",
   },
@@ -406,7 +381,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Prótesis para reemplazo total de cadera",
     description:
       "Línea no cementada Hip-Lock para reemplazo total de cadera, con referencias para planificación y consulta comercial.",
-    pages: 10,
     image: images.heroAmis,
     href: "/catalogos/cadera/productos/cadera-no-cementada-hip-lock",
   },
@@ -417,7 +391,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Tallo",
     description:
       "Tallo Spotorno para procedimientos de cadera, con descripción técnica inicial y acceso al PDF de referencia.",
-    pages: 6,
     image: categoryImages.cadera,
     href: "/catalogos/cadera/productos/tallo-spotorno",
   },
@@ -428,7 +401,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Tallo no cementado",
     description:
       "Tallo SP no cementado con información organizada para consulta de características, medidas y coordinación de pedidos.",
-    pages: 6,
     image: images.heroAmis,
     href: "/catalogos/cadera/productos/tallo-sp",
   },
@@ -439,7 +411,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Tallo no cementado",
     description:
       "Tallo delta para reemplazo de cadera no cementado, con acceso rápido al PDF y detalle de uso comercial inicial.",
-    pages: 6,
     image: images.productos,
     href: "/catalogos/cadera/productos/tallo-delta",
   },
@@ -450,7 +421,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Caja de instrumental",
     description:
       "Sistema de rodilla ANV II para artroplastia, con instrumental asociado y referencias para planificación, medidas y coordinación comercial.",
-    pages: 8,
     image: categoryImages.rodilla,
     href: "/catalogos/rodilla/productos/rodilla-anv-ii",
   },
@@ -461,7 +431,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Caja de instrumental",
     description:
       "Suplementos para rodilla ANV II orientados a complementar la línea principal con componentes e instrumental de apoyo por procedimiento.",
-    pages: 6,
     image: images.productos,
     href: "/catalogos/rodilla/productos/suplementos-anv-ii",
   },
@@ -472,7 +441,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Caja de instrumental",
     description:
       "Sistema de rodilla MF abisagrada para casos que requieren mayor estabilidad, con instrumental y referencias para consulta técnica-comercial.",
-    pages: 8,
     image: categoryImages.rodilla,
     href: "/catalogos/rodilla/productos/rodilla-mf",
   },
@@ -483,7 +451,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Caja de instrumental",
     description:
       "Sistema de rodilla modular para procedimientos de reemplazo y revisión, con opciones de configuración y coordinación de instrumental.",
-    pages: 8,
     image: images.productos,
     href: "/catalogos/rodilla/productos/rodilla-modular",
   },
@@ -494,7 +461,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Clavo para artrodesis",
     description:
       "Clavo para artrodesis de tobillo, con referencias para planificación, disponibilidad de medidas y coordinación del instrumental.",
-    pages: 6,
     image: categoryImages["osteosintesis-tornillos"],
     href: "/catalogos/osteosintesis-tornillos/productos/de-tobillo",
   },
@@ -505,7 +471,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Clavo de tibia",
     description:
       "Clavo de tibia multidireccional para osteosíntesis, con información de sistema, opciones de bloqueo y consulta técnico-comercial.",
-    pages: 6,
     image: categoryImages["osteosintesis-tornillos"],
     href: "/catalogos/osteosintesis-tornillos/productos/multidireccional",
   },
@@ -516,7 +481,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Clavo de fémur",
     description:
       "Clavo de fémur retrógrado para fracturas femorales seleccionadas, con instrumental asociado y referencias para planificación.",
-    pages: 6,
     image: categoryImages["osteosintesis-tornillos"],
     href: "/catalogos/osteosintesis-tornillos/productos/retrogrado",
   },
@@ -527,7 +491,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Clavo de fémur",
     description:
       "Clavo de fémur Gamma GN para osteosíntesis proximal, con componentes e instrumental para coordinar disponibilidad por procedimiento.",
-    pages: 6,
     image: images.productos,
     href: "/catalogos/osteosintesis-tornillos/productos/gamma-gn",
   },
@@ -538,7 +501,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Caja de instrumental",
     description:
       "Caja de instrumental para clavo acerrojado de húmero, orientada a procedimientos de osteosíntesis con soporte de medidas y componentes.",
-    pages: 6,
     image: categoryImages["osteosintesis-tornillos"],
     href: "/catalogos/osteosintesis-tornillos/productos/clavo-acerrojado-de-humero",
   },
@@ -549,7 +511,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Caja de instrumental",
     description:
       "Caja de instrumental para clavo placa tubo deslizante Richard, con referencias para planificación y coordinación comercial.",
-    pages: 6,
     image: images.productos,
     href: "/catalogos/osteosintesis-tornillos/productos/clavo-placa-tubo-deslizante-richard",
   },
@@ -560,7 +521,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Placa bloqueada",
     description:
       "Placa bloqueada de Ø3,5 mm para osteosíntesis, con referencias para planificación, medidas disponibles y coordinación de instrumental.",
-    pages: 6,
     image: categoryImages["osteosintesis-placas"],
     href: "/catalogos/osteosintesis-placas/productos/placa-bloqueada-35mm",
   },
@@ -571,7 +531,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Placa bloqueada",
     description:
       "Placa bloqueada de Ø4,5 mm para fijación de mayor demanda, con opciones de medidas e instrumental asociado.",
-    pages: 6,
     image: categoryImages["osteosintesis-placas"],
     href: "/catalogos/osteosintesis-placas/productos/placa-bloqueada-45mm",
   },
@@ -582,7 +541,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Placa",
     description:
       "Placa para clavícula orientada a fijación anatómica, con referencias de sistema para consulta técnica y disponibilidad.",
-    pages: 6,
     image: categoryImages["osteosintesis-placas"],
     href: "/catalogos/osteosintesis-placas/productos/clavicula",
   },
@@ -593,7 +551,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Placa tibia",
     description:
       "Placa tibial proximal para osteosíntesis, con información de medidas, configuración y coordinación comercial.",
-    pages: 6,
     image: categoryImages["osteosintesis-placas"],
     href: "/catalogos/osteosintesis-placas/productos/tibia-proximal",
   },
@@ -604,7 +561,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Placa",
     description:
       "Placa de húmero distal para fijación anatómica, con instrumental asociado y referencias para planificación del procedimiento.",
-    pages: 6,
     image: categoryImages["osteosintesis-placas"],
     href: "/catalogos/osteosintesis-placas/productos/humero-distal",
   },
@@ -615,7 +571,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Placa para tibia/peroné",
     description:
       "Placa distal para tibia y peroné, con opciones para fijación y acompañamiento en selección de medidas.",
-    pages: 6,
     image: categoryImages["osteosintesis-placas"],
     href: "/catalogos/osteosintesis-placas/productos/tibia-perone-distal",
   },
@@ -626,7 +581,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Placa húmero proximal",
     description:
       "Placa Philo para húmero proximal, con referencias de sistema, medidas y soporte para coordinación de instrumental.",
-    pages: 6,
     image: categoryImages["osteosintesis-placas"],
     href: "/catalogos/osteosintesis-placas/productos/philo",
   },
@@ -637,7 +591,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Placa",
     description:
       "Placa para calcáneo destinada a fijación de fracturas seleccionadas, con información de componentes e instrumental.",
-    pages: 6,
     image: categoryImages["osteosintesis-placas"],
     href: "/catalogos/osteosintesis-placas/productos/calcaneo",
   },
@@ -648,7 +601,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Placa",
     description:
       "Placa volar para fijación distal, con referencias de medidas y consulta comercial para disponibilidad del sistema.",
-    pages: 6,
     image: categoryImages["osteosintesis-placas"],
     href: "/catalogos/osteosintesis-placas/productos/volar",
   },
@@ -659,7 +611,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Placa",
     description:
       "Placa volar poliaxial para fijación con opciones de orientación, medidas e instrumental por procedimiento.",
-    pages: 6,
     image: images.productos,
     href: "/catalogos/osteosintesis-placas/productos/volar-poliaxial",
   },
@@ -670,7 +621,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Placa de fémur",
     description:
       "Placa de fémur distal para osteosíntesis, con referencias de configuración, medidas y coordinación técnica-comercial.",
-    pages: 6,
     image: categoryImages["osteosintesis-placas"],
     href: "/catalogos/osteosintesis-placas/productos/femur-distal",
   },
@@ -681,7 +631,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Placa para fémur tipo",
     description:
       "Placa para fémur tipo gancho, con información de sistema y disponibilidad para planificación quirúrgica.",
-    pages: 6,
     image: categoryImages["osteosintesis-placas"],
     href: "/catalogos/osteosintesis-placas/productos/femur-gancho",
   },
@@ -692,7 +641,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Placa",
     description:
       "Placa cervical para sistemas de fijación, con referencias de medidas, componentes e instrumental asociado.",
-    pages: 6,
     image: categoryImages["osteosintesis-placas"],
     href: "/catalogos/osteosintesis-placas/productos/cervical",
   },
@@ -703,7 +651,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Tornillos canulados",
     description:
       "Tornillos canulados de Ø3,5 y Ø4,5 mm para fijación, con referencias de medidas y coordinación de disponibilidad.",
-    pages: 6,
     image: images.productos,
     href: "/catalogos/osteosintesis-placas/productos/tornillos-canulados-35-45mm",
   },
@@ -714,7 +661,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Minifragmentos",
     description:
       "Minifragmentos bloqueados de titanio de Ø1,5 y Ø2,0 mm, con instrumental y referencias para sistemas pequeños.",
-    pages: 6,
     image: images.hero,
     href: "/catalogos/osteosintesis-placas/productos/minifragmentos-15-20mm",
   },
@@ -725,7 +671,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Tornillos canulados",
     description:
       "Tornillos canulados de Ø2,7 mm para fijación, con información de referencias y soporte para consulta comercial.",
-    pages: 6,
     image: images.productos,
     href: "/catalogos/osteosintesis-placas/productos/tornillos-canulados-27mm",
   },
@@ -736,7 +681,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Tornillos",
     description:
       "Tornillos Herbert-Barouk para fijación específica, con referencias de medidas y coordinación de instrumental según necesidad.",
-    pages: 6,
     image: categoryImages["osteosintesis-placas"],
     href: "/catalogos/osteosintesis-placas/productos/herbert-barouk",
   },
@@ -747,7 +691,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Motor Overfix",
     description:
       "Motor Overfix para perforación y sierra, con referencias de uso, componentes y coordinación de disponibilidad para quirófano.",
-    pages: 6,
     image: categoryImages["otros-productos"],
     href: "/catalogos/otros-productos/productos/perforador-sierra",
   },
@@ -758,7 +701,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Sistema de extracción",
     description:
       "Sistema de extracción universal con instrumental organizado para procedimientos que requieren retiro, recambio o asistencia técnica.",
-    pages: 6,
     image: categoryImages["instrumental-quirurgico"],
     href: "/catalogos/otros-productos/productos/universal",
   },
@@ -769,7 +711,6 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Caja de instrumental",
     description:
       "Caja de instrumental de emergencia para resolver requerimientos complementarios en quirófano con disponibilidad y coordinación previa.",
-    pages: 6,
     image: categoryImages["instrumental-quirurgico"],
     href: "/catalogos/otros-productos/productos/emergencia",
   },
@@ -788,10 +729,21 @@ export const featuredCategories = featuredCatalogSlugs
   .map((slug) => categories.find((category) => category.slug === slug))
   .filter((category): category is Category => Boolean(category));
 
+// Último evento institucional destacado — compartido entre la home y la página Eventos
+export const featuredEvent = {
+  badge: "Noviembre 2024",
+  title: "61° Congreso Argentino de Ortopedia y Traumatología",
+  venue: "Hotel Hilton, Buenos Aires",
+  description:
+    "Participamos del 61° Congreso Argentino de Ortopedia y Traumatología, un encuentro dedicado a la innovación y la medicina personalizada para mejorar el bienestar de los pacientes. Junto a destacados expositores y referentes del rubro, compartimos los productos y el servicio de calidad que ofrecemos.",
+  image: images.congreso,
+  imageAlt:
+    "Equipo de Chaco Implantes en el 61° Congreso Argentino de Ortopedia y Traumatología, Hotel Hilton Buenos Aires 2024",
+} as const;
+
 export type GalleryCategory = "Productos" | "Instrumental" | "Eventos" | "Quirófano";
 
 export type GalleryItem = {
-  id: string;
   category: GalleryCategory;
   thumb: string;
   full: string;
@@ -921,9 +873,8 @@ const eventGalleryPool: { category: GalleryCategory; image: string; alt: string 
   alt: EVENT_GALLERY_TITLE,
 }));
 
-export const gallery: GalleryItem[] = [...galleryPool, ...eventGalleryPool].map((base, index) => {
+export const gallery: GalleryItem[] = [...galleryPool, ...eventGalleryPool].map((base) => {
   return {
-    id: `g${index + 1}`,
     category: base.category,
     thumb: cloudinaryVariant(base.image, GALLERY_THUMB_TRANSFORM),
     full: cloudinaryVariant(base.image, GALLERY_FULL_TRANSFORM),
@@ -933,7 +884,7 @@ export const gallery: GalleryItem[] = [...galleryPool, ...eventGalleryPool].map(
 
 export type VideoItem = {
   id: string;
-  category: GalleryCategory | "Capacitaciones";
+  category: GalleryCategory;
   poster: string;
   src: string;
   title: string;

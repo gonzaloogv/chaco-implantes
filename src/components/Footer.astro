@@ -1,6 +1,8 @@
 ---
 import Icon from "./Icon.astro";
 import { categories, footerNav, images, site, whatsappLink } from "../data/site";
+
+const currentYear = new Date().getFullYear();
 ---
 
 <footer class="relative overflow-hidden bg-ink text-[#D9E1F1]">
@@ -18,7 +20,7 @@ import { categories, footerNav, images, site, whatsappLink } from "../data/site"
         <span class="font-display text-lg font-semibold text-white">Chaco <span class="text-brand">Implantes</span></span>
       </a>
       <p class="mt-4 text-sm text-[#D9E1F1]">{site.activity}</p>
-      <p class="mt-4 font-accent text-base text-white">{site.tagline}</p>
+      <p class="mt-4 text-sm font-semibold uppercase text-brand">{site.tagline}</p>
     </div>
 
     <div>
@@ -74,7 +76,7 @@ import { categories, footerNav, images, site, whatsappLink } from "../data/site"
 
   <div class="border-t border-white/10">
     <div class="mx-auto max-w-7xl px-4 py-6 text-center text-xs text-[#D9E1F1]/70 sm:px-6 lg:px-8">
-      © 2026 {site.name}. {site.tagline}.
+      © {currentYear} {site.name}. {site.tagline}.
     </div>
   </div>
 </footer>

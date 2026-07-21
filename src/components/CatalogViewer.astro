@@ -6,49 +6,35 @@ interface Props {
   title: string;
   eyebrow: string;
   description: string;
-  pages: number;
   image: string;
   whatsappMessage: string;
 }
 
-const { title, eyebrow, description, pages, image, whatsappMessage } = Astro.props;
+const { title, eyebrow, description, image, whatsappMessage } = Astro.props;
 ---
 
 <div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1fr_340px]">
-  <section class="premium-card rounded-xl border p-4 sm:p-6" data-catalog-viewer data-total={pages}>
-    <div class="relative mx-auto aspect-[3/4] max-w-md overflow-hidden rounded-xl border border-border bg-secondary/50">
-      <img src={image} alt="" aria-hidden="true" class="absolute inset-0 h-full w-full object-cover opacity-[0.16]" />
-      <div class="absolute inset-0 bg-gradient-to-br from-white/95 via-white/90 to-brand/25"></div>
-      <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 p-8 text-center">
-        <Icon name="file-text" class="h-10 w-10 text-primary" />
-        <p class="font-display text-lg font-black text-deep">{title}</p>
-        <p class="text-sm text-muted-foreground">Vista previa de página <span data-current-page>1</span></p>
-        <p class="mt-2 text-xs text-muted-foreground/80">Catálogo técnico - contenido de muestra</p>
+  <section class="premium-card rounded-xl border p-4 sm:p-6" data-catalog-viewer>
+    <div class="relative overflow-hidden rounded-xl border border-border bg-deep">
+      <div class="relative aspect-[4/3]">
+        <img
+          src={image}
+          alt={title}
+          loading="eager"
+          decoding="async"
+          class="absolute inset-0 h-full w-full object-cover"
+        />
+        <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-deep via-deep/35 to-transparent"></div>
+        <div class="absolute inset-x-0 bottom-0 p-6">
+          <p class="text-xs font-bold uppercase text-brand">{eyebrow}</p>
+          <p class="mt-1 font-display text-2xl font-black text-white">{title}</p>
+        </div>
       </div>
     </div>
-
-    <div class="mt-5 flex items-center justify-center gap-4">
-      <button
-        type="button"
-        data-prev-page
-        disabled
-        class="icon-button inline-flex h-10 w-10 items-center justify-center rounded-md border border-border text-deep hover:border-primary hover:text-primary disabled:opacity-40 disabled:hover:border-border disabled:hover:text-deep"
-        aria-label="Página anterior"
-      >
-        <Icon name="chevron-left" class="h-5 w-5" />
-      </button>
-      <span class="text-sm font-semibold text-muted-foreground">
-        <span data-page-count>1</span> / {pages}
-      </span>
-      <button
-        type="button"
-        data-next-page
-        class="icon-button inline-flex h-10 w-10 items-center justify-center rounded-md border border-border text-deep hover:border-primary hover:text-primary disabled:opacity-40 disabled:hover:border-border disabled:hover:text-deep"
-        aria-label="Página siguiente"
-      >
-        <Icon name="chevron-right" class="h-5 w-5" />
-      </button>
-    </div>
+    <p class="mt-5 flex items-start gap-2 text-sm text-muted-foreground">
+      <Icon name="file-text" class="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+      El catálogo técnico completo en PDF se envía a pedido, con medidas, componentes y referencias del sistema.
+    </p>
   </section>
 
   <aside class="space-y-5">
@@ -61,10 +47,6 @@ const { title, eyebrow, description, pages, image, whatsappMessage } = Astro.pro
         <div class="flex justify-between gap-4">
           <dt class="text-muted-foreground">Tipo de producto</dt>
           <dd class="text-right font-semibold text-deep">{eyebrow}</dd>
-        </div>
-        <div class="flex justify-between">
-          <dt class="text-muted-foreground">Páginas</dt>
-          <dd class="font-semibold text-deep">{pages}</dd>
         </div>
       </dl>
     </section>
@@ -87,31 +69,3 @@ const { title, eyebrow, description, pages, image, whatsappMessage } = Astro.pro
     </div>
   </aside>
 </div>
-
-<script>
-  const viewer = document.querySelector("[data-catalog-viewer]");
-  if (viewer instanceof HTMLElement) {
-    const total = Number(viewer.dataset.total || "1");
-    let page = 1;
-    const current = viewer.querySelector("[data-current-page]");
-    const count = viewer.querySelector("[data-page-count]");
-    const prev = viewer.querySelector("[data-prev-page]");
-    const next = viewer.querySelector("[data-next-page]");
-
-    const update = () => {
-      if (current) current.textContent = String(page);
-      if (count) count.textContent = String(page);
-      if (prev instanceof HTMLButtonElement) prev.disabled = page <= 1;
-      if (next instanceof HTMLButtonElement) next.disabled = page >= total;
-    };
-
-    prev?.addEventListener("click", () => {
-      page = Math.max(1, page - 1);
-      update();
-    });
-    next?.addEventListener("click", () => {
-      page = Math.min(total, page + 1);
-      update();
-    });
-  }
-</script>

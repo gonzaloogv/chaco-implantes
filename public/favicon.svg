@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Chaco Implantes">
-    <rect width="128" height="128" rx="20" fill="#0f766e" />
-    <path d="M33 80V48c0-12 9-21 22-21 9 0 16 4 20 11l-12 7c-2-4-5-6-9-6-6 0-10 4-10 10v30c0 6 4 10 10 10 4 0 7-2 9-6l12 7c-4 7-11 11-20 11-13 0-22-9-22-21Z" fill="#ffffff" />
-    <path d="M84 28h14v72H84V28Z" fill="#ffffff" />
-    <path d="M77 28h28v12H77V28Zm0 60h28v12H77V88Z" fill="#d29b3f" />
-</svg>

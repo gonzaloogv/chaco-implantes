@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Icon from "../components/Icon.astro";
-import { site, whatsappLink } from "../data/site";
+import { site, wa, whatsappLink } from "../data/site";
 ---
 
 <BaseLayout
@@ -18,7 +18,7 @@ import { site, whatsappLink } from "../data/site";
         </p>
       </div>
       <a
-        href={whatsappLink("Hola, quisiera hacer una consulta a Chaco Implantes.")}
+        href={wa.consulta}
         target="_blank"
         rel="noopener noreferrer"
         class="btn-primary inline-flex w-full items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-bold sm:w-auto"
@@ -90,7 +90,7 @@ import { site, whatsappLink } from "../data/site";
               </li>
             </ul>
             <a
-              href={whatsappLink("Hola, quisiera hacer una consulta a Chaco Implantes.")}
+              href={wa.consulta}
               target="_blank"
               rel="noopener noreferrer"
               class="btn-primary mt-5 flex items-center justify-center gap-2 rounded-md px-4 py-3 text-sm font-bold"
@@ -111,7 +111,7 @@ import { site, whatsappLink } from "../data/site";
                 <div class="space-y-0.5 text-sm text-muted-foreground">
                   <p class="font-semibold text-deep">Horario comercial</p>
                   <p>Lun a vie</p>
-                  <p>12:30 a 16:30 h</p>
+                  <p>8:30 a 12:30 h</p>
                   <p>16:30 a 20:30 h</p>
                 </div>
               </li>

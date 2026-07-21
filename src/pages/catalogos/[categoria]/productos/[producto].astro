@@ -4,22 +4,30 @@ import Icon from "../../../../components/Icon.astro";
 import BaseLayout from "../../../../layouts/BaseLayout.astro";
 import { catalogProducts, categories } from "../../../../data/site";
 
-const osteosintesisTornillos = categories.find((category) => category.slug === "osteosintesis-tornillos");
-
 export function getStaticPaths() {
-  return catalogProducts
-    .filter((product) => product.categorySlug === "osteosintesis-tornillos")
-    .map((product) => ({
-      params: { producto: product.slug },
-      props: { product },
-    }));
+  return catalogProducts.map((product) => ({
+    params: { categoria: product.categorySlug, producto: product.slug },
+    props: { product },
+  }));
 }
 
 const { product } = Astro.props;
+const category = categories.find((item) => item.slug === product.categorySlug);
+const categoryTitle = category?.title ?? "Catálogos";
+
+// Texto del link de retorno por categoría (más corto que el título formal)
+const backLabels: Record<string, string> = {
+  cadera: "Volver a productos de cadera",
+  rodilla: "Volver a productos de rodilla",
+  "osteosintesis-placas": "Volver a productos de osteosíntesis",
+  "osteosintesis-tornillos": "Volver a productos de osteosíntesis",
+  "otros-productos": "Volver a productos complementarios",
+};
+const backLabel = backLabels[product.categorySlug] ?? `Volver a ${categoryTitle}`;
 ---
 
 <BaseLayout
-  title={`${product.title} - ${osteosintesisTornillos?.title ?? "Osteosíntesis: tornillos"} | Chaco Implantes`}
+  title={`${product.title} · ${categoryTitle} — Chaco Implantes`}
   description={product.description}
   canonicalPath={product.href}
 >
@@ -36,8 +44,8 @@ const { product } = Astro.props;
     <div aria-hidden="true" class="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[#0f172a] via-[#192338]/96 to-[#192338]/20 lg:block"></div>
 
     <div class="relative mx-auto max-w-7xl">
-      <a href="/catalogos/osteosintesis-tornillos" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand transition-colors hover:text-white">
-        <Icon name="arrow-left" class="h-4 w-4" /> Volver a productos de osteosíntesis
+      <a href={`/catalogos/${product.categorySlug}`} class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand transition-colors hover:text-white">
+        <Icon name="arrow-left" class="h-4 w-4" /> {backLabel}
       </a>
       <div class="mt-6 max-w-3xl">
         <span class="inline-flex rounded-full border border-primary-glow/30 bg-primary/15 px-3 py-1.5 text-xs font-bold uppercase text-brand">
@@ -53,9 +61,8 @@ const { product } = Astro.props;
       title={product.title}
       eyebrow={product.label}
       description={product.description}
-      pages={product.pages}
       image={product.image}
-      whatsappMessage={`Hola, quisiera información sobre el producto ${product.title} del catálogo de ${osteosintesisTornillos?.title ?? "Osteosíntesis: tornillos"}.`}
+      whatsappMessage={`Hola, quisiera información sobre el producto ${product.title} del catálogo de ${categoryTitle}.`}
     />
   </section>
 </BaseLayout>

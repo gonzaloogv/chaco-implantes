@@ -55,21 +55,23 @@ import { categoryImages, galleryFilters, videos } from "../data/site";
         </a>
       </div>
 
-      <div class="mt-8 flex flex-wrap items-center gap-2" data-video-filters>
-        {["Todos", ...galleryFilters].map((filter) => (
-          <button
-            type="button"
-            data-video-filter={filter}
-            aria-pressed={filter === "Todos" ? "true" : "false"}
-            class:list={[
-              "gallery-filter rounded-full border px-4 py-1.5 text-sm font-medium",
-              filter === "Todos" ? "gallery-filter-active" : "gallery-filter-idle",
-            ]}
-          >
-            {filter}
-          </button>
-        ))}
-      </div>
+      {videos.length > 0 && (
+        <div class="mt-8 flex flex-wrap items-center gap-2" data-video-filters>
+          {["Todos", ...galleryFilters].map((filter) => (
+            <button
+              type="button"
+              data-video-filter={filter}
+              aria-pressed={filter === "Todos" ? "true" : "false"}
+              class:list={[
+                "gallery-filter rounded-full border px-4 py-1.5 text-sm font-medium",
+                filter === "Todos" ? "gallery-filter-active" : "gallery-filter-idle",
+              ]}
+            >
+              {filter}
+            </button>
+          ))}
+        </div>
+      )}
 
       {videos.length === 0 ? (
         <div data-videos-empty class="premium-card mt-8 flex flex-col items-start gap-5 rounded-xl border px-6 py-10 sm:flex-row sm:items-center sm:justify-between">

@@ -1,10 +1,11 @@
-import { categories, site } from "../data/site";
+import { catalogProducts, categories, site } from "../data/site";
 
 export function GET() {
   const routes = [
     "/",
     "/catalogos",
     ...categories.map((category) => `/catalogos/${category.slug}`),
+    ...catalogProducts.map((product) => product.href),
     "/galeria",
     "/videos",
     "/eventos",

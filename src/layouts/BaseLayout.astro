@@ -15,7 +15,7 @@ const {
   title = "Chaco Implantes — Prótesis, implantes e instrumental",
   description = "Distribución de prótesis, implantes e instrumental traumatológico en Resistencia, Chaco. Atención a profesionales e instituciones de salud.",
   canonicalPath = Astro.url.pathname,
-  image = images.logoCircular,
+  image = images.ogImage,
 } = Astro.props;
 
 const canonical = new URL(canonicalPath, site.baseUrl).toString();
@@ -36,24 +36,32 @@ const ogImage = new URL(image, site.baseUrl).toString();
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <link rel="preload" as="image" href={images.logoCircular} />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preconnect" href="https://res.cloudinary.com" />
+    <link rel="preload" as="image" href={images.logoCircularWhite} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Poppins:wght@400;500;600;700&family=Kurale&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Poppins:wght@400;500;600;700&display=swap"
     />
     <script is:inline type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Organization",
       name: site.name,
+      url: site.baseUrl,
+      logo: images.logoCircular,
+      image: ogImage,
       description: site.activity,
       address: {
         "@type": "PostalAddress",
@@ -64,6 +72,20 @@ const ogImage = new URL(image, site.baseUrl).toString();
         addressCountry: "AR",
       },
       telephone: `+${site.whatsappNumber}`,
+      openingHoursSpecification: [
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          opens: "08:30",
+          closes: "12:30",
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          opens: "16:30",
+          closes: "20:30",
+        },
+      ],
       sameAs: [site.instagramUrl],
     })} />
     <title>{title}</title>

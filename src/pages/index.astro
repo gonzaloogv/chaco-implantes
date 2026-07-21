@@ -5,12 +5,14 @@ import Icon from "../components/Icon.astro";
 import {
   categoryImages,
   featuredCategories,
+  featuredEvent,
   heroSlides,
   images,
   professionalBlocks,
   supplierSystems,
   valuePillars,
-  whatsappLink,
+  videos,
+  wa,
 } from "../data/site";
 ---
 
@@ -29,7 +31,7 @@ import {
         class="hero-bg-slide hero-photo-glow pointer-events-none absolute inset-0 h-full w-full object-cover"
       />
     ))}
-    <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#0f172a_0%,rgba(15,23,42,0.94)_34%,rgba(25,35,56,0.74)_62%,rgba(25,35,56,0.28)_100%)]"></div>
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#0f172a_0%,rgba(15,23,42,0.92)_32%,rgba(25,35,56,0.52)_58%,rgba(25,35,56,0.05)_100%)]"></div>
     <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_22%_38%,rgba(74,144,196,0.22),transparent_28rem)]"></div>
 
     <div class="relative z-10 mx-auto flex w-full max-w-7xl items-center px-4 pb-12 pt-32 sm:px-6 lg:px-8 lg:pb-20 lg:pt-36">
@@ -53,15 +55,12 @@ import {
                 {slide.title}
               </h2>
               <p class="mt-5 max-w-2xl text-base leading-relaxed text-brand sm:text-xl">{slide.text}</p>
-              <p class="mt-5 max-w-2xl font-display text-xl font-black leading-tight text-white sm:text-2xl">
-                Calidad que se siente. Confianza que se nota.
-              </p>
               <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <a href={slide.href} class="btn-primary-soft inline-flex w-full items-center justify-center gap-2 rounded-md px-6 py-3.5 text-sm font-bold sm:w-auto">
                   {slide.ctaLabel} <Icon name="arrow-right" class="h-4 w-4" />
                 </a>
                 <a
-                  href={whatsappLink("Hola, quisiera contactarme con Chaco Implantes.")}
+                  href={wa.general}
                   target="_blank"
                   rel="noopener noreferrer"
                   class="btn-glass-outline inline-flex w-full items-center justify-center gap-2 rounded-md px-6 py-3.5 text-sm font-bold sm:w-auto"
@@ -74,7 +73,7 @@ import {
         </div>
       </div>
     </div>
-    <div class="hero-dot-controls absolute bottom-6 left-1/2 z-20 -translate-x-1/2 lg:bottom-10" aria-label="Diferenciadores">
+    <div class="hero-dot-controls absolute bottom-6 left-1/2 z-20 -translate-x-1/2 lg:bottom-10" role="group" aria-label="Control de slides del hero">
       <div class="flex items-center gap-2 py-2">
         {heroSlides.map((slide, index) => (
           <button
@@ -86,6 +85,16 @@ import {
             class="hero-dot h-2.5 rounded-full transition-[width,background-color,opacity] duration-200 ease-out"
           ></button>
         ))}
+        <button
+          type="button"
+          data-hero-autoplay
+          aria-pressed="false"
+          aria-label="Pausar rotación automática"
+          class="ml-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white transition-colors duration-200 ease-out hover:bg-white/20"
+        >
+          <span data-hero-pause-icon><Icon name="pause" class="h-3.5 w-3.5" /></span>
+          <span data-hero-play-icon class="hidden"><Icon name="play" class="h-3.5 w-3.5" /></span>
+        </button>
       </div>
     </div>
   </section>
@@ -190,20 +199,6 @@ import {
         }
       </div>
 
-      <div data-institution-card class="lift-card mt-8 flex flex-col items-start gap-4 rounded-lg border border-border bg-card px-6 py-8 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h3 class="font-display text-lg font-semibold text-deep">Coordinación para instituciones</h3>
-          <p class="mt-1 text-sm text-muted-foreground">Escribinos para coordinar el suministro de prótesis, implantes e instrumental.</p>
-        </div>
-        <a
-          href={whatsappLink("Hola, quisiera solicitar contacto institucional con Chaco Implantes.")}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn-primary inline-flex shrink-0 items-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold"
-        >
-          <Icon name="message-circle" class="h-4 w-4" /> Contacto institucional
-        </a>
-      </div>
     </div>
   </section>
 
@@ -211,7 +206,10 @@ import {
     <div class="mx-auto max-w-3xl px-4 py-12 text-center sm:px-6 sm:py-14 lg:px-8">
       <div class="reveal">
         <span class="mx-auto block h-px w-10 bg-brand"></span>
-        <p class="mt-5 font-display text-lg font-medium leading-snug text-white/90 sm:text-2xl">
+        <p class="mt-5 font-display text-xl font-black leading-snug text-white sm:text-3xl">
+          Calidad que se siente. Confianza que se nota.
+        </p>
+        <p class="mt-3 text-sm leading-relaxed text-white/75 sm:text-base">
           Acompañamos a clínicas y sanatorios con logística confiable de prótesis, implantes e instrumental.
         </p>
       </div>
@@ -221,13 +219,15 @@ import {
   <section class="border-b border-border bg-surface-2/45">
     <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
       <div class="max-w-2xl">
-        <h2 class="font-display text-2xl font-bold text-deep sm:text-3xl">Galería y videos</h2>
+        <h2 class="font-display text-2xl font-bold text-deep sm:text-3xl">{videos.length > 0 ? "Galería y videos" : "Galería"}</h2>
         <p class="mt-2 text-muted-foreground">
-          Recorré nuestras fotos de productos e instrumental, y nuestros videos institucionales.
+          {videos.length > 0
+            ? "Recorré nuestras fotos de productos e instrumental, y nuestros videos institucionales."
+            : "Recorré nuestras fotos de productos, instrumental y actividades profesionales."}
         </p>
       </div>
 
-      <div class="mt-8 grid gap-5 sm:grid-cols-2">
+      <div class:list={["mt-8 grid gap-5", videos.length > 0 && "sm:grid-cols-2"]}>
         <a href="/galeria" class="catalog-image-card card-link group relative flex h-60 flex-col justify-end overflow-hidden rounded-xl border border-border bg-deep">
           <img
             src={categoryImages["instrumental-quirurgico"]}
@@ -248,25 +248,27 @@ import {
           </div>
         </a>
 
-        <a href="/videos" class="catalog-image-card card-link group relative flex h-60 flex-col justify-end overflow-hidden rounded-xl border border-border bg-deep">
-          <img
-            src={images.quirofano}
-            alt="Videos institucionales"
-            loading="lazy"
-            decoding="async"
-            width="1024"
-            height="768"
-            class="absolute inset-0 h-full w-full object-cover"
-          />
-          <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-deep via-deep/55 to-deep/5"></div>
-          <div class="relative p-6">
-            <h3 class="font-display text-lg font-semibold text-white">Videos</h3>
-            <span class="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-white">
-              <Icon name="play-circle" class="h-4 w-4" /> Ver videos
-              <Icon name="arrow-right" class="h-4 w-4 transition-transform duration-200 ease-out group-hover:translate-x-1" />
-            </span>
-          </div>
-        </a>
+        {videos.length > 0 && (
+          <a href="/videos" class="catalog-image-card card-link group relative flex h-60 flex-col justify-end overflow-hidden rounded-xl border border-border bg-deep">
+            <img
+              src={images.quirofano}
+              alt="Videos institucionales"
+              loading="lazy"
+              decoding="async"
+              width="1024"
+              height="768"
+              class="absolute inset-0 h-full w-full object-cover"
+            />
+            <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-deep via-deep/55 to-deep/5"></div>
+            <div class="relative p-6">
+              <h3 class="font-display text-lg font-semibold text-white">Videos</h3>
+              <span class="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-white">
+                <Icon name="play-circle" class="h-4 w-4" /> Ver videos
+                <Icon name="arrow-right" class="h-4 w-4 transition-transform duration-200 ease-out group-hover:translate-x-1" />
+              </span>
+            </div>
+          </a>
+        )}
       </div>
     </div>
   </section>
@@ -274,12 +276,14 @@ import {
   <section data-commercial-band="primary" class="bg-primary">
     <div class="mx-auto flex max-w-7xl flex-col items-start gap-5 px-4 py-12 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
       <div class="max-w-xl">
-        <h2 class="font-display text-xl font-semibold text-white sm:text-2xl">Consultas comerciales y catálogos</h2>
-        <p class="mt-2 text-sm text-white">Coordinamos pedidos, disponibilidad y requerimientos por línea de producto.</p>
+        <h2 class="font-display text-xl font-semibold text-white sm:text-2xl">Consultas comerciales e institucionales</h2>
+        <p class="mt-2 text-sm text-white">
+          Coordinamos pedidos, disponibilidad y suministro de prótesis, implantes e instrumental para profesionales, clínicas y sanatorios.
+        </p>
       </div>
       <div class="flex w-full flex-col gap-3 sm:flex-row lg:w-auto">
         <a
-          href={whatsappLink("Hola, quisiera coordinar un pedido con Chaco Implantes.")}
+          href={wa.general}
           target="_blank"
           rel="noopener noreferrer"
           class="btn-light inline-flex items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold"
@@ -302,8 +306,8 @@ import {
       <article class="reveal mt-8 overflow-hidden rounded-2xl border border-border bg-card shadow-sm md:grid md:grid-cols-2">
         <div class="relative aspect-[16/10] md:aspect-auto">
           <img
-            src={images.congreso}
-            alt="Equipo de Chaco Implantes en el 61° Congreso Argentino de Ortopedia y Traumatología, Hotel Hilton Buenos Aires 2024"
+            src={featuredEvent.image}
+            alt={featuredEvent.imageAlt}
             loading="lazy"
             decoding="async"
             class="h-full w-full object-cover"
@@ -311,20 +315,20 @@ import {
         </div>
         <div class="flex flex-col justify-center p-6 sm:p-8">
           <span class="inline-flex w-fit items-center rounded-full bg-secondary px-3 py-1 text-xs font-medium text-primary ring-1 ring-border">
-            Noviembre 2024
+            Actividad profesional
           </span>
           <h3 class="mt-3 font-display text-xl font-semibold text-deep">
-            61° Congreso Argentino de Ortopedia y Traumatología
+            {featuredEvent.title}
           </h3>
           <p class="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
-            <Icon name="map-pin" class="h-4 w-4 text-primary" /> Hotel Hilton, Buenos Aires
+            <Icon name="map-pin" class="h-4 w-4 text-primary" /> {featuredEvent.venue}
           </p>
           <p class="mt-4 text-sm leading-relaxed text-muted-foreground">
-            Participamos del 61° Congreso Argentino de Ortopedia y Traumatología, un encuentro dedicado a la innovación y la medicina personalizada para mejorar el bienestar de los pacientes. Junto a destacados expositores y referentes del rubro, compartimos los productos y el servicio de calidad que ofrecemos.
+            {featuredEvent.description}
           </p>
           <div class="mt-6 flex flex-col gap-3 sm:flex-row">
             <a
-              href={whatsappLink("Hola, vi que participaron del Congreso Argentino de Ortopedia y Traumatología. Quisiera más información.")}
+              href={wa.congreso}
               target="_blank"
               rel="noopener noreferrer"
               class="btn-primary inline-flex w-fit items-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold"
@@ -338,20 +342,6 @@ import {
         </div>
       </article>
 
-      <div class="reveal mt-6 flex flex-col items-start gap-5 rounded-lg border border-dashed border-border bg-card px-6 py-8 sm:flex-row sm:items-center sm:justify-between">
-        <div class="flex items-start gap-4">
-          <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-secondary text-primary ring-1 ring-border">
-            <Icon name="calendar-clock" class="h-5 w-5" />
-          </div>
-          <div>
-            <p class="font-display text-base font-semibold text-deep">Próximamente publicaremos nuevas fechas y actividades profesionales.</p>
-            <p class="mt-1 text-sm text-muted-foreground">Jornadas, capacitaciones para equipos de quirófano y novedades de líneas de producto.</p>
-          </div>
-        </div>
-        <a href="/eventos" class="btn-primary inline-flex shrink-0 items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold">
-          Ver eventos <Icon name="arrow-right" class="h-4 w-4" />
-        </a>
-      </div>
     </div>
   </section>
 </BaseLayout>
@@ -362,7 +352,17 @@ import {
     const slides = Array.from(carousel.querySelectorAll("[data-hero-slide]"));
     const backgrounds = Array.from(carousel.querySelectorAll("[data-hero-bg]"));
     const dots = Array.from(carousel.querySelectorAll("[data-hero-dot]"));
+    const autoplayToggle = carousel.querySelector("[data-hero-autoplay]");
+    const pauseIcon = carousel.querySelector("[data-hero-pause-icon]");
+    const playIcon = carousel.querySelector("[data-hero-play-icon]");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const AUTO_ADVANCE_MS = 6500;
+
     let active = 0;
+    let timer: number | undefined;
+    let manuallyPaused = false;
+    let pointerInside = false;
+    let inView = true;
 
     const setActive = (index: number) => {
       active = (index + slides.length) % slides.length;
@@ -384,10 +384,54 @@ import {
       });
     };
 
+    const stopAuto = () => {
+      if (timer !== undefined) {
+        window.clearInterval(timer);
+        timer = undefined;
+      }
+    };
+
+    // Un solo punto de decisión: solo rota si nada lo frena
+    const syncAuto = () => {
+      stopAuto();
+      if (manuallyPaused || pointerInside || !inView || reduceMotion.matches) return;
+      timer = window.setInterval(() => setActive(active + 1), AUTO_ADVANCE_MS);
+    };
+
     dots.forEach((dot, index) => {
-      dot.addEventListener("click", () => setActive(index));
+      dot.addEventListener("click", () => {
+        setActive(index);
+        syncAuto();
+      });
     });
 
-    window.setInterval(() => setActive(active + 1), 6500);
+    autoplayToggle?.addEventListener("click", () => {
+      manuallyPaused = !manuallyPaused;
+      autoplayToggle.setAttribute("aria-pressed", String(manuallyPaused));
+      autoplayToggle.setAttribute(
+        "aria-label",
+        manuallyPaused ? "Reanudar rotación automática" : "Pausar rotación automática",
+      );
+      pauseIcon?.classList.toggle("hidden", manuallyPaused);
+      playIcon?.classList.toggle("hidden", !manuallyPaused);
+      syncAuto();
+    });
+
+    carousel.addEventListener("pointerenter", () => {
+      pointerInside = true;
+      syncAuto();
+    });
+    carousel.addEventListener("pointerleave", () => {
+      pointerInside = false;
+      syncAuto();
+    });
+
+    new IntersectionObserver((entries) => {
+      inView = entries.some((entry) => entry.isIntersecting);
+      syncAuto();
+    }).observe(carousel);
+
+    reduceMotion.addEventListener("change", syncAuto);
+    syncAuto();
   }
 </script>

@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Icon from "../components/Icon.astro";
-import { images, whatsappLink } from "../data/site";
+import { featuredEvent, images, wa } from "../data/site";
 ---
 
 <BaseLayout
@@ -43,8 +43,8 @@ import { images, whatsappLink } from "../data/site";
       <article data-featured-event class="premium-card overflow-hidden rounded-xl border md:grid md:grid-cols-2">
         <div class="relative aspect-[16/10] md:aspect-auto">
           <img
-            src={images.congreso}
-            alt="Equipo de Chaco Implantes en el 61° Congreso Argentino de Ortopedia y Traumatología"
+            src={featuredEvent.image}
+            alt={featuredEvent.imageAlt}
             loading="lazy"
             decoding="async"
             width="1400"
@@ -54,20 +54,20 @@ import { images, whatsappLink } from "../data/site";
         </div>
         <div class="flex flex-col justify-center p-6 sm:p-8">
           <span class="inline-flex w-fit items-center rounded-full bg-secondary px-3 py-1 text-xs font-bold uppercase text-primary ring-1 ring-border">
-            Noviembre 2024
+            {featuredEvent.badge}
           </span>
           <h2 class="mt-4 font-display text-2xl font-black leading-tight text-deep">
-            61° Congreso Argentino de Ortopedia y Traumatología
+            {featuredEvent.title}
           </h2>
           <p class="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground">
-            <Icon name="map-pin" class="h-4 w-4 text-primary" /> Hotel Hilton, Buenos Aires
+            <Icon name="map-pin" class="h-4 w-4 text-primary" /> {featuredEvent.venue}
           </p>
           <p class="mt-4 text-sm leading-relaxed text-muted-foreground">
-            Participamos de un encuentro dedicado a innovación, medicina personalizada y actualización profesional, acercando productos, novedades y acompañamiento técnico-comercial.
+            {featuredEvent.description}
           </p>
           <div class="mt-6 flex flex-col gap-3 sm:flex-row">
             <a
-              href={whatsappLink("Hola, vi que participaron del Congreso Argentino de Ortopedia y Traumatología. Quisiera más información.")}
+              href={wa.congreso}
               target="_blank"
               rel="noopener noreferrer"
               class="btn-primary inline-flex w-fit items-center gap-2 rounded-md px-5 py-2.5 text-sm font-bold"
@@ -98,7 +98,7 @@ import { images, whatsappLink } from "../data/site";
             Escribinos para conocer novedades, coordinar una visita técnica o solicitar información sobre líneas de producto para instituciones.
           </p>
           <a
-            href={whatsappLink("Hola, quisiera información sobre capacitaciones y novedades de Chaco Implantes.")}
+            href={wa.capacitaciones}
             target="_blank"
             rel="noopener noreferrer"
             class="btn-primary mt-5 inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-bold"

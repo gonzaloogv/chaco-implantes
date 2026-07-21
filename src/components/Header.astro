@@ -1,6 +1,6 @@
 ---
 import Icon from "./Icon.astro";
-import { images, nav, site, whatsappLink } from "../data/site";
+import { images, nav, site, wa } from "../data/site";
 
 const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
 const isHome = currentPath === "/";
@@ -14,7 +14,6 @@ const isActive = (href: string) => {
   data-site-header
   data-home-header={isHome ? "true" : "false"}
   data-transparent={isHome ? "true" : "false"}
-  data-transparent-header={isHome ? "true" : "false"}
   class="site-header fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300"
 >
   <div class="site-header-inner flex w-full items-center justify-between px-4 transition-[height] duration-300 lg:px-10">
@@ -56,7 +55,7 @@ const isActive = (href: string) => {
 
     <div class="flex items-center gap-2">
       <a
-        href={whatsappLink("Hola, me comunico desde el sitio de Chaco Implantes.")}
+        href={wa.sitio}
         target="_blank"
         rel="noopener noreferrer"
         class="btn-primary hidden items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold sm:inline-flex"
@@ -97,7 +96,7 @@ const isActive = (href: string) => {
         ))
       }
       <a
-        href={whatsappLink("Hola, me comunico desde el sitio de Chaco Implantes.")}
+        href={wa.sitio}
         target="_blank"
         rel="noopener noreferrer"
         class="btn-primary mt-2 flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-semibold"
@@ -123,7 +122,6 @@ const isActive = (href: string) => {
     const transparent = isHomeHeader && window.scrollY < 60 && !menuOpen;
     header.dataset.menuOpen = String(menuOpen);
     header.dataset.transparent = String(transparent);
-    header.dataset.transparentHeader = String(transparent);
   };
 
   const setMenuState = (open: boolean) => {

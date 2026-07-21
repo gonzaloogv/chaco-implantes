@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Icon from "../components/Icon.astro";
-import { GALLERY_PAGE_SIZE, gallery, galleryFilters } from "../data/site";
+import { GALLERY_PAGE_SIZE, gallery, galleryFilters, videos } from "../data/site";
 ---
 
 <BaseLayout
@@ -21,20 +21,22 @@ import { GALLERY_PAGE_SIZE, gallery, galleryFilters } from "../data/site";
   <section class="page-surface">
   <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8" data-gallery-page-size={GALLERY_PAGE_SIZE}>
 
-    <div class="mt-6 flex flex-col gap-3 rounded-xl bg-deep p-5 text-deep-foreground sm:flex-row sm:items-center sm:justify-between">
-      <div class="flex items-center gap-3">
-        <div class="accent-icon-chip flex h-10 w-10 shrink-0 items-center justify-center rounded-full border">
-          <Icon name="play-circle" class="h-5 w-5" />
+    {videos.length > 0 && (
+      <div class="mt-6 flex flex-col gap-3 rounded-xl bg-deep p-5 text-deep-foreground sm:flex-row sm:items-center sm:justify-between">
+        <div class="flex items-center gap-3">
+          <div class="accent-icon-chip flex h-10 w-10 shrink-0 items-center justify-center rounded-full border">
+            <Icon name="play-circle" class="h-5 w-5" />
+          </div>
+          <div>
+            <p class="font-display text-sm font-semibold">¿Buscás material audiovisual?</p>
+            <p class="text-xs text-white/70">Encontrá videos institucionales y de productos.</p>
+          </div>
         </div>
-        <div>
-          <p class="font-display text-sm font-semibold">¿Buscás material audiovisual?</p>
-          <p class="text-xs text-white/70">Encontrá videos institucionales y de productos.</p>
-        </div>
+        <a href="/videos" class="inline-flex items-center justify-center gap-2 rounded-lg bg-brand px-5 py-2.5 text-sm font-semibold text-deep transition-colors hover:bg-brand/90">
+          <Icon name="play-circle" class="h-4 w-4" /> Ver videos
+        </a>
       </div>
-      <a href="/videos" class="inline-flex items-center justify-center gap-2 rounded-lg bg-brand px-5 py-2.5 text-sm font-semibold text-deep transition-colors hover:bg-brand/90">
-        <Icon name="play-circle" class="h-4 w-4" /> Ver videos
-      </a>
-    </div>
+    )}
 
     <div class="mt-8 flex flex-wrap items-center gap-2" data-gallery-filters>
       {["Todos", ...galleryFilters].map((filter) => (
@@ -60,6 +62,7 @@ import { GALLERY_PAGE_SIZE, gallery, galleryFilters } from "../data/site";
           data-category={item.category}
           data-image={item.full}
           data-alt={item.alt}
+          aria-label={`Ampliar: ${item.alt} (imagen ${index + 1} de ${gallery.length})`}
           class:list={[
             "gallery-card card-link group flex flex-col overflow-hidden rounded-lg border border-border bg-card text-left",
             index >= GALLERY_PAGE_SIZE && "hidden",

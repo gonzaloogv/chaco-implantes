@@ -67,7 +67,6 @@
   --color-ink: var(--ink);
   --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Montserrat", "Poppins", ui-sans-serif, system-ui, sans-serif;
-  --font-accent: "Kurale", Georgia, ui-serif, serif;
   --color-border-white-subtle: var(--border-white-subtle);
 }
 
@@ -108,13 +107,12 @@ a {
   text-decoration: none;
 }
 
+/* Las secciones de contenido son claras: los controles nativos (scrollbars,
+   inputs, resize) deben renderizar en modo claro aunque el :root sea oscuro */
 main {
   background: var(--surface);
   color: var(--ink);
-}
-
-main > div:first-child {
-  padding-top: 7rem;
+  color-scheme: light;
 }
 
 img,
@@ -135,10 +133,8 @@ svg {
 .btn-primary,
 .btn-primary-soft,
 .btn-secondary,
-.btn-email-soft,
 .btn-light,
 .btn-glass-outline,
-.btn-outline-light,
 .catalog-image-card,
 .catalog-product-card,
 .card-link,
@@ -154,10 +150,8 @@ svg {
 .btn-primary:active,
 .btn-primary-soft:active,
 .btn-secondary:active,
-.btn-email-soft:active,
 .btn-light:active,
 .btn-glass-outline:active,
-.btn-outline-light:active,
 .catalog-image-card:active,
 .catalog-product-card:active,
 .card-link:active,
@@ -193,28 +187,10 @@ svg {
   color: var(--deep);
 }
 
-.btn-email-soft {
-  background-color: color-mix(in srgb, var(--surface-2) 72%, white);
-  border: 1px solid color-mix(in srgb, var(--brand) 62%, white);
-  color: var(--deep);
-}
-
 .btn-light {
   background-color: var(--popover);
   border: 1px solid var(--popover);
   color: var(--ink);
-}
-
-.btn-outline-light {
-  background-color: transparent;
-  border-color: rgba(217, 225, 241, 0.38);
-  color: var(--primary-foreground);
-  min-width: 10rem;
-  white-space: nowrap;
-}
-
-.btn-outline-light svg {
-  color: currentColor;
 }
 
 .btn-glass-outline {
@@ -232,15 +208,6 @@ svg {
   transition:
     color 200ms var(--ease-out),
     opacity 200ms var(--ease-out);
-}
-
-.catalog-info-link {
-  border: 1px solid transparent;
-  color: var(--muted-foreground);
-  transition:
-    background-color 200ms var(--ease-out),
-    border-color 200ms var(--ease-out),
-    color 200ms var(--ease-out);
 }
 
 .catalog-card-link {
@@ -605,18 +572,6 @@ svg {
   opacity: 1;
 }
 
-.flow-card {
-  background-color: rgba(74, 144, 196, 0.12);
-  border: 1px solid color-mix(in srgb, var(--primary) 34%, transparent);
-  box-shadow: inset 0 1px 0 rgba(143, 179, 226, 0.08);
-}
-
-.flow-card-icon {
-  background-color: rgba(74, 144, 196, 0.16);
-  border: 1px solid color-mix(in srgb, var(--primary) 42%, transparent);
-  color: var(--primary-foreground);
-}
-
 .footer-link {
   color: #d9e1f1;
   display: inline-block;
@@ -625,16 +580,6 @@ svg {
     color 200ms var(--ease-out),
     opacity 200ms var(--ease-out),
     transform 200ms var(--ease-out);
-}
-
-.hero-desktop-bg,
-.hero-desktop-fade,
-.hero-desktop-image {
-  display: none;
-}
-
-.hero-mobile-image {
-  display: block;
 }
 
 .hero-shell {
@@ -782,10 +727,6 @@ svg {
   width: 2rem;
 }
 
-.hero-carousel-link {
-  color: var(--primary-foreground);
-}
-
 .hero-dot-controls {
   pointer-events: none;
 }
@@ -823,17 +764,6 @@ svg {
 @media (min-width: 64rem) {
   .hero-photo-glow {
     filter: drop-shadow(0 0 34px rgba(96, 165, 250, 0.42));
-  }
-
-  .hero-mobile-bg,
-  .hero-mobile-image {
-    display: none !important;
-  }
-
-  .hero-desktop-bg,
-  .hero-desktop-fade,
-  .hero-desktop-image {
-    display: block !important;
   }
 }
 
@@ -880,12 +810,6 @@ svg {
     color: var(--deep);
   }
 
-  .btn-email-soft:hover {
-    background-color: var(--surface-2);
-    border-color: var(--brand);
-    color: var(--deep);
-  }
-
   .btn-primary-soft:hover {
     background-color: var(--primary);
     box-shadow: 0 0 18px rgba(74, 144, 196, 0.32);
@@ -898,13 +822,6 @@ svg {
     color: var(--ink);
   }
 
-  .btn-outline-light:hover {
-    background-color: var(--primary);
-    border-color: var(--primary-glow);
-    box-shadow: 0 0 16px rgba(74, 144, 196, 0.22);
-    color: var(--primary-foreground);
-  }
-
   .btn-glass-outline:hover {
     background-color: rgba(96, 165, 250, 0.16);
     border-color: rgba(96, 165, 250, 0.48);
@@ -912,12 +829,6 @@ svg {
   }
 
   .link-primary-soft:hover {
-    color: var(--primary);
-  }
-
-  .catalog-info-link:hover {
-    background-color: var(--surface-2);
-    border-color: color-mix(in srgb, var(--brand) 64%, white);
     color: var(--primary);
   }
 

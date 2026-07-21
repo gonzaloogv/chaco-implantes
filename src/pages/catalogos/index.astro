@@ -2,11 +2,11 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import CatalogCard from "../../components/CatalogCard.astro";
 import Icon from "../../components/Icon.astro";
-import { categories, whatsappLink } from "../../data/site";
+import { categories, wa } from "../../data/site";
 ---
 
 <BaseLayout
-  title="Catálogos - Chaco Implantes"
+  title="Catálogos — Chaco Implantes"
   description="Catálogos de cadera, rodilla, columna, maxilofacial, osteosíntesis e instrumental quirúrgico."
   canonicalPath="/catalogos"
 >
@@ -23,7 +23,7 @@ import { categories, whatsappLink } from "../../data/site";
           </p>
         </div>
         <a
-          href={whatsappLink("Hola, quisiera solicitar información sobre los catálogos de Chaco Implantes.")}
+          href={wa.catalogos}
           target="_blank"
           rel="noopener noreferrer"
           class="btn-primary inline-flex w-full items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-bold sm:w-auto"
@@ -40,13 +40,13 @@ import { categories, whatsappLink } from "../../data/site";
         {categories.map((category) => <CatalogCard category={category} />)}
         <div class="premium-card flex flex-col gap-4 rounded-xl border p-5 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between lg:col-span-3">
           <div>
-            <h2 class="font-display text-xl font-black text-deep">No encontrás la línea que buscás?</h2>
+            <h2 class="font-display text-xl font-black text-deep">¿No encontrás la línea que buscás?</h2>
             <p class="mt-1 max-w-2xl text-sm leading-relaxed text-muted-foreground">
               Consultanos por disponibilidad, alternativas o líneas especiales para tu equipo.
             </p>
           </div>
           <a
-            href={whatsappLink("Hola, no encuentro la línea que busco en los catálogos de Chaco Implantes.")}
+            href={wa.lineaFaltante}
             target="_blank"
             rel="noopener noreferrer"
             class="btn-primary inline-flex w-full items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-bold sm:w-auto"

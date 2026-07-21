@@ -18,7 +18,7 @@ const hasProducts = products.length > 0;
 ---
 
 <BaseLayout
-  title={`${category.title} - Catálogo | Chaco Implantes`}
+  title={`${category.title} · Catálogo — Chaco Implantes`}
   description={category.description}
   canonicalPath={`/catalogos/${category.slug}`}
 >
@@ -109,7 +109,6 @@ const hasProducts = products.length > 0;
         title={category.title}
         eyebrow={category.type}
         description={category.description}
-        pages={category.pages}
         image={image}
         whatsappMessage={`Hola, quisiera información sobre el catálogo de ${category.title}.`}
       />
