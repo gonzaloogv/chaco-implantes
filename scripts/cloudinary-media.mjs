@@ -9,9 +9,9 @@ const SAFE_FOLDER_PATH = /^[A-Za-z0-9._-]+(?:\/[A-Za-z0-9._-]+)*$/;
 const IMAGE_THUMB_TRANSFORM =
   "f_auto,q_auto,c_fill,g_auto,w_600,h_400";
 const IMAGE_FULL_TRANSFORM = "f_auto,q_auto,c_limit,w_1920";
-const VIDEO_SOURCE_TRANSFORM = "f_mp4,q_auto";
+const VIDEO_SOURCE_TRANSFORM = "f_mp4,q_auto,ac_none";
 const VIDEO_POSTER_TRANSFORM =
-  "so_0,f_jpg,q_auto,c_fill,g_auto,w_600,h_400";
+  "so_0,f_jpg,q_auto,b_rgb:0f172a,c_pad,ar_16:9,w_600";
 
 function assertFolderMode(folderMode) {
   if (!FOLDER_MODES.has(folderMode)) {

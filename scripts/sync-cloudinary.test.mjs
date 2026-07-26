@@ -317,7 +317,7 @@ test("runSync verifies built manifest videos before publishing", async (t) => {
         assetId: "cajas-video",
         title: "Producto instrumental",
         src:
-          "https://res.cloudinary.com/demo/video/upload/f_mp4,q_auto/v1/cajas-video.mp4",
+          "https://res.cloudinary.com/demo/video/upload/f_mp4,q_auto,ac_none/v1/cajas-video.mp4",
       },
     ],
   );

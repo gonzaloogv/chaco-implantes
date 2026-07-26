@@ -289,9 +289,9 @@ test("buildManifest normalizes dynamic images and visual videos", () => {
     createdAt: "2026-07-25T09:30:00.000Z",
     title: "Recorrido por el stand",
     poster:
-      "https://res.cloudinary.com/demo/video/upload/so_0,f_jpg,q_auto,c_fill,g_auto,w_600,h_400/v1780000002/recorrido_caja_qwerty.jpg",
+      "https://res.cloudinary.com/demo/video/upload/so_0,f_jpg,q_auto,b_rgb:0f172a,c_pad,ar_16:9,w_600/v1780000002/recorrido_caja_qwerty.jpg",
     src:
-      "https://res.cloudinary.com/demo/video/upload/f_mp4,q_auto/v1780000002/recorrido_caja_qwerty.mp4",
+      "https://res.cloudinary.com/demo/video/upload/f_mp4,q_auto,ac_none/v1780000002/recorrido_caja_qwerty.mp4",
     width: 1920,
     height: 1080,
     duration: 12.5,
