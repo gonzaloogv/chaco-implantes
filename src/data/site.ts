@@ -934,6 +934,7 @@ export type VideoItem = {
   poster: string;
   src: string;
   title: string;
+  duration?: number;
 };
 
 const synchronizedMedia = buildSiteMediaCollections({

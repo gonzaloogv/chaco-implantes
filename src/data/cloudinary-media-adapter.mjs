@@ -92,6 +92,15 @@ export function buildSiteMediaCollections({
     requireHttpsUrl(video, "src", location);
     validateCategory(video, location);
 
+    if (
+      video.duration !== undefined &&
+      (!Number.isFinite(video.duration) || video.duration < 0)
+    ) {
+      throw new Error(
+        `Manifiesto inválido: ${location}.duration no es válida.`,
+      );
+    }
+
     if (seenAssetIds.has(video.assetId)) {
       throw new Error(`assetId duplicado: ${video.assetId}.`);
     }
@@ -103,6 +112,7 @@ export function buildSiteMediaCollections({
       poster: video.poster,
       src: video.src,
       title: video.title,
+      ...(video.duration === undefined ? {} : { duration: video.duration }),
     };
   });
 

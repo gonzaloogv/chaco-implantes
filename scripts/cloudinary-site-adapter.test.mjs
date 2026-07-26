@@ -42,6 +42,7 @@ const standVideo = {
   poster: "https://example.com/poster.jpg",
   src: "https://example.com/video.mp4",
   title: "Recorrido por el stand",
+  duration: 8.25,
 };
 
 test("buildSiteMediaCollections keeps fallback events for an empty manifest", () => {
@@ -98,9 +99,61 @@ test("buildSiteMediaCollections replaces fallback events and maps synchronized v
       poster: standVideo.poster,
       src: standVideo.src,
       title: standVideo.title,
+      duration: 8.25,
     },
   ]);
 });
+
+test("buildSiteMediaCollections omits an undefined synchronized video duration", () => {
+  const result = buildSiteMediaCollections({
+    manifest: {
+      schemaVersion: 1,
+      images: [],
+      videos: [{ ...standVideo, duration: undefined }],
+    },
+    baseGallery,
+    fallbackEvents,
+  });
+
+  assert.equal(Object.hasOwn(result.videos[0], "duration"), false);
+});
+
+test("buildSiteMediaCollections preserves a zero synchronized video duration", () => {
+  const result = buildSiteMediaCollections({
+    manifest: {
+      schemaVersion: 1,
+      images: [],
+      videos: [{ ...standVideo, duration: 0 }],
+    },
+    baseGallery,
+    fallbackEvents,
+  });
+
+  assert.equal(result.videos[0].duration, 0);
+});
+
+for (const duration of [
+  -1,
+  Number.NaN,
+  Number.POSITIVE_INFINITY,
+  "8",
+]) {
+  test(`buildSiteMediaCollections rejects invalid synchronized video duration ${String(duration)}`, () => {
+    assert.throws(
+      () =>
+        buildSiteMediaCollections({
+          manifest: {
+            schemaVersion: 1,
+            images: [],
+            videos: [{ ...standVideo, duration }],
+          },
+          baseGallery,
+          fallbackEvents,
+        }),
+      /duration no es válida/,
+    );
+  });
+}
 
 test("buildSiteMediaCollections retains fallback events when only cajas is synchronized", () => {
   const result = buildSiteMediaCollections({
