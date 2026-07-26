@@ -31,3 +31,6 @@ videos/
 # local reference material
 reference/
 *.asset.json
+
+# local design exploration
+.superpowers/
