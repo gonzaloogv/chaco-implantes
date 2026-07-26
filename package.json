@@ -14,6 +14,7 @@
     "verify:cloudinary-video-audio": "node scripts/verify-cloudinary-video-audio.mjs",
     "test:cloudinary": "node --test scripts/cloudinary-*.test.mjs scripts/sync-cloudinary.test.mjs",
     "test:smoke": "node scripts/smoke.mjs",
+    "test:video-player": "node scripts/verify-video-player.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
