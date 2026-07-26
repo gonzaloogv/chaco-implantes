@@ -513,6 +513,13 @@ export function buildManifest({
           resource.height <= 0)
       ) {
         skipReason = "non_visual_video";
+      } else if (
+        base.resourceType === "video" &&
+        Number.isFinite(resource.duration) &&
+        resource.duration >= 0 &&
+        resource.duration < 2
+      ) {
+        skipReason = "short_video";
       }
 
       if (skipReason) {

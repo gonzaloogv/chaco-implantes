@@ -467,6 +467,56 @@ test("buildManifest defensively omits restricted, unsupported and audio resource
   );
 });
 
+test("buildManifest omits videos shorter than two seconds", () => {
+  const shortVideo = {
+    ...videoResource,
+    asset_id: "short-video",
+    duration: 1.999,
+  };
+  const exactVideo = {
+    ...videoResource,
+    asset_id: "exact-video",
+    public_id: "exact-video",
+    duration: 2,
+  };
+  const unknownVideo = {
+    ...videoResource,
+    asset_id: "unknown-video",
+    public_id: "unknown-video",
+    duration: undefined,
+  };
+
+  const { manifest, skipped, countsBySource } = buildManifest({
+    folderMode: "dynamic",
+    sourceResults: [
+      {
+        source: standSource,
+        resources: [imageResource, shortVideo, exactVideo, unknownVideo],
+      },
+    ],
+  });
+
+  assert.deepEqual(
+    manifest.videos.map(({ assetId, duration }) => ({ assetId, duration })),
+    [
+      { assetId: "exact-video", duration: 2 },
+      { assetId: "unknown-video", duration: undefined },
+    ],
+  );
+  assert.deepEqual(
+    skipped.map(({ assetId, reason }) => ({ assetId, reason })),
+    [{ assetId: "short-video", reason: "short_video" }],
+  );
+  assert.deepEqual(countsBySource, [
+    {
+      path: "chaco-implantes/stand",
+      images: 1,
+      videos: 2,
+      skipped: 1,
+    },
+  ]);
+});
+
 test("buildManifest omits access control returned inside Search context", () => {
   const contextControlledImage = {
     ...imageResource,
