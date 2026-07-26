@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Icon from "../components/Icon.astro";
+import VideoPlayer from "../components/VideoPlayer.astro";
 import { categoryImages, galleryFilters, videos } from "../data/site";
 ---
 
@@ -99,18 +100,16 @@ import { categoryImages, galleryFilters, videos } from "../data/site";
       ) : (
         <>
           <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-videos-grid>
-            {videos.map((video) => (
+            {videos.map((video, index) => (
               <article data-video-item data-category={video.category} class="premium-card overflow-hidden rounded-xl border">
-                <div class="relative aspect-video bg-secondary/50">
-                  <video
-                    src={video.src}
-                    poster={video.poster}
-                    controls
-                    preload="none"
-                    playsinline
-                    class="h-full w-full object-cover"
-                  ></video>
-                </div>
+                <VideoPlayer
+                  assetId={video.id}
+                  src={video.src}
+                  poster={video.poster}
+                  title={video.title}
+                  duration={video.duration}
+                  position={index + 1}
+                />
                 <div class="px-4 py-3">
                   <h2 class="font-display text-sm font-semibold text-deep">{video.title}</h2>
                   <p class="mt-0.5 text-xs text-muted-foreground">{video.category}</p>

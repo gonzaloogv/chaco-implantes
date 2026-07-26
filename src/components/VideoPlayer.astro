@@ -1,0 +1,784 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  assetId: string;
+  src: string;
+  poster: string;
+  title: string;
+  duration?: number;
+  position: number;
+}
+
+const { assetId, src, poster, title, duration, position } = Astro.props;
+
+const formatTime = (value?: number) => {
+  if (typeof value !== "number" || !Number.isFinite(value)) return "--:--";
+
+  const totalSeconds = Math.max(0, Math.floor(value));
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+};
+
+const safeId = assetId.replace(/[^A-Za-z0-9_-]/g, "-");
+const progressId = `video-progress-${safeId}-${position}`;
+const videoName = `video ${position}: ${title}`;
+const durationLabel = formatTime(duration);
+---
+
+<div
+  data-video-player
+  data-video-id={assetId}
+  data-state="idle"
+  data-controls-visible="true"
+  data-duration={duration}
+  class="video-player"
+  role="group"
+  aria-label={`Reproductor del ${videoName}`}
+  aria-busy="false"
+>
+  <img
+    data-video-poster
+    src={poster}
+    alt=""
+    aria-hidden="true"
+    loading="lazy"
+    decoding="async"
+    width="600"
+    height="338"
+    class="video-player__poster"
+  />
+  <video
+    data-video-media
+    data-src={src}
+    preload="none"
+    playsinline
+    muted
+    aria-hidden="true"
+    class="video-player__media"
+  ></video>
+
+  <div class="video-player__shade" aria-hidden="true"></div>
+  <span class="video-player__badge">SIN AUDIO</span>
+
+  <button
+    type="button"
+    data-video-primary
+    class="video-player__primary"
+    aria-label={`Reproducir ${videoName}`}
+  >
+    <span data-video-primary-play>
+      <Icon name="play" class="h-6 w-6" />
+    </span>
+    <span data-video-primary-replay hidden>
+      <Icon name="rotate-ccw" class="h-6 w-6" />
+    </span>
+  </button>
+
+  <p
+    data-video-status
+    class="video-player__status"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+    hidden
+  ></p>
+
+  <div
+    data-video-error
+    class="video-player__error"
+    role="alert"
+    hidden
+  >
+    <p>No pudimos reproducir el video.</p>
+    <button
+      type="button"
+      data-video-retry
+      class="video-player__retry"
+      aria-label={`Reintentar ${videoName}`}
+    >
+      Reintentar
+    </button>
+  </div>
+
+  <div data-video-controls class="video-player__controls">
+    <button
+      type="button"
+      data-video-toggle
+      class="video-player__button"
+      aria-label={`Reproducir ${videoName}`}
+    >
+      <span data-video-toggle-play>
+        <Icon name="play" class="h-4 w-4" />
+      </span>
+      <span data-video-toggle-pause hidden>
+        <Icon name="pause" class="h-4 w-4" />
+      </span>
+      <span data-video-toggle-replay hidden>
+        <Icon name="rotate-ccw" class="h-4 w-4" />
+      </span>
+    </button>
+
+    <input
+      id={progressId}
+      data-video-progress
+      class="video-player__progress"
+      type="range"
+      min="0"
+      max={duration ?? 0}
+      value="0"
+      step="0.1"
+      disabled
+      aria-label={`Progreso de ${videoName}`}
+      aria-valuetext={`00:00 de ${durationLabel}`}
+    />
+
+    <output
+      data-video-time
+      class="video-player__time"
+      for={progressId}
+      aria-hidden="true"
+    >
+      00:00 / {durationLabel}
+    </output>
+
+    <button
+      type="button"
+      data-video-fullscreen
+      class="video-player__button"
+      aria-label={`Ver ${videoName} en pantalla completa`}
+    >
+      <span data-video-maximize>
+        <Icon name="maximize" class="h-4 w-4" />
+      </span>
+      <span data-video-minimize hidden>
+        <Icon name="minimize" class="h-4 w-4" />
+      </span>
+    </button>
+  </div>
+
+  <a
+    data-video-fallback
+    class="video-player__fallback"
+    href={src}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    Abrir video {position} en una pestaña nueva
+  </a>
+</div>
+
+<script>
+  let activeVideo: HTMLVideoElement | null = null;
+  const finePointer = window.matchMedia("(pointer: fine)");
+
+  document
+    .querySelectorAll<HTMLElement>("[data-video-player]")
+    .forEach((root) => {
+      if (root.dataset.enhanced === "true") return;
+
+      const video = root.querySelector<HTMLVideoElement>("[data-video-media]");
+      const poster = root.querySelector<HTMLImageElement>("[data-video-poster]");
+      const primary = root.querySelector<HTMLButtonElement>("[data-video-primary]");
+      const toggle = root.querySelector<HTMLButtonElement>("[data-video-toggle]");
+      const progress = root.querySelector<HTMLInputElement>("[data-video-progress]");
+      const time = root.querySelector<HTMLOutputElement>("[data-video-time]");
+      const fullscreen = root.querySelector<HTMLButtonElement>(
+        "[data-video-fullscreen]",
+      );
+      const status = root.querySelector<HTMLElement>("[data-video-status]");
+      const errorPanel = root.querySelector<HTMLElement>("[data-video-error]");
+      const retry = root.querySelector<HTMLButtonElement>("[data-video-retry]");
+      const fallback = root.querySelector<HTMLAnchorElement>(
+        "[data-video-fallback]",
+      );
+      const controls = root.querySelector<HTMLElement>("[data-video-controls]");
+
+      if (
+        !video ||
+        !poster ||
+        !primary ||
+        !toggle ||
+        !progress ||
+        !time ||
+        !fullscreen ||
+        !status ||
+        !errorPanel ||
+        !retry ||
+        !fallback ||
+        !controls ||
+        !video.dataset.src
+      ) {
+        return;
+      }
+
+      const primaryPlay = primary.querySelector<HTMLElement>(
+        "[data-video-primary-play]",
+      );
+      const primaryReplay = primary.querySelector<HTMLElement>(
+        "[data-video-primary-replay]",
+      );
+      const togglePlay = toggle.querySelector<HTMLElement>(
+        "[data-video-toggle-play]",
+      );
+      const togglePause = toggle.querySelector<HTMLElement>(
+        "[data-video-toggle-pause]",
+      );
+      const toggleReplay = toggle.querySelector<HTMLElement>(
+        "[data-video-toggle-replay]",
+      );
+      const maximize = fullscreen.querySelector<HTMLElement>(
+        "[data-video-maximize]",
+      );
+      const minimize = fullscreen.querySelector<HTMLElement>(
+        "[data-video-minimize]",
+      );
+      const label = root.getAttribute("aria-label") || "";
+      const videoTitle =
+        label.replace(/^Reproductor del\s*/, "") || "video seleccionado";
+
+      let hasStarted = false;
+      let controlsTimeout: number | undefined;
+
+      const isPlaying = () => !video.paused && !video.ended;
+
+      const setStatus = (message: string) => {
+        status.textContent = message;
+        status.hidden = message.length === 0;
+      };
+
+      const setState = (
+        state: "idle" | "loading" | "playing" | "paused" | "ended" | "error",
+      ) => {
+        root.dataset.state = state;
+        root.setAttribute("aria-busy", String(state === "loading"));
+        errorPanel.hidden = state !== "error";
+        fallback.hidden = state !== "error";
+      };
+
+      const updateTime = () => {
+        const fallbackDuration = Number(root.dataset.duration);
+        const mediaDuration = Number.isFinite(video.duration)
+          ? video.duration
+          : fallbackDuration;
+        const currentTime = Number.isFinite(video.currentTime)
+          ? Math.max(0, video.currentTime)
+          : 0;
+        const hasDuration =
+          Number.isFinite(mediaDuration) && mediaDuration > 0;
+        const currentLabel = formatVideoTime(currentTime);
+        const mediaDurationLabel = hasDuration
+          ? formatVideoTime(mediaDuration)
+          : "--:--";
+
+        progress.max = hasDuration ? String(mediaDuration) : "0";
+        progress.value = hasDuration
+          ? String(Math.min(currentTime, mediaDuration))
+          : "0";
+        progress.disabled =
+          video.readyState < HTMLMediaElement.HAVE_METADATA;
+        progress.setAttribute(
+          "aria-valuetext",
+          `${currentLabel} de ${mediaDurationLabel}`,
+        );
+        time.textContent = `${currentLabel} / ${mediaDurationLabel}`;
+      };
+
+      const syncButtons = () => {
+        const playing = isPlaying();
+        const ended = video.ended || root.dataset.state === "ended";
+        const action = playing
+          ? "Pausar"
+          : ended
+            ? "Reproducir nuevamente"
+            : "Reproducir";
+        const actionLabel = `${action} ${videoTitle}`;
+
+        primary.setAttribute("aria-label", actionLabel);
+        toggle.setAttribute("aria-label", actionLabel);
+        if (primaryPlay) primaryPlay.hidden = ended;
+        if (primaryReplay) primaryReplay.hidden = !ended;
+        if (togglePlay) togglePlay.hidden = playing || ended;
+        if (togglePause) togglePause.hidden = !playing;
+        if (toggleReplay) toggleReplay.hidden = !ended;
+      };
+
+      const revealControls = () => {
+        if (controlsTimeout !== undefined) {
+          window.clearTimeout(controlsTimeout);
+        }
+        root.dataset.controlsVisible = "true";
+
+        if (
+          finePointer.matches &&
+          root.dataset.state === "playing" &&
+          !root.matches(":focus-within")
+        ) {
+          controlsTimeout = window.setTimeout(() => {
+            if (
+              root.dataset.state !== "playing" ||
+              !finePointer.matches ||
+              root.matches(":focus-within")
+            ) {
+              return;
+            }
+            root.dataset.controlsVisible = "false";
+          }, 2200);
+        }
+      };
+
+      const ensureSource = () => {
+        if (video.hasAttribute("src")) return;
+        video.src = video.dataset.src || "";
+        video.load();
+      };
+
+      const showError = () => {
+        const hadFocus = root.contains(document.activeElement);
+        if (activeVideo === video) activeVideo = null;
+        setState("error");
+        setStatus("");
+        revealControls();
+        syncButtons();
+        if (hadFocus) retry.focus();
+      };
+
+      const startPlayback = async () => {
+        if (video.ended) video.currentTime = 0;
+        ensureSource();
+
+        if (video.readyState < HTMLMediaElement.HAVE_FUTURE_DATA) {
+          setState("loading");
+          setStatus("Cargando video…");
+          if (document.activeElement === primary) toggle.focus();
+        }
+
+        try {
+          await video.play();
+        } catch (playbackError) {
+          if (
+            playbackError instanceof DOMException &&
+            playbackError.name === "AbortError"
+          ) {
+            return;
+          }
+          showError();
+        }
+      };
+
+      const togglePlayback = () => {
+        if (isPlaying()) {
+          video.pause();
+          return;
+        }
+        void startPlayback();
+      };
+
+      primary.addEventListener("click", togglePlayback);
+      toggle.addEventListener("click", togglePlayback);
+      video.addEventListener("click", togglePlayback);
+
+      retry.addEventListener("click", () => {
+        const hadFocus = root.contains(document.activeElement);
+        video.pause();
+        video.removeAttribute("src");
+        video.load();
+        delete root.dataset.mediaReady;
+        hasStarted = false;
+        progress.value = "0";
+        progress.max = "0";
+        progress.disabled = true;
+        poster.hidden = false;
+        setState("idle");
+        setStatus("");
+        syncButtons();
+        void startPlayback();
+        if (hadFocus) toggle.focus();
+      });
+
+      video.addEventListener("play", () => {
+        if (activeVideo && activeVideo !== video) activeVideo.pause();
+        activeVideo = video;
+      });
+
+      video.addEventListener("loadstart", () => {
+        setState("loading");
+        setStatus("Cargando video…");
+        syncButtons();
+        if (document.activeElement === primary) toggle.focus();
+      });
+
+      video.addEventListener("waiting", () => {
+        if (video.paused) return;
+        setState("loading");
+        setStatus("Cargando video…");
+      });
+
+      video.addEventListener("loadedmetadata", updateTime);
+
+      video.addEventListener("loadeddata", () => {
+        root.dataset.mediaReady = "true";
+        poster.hidden = true;
+      });
+
+      video.addEventListener("playing", () => {
+        hasStarted = true;
+        setState("playing");
+        setStatus("");
+        syncButtons();
+        revealControls();
+        if (document.activeElement === primary) toggle.focus();
+      });
+
+      video.addEventListener("pause", () => {
+        if (video.ended || root.dataset.state === "error") return;
+        const controlsHadFocus = controls.contains(document.activeElement);
+        if (activeVideo === video) activeVideo = null;
+        setState(hasStarted ? "paused" : "idle");
+        setStatus("");
+        syncButtons();
+        revealControls();
+        if (!hasStarted && controlsHadFocus) primary.focus();
+      });
+
+      video.addEventListener("ended", () => {
+        const controlsHadFocus = controls.contains(document.activeElement);
+        if (activeVideo === video) activeVideo = null;
+        setState("ended");
+        syncButtons();
+        revealControls();
+        if (controlsHadFocus) primary.focus();
+      });
+
+      video.addEventListener("error", () => {
+        if (video.hasAttribute("src")) showError();
+      });
+
+      video.addEventListener("timeupdate", updateTime);
+
+      progress.addEventListener("input", () => {
+        const requestedTime = Number(progress.value);
+        if (Number.isFinite(requestedTime)) {
+          video.currentTime = requestedTime;
+        }
+        updateTime();
+      });
+
+      const canFullscreen =
+        document.fullscreenEnabled &&
+        typeof root.requestFullscreen === "function";
+      fullscreen.hidden = !canFullscreen;
+
+      fullscreen.addEventListener("click", async () => {
+        try {
+          if (document.fullscreenElement === root) {
+            await document.exitFullscreen();
+          } else {
+            await root.requestFullscreen();
+          }
+        } catch {
+          setStatus("No se pudo abrir la pantalla completa.");
+        }
+      });
+
+      document.addEventListener("fullscreenchange", () => {
+        const isFullscreen = document.fullscreenElement === root;
+        if (maximize) maximize.hidden = isFullscreen;
+        if (minimize) minimize.hidden = !isFullscreen;
+        fullscreen.setAttribute(
+          "aria-label",
+          isFullscreen
+            ? `Salir de pantalla completa para ${videoTitle}`
+            : `Ver ${videoTitle} en pantalla completa`,
+        );
+      });
+
+      root.addEventListener("pointermove", revealControls);
+      root.addEventListener("pointerdown", revealControls);
+      root.addEventListener("focusin", revealControls);
+      root.addEventListener("focusout", () => {
+        window.requestAnimationFrame(revealControls);
+      });
+
+      fallback.hidden = true;
+      root.dataset.enhanced = "true";
+      updateTime();
+      syncButtons();
+    });
+
+  function formatVideoTime(value: number) {
+    if (!Number.isFinite(value)) return "--:--";
+    const totalSeconds = Math.max(0, Math.floor(value));
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  }
+</script>
+
+<style>
+  .video-player {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #0f172a;
+    color: white;
+    isolation: isolate;
+  }
+
+  .video-player [hidden] {
+    display: none !important;
+  }
+
+  .video-player__poster,
+  .video-player__media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: #0f172a;
+    object-fit: contain;
+  }
+
+  .video-player__media {
+    opacity: 0;
+    transition: opacity 180ms ease;
+  }
+
+  .video-player[data-media-ready="true"] .video-player__media {
+    opacity: 1;
+  }
+
+  .video-player__shade {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      to bottom,
+      transparent 35%,
+      rgb(15 23 42 / 88%) 100%
+    );
+    pointer-events: none;
+  }
+
+  .video-player__badge {
+    position: absolute;
+    top: 0.65rem;
+    right: 0.65rem;
+    z-index: 2;
+    border: 1px solid rgb(255 255 255 / 24%);
+    border-radius: 999px;
+    padding: 0.3rem 0.55rem;
+    background: rgb(15 23 42 / 82%);
+    font-size: 0.65rem;
+    font-weight: 800;
+  }
+
+  .video-player__primary {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 2;
+    width: 3.5rem;
+    height: 3.5rem;
+    transform: translate(-50%, -50%);
+  }
+
+  .video-player[data-state="playing"] .video-player__primary,
+  .video-player[data-state="loading"] .video-player__primary,
+  .video-player[data-state="paused"] .video-player__primary,
+  .video-player[data-state="error"] .video-player__primary {
+    display: none;
+  }
+
+  .video-player__controls {
+    position: absolute;
+    right: 0.6rem;
+    bottom: 0.55rem;
+    left: 0.6rem;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 2.75rem minmax(0, 1fr) auto 2.75rem;
+    gap: 0.55rem;
+    align-items: center;
+    opacity: 1;
+    transition: opacity 180ms ease;
+  }
+
+  .video-player[data-state="idle"] .video-player__controls,
+  .video-player[data-state="ended"] .video-player__controls {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .video-player[data-controls-visible="false"] .video-player__controls {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .video-player[data-state="error"] .video-player__controls {
+    display: none;
+  }
+
+  .video-player__button,
+  .video-player__primary {
+    display: grid;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    place-items: center;
+    border: 1px solid rgb(255 255 255 / 24%);
+    border-radius: 999px;
+    background: rgb(15 23 42 / 86%);
+    color: white;
+    cursor: pointer;
+    transition: background-color 160ms ease;
+  }
+
+  .video-player__button span,
+  .video-player__primary span {
+    display: grid;
+    place-items: center;
+  }
+
+  .video-player__progress {
+    width: 100%;
+    min-height: 2.75rem;
+    accent-color: #60a5fa;
+    cursor: pointer;
+  }
+
+  .video-player__progress:disabled {
+    cursor: default;
+  }
+
+  .video-player__time {
+    min-width: 6.8rem;
+    color: white;
+    font-size: 0.7rem;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  .video-player__status,
+  .video-player__error,
+  .video-player__fallback {
+    position: absolute;
+    left: 50%;
+    z-index: 2;
+    border-radius: 0.6rem;
+    background: rgb(15 23 42 / 92%);
+    color: white;
+    font-size: 0.75rem;
+    text-align: center;
+  }
+
+  .video-player__status {
+    top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0.65rem;
+    transform: translateX(-50%);
+  }
+
+  .video-player[data-state="loading"] .video-player__status::before {
+    width: 0.85rem;
+    height: 0.85rem;
+    border: 2px solid rgb(255 255 255 / 35%);
+    border-top-color: #60a5fa;
+    border-radius: 999px;
+    animation: video-player-spin 700ms linear infinite;
+    content: "";
+  }
+
+  .video-player__error {
+    top: 50%;
+    display: grid;
+    width: min(88%, 20rem);
+    min-width: min(14rem, 88%);
+    gap: 0.75rem;
+    justify-items: center;
+    padding: 1rem;
+    transform: translate(-50%, -50%);
+  }
+
+  .video-player__retry {
+    min-height: 2.75rem;
+    border: 0;
+    border-radius: 0.5rem;
+    padding: 0 0.9rem;
+    background: #2b6cb8;
+    color: white;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .video-player__fallback {
+    bottom: 0.7rem;
+    padding: 0.45rem 0.65rem;
+    transform: translateX(-50%);
+    text-decoration: underline;
+    text-underline-offset: 0.18rem;
+  }
+
+  .video-player:not([data-enhanced="true"]) .video-player__primary,
+  .video-player:not([data-enhanced="true"]) .video-player__controls,
+  .video-player:not([data-enhanced="true"]) .video-player__status,
+  .video-player:not([data-enhanced="true"]) .video-player__error {
+    display: none;
+  }
+
+  .video-player:fullscreen {
+    width: 100vw;
+    height: 100vh;
+    aspect-ratio: auto;
+  }
+
+  .video-player__button:focus-visible,
+  .video-player__primary:focus-visible,
+  .video-player__retry:focus-visible,
+  .video-player__progress:focus-visible,
+  .video-player__fallback:focus-visible {
+    outline: 3px solid #60a5fa;
+    outline-offset: 2px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .video-player__button:hover,
+    .video-player__primary:hover,
+    .video-player__retry:hover {
+      background: #2b6cb8;
+    }
+  }
+
+  @media (max-width: 32rem) {
+    .video-player__controls {
+      grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem;
+    }
+
+    .video-player__time {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .video-player__media,
+    .video-player__controls,
+    .video-player__button,
+    .video-player__primary {
+      transition: none;
+    }
+
+    .video-player[data-state="loading"] .video-player__status::before {
+      animation: none;
+    }
+  }
+
+  @keyframes video-player-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>

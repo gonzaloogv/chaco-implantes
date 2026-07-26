@@ -235,7 +235,7 @@ assert(home.includes("NextAR"), "Hero carousel should describe the NextAR differ
 assert(home.includes("AMIS"), "Hero carousel should describe the AMIS differentiator");
 assert(home.includes("Calidad que se siente. Confianza que se nota."), "Home should integrate the client slogan");
 assert(home.includes("Pedidos programados"), "Home should include the professional support pillars");
-assert(!home.includes("TecnologÃ­a Medacta"), "NextAR hero copy should not mention Medacta");
+assert(!home.includes("Tecnolog\u00c3\u00ada Medacta"), "NextAR hero copy should not mention Medacta");
 assert(!home.includes("Consultar sistemas Medacta"), "NextAR hero CTA should not mention Medacta");
 assert(home.includes("Productos para traumatología"), "Home should clarify the product category without the old tagline");
 assert(!home.includes("Al servicio de la salud"), "Home should not render the old health-service tagline");
@@ -379,6 +379,86 @@ assert(
     cloudinaryManifest.videos.length,
   "Videos page should render every synchronized video",
 );
+const videoPlayerCount = (videos.match(/data-video-player(?=[\s=>])/g) ?? [])
+  .length;
+const videoTags = videos.match(/<video\b[^>]*>/g) ?? [];
+const videoPosterTags =
+  videos.match(
+    /<img\b(?=[^>]*\bdata-video-poster(?=[\s=>]))[^>]*>/g,
+  ) ?? [];
+assert(
+  videoPlayerCount === cloudinaryManifest.videos.length,
+  "Videos page should render one accessible player per synchronized video",
+);
+assert(
+  videoTags.length === cloudinaryManifest.videos.length,
+  "Videos page should render one video element per synchronized video",
+);
+for (const tag of videoTags) {
+  assert(
+    /\sdata-video-media(?=[\s=>])/.test(tag),
+    "Every video element should expose its media marker",
+  );
+  assert(
+    /\sdata-src="[^"]+"/.test(tag),
+    "Every video element should defer its source in data-src",
+  );
+  assert(
+    !/(?:^|\s)src=/.test(tag),
+    "Video elements should not load their source before interaction",
+  );
+  assert(
+    !/\sposter(?=[\s=>])/.test(tag),
+    "Video elements should render posters as separate lazy images",
+  );
+  assert(
+    !/\scontrols(?=[\s=>])/.test(tag),
+    "Video elements should use the custom accessible controls",
+  );
+  assert(
+    /\spreload="none"/.test(tag),
+    'Video elements should use preload="none"',
+  );
+  assert(
+    /\splaysinline(?=[\s=>])/.test(tag),
+    "Video elements should play inline",
+  );
+  assert(
+    /\smuted(?=[\s=>])/.test(tag),
+    "Video elements should remain muted",
+  );
+}
+assert(
+  videoPosterTags.length === videoPlayerCount,
+  "Every video player should render one poster image",
+);
+for (const tag of videoPosterTags) {
+  assert(
+    /\sloading="lazy"/.test(tag),
+    "Every video poster should load lazily",
+  );
+  assert(
+    /\sdecoding="async"/.test(tag),
+    "Every video poster should decode asynchronously",
+  );
+}
+assert(
+  (videos.match(/data-video-progress(?=[\s=>])/g) ?? []).length ===
+    videoPlayerCount,
+  "Every video player should expose an accessible progress control",
+);
+assert(
+  (videos.match(/data-video-fullscreen(?=[\s=>])/g) ?? []).length ===
+    videoPlayerCount,
+  "Every video player should expose a fullscreen control",
+);
+assert(
+  (videos.match(/data-video-fallback(?=[\s=>])/g) ?? []).length ===
+    videoPlayerCount,
+  "Every video player should expose a fallback link",
+);
+assert(videos.includes("SIN AUDIO"), "Video players should explain that playback is muted");
+assert(!videos.includes("data-video-volume"), "Video players should not expose volume controls");
 assert(
   cloudinaryManifest.videos.every(
     ({ duration }) => duration === undefined || duration >= 2,
@@ -397,11 +477,33 @@ for (const video of cloudinaryManifest.videos) {
   }
   assert(videos.includes(video.src), `Videos page should render source ${video.assetId}`);
   assert(videos.includes(video.poster), `Videos page should render poster ${video.assetId}`);
+  assert(
+    video.src.includes("ac_none"),
+    `Video source should omit audio delivery: ${video.assetId}`,
+  );
+  assert(
+    video.poster.includes("c_pad"),
+    `Video poster should preserve its full frame: ${video.assetId}`,
+  );
 }
 if (hasSyncedVideos) {
   assert(!videos.includes("Próximamente:"), "Videos hero should not announce upcoming content after synchronization");
 }
 assert(source.includes("item.dataset.category === activeFilter"), "Videos page should filter cards by their category");
+const controlsHideTimerCallback =
+  source.match(
+    /controlsTimeout = window\.setTimeout\(\(\) => \{([\s\S]*?)\}, 2200\);/,
+  )?.[1] ?? "";
+assert(
+  controlsHideTimerCallback.includes(
+    'root.dataset.state !== "playing"',
+  ) &&
+    controlsHideTimerCallback.includes("!finePointer.matches") &&
+    controlsHideTimerCallback.includes(
+      'root.matches(":focus-within")',
+    ),
+  "Video controls should revalidate player state before the hide timer fires",
+);
 assert(eventos.includes("data-eventos-page"), "Events page should expose the redesigned page marker");
 assert(eventos.includes("page-hero-dark"), "Events page should use the dark premium page hero");
 assert(eventos.includes("page-surface"), "Events page should use the shared light content surface");
