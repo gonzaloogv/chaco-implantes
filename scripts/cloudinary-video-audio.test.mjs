@@ -143,6 +143,44 @@ test("ensureVideoSourcesHaveNoAudio skips a large mdat with bounded Range reques
   }
 });
 
+test("ensureVideoSourcesHaveNoAudio rejects a second top-level moov without downloading it", async () => {
+  const fileType = box("ftyp");
+  const firstMovie = moov("vide");
+  const mediaData = box("mdat", Buffer.alloc(128 * 1024));
+  const secondMovie = moov("vide", "soun");
+  const bytes = concat(fileType, firstMovie, mediaData, secondMovie);
+  const secondMoovOffset =
+    fileType.length + firstMovie.length + mediaData.length;
+  const rangeFetch = createRangeFetch(bytes);
+
+  await assert.rejects(
+    () =>
+      ensureVideoSourcesHaveNoAudio(
+        [
+          {
+            assetId: "duplicate-moov",
+            src: cloudinarySrc("duplicate-moov"),
+          },
+        ],
+        { fetchImpl: rangeFetch.fetchImpl },
+      ),
+    (error) => {
+      assert.match(error.message, /duplicate-moov/);
+      assert.match(error.message, /más de una caja moov/);
+      return true;
+    },
+  );
+
+  assert.deepEqual(
+    rangeFetch.requests.map(({ options }) =>
+      new Headers(options.headers).get("Range")),
+    [
+      "bytes=0-65535",
+      `bytes=${secondMoovOffset}-${secondMoovOffset + 31}`,
+    ],
+  );
+});
+
 test("inspectMp4Moov reports a video-only MP4", () => {
   assert.deepEqual(inspectMp4Moov(moov("vide")), {
     trackCount: 1,

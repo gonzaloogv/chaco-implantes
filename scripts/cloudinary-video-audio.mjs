@@ -434,6 +434,7 @@ async function findRemoteMoov(video, options) {
   );
   const total = context.remoteTotal;
   let offset = 0;
+  let moovBytes;
   let topLevelBoxes = 0;
 
   while (offset < total) {
@@ -458,24 +459,31 @@ async function findRemoteMoov(video, options) {
     const remoteBox = readRemoteBoxHeader(headerBytes, offset, total);
 
     if (remoteBox.type === "moov") {
+      if (moovBytes !== undefined) {
+        throw new Error("El MP4 contiene más de una caja moov.");
+      }
       if (remoteBox.size > options.maxMoovBytes) {
         throw new Error("La caja moov excede el límite permitido.");
       }
       if (remoteBox.end <= probe.length) {
-        return probe.slice(remoteBox.start, remoteBox.end);
+        moovBytes = probe.slice(remoteBox.start, remoteBox.end);
+      } else {
+        moovBytes = await readExactRange(
+          video.src,
+          remoteBox.start,
+          remoteBox.end - 1,
+          context,
+        );
       }
-      return readExactRange(
-        video.src,
-        remoteBox.start,
-        remoteBox.end - 1,
-        context,
-      );
     }
 
     offset = remoteBox.end;
   }
 
-  throw new Error("No se encontró la caja moov del MP4.");
+  if (moovBytes === undefined) {
+    throw new Error("No se encontró la caja moov del MP4.");
+  }
+  return moovBytes;
 }
 
 function validateCloudinaryVideo(video, index) {
