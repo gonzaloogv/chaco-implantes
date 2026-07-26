@@ -54,6 +54,29 @@ function imageResource({
   };
 }
 
+function videoResource({
+  assetId,
+  folder,
+  publicId = assetId,
+  createdAt = "2026-07-25T12:00:00Z",
+}) {
+  return {
+    asset_id: assetId,
+    public_id: publicId,
+    resource_type: "video",
+    type: "upload",
+    status: "active",
+    format: "mov",
+    secure_url: `https://res.cloudinary.com/demo/video/upload/v1/${publicId}.mov`,
+    asset_folder: folder,
+    created_at: createdAt,
+    width: 1920,
+    height: 1080,
+    duration: 12.5,
+    display_name: publicId,
+  };
+}
+
 async function createTempOutput(t, manifest) {
   const directory = await mkdtemp(join(tmpdir(), "cloudinary-command-test-"));
   t.after(() => rm(directory, { recursive: true, force: true }));
@@ -239,6 +262,123 @@ test("runSync passes previous label assignments to the manifest builder", async 
       generatedLabelNumber: 4,
     },
   );
+});
+
+test("runSync verifies built manifest videos before publishing", async (t) => {
+  const outputPath = await createTempOutput(t);
+  const logger = createLogger();
+  let readinessCalls = 0;
+  let receivedVideos;
+  const client = {
+    async searchResources({ expression }) {
+      if (expression.includes("/stand")) {
+        return [
+          imageResource({
+            assetId: "stand-image",
+            folder: "chaco-implantes/stand",
+          }),
+        ];
+      }
+      return [
+        videoResource({
+          assetId: "cajas-video",
+          folder: "chaco-implantes/cajas",
+        }),
+      ];
+    },
+    async getFolderMode() {
+      return "dynamic";
+    },
+  };
+
+  const result = await runSync({
+    credentials,
+    folderMode: "dynamic",
+    sources,
+    client,
+    outputPath,
+    logger,
+    async videoReadiness(videos) {
+      readinessCalls += 1;
+      receivedVideos = videos;
+    },
+  });
+
+  assert.equal(readinessCalls, 1);
+  assert.deepEqual(receivedVideos, result.manifest.videos);
+  assert.deepEqual(
+    receivedVideos.map(({ assetId, title, src }) => ({
+      assetId,
+      title,
+      src,
+    })),
+    [
+      {
+        assetId: "cajas-video",
+        title: "Producto instrumental",
+        src:
+          "https://res.cloudinary.com/demo/video/upload/f_mp4,q_auto/v1/cajas-video.mp4",
+      },
+    ],
+  );
+  assert.match(
+    logger.messages.join("\n"),
+    /Comprobando reproducción de 1 videos/,
+  );
+  assert.match(logger.messages.join("\n"), /Videos listos: 1/);
+});
+
+test("runSync preserves the previous manifest when video readiness fails", async (t) => {
+  const previous = {
+    schemaVersion: 1,
+    images: [],
+    videos: [],
+  };
+  const outputPath = await createTempOutput(t, previous);
+  const previousContent = await readFile(outputPath, "utf8");
+  let receivedVideos;
+  const client = {
+    async searchResources({ expression }) {
+      if (expression.includes("/stand")) {
+        return [
+          imageResource({
+            assetId: "stand-image",
+            folder: "chaco-implantes/stand",
+          }),
+        ];
+      }
+      return [
+        videoResource({
+          assetId: "cajas-video",
+          folder: "chaco-implantes/cajas",
+        }),
+      ];
+    },
+    async getFolderMode() {
+      return "dynamic";
+    },
+  };
+
+  await assert.rejects(
+    () =>
+      runSync({
+        credentials,
+        folderMode: "dynamic",
+        sources,
+        client,
+        outputPath,
+        logger: createLogger(),
+        async videoReadiness(videos) {
+          receivedVideos = videos;
+          throw new Error("video todavía en proceso");
+        },
+      }),
+    /video todavía en proceso/,
+  );
+
+  assert.equal(receivedVideos.length, 1);
+  assert.equal(receivedVideos[0].assetId, "cajas-video");
+  assert.equal(await readFile(outputPath, "utf8"), previousContent);
 });
 
 test("runSync only verifies the remote folder mode when requested", async (t) => {

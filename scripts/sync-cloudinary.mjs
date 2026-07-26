@@ -18,6 +18,7 @@ import {
   readManifest,
   writeManifestAtomic,
 } from "./cloudinary-sync-io.mjs";
+import { ensureVideoSourcesReady } from "./cloudinary-video-readiness.mjs";
 
 const DEFAULT_OUTPUT_PATH = fileURLToPath(
   new URL("../src/data/generated/cloudinary-media.json", import.meta.url),
@@ -98,6 +99,7 @@ export async function runSync({
   acceptRemovals = false,
   verifyFolderMode = false,
   logger = console,
+  videoReadiness = ensureVideoSourcesReady,
 }) {
   const safeCredentials = validateCredentials(credentials);
   const safeSources = validateCloudinaryConfig({ folderMode, sources });
@@ -145,6 +147,15 @@ export async function runSync({
   });
   const removedAssetIds = findRemovedAssetIds(previousManifest, manifest);
   assertRemovalsAccepted(removedAssetIds, { acceptRemovals });
+
+  if (manifest.videos.length > 0) {
+    logger.log(
+      `Comprobando reproducción de ${manifest.videos.length} videos...`,
+    );
+    await videoReadiness(manifest.videos);
+    logger.log(`Videos listos: ${manifest.videos.length}.`);
+  }
+
   const { changed } = await writeManifestAtomic(outputPath, manifest);
 
   for (const count of countsBySource) {
