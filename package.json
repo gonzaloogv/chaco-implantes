@@ -10,6 +10,8 @@
     "demo:video": "node scripts/grabar-demo.js",
     "check": "astro check",
     "build": "astro build",
+    "sync:cloudinary": "node scripts/sync-cloudinary.mjs",
+    "test:cloudinary": "node --test scripts/cloudinary-*.test.mjs scripts/sync-cloudinary.test.mjs",
     "test:smoke": "node scripts/smoke.mjs",
     "preview": "astro preview",
     "astro": "astro"

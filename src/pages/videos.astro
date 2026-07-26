@@ -14,7 +14,9 @@ import { categoryImages, galleryFilters, videos } from "../data/site";
       <div>
         <h1 class="font-display text-4xl font-black sm:text-5xl">Videos</h1>
         <p class="mt-3 max-w-2xl text-brand">
-          Un espacio para videos institucionales, productos e instrumental. El contenido audiovisual se publicará bajo demanda para profesionales e instituciones.
+          {videos.length > 0
+            ? "Recorridos audiovisuales de eventos, productos e instrumental para profesionales e instituciones."
+            : "Un espacio para videos institucionales, productos e instrumental. El contenido audiovisual se publicará bajo demanda para profesionales e instituciones."}
         </p>
       </div>
 
@@ -31,7 +33,9 @@ import { categoryImages, galleryFilters, videos } from "../data/site";
         <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-deep via-deep/45 to-transparent"></div>
         <div class="relative flex h-full items-end p-6">
           <p class="max-w-sm text-sm font-semibold text-white">
-            Próximamente: recorridos de producto, material institucional y novedades de líneas destacadas.
+            {videos.length > 0
+              ? "Recorridos de producto, material institucional y novedades de nuestras líneas."
+              : "Próximamente: recorridos de producto, material institucional y novedades de líneas destacadas."}
           </p>
         </div>
       </div>

@@ -1,3 +1,6 @@
+import cloudinaryMediaData from "./generated/cloudinary-media.json";
+import { buildSiteMediaCollections } from "./cloudinary-media-adapter.mjs";
+
 const CLOUDINARY_BASE = "https://res.cloudinary.com/dz9tuwczf/image/upload";
 
 // Fondos a pantalla completa / media pantalla
@@ -750,6 +753,43 @@ export type GalleryItem = {
   alt: string;
 };
 
+type GeneratedCloudinaryImage = {
+  assetId: string;
+  sourceFolder: string;
+  publicId: string;
+  category: GalleryCategory;
+  createdAt: string;
+  title: string;
+  alt: string;
+  width: number;
+  height: number;
+  thumb: string;
+  full: string;
+};
+
+type GeneratedCloudinaryVideo = {
+  assetId: string;
+  sourceFolder: string;
+  publicId: string;
+  category: GalleryCategory;
+  createdAt: string;
+  title: string;
+  poster: string;
+  src: string;
+  width: number;
+  height: number;
+  duration?: number;
+};
+
+type CloudinaryMediaManifest = {
+  schemaVersion: 1;
+  images: GeneratedCloudinaryImage[];
+  videos: GeneratedCloudinaryVideo[];
+};
+
+const cloudinaryMedia =
+  cloudinaryMediaData as CloudinaryMediaManifest;
+
 export const galleryFilters = ["Productos", "Instrumental", "Quirófano", "Eventos"] as const;
 
 export const GALLERY_PAGE_SIZE = 12;
@@ -873,7 +913,7 @@ const eventGalleryPool: { category: GalleryCategory; image: string; alt: string 
   alt: EVENT_GALLERY_TITLE,
 }));
 
-export const gallery: GalleryItem[] = [...galleryPool, ...eventGalleryPool].map((base) => {
+const staticGallery = galleryPool.map((base) => {
   return {
     category: base.category,
     thumb: cloudinaryVariant(base.image, GALLERY_THUMB_TRANSFORM),
@@ -881,6 +921,12 @@ export const gallery: GalleryItem[] = [...galleryPool, ...eventGalleryPool].map(
     alt: base.alt,
   };
 });
+const fallbackEventGallery = eventGalleryPool.map((base) => ({
+  category: base.category,
+  thumb: cloudinaryVariant(base.image, GALLERY_THUMB_TRANSFORM),
+  full: cloudinaryVariant(base.image, GALLERY_FULL_TRANSFORM),
+  alt: base.alt,
+}));
 
 export type VideoItem = {
   id: string;
@@ -890,7 +936,17 @@ export type VideoItem = {
   title: string;
 };
 
-export const videos: VideoItem[] = [];
+const synchronizedMedia = buildSiteMediaCollections({
+  manifest: cloudinaryMedia,
+  baseGallery: staticGallery,
+  fallbackEvents: fallbackEventGallery,
+}) as {
+  gallery: GalleryItem[];
+  videos: VideoItem[];
+};
+
+export const gallery = synchronizedMedia.gallery;
+export const videos = synchronizedMedia.videos;
 
 export const professionalBlocks = [
   {
