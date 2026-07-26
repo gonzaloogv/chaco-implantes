@@ -16,8 +16,10 @@ npm run dev
 npm run check
 npm run build
 npm run test:cloudinary
+npm run verify:cloudinary-video-audio
 npm run sync:cloudinary
 npm run test:smoke
+npm run test:video-player
 npm run preview
 ```
 
@@ -52,18 +54,25 @@ alternativo fijo `61° Congreso Traumatología`. Las imágenes de `cajas` sin
 y asigna a cada imagen nueva el menor número libre. Los videos sincronizados
 desde `cajas` usan el título fijo `Producto instrumental`.
 
-Los videos con una duración conocida menor a dos segundos se registran como
-`short_video` y no se publican. El archivo original permanece en Cloudinary.
+Los videos con una duración conocida menor a 2 segundos se registran como
+`short_video` y no se publican. El original queda en Cloudinary.
 
-Antes de escribir el manifiesto, la sincronización comprueba mediante una
-solicitud `GET` pública que cada MP4 derivado esté listo. Si Cloudinary
-responde `423`, reintenta dentro del límite configurado. Si alguna
-comprobación falla, el comando termina con error y conserva el manifiesto
-anterior.
+Los videos publicados se entregan como MP4 `ac_none`, por lo que el navegador
+recibe un archivo sin pista de audio. Los posters usan un lienzo 16:9 `c_pad`
+y conservan completo el material horizontal o vertical.
 
-Estas solicitudes públicas de entrega pueden generar y almacenar en caché
-copias derivadas, y por lo tanto consumir transformaciones de Cloudinary.
-Nunca modifican los archivos originales.
+Antes de escribir el manifiesto, la sincronización prepara cada MP4 y poster
+mediante una solicitud `GET` pública. Ante una respuesta `423`, reintenta
+dentro del límite configurado. Luego inspecciona `moov`, exige al menos un
+track `vide` y rechaza cualquier track `soun`. Si falla alguna barrera, el
+comando termina con error y conserva byte por byte el manifiesto anterior.
+
+`npm run verify:cloudinary-video-audio` repite la inspección del manifiesto
+publicado sin credenciales administrativas.
+
+Las solicitudes públicas de entrega pueden generar y almacenar en caché
+derivados, y por lo tanto consumir transformaciones de Cloudinary. Nunca
+modifican los originales.
 
 ### Configuración
 
@@ -118,8 +127,10 @@ Antes de entregar cambios, correr:
 
 ```bash
 npm run test:cloudinary
+npm run verify:cloudinary-video-audio
 npm run check
 npm run build
 npm run test:smoke
+npm run test:video-player
 npm audit --omit=dev
 ```
