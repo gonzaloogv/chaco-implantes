@@ -5,6 +5,34 @@ import { join } from "node:path";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const dist = join(root, "dist");
 const globalCss = readFileSync(join(root, "src/styles/global.css"), "utf8");
+const siteSource = readFileSync(join(root, "src/data/site.ts"), "utf8");
+const cloudinaryManifest = JSON.parse(
+  readFileSync(
+    join(root, "src/data/generated/cloudinary-media.json"),
+    "utf8",
+  ),
+);
+const syncedStandImages = cloudinaryManifest.images.filter(
+  ({ sourceFolder }) =>
+    sourceFolder === "chaco-implantes/stand" ||
+    sourceFolder.startsWith("chaco-implantes/stand/"),
+);
+const usesSyncedStandImages = syncedStandImages.length > 0;
+const expectedGalleryItems =
+  11 +
+  cloudinaryManifest.images.length +
+  (usesSyncedStandImages ? 0 : 80);
+const expectedEventImages = usesSyncedStandImages
+  ? cloudinaryManifest.images.filter(
+      ({ category }) => category === "Eventos",
+    ).length
+  : 80;
+const generatedInstrumentalImages = cloudinaryManifest.images.filter(
+  ({ generatedLabelNumber }) =>
+    Number.isInteger(generatedLabelNumber) &&
+    generatedLabelNumber > 0,
+);
+const hasSyncedVideos = cloudinaryManifest.videos.length > 0;
 const eventHeroImage = "https://res.cloudinary.com/dz9tuwczf/image/upload/f_auto,q_auto,c_limit,w_1920/foto-evento_d0eg2f.jpg";
 const oldProductTerm = String.fromCharCode(115, 117, 98, 99, 97, 116, 101, 103, 111, 114);
 const expectedPublicAssets = [
@@ -233,7 +261,10 @@ assert(!home.includes("data-institution-card"), "Institutional CTA should be fus
 assert(home.includes("Consultas comerciales e institucionales"), "Commercial band should cover commercial and institutional contact");
 assert(!home.includes("Próximamente publicaremos"), "Home should not carry the aging upcoming-events notice");
 assert(home.includes("Galería de imágenes"), "Home should include the gallery access card");
-assert(!home.includes('href="/videos"'), "Home should not promote the videos page while it is empty");
+assert(
+  home.includes('href="/videos"') === hasSyncedVideos,
+  "Home should promote the videos page only when synchronized videos exist",
+);
 assert(home.includes("61° Congreso Argentino de Ortopedia y Traumatología"), "Home should highlight the latest institutional event");
 assert(home.includes('data-commercial-band="primary"'), "Commercial CTA band should retain a clear blue commercial cue");
 assert(home.includes("btn-primary-soft"), "Hero catalog CTA should use the softer primary treatment by default");
@@ -250,19 +281,54 @@ assert(home.includes('content="summary_large_image"'), "Twitter card should use 
 assert(home.includes('data-mobile-menu') && home.includes('data-state="closed"'), "Mobile menu should expose a closed state for native motion");
 assert(home.includes("menu-icon-state"), "Mobile menu icons should be crossfade-ready");
 assert((catalogos.match(/data-catalog-card/g) ?? []).length === 8, "Catalog page should keep every catalog card directly clickable");
-assert(!galeria.includes("Ver videos"), "Gallery should not promote the empty videos page");
+assert(
+  galeria.includes("Ver videos") === hasSyncedVideos,
+  "Gallery should promote videos only when synchronized videos exist",
+);
 assert(galeria.includes("page-hero-dark"), "Gallery page should use the dark premium page hero");
 assert(galeria.includes("<dialog") && galeria.includes('aria-modal="true"'), "Gallery lightbox should use an accessible modal dialog");
 assert(galeria.includes("data-lightbox-caption-title"), "Gallery lightbox should expose a useful caption title");
 assert(source.includes("showModal"), "Gallery lightbox should open with the native modal API");
 assert(!galeria.includes("Material visual"), "Gallery hero should not duplicate its title with a generic eyebrow");
 assert(galeria.includes('data-gallery-page-size="12"'), "Gallery should expose the first-page size");
-assert((galeria.match(/<button type="button" data-gallery-item/g) ?? []).length >= 91, "Gallery should render the base gallery and event photo set");
-assert((galeria.match(/data-category="Eventos"/g) ?? []).length >= 80, "Gallery should categorize the stand photos as event images");
+assert(
+  (galeria.match(/<button type="button" data-gallery-item/g) ?? []).length ===
+    expectedGalleryItems,
+  "Gallery should render the local items and the active Cloudinary inventory",
+);
+assert(
+  (galeria.match(/data-category="Eventos"/g) ?? []).length ===
+    expectedEventImages,
+  "Gallery should render either synchronized or fallback event images",
+);
 assert(!galeria.includes("/assets/images/evento.jpg"), "Gallery should not render the old local event image");
-assert(galeria.includes("Congreso_Traumato-99_ocnsrl.jpg"), "Gallery should include the event images listed in stand.txt");
-assert(galeria.includes("61° Congreso Argentino de Ortopedia y Traumatología"), "Event gallery images should use the institutional congress title");
-assert(!galeria.includes("Chaco Implantes en evento profesional - foto"), "Event gallery images should not expose numbered placeholder titles");
+const renderedGeneratedImages = usesSyncedStandImages
+  ? cloudinaryManifest.images
+  : cloudinaryManifest.images.filter(
+      ({ sourceFolder }) =>
+        sourceFolder !== "chaco-implantes/stand" &&
+        !sourceFolder.startsWith("chaco-implantes/stand/"),
+    );
+for (const image of renderedGeneratedImages) {
+  assert(galeria.includes(image.thumb), `Gallery should render synchronized thumbnail ${image.assetId}`);
+  assert(galeria.includes(image.full), `Gallery should render synchronized full image ${image.assetId}`);
+}
+for (const image of generatedInstrumentalImages) {
+  const expectedLabel = `Producto instrumental ${image.generatedLabelNumber}`;
+  assert(
+    image.title === expectedLabel && image.alt === expectedLabel,
+    `Generated instrumental label should match its number: ${image.assetId}`,
+  );
+  assert(
+    galeria.includes(expectedLabel),
+    `Gallery should render generated instrumental label ${expectedLabel}`,
+  );
+}
+if (!usesSyncedStandImages) {
+  assert(galeria.includes("Congreso_Traumato-99_ocnsrl.jpg"), "Gallery should include the fallback event images");
+  assert(galeria.includes("61° Congreso Argentino de Ortopedia y Traumatología"), "Fallback event images should use the institutional congress title");
+  assert(!galeria.includes("Chaco Implantes en evento profesional - foto"), "Fallback event images should not expose numbered placeholder titles");
+}
 assert(galeria.includes("f_auto,q_auto,c_fill,g_auto,w_600,h_400"), "Gallery thumbnails should use bounded Cloudinary 600x400 variants");
 assert(galeria.includes("f_auto,q_auto,c_limit,w_1920"), "Gallery lightbox images should use Cloudinary 1920px capped variants");
 assert((galeria.match(/loading="eager"/g) ?? []).length === 12, "Gallery should eager-load only the first visible batch");
@@ -283,12 +349,37 @@ assert(!contacto.includes("data-email-submit"), "Contact form should not expose 
 assert(!contacto.includes("Enviar por email"), "Contact form should not render an email submit button");
 assert(contacto.includes("Enviar por WhatsApp"), "Contact form should keep WhatsApp as the only submit action");
 assert((contacto.match(/contact-link/g) ?? []).length >= 4, "Contact phone, email, social and map links should share subtle hover feedback");
-assert(videos.includes("Pronto publicaremos nuestros videos"), "Videos page should provide an empty state until videos are available");
+assert(
+  videos.includes("Pronto publicaremos nuestros videos") ===
+    !hasSyncedVideos,
+  "Videos page should show the empty state only without synchronized videos",
+);
 assert(videos.includes("data-videos-page"), "Videos page should expose the redesigned page marker");
 assert(videos.includes("page-hero-dark"), "Videos page should use the dark premium page hero");
 assert(videos.includes("page-surface"), "Videos page should use the shared light content surface");
 assert(videos.includes("premium-card"), "Videos page empty state should use premium card treatment");
-assert(!videos.includes('data-video-filter="'), "Videos page should hide category filters while there are no videos");
+assert(
+  videos.includes('data-video-filter="') === hasSyncedVideos,
+  "Videos page should show category filters only when videos exist",
+);
+assert(
+  (videos.match(/data-video-item(?=[\s>])/g) ?? []).length ===
+    cloudinaryManifest.videos.length,
+  "Videos page should render every synchronized video",
+);
+assert(
+  cloudinaryManifest.videos.every(
+    ({ duration }) => duration === undefined || duration >= 2,
+  ),
+  "Generated manifest should not contain videos shorter than two seconds",
+);
+for (const video of cloudinaryManifest.videos) {
+  assert(videos.includes(video.src), `Videos page should render source ${video.assetId}`);
+  assert(videos.includes(video.poster), `Videos page should render poster ${video.assetId}`);
+}
+if (hasSyncedVideos) {
+  assert(!videos.includes("Próximamente:"), "Videos hero should not announce upcoming content after synchronization");
+}
 assert(source.includes("item.dataset.category === activeFilter"), "Videos page should filter cards by their category");
 assert(eventos.includes("data-eventos-page"), "Events page should expose the redesigned page marker");
 assert(eventos.includes("page-hero-dark"), "Events page should use the dark premium page hero");
@@ -316,7 +407,7 @@ assert(source.includes("prefetchLightboxNeighbors"), "Gallery lightbox should wa
 assert(source.includes(".decode()"), "Gallery lightbox should decode full images before swapping visible content");
 assert(source.includes("lightboxRequestId"), "Gallery lightbox should ignore stale rapid navigation requests");
 assert(source.includes("new URLSearchParams(window.location.search)"), "Gallery should read an initial filter from the URL");
-assert((source.match(/Congreso_[Tt]raumato-/g) ?? []).length === 80, "Source should keep the stand image list as event-only gallery content");
+assert((siteSource.match(/Congreso_[Tt]raumato-/g) ?? []).length === 80, "Source should keep the stand image list as event-only gallery content");
 assert(source.includes("prefetchNextBatch"), "Gallery should progressively prefetch the next image batch");
 assert(source.includes("requestIdleCallback"), "Gallery prefetch should wait for idle time when available");
 assert(source.includes("new Image()"), "Gallery should warm upcoming thumbnail requests without rendering them");
