@@ -1,4 +1,5 @@
 const READY_STATUSES = new Set([200, 206]);
+const VARIANT_LABELS = { src: "MP4", poster: "póster" };
 
 const delay = (milliseconds) =>
   new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -20,30 +21,64 @@ function describeError(error) {
   return String(error);
 }
 
-async function cancelResponseBody(response, assetId) {
+async function cancelResponseBody(response, variant) {
   try {
     await response?.body?.cancel();
   } catch (error) {
     throw new Error(
-      `No se pudo liberar la respuesta del video ${assetId}: ${describeError(error)}.`,
+      `No se pudo liberar la respuesta de la variante ${variant.label} del video ${variant.assetId}: ${describeError(error)}.`,
       { cause: error },
     );
   }
 }
 
-function timeoutError(video, timeoutMs) {
+function timeoutError(variant, timeoutMs) {
   return new Error(
-    `El video ${video.assetId} no quedó listo dentro de ${timeoutMs} ms.`,
+    `La variante ${variant.label} del video ${variant.assetId} no quedó lista dentro de ${timeoutMs} ms.`,
   );
 }
 
-async function waitForVideoSource(video, options) {
+function requireHttpsVariant(video, index, field) {
+  try {
+    if (typeof video[field] !== "string") throw new Error();
+    const url = new URL(video[field]);
+    if (url.protocol !== "https:") throw new Error();
+  } catch {
+    throw new Error(`videos[${index}].${field} debe usar HTTPS.`);
+  }
+  return {
+    assetId: video.assetId,
+    field,
+    label: VARIANT_LABELS[field],
+    url: video[field],
+  };
+}
+
+function buildVariants(videos) {
+  const variants = [];
+  for (let index = 0; index < videos.length; index += 1) {
+    const video = videos[index];
+    if (
+      typeof video?.assetId !== "string" ||
+      video.assetId.trim().length === 0
+    ) {
+      throw new Error(`videos[${index}].assetId es obligatorio.`);
+    }
+    variants.push(
+      requireHttpsVariant(video, index, "src"),
+      requireHttpsVariant(video, index, "poster"),
+    );
+  }
+  return variants;
+}
+
+async function waitForVideoSource(variant, options) {
   const startedAt = options.now();
 
   while (true) {
     const elapsedBeforeRequest = options.now() - startedAt;
     if (elapsedBeforeRequest >= options.timeoutMs) {
-      throw timeoutError(video, options.timeoutMs);
+      throw timeoutError(variant, options.timeoutMs);
     }
 
     const remainingMs = options.timeoutMs - elapsedBeforeRequest;
@@ -56,7 +91,7 @@ async function waitForVideoSource(video, options) {
     const signal = AbortSignal.timeout(requestTimeoutMs);
     let response;
     try {
-      response = await options.fetchImpl(video.src, {
+      response = await options.fetchImpl(variant.url, {
         method: "GET",
         headers: { Range: "bytes=0-0" },
         signal,
@@ -64,27 +99,27 @@ async function waitForVideoSource(video, options) {
     } catch (error) {
       if (signal.aborted) {
         if (videoDeadlineControlsRequest) {
-          throw timeoutError(video, options.timeoutMs);
+          throw timeoutError(variant, options.timeoutMs);
         }
         throw new Error(
-          `La solicitud del video ${video.assetId} superó ${options.requestTimeoutMs} ms.`,
+          `La solicitud de la variante ${variant.label} del video ${variant.assetId} superó ${options.requestTimeoutMs} ms.`,
           { cause: error },
         );
       }
       throw new Error(
-        `No se pudo comprobar el video ${video.assetId}: ${describeError(error)}.`,
+        `No se pudo comprobar la variante ${variant.label} del video ${variant.assetId}: ${describeError(error)}.`,
         { cause: error },
       );
     }
 
-    await cancelResponseBody(response, video.assetId);
+    await cancelResponseBody(response, variant);
 
     const elapsedAfterRequest = options.now() - startedAt;
     const deadlineReached = elapsedAfterRequest >= options.timeoutMs;
 
     if (READY_STATUSES.has(response.status)) {
       if (deadlineReached) {
-        throw timeoutError(video, options.timeoutMs);
+        throw timeoutError(variant, options.timeoutMs);
       }
       return;
     }
@@ -92,12 +127,12 @@ async function waitForVideoSource(video, options) {
     if (response.status !== 423) {
       const detail = response.headers?.get?.("X-Cld-Error");
       throw new Error(
-        `El video ${video.assetId} respondió HTTP ${response.status}${detail ? `: ${detail}` : ""}.`,
+        `La variante ${variant.label} del video ${variant.assetId} respondió HTTP ${response.status}${detail ? `: ${detail}` : ""}.`,
       );
     }
 
     if (deadlineReached) {
-      throw timeoutError(video, options.timeoutMs);
+      throw timeoutError(variant, options.timeoutMs);
     }
 
     const remainingAfterRequestMs =
@@ -139,24 +174,7 @@ export async function ensureVideoSourcesReady(videos, overrides = {}) {
     }
   }
 
-  const safeVideos = videos.map((video, index) => {
-    if (
-      typeof video?.assetId !== "string" ||
-      video.assetId.trim().length === 0
-    ) {
-      throw new Error(`videos[${index}].assetId es obligatorio.`);
-    }
-
-    try {
-      if (typeof video.src !== "string") throw new Error();
-      const url = new URL(video.src);
-      if (url.protocol !== "https:") throw new Error();
-    } catch {
-      throw new Error(`videos[${index}].src debe usar HTTPS.`);
-    }
-
-    return video;
-  });
+  const variants = buildVariants(videos);
 
   let nextIndex = 0;
   let firstError;
@@ -164,17 +182,17 @@ export async function ensureVideoSourcesReady(videos, overrides = {}) {
     while (firstError === undefined) {
       const index = nextIndex;
       nextIndex += 1;
-      if (index >= safeVideos.length) return;
+      if (index >= variants.length) return;
 
       try {
-        await waitForVideoSource(safeVideos[index], options);
+        await waitForVideoSource(variants[index], options);
       } catch (error) {
         firstError ??= error;
       }
     }
   };
 
-  const workerCount = Math.min(options.concurrency, safeVideos.length);
+  const workerCount = Math.min(options.concurrency, variants.length);
   await Promise.all(
     Array.from({ length: workerCount }, () => worker()),
   );

@@ -6,6 +6,8 @@ import { ensureVideoSourcesReady } from "./cloudinary-video-readiness.mjs";
 const video = {
   assetId: "video-asset",
   src: "https://res.cloudinary.com/demo/video/upload/video-asset.mp4",
+  poster:
+    "https://res.cloudinary.com/demo/video/upload/video-asset.jpg",
 };
 
 function createResponse(status, { detail, onCancel } = {}) {
@@ -41,25 +43,32 @@ for (const status of [200, 206]) {
       },
     });
 
-    assert.equal(requests.length, 1);
-    assert.equal(requests[0].url, video.src);
-    assert.equal(requests[0].options.method, "GET");
-    assert.equal(
-      new Headers(requests[0].options.headers).get("Range"),
-      "bytes=0-0",
+    assert.deepEqual(
+      requests.map(({ url }) => url),
+      [video.src, video.poster],
     );
-    assert.ok(requests[0].options.signal instanceof AbortSignal);
-    assert.equal(cancellations, 1);
+    for (const request of requests) {
+      assert.equal(request.options.method, "GET");
+      assert.equal(
+        new Headers(request.options.headers).get("Range"),
+        "bytes=0-0",
+      );
+      assert.ok(request.options.signal instanceof AbortSignal);
+    }
+    assert.equal(cancellations, 2);
   });
 }
 
 test("ensureVideoSourcesReady retries HTTP 423 after the configured delay", async () => {
-  const statuses = [423, 206];
+  const statuses = [423, 206, 206];
+  const urls = [];
   const waits = [];
   let cancellations = 0;
 
   await ensureVideoSourcesReady([video], {
-    async fetchImpl() {
+    concurrency: 1,
+    async fetchImpl(url) {
+      urls.push(url);
       return createResponse(statuses.shift(), {
         onCancel() {
           cancellations += 1;
@@ -73,15 +82,46 @@ test("ensureVideoSourcesReady retries HTTP 423 after the configured delay", asyn
     retryDelayMs: 2_000,
   });
 
+  assert.deepEqual(urls, [video.src, video.src, video.poster]);
   assert.deepEqual(statuses, []);
   assert.deepEqual(waits, [2_000]);
-  assert.equal(cancellations, 2);
+  assert.equal(cancellations, 3);
+});
+
+test("ensureVideoSourcesReady retries a locked poster", async () => {
+  const statuses = [206, 423, 206];
+  const urls = [];
+  const waits = [];
+  let cancellations = 0;
+
+  await ensureVideoSourcesReady([video], {
+    concurrency: 1,
+    async fetchImpl(url) {
+      urls.push(url);
+      return createResponse(statuses.shift(), {
+        onCancel() {
+          cancellations += 1;
+        },
+      });
+    },
+    async sleep(milliseconds) {
+      waits.push(milliseconds);
+    },
+    now: () => 0,
+    retryDelayMs: 2_000,
+  });
+
+  assert.deepEqual(urls, [video.src, video.poster, video.poster]);
+  assert.deepEqual(statuses, []);
+  assert.deepEqual(waits, [2_000]);
+  assert.equal(cancellations, 3);
 });
 
 test("ensureVideoSourcesReady reports unexpected HTTP status and Cloudinary detail", async () => {
   await assert.rejects(
     () =>
       ensureVideoSourcesReady([video], {
+        concurrency: 1,
         fetchImpl: async () =>
           createResponse(500, {
             detail: "Derived resource generation failed",
@@ -96,10 +136,25 @@ test("ensureVideoSourcesReady reports unexpected HTTP status and Cloudinary deta
   );
 });
 
+test("ensureVideoSourcesReady reports a failing poster with Cloudinary detail", async () => {
+  await assert.rejects(
+    () =>
+      ensureVideoSourcesReady([video], {
+        concurrency: 1,
+        async fetchImpl(url) {
+          if (url === video.src) return createResponse(206);
+          return createResponse(500, { detail: "Poster failed" });
+        },
+      }),
+    /póster.*video-asset.*HTTP 500.*Poster failed/,
+  );
+});
+
 test("ensureVideoSourcesReady reports network errors with the assetId", async () => {
   await assert.rejects(
     () =>
       ensureVideoSourcesReady([video], {
+        concurrency: 1,
         fetchImpl: async () => {
           throw new Error("socket closed");
         },
@@ -119,6 +174,7 @@ test("ensureVideoSourcesReady times out a video that remains locked", async () =
   await assert.rejects(
     () =>
       ensureVideoSourcesReady([video], {
+        concurrency: 1,
         fetchImpl: async () => createResponse(423),
         async sleep() {
           sleeps += 1;
@@ -142,6 +198,7 @@ test("ensureVideoSourcesReady caps retry sleep at the remaining video deadline",
   await assert.rejects(
     () =>
       ensureVideoSourcesReady([video], {
+        concurrency: 1,
         fetchImpl: async () => createResponse(423),
         async sleep(milliseconds) {
           waits.push(milliseconds);
@@ -168,6 +225,7 @@ test("ensureVideoSourcesReady does not accept a ready response after the video d
   await assert.rejects(
     () =>
       ensureVideoSourcesReady([video], {
+        concurrency: 1,
         fetchImpl: async () => createResponse(206),
         now: () => timestamps.shift() ?? 11,
         timeoutMs: 10,
@@ -186,6 +244,7 @@ test("ensureVideoSourcesReady caps a request at the remaining video deadline", a
   await assert.rejects(
     () =>
       ensureVideoSourcesReady([video], {
+        concurrency: 1,
         timeoutMs: 20,
         requestTimeoutMs: 500,
         async fetchImpl(_url, { signal }) {
@@ -219,6 +278,7 @@ test("ensureVideoSourcesReady applies a timeout signal to each request", async (
   await assert.rejects(
     () =>
       ensureVideoSourcesReady([video], {
+        concurrency: 1,
         requestTimeoutMs: 5,
         async fetchImpl(_url, { signal }) {
           await new Promise((_, reject) => {
@@ -244,6 +304,43 @@ test("ensureVideoSourcesReady applies a timeout signal to each request", async (
   assert.equal(observedAbort, true);
 });
 
+test("ensureVideoSourcesReady validates poster before making requests", async () => {
+  let requests = 0;
+  await assert.rejects(
+    () =>
+      ensureVideoSourcesReady(
+        [{ ...video, poster: "http://example.test/poster.jpg" }],
+        {
+          async fetchImpl() {
+            requests += 1;
+            return createResponse(206);
+          },
+        },
+      ),
+    /videos\[0\]\.poster debe usar HTTPS/,
+  );
+  assert.equal(requests, 0);
+});
+
+test("ensureVideoSourcesReady validates sparse videos before making requests", async () => {
+  const videos = Array(2);
+  videos[1] = video;
+  let requests = 0;
+
+  await assert.rejects(
+    () =>
+      ensureVideoSourcesReady(videos, {
+        async fetchImpl() {
+          requests += 1;
+          return createResponse(206);
+        },
+      }),
+    /videos\[0\]\.assetId es obligatorio/,
+  );
+
+  assert.equal(requests, 0);
+});
+
 test("ensureVideoSourcesReady validates videos before making requests", async () => {
   let requests = 0;
   const options = {
@@ -263,6 +360,10 @@ test("ensureVideoSourcesReady validates videos before making requests", async ()
     [[{ assetId: "   ", src: video.src }], /assetId es obligatorio/],
     [[{ assetId: "invalid-src", src: "http://example.test/video.mp4" }], /src debe usar HTTPS/],
     [[{ assetId: "missing-src" }], /src debe usar HTTPS/],
+    [
+      [{ assetId: "missing-poster", src: video.src }],
+      /videos\[0\]\.poster debe usar HTTPS/,
+    ],
   ]) {
     await assert.rejects(
       () => ensureVideoSourcesReady(videos, options),
@@ -302,6 +403,7 @@ test("ensureVideoSourcesReady bounds concurrent requests", async () => {
   const videos = Array.from({ length: 5 }, (_, index) => ({
     assetId: `video-${index}`,
     src: `https://example.test/video-${index}.mp4`,
+    poster: `https://example.test/video-${index}.jpg`,
   }));
   let releaseRequests;
   const requestGate = new Promise((resolve) => {
@@ -331,6 +433,6 @@ test("ensureVideoSourcesReady bounds concurrent requests", async () => {
   releaseRequests();
   await readiness;
 
-  assert.equal(startedRequests, videos.length);
+  assert.equal(startedRequests, videos.length * 2);
   assert.equal(maximumActiveRequests, 2);
 });
