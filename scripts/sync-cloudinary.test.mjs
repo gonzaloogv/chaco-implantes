@@ -21,12 +21,14 @@ const sources = [
     path: "chaco-implantes/stand",
     imageCategory: "Eventos",
     videoCategory: "Eventos",
+    fixedImageTitle: "61° Congreso Traumatología",
   },
   {
     path: "chaco-implantes/cajas",
     imageCategory: "Instrumental",
     videoCategory: "Instrumental",
     unnamedImageLabel: "Producto instrumental",
+    fixedVideoTitle: "Producto instrumental",
   },
 ];
 
@@ -162,6 +164,11 @@ test("runSync performs one independent search per configured source", async (t) 
   assert.equal(result.changed, true);
   assert.deepEqual(result.removedAssetIds, []);
   assert.equal(result.manifest.images.length, 2);
+  assert.equal(
+    result.manifest.images.find(({ assetId }) => assetId === "stand-image")
+      .title,
+    "61° Congreso Traumatología",
+  );
   assert.match(logger.messages.join("\n"), /stand: 1 imágenes, 0 videos/);
   assert.match(logger.messages.join("\n"), /cajas: 1 imágenes, 0 videos/);
 
@@ -217,11 +224,20 @@ test("runSync passes previous label assignments to the manifest builder", async 
     logger: createLogger(),
   });
 
-  assert.equal(
-    result.manifest.images.find(
-      ({ assetId }) => assetId === "cajas-image",
-    ).generatedLabelNumber,
-    4,
+  const cajasImage = result.manifest.images.find(
+    ({ assetId }) => assetId === "cajas-image",
+  );
+  assert.deepEqual(
+    {
+      title: cajasImage.title,
+      alt: cajasImage.alt,
+      generatedLabelNumber: cajasImage.generatedLabelNumber,
+    },
+    {
+      title: "Producto instrumental 4",
+      alt: "Producto instrumental 4",
+      generatedLabelNumber: 4,
+    },
   );
 });
 

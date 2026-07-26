@@ -12,12 +12,14 @@ const validSources = [
     path: "chaco-implantes/stand",
     imageCategory: "Eventos",
     videoCategory: "Eventos",
+    fixedImageTitle: "61° Congreso Traumatología",
   },
   {
     path: "chaco-implantes/cajas",
     imageCategory: "Instrumental",
     videoCategory: "Instrumental",
     unnamedImageLabel: "Producto instrumental",
+    fixedVideoTitle: "Producto instrumental",
   },
 ];
 
@@ -130,6 +132,54 @@ test("validateCloudinaryConfig validates generated image labels", () => {
   );
 });
 
+test("validateCloudinaryConfig normalizes and validates fixed titles", () => {
+  const [source] = validateCloudinaryConfig({
+    folderMode: "dynamic",
+    sources: [
+      {
+        ...validSources[0],
+        fixedImageTitle: "  61° Congreso Traumatología  ",
+        fixedVideoTitle: "  Producto instrumental  ",
+      },
+    ],
+  });
+
+  assert.equal(source.fixedImageTitle, "61° Congreso Traumatología");
+  assert.equal(source.fixedVideoTitle, "Producto instrumental");
+
+  for (const [fieldName, value] of [
+    ["fixedImageTitle", "   "],
+    ["fixedImageTitle", 42],
+    ["fixedVideoTitle", "   "],
+    ["fixedVideoTitle", 42],
+  ]) {
+    assert.throws(
+      () =>
+        validateCloudinaryConfig({
+          folderMode: "dynamic",
+          sources: [{ ...validSources[0], [fieldName]: value }],
+        }),
+      new RegExp(`${fieldName} debe ser texto no vacío`),
+    );
+  }
+});
+
+test("validateCloudinaryConfig rejects competing fixed and generated image titles", () => {
+  assert.throws(
+    () =>
+      validateCloudinaryConfig({
+        folderMode: "dynamic",
+        sources: [
+          {
+            ...validSources[1],
+            fixedImageTitle: "Producto instrumental",
+          },
+        ],
+      }),
+    /fixedImageTitle y unnamedImageLabel no pueden coexistir/,
+  );
+});
+
 test("buildSearchExpression uses asset_folder in dynamic mode", () => {
   assert.equal(
     buildSearchExpression("dynamic", "chaco-implantes/stand"),
@@ -221,8 +271,8 @@ test("buildManifest normalizes dynamic images and visual videos", () => {
     publicId: "Congreso_Traumato-99_ocnsrl",
     category: "Eventos",
     createdAt: "2026-07-24T12:00:00.000Z",
-    title: "Congreso de traumatología",
-    alt: "Stand de Chaco Implantes en el congreso",
+    title: "61° Congreso Traumatología",
+    alt: "61° Congreso Traumatología",
     width: 1600,
     height: 1067,
     thumb:
@@ -246,6 +296,42 @@ test("buildManifest normalizes dynamic images and visual videos", () => {
     height: 1080,
     duration: 12.5,
   });
+});
+
+test("buildManifest applies fixed titles over editorial and technical text", () => {
+  const cajasVideoResource = {
+    ...videoResource,
+    asset_id: "cajas-video",
+    public_id: "IMG_8803_ekabsw",
+    asset_folder: "chaco-implantes/cajas",
+    display_name: "IMG_8803_ekabsw",
+  };
+
+  const { manifest } = buildManifest({
+    folderMode: "dynamic",
+    sourceResults: [
+      {
+        source: standSource,
+        resources: [imageResource],
+      },
+      {
+        source: cajasSource,
+        resources: [cajasVideoResource],
+      },
+    ],
+  });
+
+  assert.deepEqual(
+    {
+      title: manifest.images[0].title,
+      alt: manifest.images[0].alt,
+    },
+    {
+      title: "61° Congreso Traumatología",
+      alt: "61° Congreso Traumatología",
+    },
+  );
+  assert.equal(manifest.videos[0].title, "Producto instrumental");
 });
 
 test("buildManifest reads folder in fixed mode and preserves Unicode fallback text", () => {

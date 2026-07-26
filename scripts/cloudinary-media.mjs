@@ -33,6 +33,19 @@ function pathsOverlap(left, right) {
   );
 }
 
+function normalizeOptionalTextOption(source, fieldName) {
+  if (source[fieldName] === undefined) return undefined;
+  if (
+    typeof source[fieldName] !== "string" ||
+    source[fieldName].trim().length === 0
+  ) {
+    throw new Error(
+      `${fieldName} debe ser texto no vacío para ${source.path}.`,
+    );
+  }
+  return source[fieldName].trim();
+}
+
 export function validateCloudinaryConfig({ folderMode, sources }) {
   assertFolderMode(folderMode);
 
@@ -66,17 +79,23 @@ export function validateCloudinaryConfig({ folderMode, sources }) {
       throw new Error(`allowEmpty debe ser booleano para ${source.path}.`);
     }
 
-    let unnamedImageLabel;
-    if (source.unnamedImageLabel !== undefined) {
-      if (
-        typeof source.unnamedImageLabel !== "string" ||
-        source.unnamedImageLabel.trim().length === 0
-      ) {
-        throw new Error(
-          `unnamedImageLabel debe ser texto no vacío para ${source.path}.`,
-        );
-      }
-      unnamedImageLabel = source.unnamedImageLabel.trim();
+    const unnamedImageLabel = normalizeOptionalTextOption(
+      source,
+      "unnamedImageLabel",
+    );
+    const fixedImageTitle = normalizeOptionalTextOption(
+      source,
+      "fixedImageTitle",
+    );
+    const fixedVideoTitle = normalizeOptionalTextOption(
+      source,
+      "fixedVideoTitle",
+    );
+
+    if (fixedImageTitle && unnamedImageLabel) {
+      throw new Error(
+        `fixedImageTitle y unnamedImageLabel no pueden coexistir para ${source.path}.`,
+      );
     }
 
     return {
@@ -85,6 +104,8 @@ export function validateCloudinaryConfig({ folderMode, sources }) {
       videoCategory: source.videoCategory,
       allowEmpty: source.allowEmpty ?? false,
       ...(unnamedImageLabel ? { unnamedImageLabel } : {}),
+      ...(fixedImageTitle ? { fixedImageTitle } : {}),
+      ...(fixedVideoTitle ? { fixedVideoTitle } : {}),
     };
   });
 
@@ -557,14 +578,20 @@ export function buildManifest({
       if (base.resourceType === "image") {
         const usesEditorialText =
           Boolean(source.unnamedImageLabel) && texts.hasEditorialText;
+        const imageTitle =
+          source.fixedImageTitle ??
+          (usesEditorialText ? texts.editorialTitle : texts.title);
+        const imageAlt =
+          source.fixedImageTitle ??
+          (usesEditorialText ? texts.editorialAlt : texts.alt);
         const image = {
           assetId: base.assetId,
           sourceFolder: base.sourceFolder,
           publicId: base.publicId,
           category: source.imageCategory,
           createdAt: base.createdAt,
-          title: usesEditorialText ? texts.editorialTitle : texts.title,
-          alt: usesEditorialText ? texts.editorialAlt : texts.alt,
+          title: imageTitle,
+          alt: imageAlt,
           width,
           height,
           thumb: deliveryVariant(
@@ -589,13 +616,14 @@ export function buildManifest({
         continue;
       }
 
+      const videoTitle = source.fixedVideoTitle ?? texts.title;
       const video = {
         assetId: base.assetId,
         sourceFolder: base.sourceFolder,
         publicId: base.publicId,
         category: source.videoCategory,
         createdAt: base.createdAt,
-        title: texts.title,
+        title: videoTitle,
         poster: deliveryVariant(
           base.secureUrl,
           "video",
