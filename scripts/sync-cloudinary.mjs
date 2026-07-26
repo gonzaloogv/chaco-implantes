@@ -18,6 +18,7 @@ import {
   readManifest,
   writeManifestAtomic,
 } from "./cloudinary-sync-io.mjs";
+import { ensureVideoSourcesHaveNoAudio } from "./cloudinary-video-audio.mjs";
 import { ensureVideoSourcesReady } from "./cloudinary-video-readiness.mjs";
 
 const DEFAULT_OUTPUT_PATH = fileURLToPath(
@@ -100,6 +101,7 @@ export async function runSync({
   verifyFolderMode = false,
   logger = console,
   videoReadiness = ensureVideoSourcesReady,
+  videoAudioInspection = ensureVideoSourcesHaveNoAudio,
 }) {
   const safeCredentials = validateCredentials(credentials);
   const safeSources = validateCloudinaryConfig({ folderMode, sources });
@@ -118,6 +120,14 @@ export async function runSync({
     typeof verifyFolderMode !== "boolean"
   ) {
     throw new Error("Las opciones de sincronización deben ser booleanas.");
+  }
+  for (const [name, dependency] of [
+    ["videoReadiness", videoReadiness],
+    ["videoAudioInspection", videoAudioInspection],
+  ]) {
+    if (typeof dependency !== "function") {
+      throw new Error(`${name} debe ser una función.`);
+    }
   }
 
   const previousManifest = await readManifest(outputPath, {
@@ -150,10 +160,12 @@ export async function runSync({
 
   if (manifest.videos.length > 0) {
     logger.log(
-      `Comprobando reproducción de ${manifest.videos.length} videos...`,
+      `Preparando variantes de ${manifest.videos.length} videos...`,
     );
     await videoReadiness(manifest.videos);
-    logger.log(`Videos listos: ${manifest.videos.length}.`);
+    logger.log("Inspeccionando ausencia de audio...");
+    await videoAudioInspection(manifest.videos);
+    logger.log(`Videos verificados: ${manifest.videos.length}.`);
   }
 
   const { changed } = await writeManifestAtomic(outputPath, manifest);

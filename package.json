@@ -11,6 +11,7 @@
     "check": "astro check",
     "build": "astro build",
     "sync:cloudinary": "node scripts/sync-cloudinary.mjs",
+    "verify:cloudinary-video-audio": "node scripts/verify-cloudinary-video-audio.mjs",
     "test:cloudinary": "node --test scripts/cloudinary-*.test.mjs scripts/sync-cloudinary.test.mjs",
     "test:smoke": "node scripts/smoke.mjs",
     "preview": "astro preview",

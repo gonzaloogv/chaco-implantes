@@ -77,6 +77,30 @@ function videoResource({
   };
 }
 
+function createImageAndVideoClient() {
+  return {
+    async searchResources({ expression }) {
+      if (expression.includes("/stand")) {
+        return [
+          imageResource({
+            assetId: "stand-image",
+            folder: "chaco-implantes/stand",
+          }),
+        ];
+      }
+      return [
+        videoResource({
+          assetId: "cajas-video",
+          folder: "chaco-implantes/cajas",
+        }),
+      ];
+    },
+    async getFolderMode() {
+      return "dynamic";
+    },
+  };
+}
+
 async function createTempOutput(t, manifest) {
   const directory = await mkdtemp(join(tmpdir(), "cloudinary-command-test-"));
   t.after(() => rm(directory, { recursive: true, force: true }));
@@ -265,46 +289,50 @@ test("runSync passes previous label assignments to the manifest builder", async 
 });
 
 test("runSync verifies built manifest videos before publishing", async (t) => {
-  const outputPath = await createTempOutput(t);
-  const logger = createLogger();
-  let readinessCalls = 0;
-  let receivedVideos;
-  const client = {
-    async searchResources({ expression }) {
-      if (expression.includes("/stand")) {
-        return [
-          imageResource({
-            assetId: "stand-image",
-            folder: "chaco-implantes/stand",
-          }),
-        ];
-      }
-      return [
-        videoResource({
-          assetId: "cajas-video",
-          folder: "chaco-implantes/cajas",
-        }),
-      ];
-    },
-    async getFolderMode() {
-      return "dynamic";
-    },
+  const previous = {
+    schemaVersion: 1,
+    images: [
+      {
+        assetId: "stand-image",
+        sourceFolder: "chaco-implantes/stand",
+        publicId: "stand-image",
+        category: "Eventos",
+        createdAt: "2026-07-25T12:00:00.000Z",
+        title: "61° Congreso Traumatología",
+        alt: "61° Congreso Traumatología",
+        width: 1200,
+        height: 800,
+        thumb: "https://example.com/previous-thumb.jpg",
+        full: "https://example.com/previous-full.jpg",
+      },
+    ],
+    videos: [],
   };
+  const outputPath = await createTempOutput(t, previous);
+  const previousContent = await readFile(outputPath, "utf8");
+  const logger = createLogger();
+  const events = [];
+  let receivedVideos;
 
   const result = await runSync({
     credentials,
     folderMode: "dynamic",
     sources,
-    client,
+    client: createImageAndVideoClient(),
     outputPath,
     logger,
-    async videoReadiness(videos) {
-      readinessCalls += 1;
+    async videoReadiness() {
+      events.push("readiness");
+      assert.equal(await readFile(outputPath, "utf8"), previousContent);
+    },
+    async videoAudioInspection(videos) {
+      events.push("audio");
       receivedVideos = videos;
+      assert.equal(await readFile(outputPath, "utf8"), previousContent);
     },
   });
 
-  assert.equal(readinessCalls, 1);
+  assert.deepEqual(events, ["readiness", "audio"]);
   assert.deepEqual(receivedVideos, result.manifest.videos);
   assert.deepEqual(
     receivedVideos.map(({ assetId, title, src }) => ({
@@ -321,11 +349,12 @@ test("runSync verifies built manifest videos before publishing", async (t) => {
       },
     ],
   );
-  assert.match(
-    logger.messages.join("\n"),
-    /Comprobando reproducción de 1 videos/,
-  );
-  assert.match(logger.messages.join("\n"), /Videos listos: 1/);
+  assert.deepEqual(logger.messages.slice(0, 3), [
+    "Preparando variantes de 1 videos...",
+    "Inspeccionando ausencia de audio...",
+    "Videos verificados: 1.",
+  ]);
+  assert.notEqual(await readFile(outputPath, "utf8"), previousContent);
 });
 
 test("runSync preserves the previous manifest when video readiness fails", async (t) => {
@@ -337,25 +366,85 @@ test("runSync preserves the previous manifest when video readiness fails", async
   const outputPath = await createTempOutput(t, previous);
   const previousContent = await readFile(outputPath, "utf8");
   let receivedVideos;
-  const client = {
-    async searchResources({ expression }) {
-      if (expression.includes("/stand")) {
-        return [
-          imageResource({
-            assetId: "stand-image",
-            folder: "chaco-implantes/stand",
-          }),
-        ];
-      }
-      return [
-        videoResource({
-          assetId: "cajas-video",
-          folder: "chaco-implantes/cajas",
+  let audioCalls = 0;
+
+  await assert.rejects(
+    () =>
+      runSync({
+        credentials,
+        folderMode: "dynamic",
+        sources,
+        client: createImageAndVideoClient(),
+        outputPath,
+        logger: createLogger(),
+        async videoReadiness(videos) {
+          receivedVideos = videos;
+          throw new Error("video todavía en proceso");
+        },
+        async videoAudioInspection() {
+          audioCalls += 1;
+        },
+      }),
+    /video todavía en proceso/,
+  );
+
+  assert.equal(receivedVideos.length, 1);
+  assert.equal(receivedVideos[0].assetId, "cajas-video");
+  assert.equal(audioCalls, 0);
+  assert.equal(await readFile(outputPath, "utf8"), previousContent);
+});
+
+for (const inspectionError of [
+  "pista soun detectada",
+  "MP4 inválido",
+  "error de red",
+]) {
+  test(`runSync preserves the previous manifest when audio inspection fails: ${inspectionError}`, async (t) => {
+    const previous = {
+      schemaVersion: 1,
+      images: [],
+      videos: [],
+    };
+    const outputPath = await createTempOutput(t, previous);
+    const previousContent = await readFile(outputPath, "utf8");
+
+    await assert.rejects(
+      () =>
+        runSync({
+          credentials,
+          folderMode: "dynamic",
+          sources,
+          client: createImageAndVideoClient(),
+          outputPath,
+          logger: createLogger(),
+          async videoReadiness() {},
+          async videoAudioInspection() {
+            throw new Error(inspectionError);
+          },
         }),
-      ];
-    },
+      new RegExp(inspectionError),
+    );
+
+    assert.equal(await readFile(outputPath, "utf8"), previousContent);
+  });
+}
+
+test("runSync validates videoAudioInspection before folder mode and Search", async (t) => {
+  const outputPath = await createTempOutput(t, {
+    schemaVersion: 1,
+    images: [],
+    videos: [],
+  });
+  let folderModeChecks = 0;
+  let searches = 0;
+  const client = {
     async getFolderMode() {
+      folderModeChecks += 1;
       return "dynamic";
+    },
+    async searchResources() {
+      searches += 1;
+      return [];
     },
   };
 
@@ -367,18 +456,15 @@ test("runSync preserves the previous manifest when video readiness fails", async
         sources,
         client,
         outputPath,
+        verifyFolderMode: true,
         logger: createLogger(),
-        async videoReadiness(videos) {
-          receivedVideos = videos;
-          throw new Error("video todavía en proceso");
-        },
+        videoAudioInspection: null,
       }),
-    /video todavía en proceso/,
+    /videoAudioInspection debe ser una función/,
   );
 
-  assert.equal(receivedVideos.length, 1);
-  assert.equal(receivedVideos[0].assetId, "cajas-video");
-  assert.equal(await readFile(outputPath, "utf8"), previousContent);
+  assert.equal(folderModeChecks, 0);
+  assert.equal(searches, 0);
 });
 
 test("runSync only verifies the remote folder mode when requested", async (t) => {
