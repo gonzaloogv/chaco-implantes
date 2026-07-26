@@ -45,12 +45,25 @@ incluidas en el manifiesto.
 - `chaco-implantes/cajas` y sus subcarpetas alimentan `Instrumental`.
 - `brands` permanece manual en `src/data/site.ts`.
 
-Las imágenes de `cajas` sin `context.custom.title`, `caption` o `alt` reciben
-un nombre `Producto instrumental N`. El sincronizador conserva el número por
-`assetId` y asigna a cada imagen nueva el menor número libre.
+Todas las imágenes sincronizadas desde `stand` usan el título y texto
+alternativo fijo `61° Congreso Traumatología`. Las imágenes de `cajas` sin
+`context.custom.title`, `caption` o `alt` mantienen el nombre numerado
+`Producto instrumental N`: el sincronizador conserva el número por `assetId`
+y asigna a cada imagen nueva el menor número libre. Los videos sincronizados
+desde `cajas` usan el título fijo `Producto instrumental`.
 
 Los videos con una duración conocida menor a dos segundos se registran como
 `short_video` y no se publican. El archivo original permanece en Cloudinary.
+
+Antes de escribir el manifiesto, la sincronización comprueba mediante una
+solicitud `GET` pública que cada MP4 derivado esté listo. Si Cloudinary
+responde `423`, reintenta dentro del límite configurado. Si alguna
+comprobación falla, el comando termina con error y conserva el manifiesto
+anterior.
+
+Estas solicitudes públicas de entrega pueden generar y almacenar en caché
+copias derivadas, y por lo tanto consumir transformaciones de Cloudinary.
+Nunca modifican los archivos originales.
 
 ### Configuración
 

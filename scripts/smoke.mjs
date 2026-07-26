@@ -28,7 +28,9 @@ const expectedEventImages = usesSyncedStandImages
     ).length
   : 80;
 const generatedInstrumentalImages = cloudinaryManifest.images.filter(
-  ({ generatedLabelNumber }) =>
+  ({ generatedLabelNumber, sourceFolder }) =>
+    (sourceFolder === "chaco-implantes/cajas" ||
+      sourceFolder.startsWith("chaco-implantes/cajas/")) &&
     Number.isInteger(generatedLabelNumber) &&
     generatedLabelNumber > 0,
 );
@@ -301,6 +303,16 @@ assert(
     expectedEventImages,
   "Gallery should render either synchronized or fallback event images",
 );
+for (const image of syncedStandImages) {
+  assert(
+    image.title === "61° Congreso Traumatología",
+    `Event image should use the approved title: ${image.assetId}`,
+  );
+  assert(
+    image.alt === "61° Congreso Traumatología",
+    `Event image should use the approved alt: ${image.assetId}`,
+  );
+}
 assert(!galeria.includes("/assets/images/evento.jpg"), "Gallery should not render the old local event image");
 const renderedGeneratedImages = usesSyncedStandImages
   ? cloudinaryManifest.images
@@ -374,6 +386,15 @@ assert(
   "Generated manifest should not contain videos shorter than two seconds",
 );
 for (const video of cloudinaryManifest.videos) {
+  const isCajasVideo =
+    video.sourceFolder === "chaco-implantes/cajas" ||
+    video.sourceFolder.startsWith("chaco-implantes/cajas/");
+  if (isCajasVideo) {
+    assert(
+      video.title === "Producto instrumental",
+      `Cajas video should use the approved title: ${video.assetId}`,
+    );
+  }
   assert(videos.includes(video.src), `Videos page should render source ${video.assetId}`);
   assert(videos.includes(video.poster), `Videos page should render poster ${video.assetId}`);
 }
