@@ -31,7 +31,7 @@ function assertManifest() {
   );
 }
 
-function assertProcessManagementContract() {
+async function assertProcessManagementContract() {
   const posixPlan = getPreviewProcessPlan("linux");
   assert.equal(
     posixPlan.command,
@@ -96,6 +96,138 @@ function assertProcessManagementContract() {
     (error) => error === deniedSignal,
     "Los errores distintos de ESRCH deben conservarse.",
   );
+
+  const createTaskkillSpawn = (events, calls = []) => (
+    command,
+    args,
+    options,
+  ) => {
+    calls.push({ command, args, options });
+    const listeners = new Map();
+    const child = {
+      once(event, listener) {
+        listeners.set(event, listener);
+        return child;
+      },
+      off(event, listener) {
+        if (listeners.get(event) === listener) listeners.delete(event);
+        return child;
+      },
+    };
+
+    queueMicrotask(() => {
+      for (const { event, args: eventArgs } of events) {
+        listeners.get(event)?.(...eventArgs);
+      }
+    });
+    return child;
+  };
+  const stoppedPreview = {
+    pid: 42,
+    exitCode: 0,
+    signalCode: null,
+  };
+  let taskkillCallCount = 0;
+  await stopWindowsPreview(stoppedPreview, {
+    spawnProcess: () => {
+      taskkillCallCount += 1;
+      throw new Error("taskkill no debe ejecutarse");
+    },
+    isPreviewStopped: () => true,
+    isPortAvailable: async () => true,
+    wait: async () => {},
+    maxChecks: 2,
+    interval: 0,
+  });
+  assert.equal(
+    taskkillCallCount,
+    0,
+    "Una vista previa ya terminada y con puerto libre no requiere taskkill.",
+  );
+
+  const runningPreview = {
+    pid: 42,
+    exitCode: null,
+    signalCode: null,
+  };
+  const taskkillCalls = [];
+  const spawnFailure = new Error("spawn failed");
+  await assert.rejects(
+    () =>
+      stopWindowsPreview(runningPreview, {
+        spawnProcess: createTaskkillSpawn(
+          [
+            { event: "error", args: [spawnFailure] },
+            { event: "close", args: [0, null] },
+          ],
+          taskkillCalls,
+        ),
+        isPreviewStopped: () => false,
+        isPortAvailable: async () => false,
+        wait: async () => {},
+        maxChecks: 2,
+        interval: 0,
+      }),
+    (error) => error.cause === spawnFailure,
+    "Un error de spawn debe propagarse aunque luego llegue close.",
+  );
+  assert.deepEqual(taskkillCalls, [
+    {
+      command: "taskkill",
+      args: ["/pid", "42", "/T", "/F"],
+      options: {
+        stdio: "ignore",
+        windowsHide: true,
+      },
+    },
+  ]);
+
+  await assert.rejects(
+    () =>
+      stopWindowsPreview(runningPreview, {
+        spawnProcess: createTaskkillSpawn([
+          { event: "close", args: [5, null] },
+        ]),
+        isPreviewStopped: () => false,
+        isPortAvailable: async () => false,
+        wait: async () => {},
+        maxChecks: 2,
+        interval: 0,
+      }),
+    /código 5/,
+    "Un código no cero debe fallar si el proceso y el puerto siguen activos.",
+  );
+
+  await assert.rejects(
+    () =>
+      stopWindowsPreview(runningPreview, {
+        spawnProcess: createTaskkillSpawn([
+          { event: "close", args: [0, null] },
+        ]),
+        isPreviewStopped: () => false,
+        isPortAvailable: async () => false,
+        wait: async () => {},
+        maxChecks: 2,
+        interval: 0,
+      }),
+    /siguen activos/,
+    "Código cero no alcanza sin confirmar proceso terminado y puerto libre.",
+  );
+
+  let stoppedChecks = 0;
+  await stopWindowsPreview(runningPreview, {
+    spawnProcess: createTaskkillSpawn([
+      { event: "close", args: [5, null] },
+    ]),
+    isPreviewStopped: () => {
+      stoppedChecks += 1;
+      return stoppedChecks >= 2;
+    },
+    isPortAvailable: async () => true,
+    wait: async () => {},
+    maxChecks: 2,
+    interval: 0,
+  });
 }
 
 function assertPortAvailable() {
@@ -114,6 +246,21 @@ function assertPortAvailable() {
           return;
         }
         resolve();
+      });
+    });
+  });
+}
+
+function probePortAvailable() {
+  return new Promise((resolve) => {
+    const server = net.createServer();
+
+    server.once("error", () => {
+      resolve(false);
+    });
+    server.listen(port, host, () => {
+      server.close((error) => {
+        resolve(error === undefined);
       });
     });
   });
@@ -260,31 +407,120 @@ async function waitForPosixProcessGroupExit(pid, timeout = 3_000) {
   return true;
 }
 
-async function stopPreview(preview) {
-  if (!preview?.pid) return;
-
-  if (process.platform === "win32") {
-    if (preview.exitCode !== null || preview.signalCode !== null) return;
-
-    await new Promise((resolve) => {
-      const taskkill = spawn(
+function runWindowsTaskkill(pid, spawnProcess = spawn) {
+  return new Promise((resolve) => {
+    let taskkill;
+    try {
+      taskkill = spawnProcess(
         "taskkill",
-        ["/pid", String(preview.pid), "/T", "/F"],
+        ["/pid", String(pid), "/T", "/F"],
         {
           stdio: "ignore",
           windowsHide: true,
         },
       );
-      let settled = false;
-      const finish = () => {
-        if (settled) return;
-        settled = true;
-        resolve();
-      };
+    } catch (error) {
+      resolve({ error, code: null, signal: null });
+      return;
+    }
 
-      taskkill.once("close", finish);
-      taskkill.once("error", finish);
+    let settled = false;
+    const finish = (outcome) => {
+      if (settled) return;
+      settled = true;
+      taskkill.off("error", handleError);
+      taskkill.off("close", handleClose);
+      resolve(outcome);
+    };
+    const handleError = (error) => {
+      finish({ error, code: null, signal: null });
+    };
+    const handleClose = (code, signal) => {
+      finish({ error: undefined, code, signal });
+    };
+
+    taskkill.once("error", handleError);
+    taskkill.once("close", handleClose);
+  });
+}
+
+async function waitForWindowsPreviewShutdown(
+  preview,
+  {
+    isPreviewStopped = (child) =>
+      child.exitCode !== null || child.signalCode !== null,
+    isPortAvailable = probePortAvailable,
+    wait = delay,
+    maxChecks = 61,
+    interval = 50,
+  } = {},
+) {
+  for (let check = 0; check < maxChecks; check += 1) {
+    const [previewStopped, portAvailable] = await Promise.all([
+      isPreviewStopped(preview),
+      isPortAvailable(),
+    ]);
+    if (previewStopped && portAvailable) return true;
+    if (check + 1 < maxChecks) await wait(interval);
+  }
+
+  return false;
+}
+
+async function stopWindowsPreview(
+  preview,
+  {
+    spawnProcess = spawn,
+    isPreviewStopped = (child) =>
+      child.exitCode !== null || child.signalCode !== null,
+    isPortAvailable = probePortAvailable,
+    wait = delay,
+    maxChecks = 61,
+    interval = 50,
+  } = {},
+) {
+  const shutdownOptions = {
+    isPreviewStopped,
+    isPortAvailable,
+    wait,
+    maxChecks,
+    interval,
+  };
+
+  if (isPreviewStopped(preview)) {
+    if (
+      await waitForWindowsPreviewShutdown(preview, shutdownOptions)
+    ) {
+      return;
+    }
+    throw new Error(
+      `La vista previa terminó, pero el puerto ${port} sigue ocupado.`,
+    );
+  }
+
+  const outcome = await runWindowsTaskkill(preview.pid, spawnProcess);
+  if (await waitForWindowsPreviewShutdown(preview, shutdownOptions)) return;
+
+  if (outcome.error) {
+    throw new Error("No se pudo ejecutar taskkill.", {
+      cause: outcome.error,
     });
+  }
+  if (outcome.code !== 0) {
+    throw new Error(
+      `taskkill terminó con código ${String(outcome.code)} sin detener la vista previa.`,
+    );
+  }
+  throw new Error(
+    `taskkill terminó, pero la vista previa o el puerto ${port} siguen activos.`,
+  );
+}
+
+async function stopPreview(preview) {
+  if (!preview?.pid) return;
+
+  if (process.platform === "win32") {
+    await stopWindowsPreview(preview);
     return;
   }
 
@@ -838,7 +1074,7 @@ async function main() {
   let primaryError;
 
   try {
-    assertProcessManagementContract();
+    await assertProcessManagementContract();
     assertManifest();
     await assertPortAvailable();
     preview = startPreview();
