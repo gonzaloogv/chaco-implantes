@@ -50,9 +50,12 @@ El build no llamará a Cloudinary. Esta separación permite compilar y publicar 
 
 ### Configuración por carpeta
 
-`scripts/cloudinary-folders.config.mjs` declarará las fuentes iniciales:
+`scripts/cloudinary-folders.config.mjs` declarará el modo de carpetas y las
+fuentes iniciales:
 
 ```js
+export const cloudinaryFolderMode = "dynamic";
+
 export const cloudinaryFolders = [
   {
     path: "chaco-implantes/stand",
@@ -67,24 +70,46 @@ export const cloudinaryFolders = [
 ];
 ```
 
-Cada entrada aplicará también a sus subcarpetas. Si en el futuro una subcarpeta necesita otra categoría, una entrada más específica tendrá prioridad sobre la carpeta padre.
+`cloudinaryFolderMode` aceptará únicamente `dynamic` o `fixed`. Será una
+decisión explícita y versionada; la sincronización no intentará adivinar ni
+cambiar el modo durante una ejecución normal.
 
-El sincronizador solo publicará carpetas configuradas. Podrá informar otras carpetas encontradas bajo `chaco-implantes`, pero no incorporará sus recursos.
+Cada entrada aplicará también a sus subcarpetas. Las rutas configuradas no
+podrán solaparse, para evitar que un mismo recurso llegue desde dos búsquedas.
+El sincronizador solo publicará recursos que pertenezcan a una fuente
+configurada.
 
 ### Consulta de solo lectura
 
-El script usará `fetch` de Node y no agregará un SDK. Todas las solicitudes usarán el método `GET`.
+El script usará `fetch` de Node y no agregará un SDK. La operación principal
+será una búsqueda de solo lectura mediante:
 
-Para entornos de Cloudinary con carpetas dinámicas:
+```http
+POST /resources/search
+Content-Type: application/json
+Authorization: Basic ...
+```
 
-1. `GET /folders/:folder` enumerará subcarpetas.
-2. `GET /resources/by_asset_folder` obtendrá los recursos ubicados directamente en cada carpeta.
-3. `next_cursor` permitirá recuperar todas las páginas, con hasta 500 recursos por solicitud.
-4. La consulta pedirá `context=true` para recuperar textos disponibles.
+El uso de `POST` responde al contrato efectivo de la Search API y no modifica
+recursos. El cliente tendrá una lista cerrada de operaciones: no expondrá un
+método genérico para enviar solicitudes ni implementará endpoints de carga,
+actualización o eliminación.
 
-El endpoint por carpeta devuelve imágenes y videos en una misma respuesta. El script ignorará recursos `raw` y reportará el total omitido.
+Se hará una búsqueda independiente para `stand` y otra para `cajas`. Cada
+búsqueda combinará la carpeta exacta con sus subcarpetas, pedirá imágenes y
+videos activos de tipo `upload`, incluirá `context`, solicitará hasta 500
+resultados y continuará con `next_cursor` hasta completar el conjunto.
 
-La primera ejecución validará que la cuenta admita `resources/by_asset_folder`. Si la cuenta usa el modo legado de carpetas fijas, el comando terminará con una explicación y conservará el manifiesto anterior. Dar soporte al modo legado requeriría consultas por prefijo y por tipo de recurso, y no forma parte de este alcance.
+Para carpetas dinámicas se consultará `asset_folder`; para carpetas fijas se
+consultará `folder`. Ambos campos se normalizarán a `sourceFolder` en el
+manifiesto.
+
+El comando admitirá `--verify-folder-mode` como diagnóstico opcional. Esa
+bandera consultará `GET /config?settings=true` y comparará el valor remoto con
+la configuración. No se ejecutará por defecto porque una API key de solo
+visualización puede no tener permiso para leer la configuración del entorno.
+Un error de Search o de esta comprobación será explícito: no activará un
+recorrido alternativo de carpetas ni reemplazará el manifiesto.
 
 ### Credenciales
 
@@ -98,7 +123,11 @@ CLOUDINARY_API_SECRET=
 
 `.gitignore` excluirá `.env.local` y los patrones locales equivalentes. `.env.example` incluirá solo los nombres de las variables.
 
-La API key debe tener permisos de visualización sobre las carpetas necesarias cuando la cuenta permita asignar roles por carpeta. Una key estándar con su secret puede tener permisos mayores aunque el script solo haga lecturas. El README explicará esta diferencia y recomendará una key exclusiva y restringida.
+La API key debe ser una key no raíz con rol Viewer sobre las carpetas
+necesarias cuando la cuenta permita asignar roles por carpeta. Una key raíz
+con su secret conserva permisos completos aunque este script solo lea. El
+README explicará la diferencia, recomendará una key exclusiva y no pedirá
+ampliar permisos únicamente para usar la comprobación opcional de `/config`.
 
 El script no imprimirá el secret, el encabezado de autorización ni la URL completa de una solicitud autenticada.
 
@@ -106,22 +135,32 @@ El script no imprimirá el secret, el encabezado de autorización ni la URL comp
 
 ### `scripts/cloudinary-folders.config.mjs`
 
-Mantendrá el mapa entre carpetas y categorías. Validará rutas únicas, categorías admitidas y entradas más específicas. No contendrá credenciales.
+Mantendrá el modo y el mapa entre carpetas y categorías. Validará rutas
+únicas, categorías admitidas y fuentes no solapadas. No contendrá credenciales.
 
 ### `scripts/cloudinary-media.mjs`
 
 Contendrá funciones pequeñas y comprobables para:
 
-- Construir URLs autenticadas sin registrarlas.
-- Paginar respuestas.
-- Recorrer subcarpetas.
-- Elegir el mapeo más específico.
+- Construir expresiones Search para carpetas dinámicas o fijas.
 - Normalizar títulos y textos alternativos.
 - Crear URLs de entrega transformadas.
-- Ordenar y eliminar duplicados.
+- Clasificar y filtrar recursos publicables.
+- Ordenar y detectar duplicados.
 - Validar el documento final.
 
 Este módulo no escribirá archivos por su cuenta. El diseño permite probar la transformación de datos con respuestas simuladas.
+
+### `scripts/cloudinary-admin.mjs`
+
+Implementará únicamente las dos operaciones remotas permitidas:
+
+- `POST /resources/search`, con paginación y cuerpo JSON.
+- `GET /config?settings=true`, solo para la comprobación opcional del modo.
+
+La paginación conservará la misma expresión y opciones en cada página y solo
+agregará el `next_cursor` recibido. Rechazará cursores repetidos y respuestas
+con forma inesperada.
 
 ### `scripts/sync-cloudinary.mjs`
 
@@ -129,11 +168,14 @@ Coordinará la ejecución:
 
 1. Cargar variables desde `.env.local`.
 2. Validar credenciales y configuración.
-3. Obtener carpetas y recursos.
-4. Normalizar el resultado.
-5. Verificar que cada fuente obligatoria tenga recursos.
-6. Escribir el manifiesto con reemplazo atómico.
-7. Mostrar un resumen con cantidades por carpeta, categoría y tipo.
+3. Comprobar opcionalmente el modo de carpetas.
+4. Ejecutar y paginar una búsqueda por fuente.
+5. Normalizar el resultado.
+6. Verificar que cada fuente obligatoria tenga recursos.
+7. Comparar el resultado con el manifiesto anterior.
+8. Escribir el manifiesto con reemplazo atómico.
+9. Mostrar un resumen con cantidades por carpeta, categoría, tipo y motivo de
+   omisión.
 
 El proyecto no agregará `dotenv`. El script leerá el archivo local con funciones de Node y respetará variables ya presentes en el entorno.
 
@@ -181,7 +223,10 @@ El manifiesto no incluirá credenciales, respuestas completas de la API ni datos
 
 ### Integración con `src/data/site.ts`
 
-`site.ts` importará el manifiesto y adaptará sus colecciones a `GalleryItem` y `VideoItem`.
+`src/data/cloudinary-media-adapter.mjs` validará el snapshot durante el build,
+rechazará identificadores duplicados y adaptará sus colecciones a
+`GalleryItem` y `VideoItem`. `site.ts` combinará ese resultado con el contenido
+editorial.
 
 - Las imágenes de `stand` se incorporarán como `Eventos`.
 - Las imágenes de `cajas` se incorporarán como `Instrumental`.
@@ -190,7 +235,15 @@ El manifiesto no incluirá credenciales, respuestas completas de la API ni datos
 - Las imágenes locales y las entradas editoriales existentes permanecerán.
 - `supplierSystems` y las URLs de `brands` permanecerán sin cambios.
 
-El adaptador eliminará duplicados por `assetId`. Si una entrada manual y una generada apuntan al mismo recurso sin compartir `assetId`, también comparará la ruta de entrega normalizada.
+Mientras el manifiesto no tenga imágenes válidas de `stand`, el sitio
+conservará las 80 imágenes manuales de eventos. En cuanto exista ese grupo
+sincronizado, el adaptador usará únicamente las imágenes generadas para
+`Eventos`, evitando duplicarlas. Este resguardo de contenido no es un fallback
+de la API y no se activa ante errores del comando.
+
+El generador rechazará cualquier `assetId` repetido antes de escribir el
+manifiesto. El adaptador repetirá esa defensa para que un documento editado o
+corrupto tampoco llegue al sitio.
 
 ## Transformaciones de entrega
 
@@ -203,7 +256,20 @@ Los videos usarán una URL optimizada para reproducción compatible con el compo
 
 La generación conservará la versión del recurso cuando Cloudinary la entregue. Esto evita mostrar una versión anterior desde caché después de reemplazar un archivo.
 
-Los recursos con tipos de entrega privados o autenticados no pueden mostrarse mediante URLs públicas. El sincronizador los omitirá y mostrará una advertencia identificada por `assetId`, sin exponer información sensible.
+Los recursos con tipos de entrega privados, `access_mode` autenticado o
+`access_control` no pueden asumirse públicamente visibles. El sincronizador
+revisará tanto el campo superior como el valor que Search expone dentro de
+`context`, los omitirá y mostrará una advertencia identificada por `assetId`,
+sin exponer información sensible.
+
+La expresión `type=upload` ya excluye normalmente los tipos de entrega
+`private` y `authenticated`. Estas comprobaciones se conservan como defensa
+ante respuestas inesperadas, configuraciones heredadas y restricciones
+adicionales expresadas mediante `access_mode` o `access_control`.
+
+Cloudinary representa también audio mediante `resource_type=video`. Solo se
+publicarán recursos con dimensiones visuales válidas y su entrega se
+transcodificará a MP4; el audio se omitirá con un motivo explícito.
 
 ## Textos
 
@@ -231,10 +297,17 @@ El sincronizador terminará con código distinto de cero si ocurre cualquiera de
 - Una paginación repite cursores o supera un límite preventivo.
 - Una fuente configurada devuelve cero recursos.
 - El manifiesto final contiene identificadores duplicados incompatibles.
+- El nuevo resultado elimina recursos que existían en el manifiesto anterior y
+  no se pasó `--accept-removals`.
 
 El comando construirá y validará el documento en memoria. Luego escribirá un archivo temporal junto al destino y lo renombrará sobre el manifiesto anterior. Un error previo al reemplazo dejará intacta la última versión válida.
 
 Una carpeta podrá admitir un estado vacío intencional mediante `allowEmpty: true` en su entrada de configuración. Esta opción evita agregar una bandera de línea de comandos y deja la decisión versionada.
+
+Las eliminaciones requieren una decisión distinta: el comando mostrará los
+identificadores ausentes y exigirá una nueva ejecución con
+`--accept-removals`. Así, una respuesta Search válida pero parcial no puede
+borrar silenciosamente contenido del manifiesto.
 
 ## Pruebas
 
@@ -242,18 +315,24 @@ Las pruebas usarán `node:test` y respuestas simuladas, sin instalar otra depend
 
 Cubrirán:
 
-- Mapeo exacto, herencia y prioridad de subcarpetas.
+- Expresiones Search para los modos `dynamic` y `fixed`.
+- Una consulta independiente por fuente.
 - Clasificación de imágenes, videos y recursos omitidos.
 - Paginación con `next_cursor`.
 - Detección de cursores repetidos.
+- Conservación del cuerpo de búsqueda entre páginas.
 - Prioridad de `context`, `display_name` y nombre de archivo.
 - Preservación de UTF-8.
 - URLs de miniatura, ampliación, reproducción y póster.
 - Orden por fecha e identificador.
-- Eliminación de duplicados.
+- Rechazo de identificadores duplicados.
+- Omisión de recursos restringidos y audio.
+- Rechazo de recursos devueltos fuera de la fuente consultada.
 - Rechazo de fuentes vacías.
+- Bloqueo y aceptación explícita de eliminaciones.
 - Escritura sin cambios cuando el manifiesto coincide.
 - Conservación del manifiesto anterior ante un error.
+- Adaptación de un snapshot vacío y uno con imágenes y videos.
 
 La verificación del repositorio ejecutará:
 
@@ -264,7 +343,9 @@ npm run build
 npm run test:smoke
 ```
 
-Una comprobación manual ejecutará `npm run sync:cloudinary` con la key restringida y revisará el resumen antes de aceptar el manifiesto.
+Una comprobación manual ejecutará `npm run sync:cloudinary` con la key
+restringida y revisará el resumen. Si hay eliminaciones intencionales, repetirá
+el comando con `--accept-removals`.
 
 ## Criterios de aceptación
 
@@ -274,12 +355,16 @@ Una comprobación manual ejecutará `npm run sync:cloudinary` con la key restrin
 - Agregar o quitar un archivo en una carpeta configurada se refleja después de ejecutar la sincronización.
 - El sitio compila sin credenciales cuando ya existe un manifiesto válido.
 - El navegador y el build generado no contienen el API secret.
-- El script no envía solicitudes de escritura a Cloudinary.
+- El script solo usa `POST /resources/search` y, cuando se solicita,
+  `GET /config?settings=true`; ninguna operación modifica recursos.
+- Un fallo de Search termina explícitamente y conserva el manifiesto anterior,
+  sin activar otro método de enumeración.
 - `brands` conserva el manejo manual actual.
 - Las verificaciones del repositorio finalizan sin errores.
 
 ## Referencias
 
 - [Cloudinary Admin API](https://cloudinary.com/documentation/admin_api)
+- [Cloudinary Search API](https://cloudinary.com/documentation/search_method)
 - [Listado de assets](https://cloudinary.com/documentation/list_assets)
 - [Roles y permisos](https://cloudinary.com/documentation/dam_permissions_migration)
