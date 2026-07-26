@@ -6,7 +6,7 @@ Estado: aprobado
 
 ## Contexto
 
-El sitio de Chaco Implantes usa Astro con salida estática. `src/data/site.ts` contiene las URLs de imágenes, categorías, galería y videos. La galería de eventos mantiene hoy más de cien URLs de Cloudinary escritas a mano, mientras que `videos` está vacío.
+El sitio de Chaco Implantes usa Astro con salida estática. `src/data/site.ts` contiene las URLs de imágenes, categorías, galería y videos. La galería de eventos mantiene hoy 80 URLs de Cloudinary escritas a mano, mientras que `videos` está vacío.
 
 Cloudinary organiza el material dentro de `chaco-implantes`. Entre sus subcarpetas se encuentran:
 
