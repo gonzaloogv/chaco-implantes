@@ -239,12 +239,28 @@ function resolveTexts(resource, publicId) {
     resource.display_name,
     fallback,
   );
+  const editorialTitle = firstUsefulText(
+    custom.title,
+    custom.caption,
+    custom.alt,
+  );
+  const editorialAlt = firstUsefulText(
+    custom.alt,
+    custom.title,
+    custom.caption,
+  );
 
   if (!title || !alt) {
     return null;
   }
 
-  return { title, alt };
+  return {
+    title,
+    alt,
+    editorialTitle,
+    editorialAlt,
+    hasEditorialText: Boolean(editorialTitle || editorialAlt),
+  };
 }
 
 function deliveryVariant(
@@ -343,8 +359,92 @@ function compareManifestItems(left, right) {
   return left.assetId < right.assetId ? -1 : 1;
 }
 
-export function buildManifest({ folderMode, sourceResults }) {
+function validatePreviousManifestForLabels(previousManifest) {
+  if (
+    !previousManifest ||
+    typeof previousManifest !== "object" ||
+    previousManifest.schemaVersion !== 1 ||
+    !Array.isArray(previousManifest.images) ||
+    !Array.isArray(previousManifest.videos)
+  ) {
+    throw new Error(
+      "El manifiesto anterior debe usar schemaVersion 1 e incluir images y videos.",
+    );
+  }
+}
+
+function assignGeneratedImageLabels({
+  images,
+  candidatesByAssetId,
+  previousManifest,
+}) {
+  const previousByAssetId = new Map(
+    previousManifest.images.map((image) => [image.assetId, image]),
+  );
+  const groups = new Map();
+
+  for (const image of images) {
+    const candidate = candidatesByAssetId.get(image.assetId);
+    if (!candidate) continue;
+
+    const groupKey = `${candidate.sourcePath}\u0000${candidate.label}`;
+    const group = groups.get(groupKey) ?? [];
+    group.push({ image, ...candidate });
+    groups.set(groupKey, group);
+  }
+
+  for (const group of groups.values()) {
+    const usedNumbers = new Set();
+    const unassigned = [];
+
+    for (const candidate of group) {
+      const previous = previousByAssetId.get(candidate.image.assetId);
+      const previousNumber = previous?.generatedLabelNumber;
+      const canReuse =
+        Number.isInteger(previousNumber) &&
+        previousNumber > 0 &&
+        typeof previous.sourceFolder === "string" &&
+        sourceContainsFolder(candidate.sourcePath, previous.sourceFolder);
+
+      if (!canReuse) {
+        unassigned.push(candidate);
+        continue;
+      }
+      if (usedNumbers.has(previousNumber)) {
+        throw new Error(
+          `generatedLabelNumber duplicado para ${candidate.sourcePath}: ${previousNumber}.`,
+        );
+      }
+
+      usedNumbers.add(previousNumber);
+      candidate.image.generatedLabelNumber = previousNumber;
+      candidate.image.title = `${candidate.label} ${previousNumber}`;
+      candidate.image.alt = candidate.image.title;
+    }
+
+    for (const candidate of unassigned) {
+      let nextNumber = 1;
+      while (usedNumbers.has(nextNumber)) nextNumber += 1;
+
+      usedNumbers.add(nextNumber);
+      candidate.image.generatedLabelNumber = nextNumber;
+      candidate.image.title = `${candidate.label} ${nextNumber}`;
+      candidate.image.alt = candidate.image.title;
+    }
+  }
+}
+
+export function buildManifest({
+  folderMode,
+  sourceResults,
+  previousManifest = {
+    schemaVersion: 1,
+    images: [],
+    videos: [],
+  },
+}) {
   assertFolderMode(folderMode);
+  validatePreviousManifestForLabels(previousManifest);
 
   if (!Array.isArray(sourceResults) || sourceResults.length === 0) {
     throw new Error("La sincronización debe incluir resultados por fuente.");
@@ -360,6 +460,7 @@ export function buildManifest({ folderMode, sourceResults }) {
   const skipped = [];
   const countsBySource = [];
   const seenAssetIds = new Set();
+  const generatedLabelCandidates = new Map();
 
   sourceResults.forEach((sourceResult, sourceIndex) => {
     const source = sources[sourceIndex];
@@ -447,14 +548,16 @@ export function buildManifest({ folderMode, sourceResults }) {
       );
 
       if (base.resourceType === "image") {
-        images.push({
+        const usesEditorialText =
+          Boolean(source.unnamedImageLabel) && texts.hasEditorialText;
+        const image = {
           assetId: base.assetId,
           sourceFolder: base.sourceFolder,
           publicId: base.publicId,
           category: source.imageCategory,
           createdAt: base.createdAt,
-          title: texts.title,
-          alt: texts.alt,
+          title: usesEditorialText ? texts.editorialTitle : texts.title,
+          alt: usesEditorialText ? texts.editorialAlt : texts.alt,
           width,
           height,
           thumb: deliveryVariant(
@@ -467,7 +570,14 @@ export function buildManifest({ folderMode, sourceResults }) {
             "image",
             IMAGE_FULL_TRANSFORM,
           ),
-        });
+        };
+        images.push(image);
+        if (source.unnamedImageLabel && !texts.hasEditorialText) {
+          generatedLabelCandidates.set(base.assetId, {
+            sourcePath: source.path,
+            label: source.unnamedImageLabel,
+          });
+        }
         sourceImageCount += 1;
         continue;
       }
@@ -522,6 +632,11 @@ export function buildManifest({ folderMode, sourceResults }) {
 
   images.sort(compareManifestItems);
   videos.sort(compareManifestItems);
+  assignGeneratedImageLabels({
+    images,
+    candidatesByAssetId: generatedLabelCandidates,
+    previousManifest,
+  });
 
   return {
     manifest: {

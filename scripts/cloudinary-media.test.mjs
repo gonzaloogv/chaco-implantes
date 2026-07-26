@@ -148,6 +148,10 @@ const standSource = {
   ...validSources[0],
   allowEmpty: false,
 };
+const cajasSource = {
+  ...validSources[1],
+  allowEmpty: false,
+};
 
 const imageResource = {
   asset_id: "asset-image",
@@ -260,7 +264,9 @@ test("buildManifest reads folder in fixed mode and preserves Unicode fallback te
     sourceResults: [
       {
         source: {
-          ...validSources[1],
+          path: "chaco-implantes/cajas",
+          imageCategory: "Instrumental",
+          videoCategory: "Instrumental",
           allowEmpty: false,
         },
         resources: [fixedResource],
@@ -271,6 +277,141 @@ test("buildManifest reads folder in fixed mode and preserves Unicode fallback te
   assert.equal(manifest.images[0].sourceFolder, "chaco-implantes/cajas/eléctrico");
   assert.equal(manifest.images[0].title, "Bisturí eléctrico");
   assert.equal(manifest.images[0].alt, "Bisturí eléctrico");
+});
+
+test("buildManifest assigns stable labels only to unnamed cajas images", () => {
+  const unnamedNewest = {
+    ...imageResource,
+    asset_id: "caja-newest",
+    public_id: "IMG_2000_abcdef",
+    asset_folder: "chaco-implantes/cajas",
+    created_at: "2026-07-25T12:00:00Z",
+    context: undefined,
+    display_name: "IMG_2000_abcdef",
+  };
+  const unnamedOlder = {
+    ...unnamedNewest,
+    asset_id: "caja-older",
+    public_id: "IMG_1000_ghijkl",
+    created_at: "2026-07-24T12:00:00Z",
+    display_name: "IMG_1000_ghijkl",
+  };
+  const customAlt = {
+    ...unnamedNewest,
+    asset_id: "caja-custom",
+    public_id: "IMG_3000_mnopqr",
+    created_at: "2026-07-24T18:00:00Z",
+    context: { custom: { alt: "Caja de revisión femoral" } },
+    display_name: "IMG_3000_mnopqr",
+  };
+
+  const { manifest } = buildManifest({
+    folderMode: "dynamic",
+    sourceResults: [
+      {
+        source: cajasSource,
+        resources: [unnamedOlder, customAlt, unnamedNewest],
+      },
+      {
+        source: standSource,
+        resources: [imageResource],
+      },
+    ],
+  });
+
+  const cajas = manifest.images.filter(
+    ({ sourceFolder }) => sourceFolder === "chaco-implantes/cajas",
+  );
+  assert.deepEqual(
+    cajas.map(({ assetId, title, alt, generatedLabelNumber }) => ({
+      assetId,
+      title,
+      alt,
+      generatedLabelNumber,
+    })),
+    [
+      {
+        assetId: "caja-newest",
+        title: "Producto instrumental 1",
+        alt: "Producto instrumental 1",
+        generatedLabelNumber: 1,
+      },
+      {
+        assetId: "caja-custom",
+        title: "Caja de revisión femoral",
+        alt: "Caja de revisión femoral",
+        generatedLabelNumber: undefined,
+      },
+      {
+        assetId: "caja-older",
+        title: "Producto instrumental 2",
+        alt: "Producto instrumental 2",
+        generatedLabelNumber: 2,
+      },
+    ],
+  );
+  assert.equal(
+    manifest.images.find(({ assetId }) => assetId === "asset-image")
+      .generatedLabelNumber,
+    undefined,
+  );
+});
+
+test("buildManifest reuses numbers by assetId and fills the lowest gap", () => {
+  const retained = {
+    ...imageResource,
+    asset_id: "caja-retained",
+    public_id: "retained",
+    asset_folder: "chaco-implantes/cajas",
+    context: undefined,
+    display_name: "retained",
+  };
+  const added = {
+    ...retained,
+    asset_id: "caja-new",
+    public_id: "new",
+    display_name: "new",
+  };
+  const previousManifest = {
+    schemaVersion: 1,
+    images: [
+      {
+        assetId: "removed",
+        sourceFolder: "chaco-implantes/cajas",
+        generatedLabelNumber: 1,
+      },
+      {
+        assetId: "caja-retained",
+        sourceFolder: "chaco-implantes/cajas",
+        generatedLabelNumber: 2,
+      },
+    ],
+    videos: [],
+  };
+
+  const { manifest } = buildManifest({
+    folderMode: "dynamic",
+    previousManifest,
+    sourceResults: [
+      {
+        source: cajasSource,
+        resources: [retained, added],
+      },
+    ],
+  });
+
+  assert.deepEqual(
+    Object.fromEntries(
+      manifest.images.map(({ assetId, generatedLabelNumber }) => [
+        assetId,
+        generatedLabelNumber,
+      ]),
+    ),
+    {
+      "caja-new": 1,
+      "caja-retained": 2,
+    },
+  );
 });
 
 test("buildManifest defensively omits restricted, unsupported and audio resources", () => {
