@@ -1,7 +1,7 @@
 # Reproductor premium sin pista de audio
 
 Fecha: 2026-07-26
-Estado: diseño aprobado; documento pendiente de revisión final
+Estado: diseño aprobado; listo para implementación
 
 ## Contexto
 
@@ -225,7 +225,12 @@ La verificación de navegador comprobará:
 - estados de repetición y error;
 - uso por teclado y controles táctiles;
 - presentación completa de videos verticales;
-- ausencia de pistas de audio expuestas por el video cargado.
+- uso de la fuente `ac_none` y del atributo `muted` en el video cargado.
+
+El elemento `<video>` no ofrece una API portable para enumerar tracks de audio
+en Chromium. Por eso, la ausencia real de una pista `soun` no se inferirá desde
+el navegador: la autoridad será el inspector estructural MP4 ejecutado sobre
+cada variante antes de publicar y nuevamente mediante el comando independiente.
 
 Además, las 70 variantes resultantes se inspeccionarán para confirmar que sus
 contenedores MP4 no incluyan un track de tipo `soun`. Para que esta comprobación
@@ -262,6 +267,7 @@ npm run verify:cloudinary-video-audio
 npm run check
 npm run build
 npm run test:smoke
+npm run test:video-player
 ```
 
 La sincronización requiere las credenciales locales de solo lectura ya
