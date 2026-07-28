@@ -1,0 +1,37 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+import { wa } from "../data/site";
+---
+
+<BaseLayout
+  title="Página no encontrada — Chaco Implantes"
+  description="La página que buscás no existe o fue movida. Volvé al inicio de Chaco Implantes."
+  canonicalPath="/404"
+>
+  <section class="page-hero-dark flex min-h-[70vh] items-center border-b border-white/10 px-4 pb-16 pt-32 text-white sm:px-6 lg:px-8">
+    <div class="mx-auto w-full max-w-3xl text-center">
+      <p class="font-display text-7xl font-black leading-none text-primary-glow sm:text-8xl">404</p>
+      <h1 class="mt-4 font-display text-3xl font-black sm:text-4xl">Página no encontrada</h1>
+      <p class="mx-auto mt-3 max-w-xl text-brand">
+        La dirección que buscás no existe o fue movida. Podés volver al inicio, recorrer los catálogos o escribirnos directamente.
+      </p>
+      <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+        <a href="/" class="btn-primary-soft inline-flex items-center justify-center gap-2 rounded-md px-6 py-3 text-sm font-bold">
+          <Icon name="arrow-left" class="h-4 w-4" /> Volver al inicio
+        </a>
+        <a href="/catalogos" class="btn-glass-outline inline-flex items-center justify-center gap-2 rounded-md px-6 py-3 text-sm font-bold">
+          Ver catálogos <Icon name="arrow-right" class="h-4 w-4" />
+        </a>
+        <a
+          href={wa.general}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-glass-outline inline-flex items-center justify-center gap-2 rounded-md px-6 py-3 text-sm font-bold"
+        >
+          <Icon name="message-circle" class="h-4 w-4" /> WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

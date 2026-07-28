@@ -3,6 +3,16 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Icon from "../components/Icon.astro";
 import VideoPlayer from "../components/VideoPlayer.astro";
 import { categoryImages, galleryFilters, videos } from "../data/site";
+
+// Filtros solo para categorías que realmente tienen videos (evita filtros vacíos)
+const usedCategories = galleryFilters.filter((filter) => videos.some((video) => video.category === filter));
+const showFilters = usedCategories.length >= 2;
+
+// Título genérico que genera el pipeline cuando no hay metadata por video.
+// Mientras todos sean de "cajas", la serie numerada es la etiqueta honesta.
+const GENERIC_VIDEO_TITLE = "Producto instrumental";
+const displayTitle = (video: (typeof videos)[number], index: number) =>
+  video.title === GENERIC_VIDEO_TITLE ? `Caja de instrumental N.º ${index + 1}` : video.title;
 ---
 
 <BaseLayout
@@ -60,9 +70,9 @@ import { categoryImages, galleryFilters, videos } from "../data/site";
         </a>
       </div>
 
-      {videos.length > 0 && (
+      {showFilters && (
         <div class="mt-8 flex flex-wrap items-center gap-2" data-video-filters>
-          {["Todos", ...galleryFilters].map((filter) => (
+          {["Todos", ...usedCategories].map((filter) => (
             <button
               type="button"
               data-video-filter={filter}
@@ -106,12 +116,12 @@ import { categoryImages, galleryFilters, videos } from "../data/site";
                   assetId={video.id}
                   src={video.src}
                   poster={video.poster}
-                  title={video.title}
+                  title={displayTitle(video, index)}
                   duration={video.duration}
                   position={index + 1}
                 />
                 <div class="px-4 py-3">
-                  <h2 class="font-display text-sm font-semibold text-deep">{video.title}</h2>
+                  <h2 class="font-display text-sm font-semibold text-deep">{displayTitle(video, index)}</h2>
                   <p class="mt-0.5 text-xs text-muted-foreground">{video.category}</p>
                 </div>
               </article>
@@ -123,21 +133,6 @@ import { categoryImages, galleryFilters, videos } from "../data/site";
           </div>
         </>
       )}
-
-      <div class="mt-10 grid gap-5 sm:grid-cols-2">
-        <article class="premium-card rounded-xl border p-6">
-          <p class="font-display text-lg font-black text-deep">Contenido orientado a consulta profesional</p>
-          <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
-            Los videos se organizan para acompañar consultas comerciales, líneas de producto y material institucional.
-          </p>
-        </article>
-        <article class="premium-card rounded-xl border p-6">
-          <p class="font-display text-lg font-black text-deep">Carga bajo demanda</p>
-          <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
-            Cada video se cargará únicamente al reproducir para mantener una navegación liviana y rápida.
-          </p>
-        </article>
-      </div>
     </div>
   </section>
 </BaseLayout>

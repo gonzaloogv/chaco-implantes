@@ -35,6 +35,9 @@ const generatedInstrumentalImages = cloudinaryManifest.images.filter(
     generatedLabelNumber > 0,
 );
 const hasSyncedVideos = cloudinaryManifest.videos.length > 0;
+const syncedVideoCategories = new Set(
+  cloudinaryManifest.videos.map(({ category }) => category),
+);
 const eventHeroImage = "https://res.cloudinary.com/dz9tuwczf/image/upload/f_auto,q_auto,c_limit,w_1920/foto-evento_d0eg2f.jpg";
 const oldProductTerm = String.fromCharCode(115, 117, 98, 99, 97, 116, 101, 103, 111, 114);
 const expectedPublicAssets = [
@@ -220,7 +223,6 @@ assert(catalogoPerforador.includes("data-catalog-viewer"), "Other trauma product
 assert(catalogoPerforador.includes("Motor Overfix para perforación"), "Other trauma product detail should render the description");
 assert(catalogoPerforador.includes("Solicitar catálogo PDF"), "Other trauma product detail should expose the catalog request action");
 assert((home.match(/data-value-pillar(?=[\s>])/g) ?? []).length === 4, "Home should render four compact value pillars");
-assert((home.match(/pro-card flex items-start/g) ?? []).length >= 4, "Home should render four professional support cards");
 assert(
   (home.match(/data-catalog-card/g) ?? []).length >= 6,
   "Home should render catalog cards with stable card markers",
@@ -234,7 +236,7 @@ assert((home.match(/<article data-hero-slide/g) ?? []).length === 3, "Hero carou
 assert(home.includes("NextAR"), "Hero carousel should describe the NextAR differentiator");
 assert(home.includes("AMIS"), "Hero carousel should describe the AMIS differentiator");
 assert(home.includes("Calidad que se siente. Confianza que se nota."), "Home should integrate the client slogan");
-assert(home.includes("Pedidos programados"), "Home should include the professional support pillars");
+assert(home.includes("Coordinación para cirugías programadas"), "Home should include the professional support pillars");
 assert(!home.includes("Tecnolog\u00c3\u00ada Medacta"), "NextAR hero copy should not mention Medacta");
 assert(!home.includes("Consultar sistemas Medacta"), "NextAR hero CTA should not mention Medacta");
 assert(home.includes("Productos para traumatología"), "Home should clarify the product category without the old tagline");
@@ -346,6 +348,8 @@ assert(galeria.includes("f_auto,q_auto,c_limit,w_1920"), "Gallery lightbox image
 assert((galeria.match(/loading="eager"/g) ?? []).length === 12, "Gallery should eager-load only the first visible batch");
 assert((galeria.match(/fetchpriority="high"/g) ?? []).length === 4, "Gallery should give high priority only to the first visible row");
 assert(galeria.includes("Cargar más"), "Gallery should include a load-more control");
+assert(galeria.includes("data-gallery-album"), "Gallery should feature the events album card in the All view");
+assert(galeria.includes(`${expectedEventImages} fotos`), "Gallery album card should expose the event photo count");
 assert(galeria.includes("data-thumb-spinner"), "Gallery thumbnails should show a loading spinner until the image arrives");
 assert(galeria.includes("data-lightbox-spinner"), "Gallery lightbox should show a loading spinner while a new image loads");
 assert(source.includes("markThumbLoaded"), "Gallery should hide each thumbnail spinner once its image loads");
@@ -371,8 +375,9 @@ assert(videos.includes("page-hero-dark"), "Videos page should use the dark premi
 assert(videos.includes("page-surface"), "Videos page should use the shared light content surface");
 assert(videos.includes("premium-card"), "Videos page empty state should use premium card treatment");
 assert(
-  videos.includes('data-video-filter="') === hasSyncedVideos,
-  "Videos page should show category filters only when videos exist",
+  videos.includes('data-video-filter="') ===
+    (hasSyncedVideos && syncedVideoCategories.size >= 2),
+  "Videos page should show category filters only when more than one category has videos",
 );
 assert(
   (videos.match(/data-video-item(?=[\s>])/g) ?? []).length ===
@@ -561,8 +566,10 @@ assert(/\.nav-link\[data-active="true"\][\s\S]*opacity:\s*1/.test(globalCss), "A
 assert(/\.site-header\[data-transparent="true"\][\s\S]*background-color:\s*transparent/.test(globalCss), "Home header should start with an invisible background");
 assert(/\.site-header\[data-transparent="true"\][\s\S]*border-color:\s*transparent/.test(globalCss), "Home header should not show a top-state border");
 assert(/\.site-header\[data-transparent="true"\][\s\S]*backdrop-filter:\s*none/.test(globalCss), "Home header should not blur the hero while at top");
-assert(/\.site-header\[data-transparent="true"\]\s*\.site-header-inner\s*{[\s\S]*height:\s*15vh/.test(globalCss), "Home header should use the larger 15vh desktop top state");
-assert(/\.site-header\[data-transparent="true"\]\s*\.site-logo-mark\s*{[\s\S]*height:\s*clamp\(5rem, 10vh, 7\.5rem\)/.test(globalCss), "Home logo should scale up in the larger top state");
+assert(/\.site-header\s*{[\s\S]*--header-big-h:\s*15vh/.test(globalCss), "Home header should retain the larger 15vh desktop top token (client request)");
+assert(/\.site-header\[data-transparent="true"\]\s*\.site-header-inner\s*{[\s\S]*height:\s*var\(--header-big-h\)/.test(globalCss), "Home header should use the larger top-state height (client request)");
+assert(/\.site-header\s*{[\s\S]*--logo-big:\s*clamp\(5rem, 10vh, 7\.5rem\)/.test(globalCss), "Home logo should retain its larger desktop top token (client request)");
+assert(/\.site-header\[data-transparent="true"\]\s*\.site-logo-mark\s*{[\s\S]*height:\s*var\(--logo-big\)/.test(globalCss), "Home logo should scale up in the larger top state (client request)");
 assert(/\.hero-shell\s*{[\s\S]*min-height:\s*100vh/.test(globalCss), "Hero should occupy the full viewport height");
 assert(/\.hero-shell\s*{[\s\S]*background:\s*linear-gradient\(150deg, #0f172a/.test(globalCss), "Hero should use the deep blue gradient direction");
 assert(/\.hero-bg-slide\s*{[\s\S]*opacity:\s*0/.test(globalCss), "Hero background slides should fade from hidden state");

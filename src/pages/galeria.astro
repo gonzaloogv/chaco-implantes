@@ -1,7 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Icon from "../components/Icon.astro";
-import { GALLERY_PAGE_SIZE, gallery, galleryFilters, videos } from "../data/site";
+import { GALLERY_PAGE_SIZE, featuredEvent, gallery, galleryFilters, videos } from "../data/site";
+
+// Fotos del álbum destacado (eventos): se muestran solo en su filtro, no en "Todos"
+const eventCount = gallery.filter((item) => item.category === "Eventos").length;
 ---
 
 <BaseLayout
@@ -28,8 +31,8 @@ import { GALLERY_PAGE_SIZE, gallery, galleryFilters, videos } from "../data/site
             <Icon name="play-circle" class="h-5 w-5" />
           </div>
           <div>
-            <p class="font-display text-sm font-semibold">¿Buscás material audiovisual?</p>
-            <p class="text-xs text-white/70">Encontrá videos institucionales y de productos.</p>
+            <p class="font-display text-sm font-semibold">{videos.length} videos de instrumental quirúrgico</p>
+            <p class="text-xs text-white/70">Recorridos cortos de cajas y sistemas, con reproducción bajo demanda.</p>
           </div>
         </div>
         <a href="/videos" class="inline-flex items-center justify-center gap-2 rounded-lg bg-brand px-5 py-2.5 text-sm font-semibold text-deep transition-colors hover:bg-brand/90">
@@ -53,7 +56,31 @@ import { GALLERY_PAGE_SIZE, gallery, galleryFilters, videos } from "../data/site
       ))}
     </div>
 
-    <div class="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4" data-gallery-grid>
+    <a
+      href="/galeria?categoria=Eventos"
+      data-gallery-album
+      class="catalog-image-card card-link group relative mt-6 flex h-44 flex-col justify-end overflow-hidden rounded-xl border border-border bg-deep sm:h-52"
+    >
+      <img
+        src={featuredEvent.image}
+        alt={featuredEvent.imageAlt}
+        loading="lazy"
+        decoding="async"
+        class="absolute inset-0 h-full w-full object-cover"
+      />
+      <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-deep via-deep/55 to-deep/10"></div>
+      <div class="relative flex flex-wrap items-end justify-between gap-3 p-5 sm:p-6">
+        <div>
+          <p class="text-xs font-bold uppercase text-brand">Álbum destacado</p>
+          <h2 class="mt-1 font-display text-lg font-semibold text-white sm:text-xl">{featuredEvent.title}</h2>
+        </div>
+        <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-sm">
+          {eventCount} fotos <Icon name="arrow-right" class="h-3.5 w-3.5 transition-transform duration-200 ease-out group-hover:translate-x-1" />
+        </span>
+      </div>
+    </a>
+
+    <div class="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4" data-gallery-grid>
       {gallery.map((item, index) => (
         <button
           type="button"
@@ -195,17 +222,27 @@ import { GALLERY_PAGE_SIZE, gallery, galleryFilters, videos } from "../data/site
   const findFilterButton = (filter: string) =>
     filterButtons.find((item) => item instanceof HTMLElement && normalizeFilter(item.dataset.filter || "") === normalizeFilter(filter));
 
+  const albumCard = document.querySelector("[data-gallery-album]");
+
+  // En "Todos" el álbum de eventos queda fuera de la grilla: se entra por la
+  // card destacada o por el filtro Eventos. Las fotos siguen en el DOM.
   const filteredItems = () =>
-    galleryItems.filter((item) => item instanceof HTMLElement && (activeFilter === "Todos" || item.dataset.category === activeFilter));
+    galleryItems.filter(
+      (item) =>
+        item instanceof HTMLElement &&
+        (activeFilter === "Todos" ? item.dataset.category !== "Eventos" : item.dataset.category === activeFilter),
+    );
 
   const syncGallery = () => {
     const items = filteredItems();
     galleryItems.forEach((item) => {
       if (!(item instanceof HTMLElement)) return;
-      const filtered = activeFilter === "Todos" || item.dataset.category === activeFilter;
+      const filtered = activeFilter === "Todos" ? item.dataset.category !== "Eventos" : item.dataset.category === activeFilter;
       const index = items.indexOf(item);
       item.classList.toggle("hidden", !filtered || index >= visible);
     });
+
+    albumCard?.classList.toggle("hidden", activeFilter !== "Todos");
 
     const remaining = Math.max(items.length - visible, 0);
     loadMoreWrap?.classList.toggle("hidden", remaining === 0);
@@ -423,6 +460,17 @@ import { GALLERY_PAGE_SIZE, gallery, galleryFilters, videos } from "../data/site
     const button = target.closest("[data-filter]");
     if (!(button instanceof HTMLElement)) return;
     setActiveFilter(button.dataset.filter || "Todos");
+  });
+
+  // La card del álbum activa el filtro Eventos sin recargar (el href queda como
+  // fallback sin JS y para deep-linking).
+  albumCard?.addEventListener("click", (event) => {
+    event.preventDefault();
+    setActiveFilter("Eventos");
+    window.history.replaceState(null, "", "?categoria=Eventos");
+    if (galleryGrid instanceof HTMLElement) {
+      galleryGrid.scrollIntoView({ behavior: reduceMotion.matches ? "auto" : "smooth", block: "start" });
+    }
   });
 
   galleryItems.forEach((item) => {

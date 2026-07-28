@@ -37,7 +37,7 @@ import { site, wa, whatsappLink } from "../data/site";
               <span class="h-px w-6 bg-brand"></span>
               Consulta comercial
             </span>
-            <h2 class="mt-3 font-display text-2xl font-black text-deep">Contanos qué necesitás coordinar</h2>
+            <h2 class="mt-3 font-display text-2xl font-extrabold text-deep">Contanos qué necesitás coordinar</h2>
             <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
               Enviamos tu consulta por WhatsApp con los datos cargados para responder con mayor precisión.
             </p>
@@ -70,7 +70,7 @@ import { site, wa, whatsappLink } from "../data/site";
 
         <aside class="space-y-5">
           <section class="premium-card rounded-xl border p-6">
-            <h2 class="font-display text-lg font-black text-deep">Datos de contacto</h2>
+            <h2 class="font-display text-lg font-semibold text-deep">Datos de contacto</h2>
             <ul class="mt-4 space-y-3 text-sm text-muted-foreground">
               <li class="flex items-start gap-2.5">
                 <Icon name="phone" class="mt-0.5 h-4 w-4 shrink-0 text-primary" />
@@ -100,7 +100,7 @@ import { site, wa, whatsappLink } from "../data/site";
           </section>
 
           <section class="premium-card rounded-xl border p-6">
-            <h2 class="font-display text-lg font-black text-deep">Ubicación y horario</h2>
+            <h2 class="font-display text-lg font-semibold text-deep">Ubicación y horario</h2>
             <ul class="mt-4 space-y-3 text-sm text-muted-foreground">
               <li class="flex items-start gap-2.5">
                 <Icon name="map-pin" class="mt-0.5 h-4 w-4 shrink-0 text-primary" />
@@ -116,6 +116,15 @@ import { site, wa, whatsappLink } from "../data/site";
                 </div>
               </li>
             </ul>
+            <div class="mt-5 overflow-hidden rounded-lg border border-border">
+              <iframe
+                src={`https://www.google.com/maps?q=${encodeURIComponent(site.address)}&output=embed`}
+                title={`Mapa: ${site.address}`}
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                class="block h-48 w-full sm:h-56"
+              ></iframe>
+            </div>
             <a
               href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.address)}`}
               target="_blank"

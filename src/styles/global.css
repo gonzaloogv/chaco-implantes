@@ -322,10 +322,27 @@ svg {
 }
 
 .site-header {
-  background-color: rgba(30, 46, 79, 0.94);
-  border-color: rgba(143, 179, 226, 0.18);
-  backdrop-filter: blur(18px);
-  box-shadow: 0 12px 32px -24px rgba(0, 0, 0, 0.75);
+  /* Estado inicial sin JavaScript: compacto en internas y grande en el tope
+     de la home. JavaScript actualiza los valores concretos durante el scroll. */
+  --header-big-h: 15vh;
+  --header-big-min: 8.5rem;
+  --logo-big: clamp(5rem, 10vh, 7.5rem);
+  --title-big: clamp(1.45rem, 2vw, 2.35rem);
+  --subtitle-big: clamp(0.8rem, 1vw, 1rem);
+  --header-height: 4.5rem;
+  --logo-size: 2.75rem;
+  --logo-title-size: 1.125rem;
+  --logo-subtitle-size: 0.6875rem;
+  --header-background-alpha: 0.94;
+  --header-border-alpha: 0.18;
+  --header-blur: 18px;
+  --header-shadow-alpha: 0.75;
+  --logo-glow-size: 8px;
+  --logo-glow-alpha: 0.5;
+  background-color: rgba(30, 46, 79, var(--header-background-alpha));
+  border-color: rgba(143, 179, 226, var(--header-border-alpha));
+  backdrop-filter: blur(var(--header-blur));
+  box-shadow: 0 12px 32px -24px rgba(0, 0, 0, var(--header-shadow-alpha));
 }
 
 .site-header[data-transparent="true"] {
@@ -335,52 +352,55 @@ svg {
   box-shadow: none;
 }
 
+/* Menú abierto: fondo sólido inmediato sin colapsar el logo grande. */
+.site-header[data-menu-open="true"] {
+  background-color: rgba(30, 46, 79, 0.94);
+  border-color: rgba(143, 179, 226, 0.18);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 12px 32px -24px rgba(0, 0, 0, 0.75);
+}
+
 .site-header-inner {
-  height: 4.5rem;
+  height: var(--header-height);
+  min-height: var(--header-height);
 }
 
 .site-header[data-transparent="true"] .site-header-inner {
-  height: 15vh;
-  min-height: 8.5rem;
-}
-
-.site-header[data-menu-open="true"][data-home-header="true"] .site-header-inner {
-  height: 15vh;
-  min-height: 8.5rem;
+  height: var(--header-big-h);
+  min-height: var(--header-big-min);
 }
 
 .site-logo-mark {
-  filter: drop-shadow(0 0 8px rgba(74, 144, 196, 0.5));
-  height: 2.75rem;
-  transition:
-    height 300ms var(--ease-out),
-    width 300ms var(--ease-out),
-    filter 200ms var(--ease-out);
-  width: 2.75rem;
+  filter: drop-shadow(
+    0 0 var(--logo-glow-size)
+    rgba(74, 144, 196, var(--logo-glow-alpha))
+  );
+  height: var(--logo-size);
+  width: var(--logo-size);
 }
 
 .site-header[data-transparent="true"] .site-logo-mark {
-  filter: drop-shadow(0 0 14px rgba(74, 144, 196, 0.82));
-  height: clamp(5rem, 10vh, 7.5rem);
-  width: clamp(5rem, 10vh, 7.5rem);
+  filter: drop-shadow(0 0 12px rgba(74, 144, 196, 0.55));
+  height: var(--logo-big);
+  width: var(--logo-big);
 }
 
 .site-logo-title {
   color: var(--primary-foreground);
-  transition: font-size 300ms var(--ease-out);
+  font-size: var(--logo-title-size);
+}
+
+.site-header[data-transparent="true"] .site-logo-title {
+  font-size: var(--title-big);
 }
 
 .site-logo-subtitle {
   color: var(--brand);
-  transition: font-size 300ms var(--ease-out);
-}
-
-.site-header[data-transparent="true"] .site-logo-title {
-  font-size: clamp(1.45rem, 2vw, 2.35rem);
+  font-size: var(--logo-subtitle-size);
 }
 
 .site-header[data-transparent="true"] .site-logo-subtitle {
-  font-size: clamp(0.8rem, 1vw, 1rem);
+  font-size: var(--subtitle-big);
 }
 
 .hero-bg-slide {
@@ -702,7 +722,7 @@ svg {
 
 @media (max-width: 40rem) {
   .page-hero-dark::before {
-    left: -6rem;
+    left: -7rem;
     opacity: 0.1;
   }
 }
@@ -720,13 +740,6 @@ svg {
   box-shadow: 0 18px 42px -34px rgba(15, 23, 42, 0.5);
 }
 
-/* Cards de la sección "profesionales": el realce (borde + sombra) queda FIJO,
-   sin depender del hover. */
-.pro-card {
-  border-color: var(--brand);
-  box-shadow: 0 4px 16px -10px rgba(15, 23, 42, 0.2);
-}
-
 .dark-card {
   background:
     linear-gradient(180deg, rgba(143, 179, 226, 0.12), rgba(15, 23, 42, 0.22)),
@@ -735,8 +748,26 @@ svg {
   box-shadow: inset 0 1px 0 rgba(143, 179, 226, 0.08);
 }
 
+/* Las bandas oscuras usan los 3 escalones canónicos del sitio
+   (--background → --ink → --deep), los mismos de heroes y body. */
 .suppliers-section {
-  background: linear-gradient(180deg, #0c1c31 0%, #0b1d32 100%);
+  background: linear-gradient(180deg, var(--ink) 0%, var(--background) 100%);
+}
+
+/* Banda de cierre de la home: el cue comercial azul con el lenguaje de
+   gradientes del sitio (navy → primary + glow) en vez de un plano sólido. */
+.commercial-band {
+  background:
+    radial-gradient(circle at 88% 18%, rgba(96, 165, 250, 0.3), transparent 22rem),
+    linear-gradient(120deg, var(--deep) 0%, var(--primary-strong) 52%, var(--primary) 100%);
+}
+
+/* Sección oscura de medios en la home: fotos y posters de video ganan contraste
+   sobre navy y restaura el ritmo claro/oscuro entre las secciones claras. */
+.media-band {
+  background:
+    radial-gradient(circle at 12% 88%, rgba(74, 144, 196, 0.16), transparent 22rem),
+    linear-gradient(180deg, var(--background) 0%, var(--ink) 100%);
 }
 
 .supplier-brand-card {
@@ -780,10 +811,11 @@ svg {
   max-width: 86%;
 }
 
-/* Solo Medacta (única card con esta clase): se agranda respecto al resto */
+/* Medacta: wordmark apaisado con una línea de texto chica; un poco más de alto
+   que los logos wide para mantener legibilidad sin desbordar la card (h-20). */
 .supplier-logo-mark {
-  max-height: 4.2rem;
-  max-width: 88%;
+  max-height: 2.7rem;
+  max-width: 92%;
 }
 
 /* Solo Implantes Villalba (única card con esta clase): también agrandado */
@@ -842,7 +874,7 @@ svg {
 }
 
 .value-pillars-band {
-  background-color: #17325a;
+  background-color: var(--deep);
   box-shadow:
     inset 0 1px 0 rgba(143, 179, 226, 0.08),
     inset 0 -1px 0 rgba(15, 23, 42, 0.26);
@@ -878,27 +910,13 @@ svg {
     bottom: 1.25rem;
   }
 
-  .site-header[data-transparent="true"] .site-header-inner {
-    height: 5.5rem;
-    min-height: 5.5rem;
-  }
-
-  .site-header[data-menu-open="true"][data-home-header="true"] .site-header-inner {
-    height: 5.5rem;
-    min-height: 5.5rem;
-  }
-
-  .site-header[data-transparent="true"] .site-logo-mark {
-    height: 3.25rem;
-    width: 3.25rem;
-  }
-
-  .site-header[data-transparent="true"] .site-logo-title {
-    font-size: 1.2rem;
-  }
-
-  .site-header[data-transparent="true"] .site-logo-subtitle {
-    font-size: 0.68rem;
+  /* Estado "logo grande" en mobile: altura fija más compacta. */
+  .site-header {
+    --header-big-h: 5.5rem;
+    --header-big-min: 5.5rem;
+    --logo-big: 3.25rem;
+    --title-big: 1.2rem;
+    --subtitle-big: 0.68rem;
   }
 }
 
@@ -1030,21 +1048,6 @@ svg {
     color-mix(in srgb, var(--brand) 8%, transparent) 55%,
     transparent 70%
   );
-}
-
-.reveal {
-  animation: fade-slide-up 500ms var(--ease-out) both;
-}
-
-@keyframes fade-slide-up {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 /* La imagen entra solo con escala: NO se anima la opacity del panel, porque el

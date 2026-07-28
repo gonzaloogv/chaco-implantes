@@ -8,7 +8,6 @@ import {
   featuredEvent,
   heroSlides,
   images,
-  professionalBlocks,
   supplierSystems,
   valuePillars,
   videos,
@@ -121,7 +120,7 @@ import {
             <span class="h-px w-6 bg-brand"></span>
             Catálogo por especialidad
           </span>
-          <h2 class="mt-3 font-display text-2xl font-black text-deep sm:text-4xl">Líneas de productos</h2>
+          <h2 class="mt-3 font-display text-2xl font-extrabold text-deep sm:text-4xl">Líneas de productos</h2>
           <p class="mt-2 max-w-2xl text-muted-foreground">Prótesis, implantes e instrumental organizados por especialidad.</p>
         </div>
         <a href="/catalogos" class="link-primary-soft inline-flex items-center gap-1.5 text-sm font-semibold">
@@ -136,13 +135,13 @@ import {
   </section>
 
   <section data-suppliers-section class="suppliers-section">
-    <div class="mx-auto max-w-5xl px-4 py-14 text-white sm:px-6 sm:py-16 lg:px-8">
+    <div class="mx-auto max-w-7xl px-4 py-16 text-white sm:px-6 lg:px-8">
       <div class="max-w-2xl">
         <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase text-primary-glow">
           <span class="h-px w-6 bg-primary-glow"></span>
           Proveedores y sistemas
         </span>
-        <h2 class="mt-3 font-display text-2xl font-black sm:text-3xl">Líneas destacadas para resolver cada procedimiento</h2>
+        <h2 class="mt-3 font-display text-2xl font-extrabold sm:text-3xl">Líneas destacadas para resolver cada procedimiento</h2>
         <p class="mt-3 max-w-xl text-sm leading-relaxed text-brand sm:text-base">
           Combinamos sistemas internacionales, líneas exclusivas y productos nacionales para dar respuesta comercial, disponibilidad e instrumental según cada caso.
         </p>
@@ -162,68 +161,85 @@ import {
               alt={item.logoAlt}
               width={item.logoWidth}
               height={item.logoHeight}
-              loading="eager"
+              loading="lazy"
               decoding="async"
               class:list={["supplier-logo", item.logoClass]}
             />
           </a>
         ))}
-        <article class="supplier-brand-card supplier-brand-card-muted flex h-20 items-center justify-center rounded-lg border px-5 py-3">
-          <span class="font-display text-sm font-semibold text-brand">+ otras líneas</span>
-        </article>
+        <a
+          href={wa.lineaFaltante}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="supplier-brand-card supplier-brand-card-muted group col-span-2 flex h-16 items-center justify-center gap-2 rounded-lg border px-5 py-3 sm:col-span-4"
+        >
+          <span class="font-display text-sm font-semibold text-brand">Consultar otras líneas</span>
+          <Icon name="arrow-right" class="h-4 w-4 text-brand transition-transform duration-200 ease-out group-hover:translate-x-1" />
+        </a>
       </div>
     </div>
   </section>
 
-  <section id="profesionales" class="scroll-mt-20 border-b border-border bg-surface">
+  <section class="bg-surface">
     <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
       <div class="max-w-2xl">
-        <h2 class="font-display text-2xl font-bold text-deep sm:text-3xl">
-          Trabajamos con traumatólogos, cirujanos, clínicas y sanatorios
-        </h2>
+        <h2 class="font-display text-2xl font-extrabold text-deep sm:text-3xl">Presencia activa en congresos y formación profesional</h2>
       </div>
 
-      <div class="mt-8 grid gap-4 sm:grid-cols-2">
-        {
-          professionalBlocks.map((block) => (
-            <article class="pro-card flex items-start gap-4 rounded-lg border bg-card p-5">
-              <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-primary ring-1 ring-border">
-                <Icon name={block.icon} class="h-4 w-4" />
-              </div>
-              <div>
-                <h3 class="font-display text-base font-semibold text-deep">{block.title}</h3>
-                <p class="mt-1 text-sm text-muted-foreground">{block.text}</p>
-              </div>
-            </article>
-          ))
-        }
-      </div>
+      <article class="mt-8 overflow-hidden rounded-2xl border border-border bg-card shadow-sm md:grid md:grid-cols-2">
+        <div class="relative aspect-[16/10] md:aspect-auto">
+          <img
+            src={featuredEvent.image}
+            alt={featuredEvent.imageAlt}
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover"
+          />
+        </div>
+        <div class="flex flex-col justify-center p-6 sm:p-8">
+          <span class="inline-flex w-fit items-center rounded-full bg-secondary px-3 py-1 text-xs font-medium text-primary ring-1 ring-border">
+            {featuredEvent.badge}
+          </span>
+          <h3 class="mt-3 font-display text-xl font-semibold text-deep">
+            {featuredEvent.title}
+          </h3>
+          <p class="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
+            <Icon name="map-pin" class="h-4 w-4 text-primary" /> {featuredEvent.venue}
+          </p>
+          <p class="mt-4 text-sm leading-relaxed text-muted-foreground">
+            {featuredEvent.description}
+          </p>
+          <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+            <a
+              href={wa.congreso}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-primary inline-flex w-fit items-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold"
+            >
+              <Icon name="message-circle" class="h-4 w-4" /> Consultanos
+            </a>
+            <a href="/eventos" class="btn-secondary inline-flex w-fit items-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold">
+              Ver todos los eventos <Icon name="arrow-right" class="h-4 w-4" />
+            </a>
+          </div>
+        </div>
+      </article>
 
     </div>
   </section>
 
-  <section class="bg-ink">
-    <div class="mx-auto max-w-3xl px-4 py-12 text-center sm:px-6 sm:py-14 lg:px-8">
-      <div class="reveal">
-        <span class="mx-auto block h-px w-10 bg-brand"></span>
-        <p class="mt-5 font-display text-xl font-black leading-snug text-white sm:text-3xl">
-          Calidad que se siente. Confianza que se nota.
-        </p>
-        <p class="mt-3 text-sm leading-relaxed text-white/75 sm:text-base">
-          Acompañamos a clínicas y sanatorios con logística confiable de prótesis, implantes e instrumental.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section class="border-b border-border bg-surface-2/45">
+  <section class="media-band">
     <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
       <div class="max-w-2xl">
-        <h2 class="font-display text-2xl font-bold text-deep sm:text-3xl">{videos.length > 0 ? "Galería y videos" : "Galería"}</h2>
-        <p class="mt-2 text-muted-foreground">
+        <h2 class="font-display text-2xl font-extrabold text-white sm:text-3xl">
           {videos.length > 0
-            ? "Recorré nuestras fotos de productos e instrumental, y nuestros videos institucionales."
-            : "Recorré nuestras fotos de productos, instrumental y actividades profesionales."}
+            ? "Productos, instrumental y quirófano, en imágenes y video"
+            : "Productos, instrumental y quirófano, en imágenes"}
+        </h2>
+        <p class="mt-2 text-brand">
+          {videos.length > 0
+            ? "Fotos y recorridos audiovisuales de las líneas, el instrumental y la actividad con profesionales e instituciones."
+            : "Fotos de las líneas, el instrumental y la actividad con profesionales e instituciones."}
         </p>
       </div>
 
@@ -273,12 +289,15 @@ import {
     </div>
   </section>
 
-  <section data-commercial-band="primary" class="bg-primary">
-    <div class="mx-auto flex max-w-7xl flex-col items-start gap-5 px-4 py-12 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+  <section id="profesionales" data-commercial-band="primary" class="commercial-band scroll-mt-20">
+    <div class="mx-auto flex max-w-7xl flex-col items-start gap-5 px-4 py-14 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
       <div class="max-w-xl">
-        <h2 class="font-display text-xl font-semibold text-white sm:text-2xl">Consultas comerciales e institucionales</h2>
-        <p class="mt-2 text-sm text-white">
-          Coordinamos pedidos, disponibilidad y suministro de prótesis, implantes e instrumental para profesionales, clínicas y sanatorios.
+        <p class="font-display text-sm font-bold uppercase text-primary-glow">
+          Calidad que se siente. Confianza que se nota.
+        </p>
+        <h2 class="mt-2 font-display text-xl font-extrabold text-white sm:text-2xl">Trabajamos con traumatólogos, cirujanos, clínicas y sanatorios</h2>
+        <p class="mt-2 text-sm text-white/85">
+          Consultas comerciales e institucionales: coordinamos pedidos, disponibilidad y suministro de prótesis, implantes e instrumental.
         </p>
       </div>
       <div class="flex w-full flex-col gap-3 sm:flex-row lg:w-auto">
@@ -294,54 +313,6 @@ import {
           Ver catálogos <Icon name="arrow-right" class="h-4 w-4" />
         </a>
       </div>
-    </div>
-  </section>
-
-  <section class="border-t border-border bg-surface">
-    <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-      <div class="max-w-2xl">
-        <h2 class="font-display text-2xl font-bold text-deep sm:text-3xl">Eventos y capacitaciones</h2>
-      </div>
-
-      <article class="reveal mt-8 overflow-hidden rounded-2xl border border-border bg-card shadow-sm md:grid md:grid-cols-2">
-        <div class="relative aspect-[16/10] md:aspect-auto">
-          <img
-            src={featuredEvent.image}
-            alt={featuredEvent.imageAlt}
-            loading="lazy"
-            decoding="async"
-            class="h-full w-full object-cover"
-          />
-        </div>
-        <div class="flex flex-col justify-center p-6 sm:p-8">
-          <span class="inline-flex w-fit items-center rounded-full bg-secondary px-3 py-1 text-xs font-medium text-primary ring-1 ring-border">
-            Actividad profesional
-          </span>
-          <h3 class="mt-3 font-display text-xl font-semibold text-deep">
-            {featuredEvent.title}
-          </h3>
-          <p class="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
-            <Icon name="map-pin" class="h-4 w-4 text-primary" /> {featuredEvent.venue}
-          </p>
-          <p class="mt-4 text-sm leading-relaxed text-muted-foreground">
-            {featuredEvent.description}
-          </p>
-          <div class="mt-6 flex flex-col gap-3 sm:flex-row">
-            <a
-              href={wa.congreso}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="btn-primary inline-flex w-fit items-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold"
-            >
-              <Icon name="message-circle" class="h-4 w-4" /> Consultanos
-            </a>
-            <a href="/eventos" class="btn-secondary inline-flex w-fit items-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold">
-              Ver todos los eventos <Icon name="arrow-right" class="h-4 w-4" />
-            </a>
-          </div>
-        </div>
-      </article>
-
     </div>
   </section>
 </BaseLayout>

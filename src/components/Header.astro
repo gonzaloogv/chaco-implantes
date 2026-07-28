@@ -14,9 +14,9 @@ const isActive = (href: string) => {
   data-site-header
   data-home-header={isHome ? "true" : "false"}
   data-transparent={isHome ? "true" : "false"}
-  class="site-header fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300"
+  class="site-header fixed inset-x-0 top-0 z-50 border-b"
 >
-  <div class="site-header-inner flex w-full items-center justify-between px-4 transition-[height] duration-300 lg:px-10">
+  <div class="site-header-inner flex w-full items-center justify-between px-4 lg:px-10">
     <a href="/" class="group flex items-center gap-3" aria-label={`${site.name} - inicio`}>
       <img
         src={images.logoCircularWhite}
@@ -109,6 +109,8 @@ const isActive = (href: string) => {
 </header>
 
 <script>
+  import { computeHeaderVisualState } from "../scripts/header-shrink.mjs";
+
   const header = document.querySelector("[data-site-header]");
   const toggle = document.querySelector("[data-menu-toggle]");
   const menu = document.querySelector("[data-mobile-menu]");
@@ -119,9 +121,45 @@ const isActive = (href: string) => {
     if (!(header instanceof HTMLElement)) return;
     const isHomeHeader = header.dataset.homeHeader === "true";
     const menuOpen = toggle?.getAttribute("aria-expanded") === "true";
-    const transparent = isHomeHeader && window.scrollY < 60 && !menuOpen;
+    const rootFontSize =
+      Number.parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    const visualState = computeHeaderVisualState({
+      isHome: isHomeHeader,
+      reducedMotion: reduceMotion.matches,
+      rootFontSize,
+      scrollY: window.scrollY,
+      viewportHeight: window.innerHeight,
+      viewportWidth: window.innerWidth,
+    });
+
+    header.style.setProperty("--header-height", `${visualState.headerHeight}px`);
+    header.style.setProperty("--logo-size", `${visualState.logoSize}px`);
+    header.style.setProperty("--logo-title-size", `${visualState.titleSize}px`);
+    header.style.setProperty("--logo-subtitle-size", `${visualState.subtitleSize}px`);
+    header.style.setProperty(
+      "--header-background-alpha",
+      String(visualState.backgroundAlpha),
+    );
+    header.style.setProperty("--header-border-alpha", String(visualState.borderAlpha));
+    header.style.setProperty("--header-blur", `${visualState.blur}px`);
+    header.style.setProperty("--header-shadow-alpha", String(visualState.shadowAlpha));
+    header.style.setProperty("--logo-glow-size", `${visualState.logoGlowSize}px`);
+    header.style.setProperty("--logo-glow-alpha", String(visualState.logoGlowAlpha));
     header.dataset.menuOpen = String(menuOpen);
-    header.dataset.transparent = String(transparent);
+    header.dataset.transparent = String(
+      isHomeHeader && visualState.shrink === 0 && !menuOpen,
+    );
+  };
+
+  // Las actualizaciones van por rAF: una por frame como máximo durante el scroll
+  let shrinkTicking = false;
+  const syncHeaderFrame = () => {
+    if (shrinkTicking) return;
+    shrinkTicking = true;
+    window.requestAnimationFrame(() => {
+      syncHeader();
+      shrinkTicking = false;
+    });
   };
 
   const setMenuState = (open: boolean) => {
@@ -152,6 +190,8 @@ const isActive = (href: string) => {
     setMenuState(!expanded);
   });
 
-  window.addEventListener("scroll", syncHeader, { passive: true });
+  window.addEventListener("scroll", syncHeaderFrame, { passive: true });
+  window.addEventListener("resize", syncHeaderFrame, { passive: true });
+  reduceMotion.addEventListener("change", syncHeaderFrame);
   syncHeader();
 </script>

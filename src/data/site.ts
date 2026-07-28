@@ -284,7 +284,7 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Caja de instrumental",
     description:
       "Instrumental asociado a sistemas Charnley-Müller para procedimientos de cadera y recambios planificados.",
-    image: images.productos,
+    image: categoryImages.cadera,
     href: "/catalogos/cadera/productos/charnley-muller",
   },
   {
@@ -294,7 +294,7 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Caja de instrumental",
     description:
       "Caja de instrumental Thompson para resolver preparación, prueba y asistencia intraoperatoria en procedimientos de cadera.",
-    image: images.hero,
+    image: categoryImages.cadera,
     href: "/catalogos/cadera/productos/thompson",
   },
   {
@@ -304,7 +304,7 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Caja de instrumental",
     description:
       "Instrumental Judett Plus orientado a equipos que requieren organización clara de componentes y disponibilidad por cirugía.",
-    image: images.productos,
+    image: categoryImages.cadera,
     href: "/catalogos/cadera/productos/judett-plus",
   },
   {
@@ -324,7 +324,7 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Caja de instrumental",
     description:
       "Caja de instrumental Explant para extracción, recambio y asistencia técnica en escenarios de mayor complejidad.",
-    image: images.heroBg,
+    image: categoryImages.cadera,
     href: "/catalogos/cadera/productos/explant",
   },
   {
@@ -344,7 +344,7 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Caja de instrumental",
     description:
       "Opciones de refuerzo acetabular para casos que requieren soporte adicional, planificación de medidas y coordinación previa.",
-    image: categoryImages["osteosintesis-placas"],
+    image: categoryImages.cadera,
     href: "/catalogos/cadera/productos/refuerzo-acetabular",
   },
   {
@@ -374,7 +374,7 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Caja de instrumental",
     description:
       "Instrumental Monoblock para preparación y asistencia en procedimientos de cadera con necesidades de caja específica.",
-    image: images.hero,
+    image: categoryImages.cadera,
     href: "/catalogos/cadera/productos/monoblock",
   },
   {
@@ -414,7 +414,7 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Tallo no cementado",
     description:
       "Tallo delta para reemplazo de cadera no cementado, con acceso rápido al PDF y detalle de uso comercial inicial.",
-    image: images.productos,
+    image: categoryImages.cadera,
     href: "/catalogos/cadera/productos/tallo-delta",
   },
   {
@@ -434,7 +434,7 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Caja de instrumental",
     description:
       "Suplementos para rodilla ANV II orientados a complementar la línea principal con componentes e instrumental de apoyo por procedimiento.",
-    image: images.productos,
+    image: categoryImages.rodilla,
     href: "/catalogos/rodilla/productos/suplementos-anv-ii",
   },
   {
@@ -454,7 +454,7 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Caja de instrumental",
     description:
       "Sistema de rodilla modular para procedimientos de reemplazo y revisión, con opciones de configuración y coordinación de instrumental.",
-    image: images.productos,
+    image: categoryImages.rodilla,
     href: "/catalogos/rodilla/productos/rodilla-modular",
   },
   {
@@ -494,7 +494,7 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Clavo de fémur",
     description:
       "Clavo de fémur Gamma GN para osteosíntesis proximal, con componentes e instrumental para coordinar disponibilidad por procedimiento.",
-    image: images.productos,
+    image: categoryImages["osteosintesis-tornillos"],
     href: "/catalogos/osteosintesis-tornillos/productos/gamma-gn",
   },
   {
@@ -514,7 +514,7 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Caja de instrumental",
     description:
       "Caja de instrumental para clavo placa tubo deslizante Richard, con referencias para planificación y coordinación comercial.",
-    image: images.productos,
+    image: categoryImages["osteosintesis-tornillos"],
     href: "/catalogos/osteosintesis-tornillos/productos/clavo-placa-tubo-deslizante-richard",
   },
   {
@@ -614,7 +614,7 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Placa",
     description:
       "Placa volar poliaxial para fijación con opciones de orientación, medidas e instrumental por procedimiento.",
-    image: images.productos,
+    image: categoryImages["osteosintesis-placas"],
     href: "/catalogos/osteosintesis-placas/productos/volar-poliaxial",
   },
   {
@@ -654,7 +654,7 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Tornillos canulados",
     description:
       "Tornillos canulados de Ø3,5 y Ø4,5 mm para fijación, con referencias de medidas y coordinación de disponibilidad.",
-    image: images.productos,
+    image: categoryImages["osteosintesis-placas"],
     href: "/catalogos/osteosintesis-placas/productos/tornillos-canulados-35-45mm",
   },
   {
@@ -664,7 +664,7 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Minifragmentos",
     description:
       "Minifragmentos bloqueados de titanio de Ø1,5 y Ø2,0 mm, con instrumental y referencias para sistemas pequeños.",
-    image: images.hero,
+    image: categoryImages["osteosintesis-placas"],
     href: "/catalogos/osteosintesis-placas/productos/minifragmentos-15-20mm",
   },
   {
@@ -674,7 +674,7 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Tornillos canulados",
     description:
       "Tornillos canulados de Ø2,7 mm para fijación, con información de referencias y soporte para consulta comercial.",
-    image: images.productos,
+    image: categoryImages["osteosintesis-placas"],
     href: "/catalogos/osteosintesis-placas/productos/tornillos-canulados-27mm",
   },
   {
@@ -948,26 +948,3 @@ const synchronizedMedia = buildSiteMediaCollections({
 
 export const gallery = synchronizedMedia.gallery;
 export const videos = synchronizedMedia.videos;
-
-export const professionalBlocks = [
-  {
-    icon: "calendar-clock",
-    title: "Pedidos programados",
-    text: "Coordinación de implantes e instrumental para cirugías programadas.",
-  },
-  {
-    icon: "building-2",
-    title: "Clínicas y sanatorios",
-    text: "Atención a instituciones de salud de Resistencia y la región.",
-  },
-  {
-    icon: "wrench",
-    title: "Instrumental para quirófano",
-    text: "Cajas e instrumental específico por sistema de implantes.",
-  },
-  {
-    icon: "briefcase",
-    title: "Coordinación comercial",
-    text: "Disponibilidad, reposición y seguimiento de requerimientos.",
-  },
-] as const;
