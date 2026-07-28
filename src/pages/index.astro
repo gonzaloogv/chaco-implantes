@@ -33,8 +33,7 @@ import {
         class="hero-bg-slide hero-photo-glow pointer-events-none absolute inset-0 h-full w-full object-cover"
       />
     ))}
-    <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,#0f172a_0%,rgba(15,23,42,0.92)_32%,rgba(25,35,56,0.52)_58%,rgba(25,35,56,0.05)_100%)]"></div>
-    <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_22%_38%,rgba(74,144,196,0.22),transparent_28rem)]"></div>
+    <div aria-hidden="true" class="home-hero-overlay"></div>
 
     <div class="relative z-10 mx-auto flex w-full max-w-7xl items-center px-4 pb-12 pt-32 sm:px-6 lg:px-8 lg:pb-20 lg:pt-36">
       <div class="w-full max-w-3xl">
@@ -49,14 +48,14 @@ import {
                 index !== 0 && "pointer-events-none",
               ]}
             >
-              <span class="inline-flex w-fit items-center gap-2 rounded-full border border-primary/35 bg-primary/15 px-3 py-2 text-xs font-bold uppercase text-brand shadow-[0_0_24px_rgba(74,144,196,0.18)]">
+              <span class="home-hero-eyebrow inline-flex w-fit items-center gap-2 rounded-full border border-primary/35 bg-primary/15 px-3 py-2 text-xs font-bold uppercase text-brand shadow-[0_0_24px_rgba(74,144,196,0.18)]">
                 <span class="h-2 w-2 rounded-full bg-primary shadow-[0_0_10px_rgba(74,144,196,0.9)]"></span>
                 {slide.eyebrow}
               </span>
-              <h2 class="mt-5 font-display text-4xl font-black leading-[1.02] text-white sm:text-5xl lg:text-7xl">
+              <h2 class="home-hero-title mt-5 font-display text-4xl font-black leading-[1.02] text-white sm:text-5xl lg:text-7xl">
                 {slide.title}
               </h2>
-              <p class="mt-5 max-w-2xl text-base leading-relaxed text-brand sm:text-xl">{slide.text}</p>
+              <p class="home-hero-copy mt-5 max-w-2xl text-base leading-relaxed text-brand sm:text-xl">{slide.text}</p>
               <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <a href={slide.href} class="btn-primary-soft inline-flex w-full items-center justify-center gap-2 rounded-md px-6 py-3.5 text-sm font-bold sm:w-auto">
                   {slide.ctaLabel} <Icon name="arrow-right" class="h-4 w-4" />
@@ -121,10 +120,10 @@ import {
     </div>
   </section>
 
-  <section data-home-section="products" data-home-tone="0" class="section-dark-gradient">
-    <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+  <section data-home-section="products" data-home-tone="0" class="home-content-section home-content-section--base">
+    <div class="home-content-section__inner">
       <div class="flex flex-wrap items-end justify-between gap-4">
-        <div>
+        <div class="home-section-heading">
           <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase text-primary">
             <span class="h-px w-6 bg-brand"></span>
             Catálogo por especialidad
@@ -137,32 +136,32 @@ import {
         </a>
       </div>
 
-      <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="home-products-grid">
         {featuredCategories.map((category) => <CatalogCard category={category} compact />)}
       </div>
     </div>
   </section>
 
-  <section data-home-section="suppliers" data-home-tone="0" data-suppliers-section class="suppliers-section">
-    <div class="mx-auto max-w-7xl px-4 py-16 text-white sm:px-6 lg:px-8">
-      <div class="max-w-2xl">
+  <section data-home-section="suppliers" data-home-tone="0" data-suppliers-section class="home-content-section home-content-section--tint">
+    <div class="home-content-section__inner">
+      <div class="home-section-heading">
         <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase text-primary-glow">
           <span class="h-px w-6 bg-primary-glow"></span>
           Proveedores y sistemas
         </span>
         <h2 class="mt-3 font-display text-2xl font-extrabold sm:text-3xl">Líneas destacadas para resolver cada procedimiento</h2>
-        <p class="mt-3 max-w-xl text-sm leading-relaxed text-brand sm:text-base">
+        <p class="mt-3 max-w-xl text-sm leading-relaxed sm:text-base">
           Combinamos sistemas internacionales, líneas exclusivas y productos nacionales para dar respuesta comercial, disponibilidad e instrumental según cada caso.
         </p>
       </div>
 
-      <div class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div class="home-suppliers-grid">
         {supplierSystems.map((item) => (
           <a
             href={item.href}
             target="_blank"
             rel="noopener noreferrer"
-            class="supplier-brand-card flex h-20 items-center justify-center rounded-lg border px-5 py-3"
+            class="supplier-brand-card"
             aria-label={`Visitar sitio de ${item.name}`}
           >
             <img
@@ -180,7 +179,7 @@ import {
           href={wa.lineaFaltante}
           target="_blank"
           rel="noopener noreferrer"
-          class="supplier-brand-card supplier-brand-card-muted group col-span-2 flex h-16 items-center justify-center gap-2 rounded-lg border px-5 py-3 sm:col-span-4"
+          class="supplier-brand-card supplier-brand-card-muted group"
         >
           <span class="font-display text-sm font-semibold text-brand">Consultar otras líneas</span>
           <Icon name="arrow-right" class="h-4 w-4 text-brand transition-transform duration-200 ease-out group-hover:translate-x-1" />
@@ -208,13 +207,13 @@ import {
     </div>
   </section>
 
-  <section data-home-section="congresses" data-home-tone="0" class="bg-surface">
-    <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-      <div class="max-w-2xl">
+  <section data-home-section="congresses" data-home-tone="0" class="home-content-section home-content-section--base">
+    <div class="home-content-section__inner">
+      <div class="home-section-heading">
         <h2 class="font-display text-2xl font-extrabold text-deep sm:text-3xl">Presencia activa en congresos y formación profesional</h2>
       </div>
 
-      <article class="mt-8 overflow-hidden rounded-2xl border border-border bg-card shadow-sm md:grid md:grid-cols-2">
+      <article class="home-event-card">
         <div class="relative aspect-[16/10] md:aspect-auto">
           <img
             src={featuredEvent.image}
@@ -256,23 +255,23 @@ import {
     </div>
   </section>
 
-  <section data-home-section="multimedia" data-home-tone="0" class="media-band">
-    <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-      <div class="max-w-2xl">
-        <h2 class="font-display text-2xl font-extrabold text-white sm:text-3xl">
+  <section data-home-section="multimedia" data-home-tone="0" class="home-content-section home-content-section--tint">
+    <div class="home-content-section__inner">
+      <div class="home-section-heading">
+        <h2 class="font-display text-2xl font-extrabold sm:text-3xl">
           {videos.length > 0
             ? "Productos, instrumental y quirófano, en imágenes y video"
             : "Productos, instrumental y quirófano, en imágenes"}
         </h2>
-        <p class="mt-2 text-brand">
+        <p class="mt-2">
           {videos.length > 0
             ? "Fotos y recorridos audiovisuales de las líneas, el instrumental y la actividad con profesionales e instituciones."
             : "Fotos de las líneas, el instrumental y la actividad con profesionales e instituciones."}
         </p>
       </div>
 
-      <div class:list={["mt-8 grid gap-5", videos.length > 0 && "sm:grid-cols-2"]}>
-        <a href="/galeria" class="catalog-image-card card-link group relative flex h-60 flex-col justify-end overflow-hidden rounded-xl border border-border bg-deep">
+      <div class:list={["home-media-grid", videos.length === 0 && "home-media-grid--single"]}>
+        <a data-home-media-card="gallery" href="/galeria" class="home-media-card catalog-image-card card-link group">
           <img
             src={categoryImages["instrumental-quirurgico"]}
             alt="Galería de productos e instrumental"
@@ -293,7 +292,7 @@ import {
         </a>
 
         {videos.length > 0 && (
-          <a href="/videos" class="catalog-image-card card-link group relative flex h-60 flex-col justify-end overflow-hidden rounded-xl border border-border bg-deep">
+          <a data-home-media-card="videos" href="/videos" class="home-media-card catalog-image-card card-link group">
             <img
               src={images.quirofano}
               alt="Videos institucionales"

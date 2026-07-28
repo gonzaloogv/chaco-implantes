@@ -115,3 +115,34 @@ test("defines accent geometry once for all three bands", () => {
     /\.home-accent-band(?:--[\w-]+)?\s*\{[^}]*\bheight\s*:/,
   );
 });
+
+test("assigns each clear section the approved responsive grid", () => {
+  for (const className of [
+    "home-products-grid",
+    "home-suppliers-grid",
+    "home-event-card",
+    "home-media-grid",
+  ]) {
+    assert.ok(
+      indexSource.includes(className),
+      `index.astro should use ${className}`,
+    );
+  }
+
+  assert.match(
+    homeCss,
+    /\.home-products-grid\s*\{[^}]*grid-template-columns:\s*repeat\(3,/s,
+  );
+  assert.match(
+    homeCss,
+    /\.home-suppliers-grid\s*\{[^}]*grid-template-columns:\s*repeat\(4,/s,
+  );
+  assert.match(
+    homeCss,
+    /\.home-media-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2,/s,
+  );
+  assert.match(
+    homeCss,
+    /\.home-content-section\s*\{[^}]*min-block-size:\s*var\(--home-section-min-height\)/s,
+  );
+});

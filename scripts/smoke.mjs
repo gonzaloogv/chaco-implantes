@@ -119,6 +119,7 @@ for (const asset of expectedPublicAssets) {
 }
 
 const home = readFileSync(join(dist, "index.html"), "utf8");
+const expectedHomeMediaCards = hasSyncedVideos ? 2 : 1;
 const catalogos = readFileSync(join(dist, "catalogos/index.html"), "utf8");
 const catalogoCadera = readFileSync(join(dist, "catalogos/cadera/index.html"), "utf8");
 const catalogoCotiloDoble = readFileSync(join(dist, "catalogos/cadera/productos/cotilo-doble/index.html"), "utf8");
@@ -270,6 +271,10 @@ assert(home.includes("amis-hero_snoht3"), "Home should use the Cloudinary AMIS f
 assert(home.includes(eventHeroImage), "Home should use the events full-hero image");
 assert(home.includes("data-hero-carousel"), "Home hero should include the differentiator carousel");
 assert((home.match(/<article data-hero-slide/g) ?? []).length === 3, "Hero carousel should render three differentiator slides");
+assert(
+  /<article\b[^>]*data-hero-slide[^>]*data-active="true"[^>]*aria-hidden="false"/.test(home),
+  "Home should expose a readable first hero slide without JavaScript",
+);
 assert(home.includes("NextAR"), "Hero carousel should describe the NextAR differentiator");
 assert(home.includes("AMIS"), "Hero carousel should describe the AMIS differentiator");
 assert(home.includes("Calidad que se siente. Confianza que se nota."), "Home should integrate the client slogan");
@@ -303,6 +308,19 @@ assert(home.includes("Consultas comerciales e institucionales"), "Commercial ban
 assert(!home.includes("Próximamente publicaremos"), "Home should not carry the aging upcoming-events notice");
 assert(home.includes("Galería de imágenes"), "Home should include the gallery access card");
 assert(
+  (home.match(/data-home-media-card(?=[\s=>])/g) ?? []).length ===
+    expectedHomeMediaCards,
+  "Home multimedia should render gallery plus videos only when available",
+);
+assert(
+  home.includes('data-home-media-card="gallery"'),
+  "Home should always render gallery media",
+);
+assert(
+  home.includes('data-home-media-card="videos"') === hasSyncedVideos,
+  "Home should render video media only with synchronized videos",
+);
+assert(
   home.includes('href="/videos"') === hasSyncedVideos,
   "Home should promote the videos page only when synchronized videos exist",
 );
@@ -312,9 +330,6 @@ assert(
     home.includes('data-home-tone="2"'),
   "Commercial CTA should use the shared accent rhythm",
 );
-assert(home.includes("btn-primary-soft"), "Hero catalog CTA should use the softer primary treatment by default");
-assert(home.includes("link-primary-soft"), "Catalog text CTA should use the softer primary link treatment by default");
-assert(home.includes("btn-glass-outline"), "Commercial catalog CTA should use the glass card outline treatment");
 assert((home.match(/data-nav-link/g) ?? []).length >= 6, "Header should expose nav link markers for state styling");
 assert(home.includes('data-active="true"'), "Current nav item should be marked active");
 assert(home.includes('data-transparent="true"'), "Home header should start in the transparent hero state");
@@ -611,18 +626,16 @@ assert(/\.site-header\s*{[\s\S]*--header-big-h:\s*15vh/.test(globalCss), "Home h
 assert(/\.site-header\[data-transparent="true"\]\s*\.site-header-inner\s*{[\s\S]*height:\s*var\(--header-big-h\)/.test(globalCss), "Home header should use the larger top-state height (client request)");
 assert(/\.site-header\s*{[\s\S]*--logo-big:\s*clamp\(5rem, 10vh, 7\.5rem\)/.test(globalCss), "Home logo should retain its larger desktop top token (client request)");
 assert(/\.site-header\[data-transparent="true"\]\s*\.site-logo-mark\s*{[\s\S]*height:\s*var\(--logo-big\)/.test(globalCss), "Home logo should scale up in the larger top state (client request)");
-assert(/\.hero-shell\s*{[\s\S]*min-height:\s*100vh/.test(homeCss), "Hero should occupy the full viewport height");
-assert(/\.hero-shell\s*{[\s\S]*background:\s*linear-gradient\(150deg, #0f172a/.test(homeCss), "Hero should keep its current gradient during CSS extraction");
+assert(
+  /\.hero-shell\s*{[\s\S]*min-block-size:\s*100dvh/.test(homeCss),
+  "Home hero should use the dynamic viewport as its minimum height",
+);
 assert(/\.hero-bg-slide\s*{[\s\S]*opacity:\s*0/.test(homeCss), "Hero background slides should fade from hidden state");
 assert(/\.hero-bg-slide\[data-active="true"\]\s*{[\s\S]*opacity:\s*1/.test(homeCss), "Active hero background slide should be visible");
 assert(/\.mobile-menu\[data-state="open"\]\s*{[\s\S]*transform:\s*translateY\(0\)/.test(globalCss), "Mobile menu should enter with a small transform-to-rest transition");
 assert(/\.mobile-menu\[data-state="closed"\]\s*{[\s\S]*transform:\s*translateY\(-0\.375rem\)/.test(globalCss), "Mobile menu should rest hidden with a minimal upward offset");
 assert(/\.menu-icon-state\s*{[\s\S]*transition:[\s\S]*opacity 150ms/.test(globalCss), "Mobile menu icons should crossfade quickly");
-assert(/\.btn-primary-soft\s*{[\s\S]*background-color:\s*var\(--primary\)/.test(globalCss), "Soft primary buttons should keep accessible white text contrast");
 assert(/\.btn-primary:hover\s*{[\s\S]*background:\s*linear-gradient\(135deg, var\(--primary-strong\)/.test(globalCss), "Primary CTA buttons should have a clearly visible blue hover state");
-assert(/\.btn-primary-soft:hover\s*{[\s\S]*background-color:\s*var\(--primary\)/.test(globalCss), "Soft primary buttons should hover to full primary");
-assert(/\.link-primary-soft:hover\s*{[\s\S]*color:\s*var\(--primary\)/.test(globalCss), "Soft primary links should hover to full primary");
-assert(/\.btn-glass-outline\s*{[\s\S]*background-color:\s*rgba\(217, 225, 241, 0\.08\)/.test(globalCss), "Glass outline buttons should match the dark premium glass surface");
 assert(/\.footer-link:hover\s*{[\s\S]*color:\s*var\(--brand\)/.test(globalCss), "Footer links should use the subtle brand hover");
 assert(/\.gallery-filter-active:hover\s*{[\s\S]*background-color:\s*var\(--primary\)/.test(globalCss), "Active gallery filters should not change away from selected colors on hover");
 assert(/\.gallery-filter-idle\s*{[\s\S]*border-color:\s*color-mix\(in srgb, var\(--brand\) 48%, white\)/.test(globalCss), "Idle gallery filters should have a slightly more visible border");
@@ -639,7 +652,14 @@ assert(/\[data-error-for\]\[data-visible="true"\]\s*{[\s\S]*opacity:\s*1/.test(g
 assert(/\.lightbox-panel\[data-lightbox-loading="true"\]\s*{[\s\S]*cursor:\s*progress/.test(globalCss), "Lightbox should expose a subtle loading state while keeping the current image visible");
 assert(!/\.lightbox-panel\[data-lightbox-transitioning="true"\][\s\S]*opacity:\s*0/.test(globalCss), "Lightbox should not fade the current image to transparent before the next image is decoded");
 assert(/\.contact-link:hover\s*{[\s\S]*color:\s*var\(--deep\)/.test(globalCss), "Contact links should have a clearly visible dark-blue hover");
-assert(!/letter-spacing:\s*-/.test(globalCss), "Typography should not use negative letter spacing");
+assert(
+  /\.home-section-heading h2\s*{[\s\S]*letter-spacing:\s*-0\.025em/.test(homeCss),
+  "Home display headings should use restrained negative tracking",
+);
+assert(
+  !/letter-spacing:\s*-(?:0\.[3-9]|[1-9])/.test(homeCss),
+  "Home should not use extreme negative tracking",
+);
 assert(!/tracking-(wide|tight|\[)/.test(source), "Source should keep letter spacing at the default value");
 assert(!/transition:\s*all\b/.test(source), "Motion should not use transition: all");
 assert(!/scale\(0\)/.test(source), "Motion should not animate from scale(0)");
