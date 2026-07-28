@@ -17,6 +17,10 @@ npm run check
 npm run build
 npm run test:cloudinary
 npm run verify:cloudinary-video-audio
+npm run test:home
+npm run test:header
+npm run verify:home-layout
+npm run verify:frontend
 npm run sync:cloudinary
 npm run test:smoke
 npm run test:video-player
@@ -128,9 +132,13 @@ Antes de entregar cambios, correr:
 ```bash
 npm run test:cloudinary
 npm run verify:cloudinary-video-audio
+npm run test:home
+npm run test:header
 npm run check
 npm run build
 npm run test:smoke
+npm run verify:home-layout
+npm run verify:frontend
 npm run test:video-player
 npm audit --omit=dev
 ```

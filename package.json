@@ -17,6 +17,8 @@
     "test:cloudinary": "node --test scripts/cloudinary-*.test.mjs scripts/sync-cloudinary.test.mjs",
     "test:smoke": "node scripts/smoke.mjs",
     "test:video-player": "node scripts/verify-video-player.mjs",
+    "verify:home-layout": "node scripts/verify-home-layout.mjs",
+    "verify:frontend": "npm run test:home && npm run test:header && npm run check && npm run build && npm run test:smoke && npm run verify:home-layout",
     "preview": "astro preview",
     "astro": "astro"
   },

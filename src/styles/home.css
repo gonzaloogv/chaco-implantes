@@ -463,6 +463,30 @@
   .home-suppliers-grid {
     grid-template-columns: minmax(0, 1fr);
   }
+
+  .home-accent-item {
+    padding-inline: 0.5rem;
+  }
+
+  .home-accent-grid > .home-accent-item:not(.home-process-item) {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .home-accent-label,
+  .home-process-item > :last-child {
+    overflow-wrap: anywhere;
+    font-size: 0.75rem;
+  }
+
+  .home-accent-cta {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home-accent-cta > :first-child {
+    grid-column: auto;
+  }
 }
 
 @media (min-width: 64rem) {
@@ -503,6 +527,6 @@
   .hero-slide,
   .supplier-brand-card,
   .home-media-card {
-    transition-duration: 0.01ms;
+    transition-duration: 0.01ms !important;
   }
 }
