@@ -204,16 +204,27 @@ const [featuredCategory, ...secondaryCategories] = featuredCategories;
             class="home-supplier-mark"
             aria-label={`Visitar sitio de ${item.name}`}
           >
-            <img
-              src={item.logo}
-              alt={item.logoAlt}
-              width={item.logoWidth}
-              height={item.logoHeight}
-              loading="lazy"
-              decoding="async"
-              class:list={["supplier-logo", item.logoClass]}
-            />
-            <span>{item.name}</span>
+            <div data-home-supplier-logo class="home-supplier-mark__logo">
+              <img
+                src={item.logo}
+                alt={item.logoAlt}
+                width={item.logoWidth}
+                height={item.logoHeight}
+                loading="lazy"
+                decoding="async"
+                class:list={["supplier-logo", item.logoClass]}
+              />
+            </div>
+            <div class="home-supplier-mark__footer">
+              <span class="home-supplier-mark__name">{item.name}</span>
+              <span
+                data-home-supplier-link-cue
+                class="home-supplier-mark__arrow"
+                aria-hidden="true"
+              >
+                <Icon name="arrow-right" class="h-3.5 w-3.5" />
+              </span>
+            </div>
           </a>
         ))}
         <a

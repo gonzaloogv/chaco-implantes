@@ -159,6 +159,40 @@ test("rebalances support, suppliers, and final CTA with the electric brand color
   );
 });
 
+test("presents supplier brands as crystal cards with optically balanced logos", () => {
+  assert.match(
+    indexSource,
+    /data-home-supplier-logo[^>]*class="home-supplier-mark__logo"/,
+  );
+  assert.match(
+    indexSource,
+    /data-home-supplier-link-cue[^>]*class="home-supplier-mark__arrow"/,
+  );
+  assert.match(
+    homeCss,
+    /\.home-supplier-marks\s*\{[^}]*gap:\s*clamp\(/s,
+  );
+  assert.match(
+    homeCss,
+    /\.home-supplier-mark\s*\{[^}]*border:\s*1px solid rgba\([^)]*\)[^}]*border-radius:\s*var\(--home-radius\)[^}]*background:\s*linear-gradient\([^}]*box-shadow:[^}]*inset/s,
+  );
+  assert.match(
+    homeCss,
+    /\.home-supplier-mark__logo\s*\{[^}]*min-height:\s*4rem[^}]*align-items:\s*center/s,
+  );
+
+  for (const logoClass of ["wide", "mark", "tall", "ross"]) {
+    assert.match(
+      homeCss,
+      new RegExp(
+        `\\.supplier-logo-${logoClass}\\s*\\{[^}]*--supplier-logo-scale:`,
+        "s",
+      ),
+      `missing optical scale for supplier-logo-${logoClass}`,
+    );
+  }
+});
+
 test("defines the editorial layout without legacy symmetry rules", () => {
   for (const selector of [
     ".home-trust-strip",
