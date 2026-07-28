@@ -673,12 +673,47 @@ svg {
   color: var(--brand-on-dark);
 }
 
-main:has([data-home-section="cta"]) + .site-footer .site-footer__grid {
-  padding-block-start: 5.5rem;
+.site-footer__grid {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  padding-block: clamp(3rem, 6vw, 5rem);
+}
+
+.site-footer__identity {
+  grid-column: span 5;
+}
+
+.site-footer__categories,
+.site-footer__sections {
+  grid-column: span 2;
+}
+
+.site-footer__contact {
+  grid-column: span 3;
 }
 
 .site-footer__legal {
   border-color: rgba(191, 214, 244, 0.14);
+}
+
+@media (max-width: 63.999rem) {
+  .site-footer__identity,
+  .site-footer__categories,
+  .site-footer__sections,
+  .site-footer__contact {
+    grid-column: span 6;
+  }
+}
+
+@media (max-width: 39.999rem) {
+  .site-footer__identity,
+  .site-footer__contact {
+    grid-column: 1 / -1;
+  }
+
+  .site-footer__categories,
+  .site-footer__sections {
+    grid-column: span 6;
+  }
 }
 
 .page-hero-dark {

@@ -150,6 +150,25 @@ test("defines the editorial layout without legacy symmetry rules", () => {
   );
 });
 
+test("keeps the footer content while exposing the compact layout", () => {
+  for (const className of [
+    "site-footer__identity",
+    "site-footer__categories",
+    "site-footer__sections",
+    "site-footer__contact",
+  ]) {
+    assert.ok(
+      footerSource.includes(className),
+      `missing footer group: ${className}`,
+    );
+  }
+
+  assert.doesNotMatch(
+    globalCss,
+    /main:has\(\[data-home-section="cta"\]\)\s*\+\s*\.site-footer/,
+  );
+});
+
 test("removes superseded declarations without touching shared components", () => {
   assert.doesNotMatch(globalCss, /--ease-in-out:/);
   assert.doesNotMatch(homeCss, /\.section-dark-gradient/);

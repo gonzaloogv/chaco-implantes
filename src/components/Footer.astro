@@ -7,8 +7,8 @@ const currentYear = new Date().getFullYear();
 
 <footer data-site-footer data-home-tone="1" class="site-footer relative overflow-hidden">
   <div aria-hidden="true" class="brand-medallion pointer-events-none absolute -left-28 -bottom-28 h-[360px] w-[360px] rounded-full opacity-30"></div>
-  <div class="site-footer__grid relative mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-4 lg:px-8">
-    <div>
+  <div class="site-footer__grid relative mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:px-8">
+    <div class="site-footer__identity">
       <a href="/" class="flex items-center gap-2.5">
         <img
           src={images.logoCircularWhite}
@@ -23,7 +23,7 @@ const currentYear = new Date().getFullYear();
       <p class="mt-4 text-sm font-semibold uppercase text-brand">{site.tagline}</p>
     </div>
 
-    <div>
+    <div class="site-footer__categories">
       <h2 class="font-display text-sm font-semibold text-white">Categorías</h2>
       <ul class="mt-4 space-y-2 text-sm">
         {
@@ -38,7 +38,7 @@ const currentYear = new Date().getFullYear();
       </ul>
     </div>
 
-    <div>
+    <div class="site-footer__sections">
       <h2 class="font-display text-sm font-semibold text-white">Secciones</h2>
       <ul class="mt-4 space-y-2 text-sm">
         {footerNav.map((item) => (
@@ -51,7 +51,7 @@ const currentYear = new Date().getFullYear();
       </ul>
     </div>
 
-    <div>
+    <div class="site-footer__contact">
       <h2 class="font-display text-sm font-semibold text-white">Contacto</h2>
       <ul class="mt-4 space-y-3 text-sm text-[#D9E1F1]">
         <li class="flex items-start gap-2">
