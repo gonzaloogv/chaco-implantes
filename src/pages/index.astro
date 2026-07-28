@@ -15,6 +15,8 @@ import {
   videos,
   wa,
 } from "../data/site";
+
+const [featuredCategory, ...secondaryCategories] = featuredCategories;
 ---
 
 <BaseLayout canonicalPath="/">
@@ -100,30 +102,24 @@ import {
     </div>
   </section>
 
-  <section
-    data-home-section="features"
-    data-home-tone="2"
-    class="home-accent-rail home-accent-rail--hero-overlap"
-  >
-    <div data-home-accent-band class="home-accent-band">
+  <section data-home-section="features" class="home-trust-section">
+    <div data-home-trust-strip class="home-trust-strip">
       <h2 class="sr-only">Diferenciales de Chaco Implantes</h2>
-      <div class="home-accent-grid">
+      <div class="home-trust-grid">
         {valuePillars.map((pillar) => (
-          <article data-value-pillar class="home-accent-item">
-            <span class="home-accent-icon">
-              <Icon name={pillar.icon} class="h-5 w-5" />
-            </span>
-            <p class="home-accent-label">{pillar.label}</p>
+          <article data-value-pillar class="home-trust-item">
+            <Icon name={pillar.icon} class="h-5 w-5" />
+            <p>{pillar.label}</p>
           </article>
         ))}
       </div>
     </div>
   </section>
 
-  <section data-home-section="products" data-home-tone="0" class="home-content-section home-content-section--base">
-    <div class="home-content-section__inner">
+  <section data-home-section="products" class="home-editorial-section home-products-section">
+    <div class="home-editorial-inner">
       <div class="flex flex-wrap items-end justify-between gap-4">
-        <div class="home-section-heading">
+        <div class="home-section-header">
           <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase text-primary">
             <span class="h-px w-6 bg-brand"></span>
             Catálogo por especialidad
@@ -136,15 +132,27 @@ import {
         </a>
       </div>
 
-      <div class="home-products-grid">
-        {featuredCategories.map((category) => <CatalogCard category={category} compact />)}
+      <div data-home-products-layout class="home-products-layout">
+        <div data-home-product-featured class="home-product-featured">
+          <CatalogCard category={featuredCategory} />
+        </div>
+        <div class="home-product-secondary-grid">
+          {secondaryCategories.map((category) => (
+            <div data-home-product-secondary class="home-product-secondary">
+              <CatalogCard category={category} compact />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   </section>
 
-  <section data-home-section="suppliers" data-home-tone="0" data-suppliers-section class="home-content-section home-content-section--tint">
-    <div class="home-content-section__inner">
-      <div class="home-section-heading">
+  <section data-home-section="suppliers" class="home-editorial-section home-suppliers-section">
+    <div
+      data-home-supplier-ecosystem
+      class="home-editorial-inner home-supplier-ecosystem"
+    >
+      <div class="home-section-header">
         <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase text-primary-glow">
           <span class="h-px w-6 bg-primary-glow"></span>
           Proveedores y sistemas
@@ -155,13 +163,14 @@ import {
         </p>
       </div>
 
-      <div class="home-suppliers-grid">
+      <div class="home-supplier-marks">
         {supplierSystems.map((item) => (
           <a
+            data-home-supplier-mark
             href={item.href}
             target="_blank"
             rel="noopener noreferrer"
-            class="supplier-brand-card"
+            class="home-supplier-mark"
             aria-label={`Visitar sitio de ${item.name}`}
           >
             <img
@@ -173,13 +182,14 @@ import {
               decoding="async"
               class:list={["supplier-logo", item.logoClass]}
             />
+            <span>{item.name}</span>
           </a>
         ))}
         <a
           href={wa.lineaFaltante}
           target="_blank"
           rel="noopener noreferrer"
-          class="supplier-brand-card supplier-brand-card-muted group"
+          class="home-supplier-more group"
         >
           <span class="font-display text-sm font-semibold text-brand">Consultar otras líneas</span>
           <Icon name="arrow-right" class="h-4 w-4 text-brand transition-transform duration-200 ease-out group-hover:translate-x-1" />
@@ -191,40 +201,51 @@ import {
   <section
     aria-labelledby="home-process-title"
     data-home-section="process"
-    data-home-tone="2"
-    class="home-accent-rail"
+    class="home-editorial-section home-support-section"
   >
-    <div data-home-accent-band class="home-accent-band">
-      <h2 id="home-process-title" class="sr-only">Cómo coordinamos cada solicitud</h2>
-      <ol class="home-accent-grid home-process-grid">
-        {serviceFlow.map((item) => (
-          <li class="home-accent-item home-process-item">
-            <span class="home-process-step" aria-hidden="true">{item.step}</span>
-            <span>{item.label}</span>
-          </li>
-        ))}
-      </ol>
+    <div data-home-support-layout class="home-editorial-inner home-support-layout">
+      <figure class="home-support-media">
+        <img
+          src={images.quirofano}
+          alt="Instrumental y actividad en quirófano"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+      <div class="home-support-copy">
+        <header class="home-section-header">
+          <span class="home-eyebrow">Acompañamiento profesional</span>
+          <h2 id="home-process-title">Cómo coordinamos cada solicitud</h2>
+        </header>
+        <ol class="home-support-steps">
+          {serviceFlow.map((item) => (
+            <li data-home-support-step class="home-support-step">
+              <span aria-hidden="true">{item.step}</span>
+              <p>{item.label}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
     </div>
   </section>
 
-  <section data-home-section="congresses" data-home-tone="0" class="home-content-section home-content-section--base">
-    <div class="home-content-section__inner">
-      <div class="home-section-heading">
+  <section data-home-section="congresses" class="home-editorial-section home-event-section">
+    <div class="home-editorial-inner">
+      <div class="home-section-header">
         <h2 class="font-display text-2xl font-extrabold text-deep sm:text-3xl">Presencia activa en congresos y formación profesional</h2>
       </div>
 
-      <article class="home-event-card">
-        <div class="relative aspect-[16/10] md:aspect-auto">
+      <article data-home-event-story class="home-event-story">
+        <div class="home-event-story__media">
           <img
             src={featuredEvent.image}
             alt={featuredEvent.imageAlt}
             loading="lazy"
             decoding="async"
-            class="h-full w-full object-cover"
           />
         </div>
-        <div class="flex flex-col justify-center p-6 sm:p-8">
-          <span class="inline-flex w-fit items-center rounded-full bg-secondary px-3 py-1 text-xs font-medium text-primary ring-1 ring-border">
+        <div class="home-event-story__content">
+          <span class="home-event-story__badge">
             {featuredEvent.badge}
           </span>
           <h3 class="mt-3 font-display text-xl font-semibold text-deep">
@@ -251,13 +272,12 @@ import {
           </div>
         </div>
       </article>
-
     </div>
   </section>
 
-  <section data-home-section="multimedia" data-home-tone="0" class="home-content-section home-content-section--tint">
-    <div class="home-content-section__inner">
-      <div class="home-section-heading">
+  <section data-home-section="multimedia" class="home-editorial-section home-media-section">
+    <div class="home-editorial-inner">
+      <div class="home-section-header">
         <h2 class="font-display text-2xl font-extrabold sm:text-3xl">
           {videos.length > 0
             ? "Productos, instrumental y quirófano, en imágenes y video"
@@ -270,7 +290,10 @@ import {
         </p>
       </div>
 
-      <div class:list={["home-media-grid", videos.length === 0 && "home-media-grid--single"]}>
+      <div
+        data-home-media-layout
+        class:list={["home-media-layout", videos.length === 0 && "home-media-layout--single"]}
+      >
         <a data-home-media-card="gallery" href="/galeria" class="home-media-card catalog-image-card card-link group">
           <img
             src={categoryImages["instrumental-quirurgico"]}
@@ -319,13 +342,11 @@ import {
   <section
     id="profesionales"
     data-home-section="cta"
-    data-home-tone="2"
-    class="home-accent-rail home-accent-rail--footer-overlap scroll-mt-20"
+    class="home-final-cta-section scroll-mt-20"
   >
-    <div data-home-accent-band class="home-accent-band">
-      <div class="home-accent-cta">
-        <div class="home-accent-cta__copy">
-          <p class="home-accent-cta__eyebrow">
+    <div data-home-final-cta class="home-final-cta">
+        <div class="home-final-cta__copy">
+          <p class="home-final-cta__eyebrow">
           Calidad que se siente. Confianza que se nota.
           </p>
           <h2>Trabajamos con traumatólogos, cirujanos, clínicas y sanatorios</h2>
@@ -348,7 +369,6 @@ import {
         >
           Ver catálogos <Icon name="arrow-right" class="h-4 w-4" />
         </a>
-      </div>
     </div>
   </section>
   </div>

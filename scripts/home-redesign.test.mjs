@@ -26,7 +26,6 @@ const [siteSource, footerSource] = await Promise.all([
 const homeOnlySelectors = [
   ".hero-bg-slide",
   ".hero-shell",
-  ".supplier-brand-card",
   ".hero-slide",
   ".hero-dot",
 ];
@@ -48,7 +47,7 @@ test("isolates home-only CSS from the global stylesheet", () => {
   assert.doesNotMatch(homeCss, /@import\s+"tailwindcss"/);
 });
 
-test("declares the approved home order and operational flow", () => {
+test("declares the approved editorial order and retained data mappings", () => {
   const stages = [
     "hero",
     "features",
@@ -68,14 +67,31 @@ test("declares the approved home order and operational flow", () => {
     previous = current;
   }
 
-  assert.equal(
-    (indexSource.match(/data-home-accent-band/g) ?? []).length,
-    3,
-  );
-  assert.match(indexSource, /<div data-home-page class="home-page">/);
-  assert.match(footerSource, /data-site-footer/);
-  assert.match(indexSource, /serviceFlow\.map/);
+  for (const hook of [
+    "data-home-trust-strip",
+    "data-home-products-layout",
+    "data-home-supplier-ecosystem",
+    "data-home-support-layout",
+    "data-home-event-story",
+    "data-home-media-layout",
+    "data-home-final-cta",
+  ]) {
+    assert.ok(indexSource.includes(hook), `missing editorial hook: ${hook}`);
+  }
 
+  assert.match(
+    indexSource,
+    /const \[featuredCategory, \.\.\.secondaryCategories\]/,
+  );
+  assert.match(indexSource, /secondaryCategories\.map/);
+  assert.match(indexSource, /supplierSystems\.map/);
+  assert.match(indexSource, /serviceFlow\.map/);
+  assert.match(indexSource, /videos\.length > 0/);
+  assert.doesNotMatch(indexSource, /data-home-accent-band/);
+  assert.doesNotMatch(indexSource, /home-accent-rail/);
+});
+
+test("preserves the verified content and shared behavior boundaries", () => {
   for (const label of [
     "Consulta técnica",
     "Disponibilidad",
@@ -85,59 +101,12 @@ test("declares the approved home order and operational flow", () => {
     assert.ok(siteSource.includes(label), `missing service flow label: ${label}`);
   }
 
+  assert.match(indexSource, /data-hero-carousel/);
+  assert.match(indexSource, /data-hero-autoplay/);
+  assert.match(footerSource, /data-site-footer/);
   assert.doesNotMatch(
     siteSource,
     /12 años|40\+ instituciones|24 h/,
-  );
-});
-
-test("defines accent geometry once for all three bands", () => {
-  for (const token of [
-    "--home-accent-min-height: 7.5rem",
-    "--home-accent-padding: 1.25rem 1.5rem",
-    "--home-accent-radius: 1rem",
-  ]) {
-    assert.ok(homeCss.includes(token), `missing shared token: ${token}`);
-  }
-
-  assert.equal(
-    (homeCss.match(/\.home-accent-band\s*\{/g) ?? []).length,
-    1,
-  );
-  assert.doesNotMatch(
-    homeCss,
-    /\.home-accent-band(?:--[\w-]+)?\s*\{[^}]*\bheight\s*:/,
-  );
-});
-
-test("assigns each clear section the approved responsive grid", () => {
-  for (const className of [
-    "home-products-grid",
-    "home-suppliers-grid",
-    "home-event-card",
-    "home-media-grid",
-  ]) {
-    assert.ok(
-      indexSource.includes(className),
-      `index.astro should use ${className}`,
-    );
-  }
-
-  assert.match(
-    homeCss,
-    /\.home-products-grid\s*\{[^}]*grid-template-columns:\s*repeat\(3,/s,
-  );
-  assert.match(
-    homeCss,
-    /\.home-suppliers-grid\s*\{[^}]*grid-template-columns:\s*repeat\(4,/s,
-  );
-  assert.match(
-    homeCss,
-    /\.home-media-grid\s*\{[^}]*grid-template-columns:\s*repeat\(2,/s,
-  );
-  assert.match(
-    homeCss,
-    /\.home-content-section\s*\{[^}]*min-block-size:\s*var\(--home-section-min-height\)/s,
   );
 });
 
