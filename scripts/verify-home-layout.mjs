@@ -20,66 +20,45 @@ const cases = [
   {
     name: "desktop",
     viewport: { width: 1440, height: 1000 },
-    columns: { products: 3, suppliers: 4, media: 2 },
-    equalRenderedHeight: true,
-    sectionMinHeight: "576px",
+  },
+  {
+    name: "laptop",
+    viewport: { width: 1280, height: 800 },
   },
   {
     name: "tablet",
     viewport: { width: 768, height: 900 },
-    columns: { products: 2, suppliers: 2, media: 2 },
-    equalRenderedHeight: true,
-    sectionMinHeight: "512px",
   },
   {
     name: "mobile",
     viewport: { width: 390, height: 844 },
-    columns: { products: 1, suppliers: 2, media: 1 },
-    equalRenderedHeight: false,
-    sectionMinHeight: "480px",
   },
   {
     name: "minimum",
     viewport: { width: 320, height: 720 },
-    columns: { products: 1, suppliers: 1, media: 1 },
-    equalRenderedHeight: false,
-    sectionMinHeight: "480px",
   },
 ];
 
-function assertSameBandGeometry(metrics, name, equalRenderedHeight) {
-  assert.equal(metrics.length, 3, `${name}: expected three accent bands`);
-  const [first, ...rest] = metrics;
-
-  for (const metric of rest) {
-    assert.deepEqual(
-      {
-        width: metric.width,
-        minHeight: metric.minHeight,
-        padding: metric.padding,
-        radius: metric.radius,
-        backgroundImage: metric.backgroundImage,
-        backgroundColor: metric.backgroundColor,
-      },
-      {
-        width: first.width,
-        minHeight: first.minHeight,
-        padding: first.padding,
-        radius: first.radius,
-        backgroundImage: first.backgroundImage,
-        backgroundColor: first.backgroundColor,
-      },
-      `${name}: accent bands should share computed geometry`,
-    );
-
-    if (equalRenderedHeight) {
-      assert.equal(
-        metric.height,
-        first.height,
-        `${name}: accent bands should share rendered height`,
-      );
-    }
-  }
+async function findOverflowSources(page) {
+  return page.evaluate(() =>
+    Array.from(document.querySelectorAll("body *"))
+      .map((element) => {
+        const rect = element.getBoundingClientRect();
+        return {
+          element:
+            element instanceof HTMLElement
+              ? `${element.tagName.toLowerCase()}${element.id ? `#${element.id}` : ""}${element.className ? `.${String(element.className).trim().replace(/\s+/g, ".")}` : ""}`
+              : element.tagName.toLowerCase(),
+          left: Math.round(rect.left * 10) / 10,
+          right: Math.round(rect.right * 10) / 10,
+          width: Math.round(rect.width * 10) / 10,
+        };
+      })
+      .filter(
+        ({ left, right }) => left < -0.5 || right > window.innerWidth + 0.5,
+      )
+      .slice(0, 8),
+  );
 }
 
 try {
@@ -104,88 +83,103 @@ try {
     const overflow = await page.evaluate(
       () => document.documentElement.scrollWidth - window.innerWidth,
     );
-    const overflowSources =
-      overflow > 0
-        ? await page.evaluate(() =>
-            Array.from(document.querySelectorAll("body *"))
-              .map((element) => {
-                const rect = element.getBoundingClientRect();
-                return {
-                  element:
-                    element instanceof HTMLElement
-                      ? `${element.tagName.toLowerCase()}${element.id ? `#${element.id}` : ""}${element.className ? `.${String(element.className).trim().replace(/\s+/g, ".")}` : ""}`
-                      : element.tagName.toLowerCase(),
-                  left: Math.round(rect.left * 10) / 10,
-                  right: Math.round(rect.right * 10) / 10,
-                  width: Math.round(rect.width * 10) / 10,
-                };
-              })
-              .filter(
-                ({ left, right }) =>
-                  left < -0.5 || right > window.innerWidth + 0.5,
-              )
-              .slice(0, 8),
-          )
-        : [];
+    const overflowSources = overflow > 0 ? await findOverflowSources(page) : [];
     assert.ok(
       overflow <= 0,
       `${testCase.name}: horizontal overflow is ${overflow}px; sources: ${JSON.stringify(overflowSources)}`,
     );
 
-    const metrics = await page
-      .locator("[data-home-accent-band]")
+    const clippedSections = await page
+      .locator('[data-home-section]:not([data-home-section="hero"])')
       .evaluateAll((elements) =>
-        elements.map((element) => {
-          const style = getComputedStyle(element);
-          const rect = element.getBoundingClientRect();
-          return {
-            width: Math.round(rect.width * 10) / 10,
-            height: Math.round(rect.height * 10) / 10,
-            minHeight: style.minHeight,
-            padding: style.padding,
-            radius: style.borderRadius,
-            backgroundImage: style.backgroundImage,
-            backgroundColor: style.backgroundColor,
-          };
-        }),
-      );
-    assertSameBandGeometry(
-      metrics,
-      testCase.name,
-      testCase.equalRenderedHeight,
-    );
-
-    const sectionMinHeights = await page
-      .locator(
-        [
-          '[data-home-section="products"]',
-          '[data-home-section="suppliers"]',
-          '[data-home-section="congresses"]',
-          '[data-home-section="multimedia"]',
-        ].join(","),
-      )
-      .evaluateAll((elements) =>
-        elements.map((element) => getComputedStyle(element).minHeight),
+        elements
+          .map((element) => ({
+            section: element.getAttribute("data-home-section"),
+            clientWidth: element.clientWidth,
+            scrollWidth: element.scrollWidth,
+          }))
+          .filter(({ clientWidth, scrollWidth }) => scrollWidth > clientWidth + 1),
       );
     assert.deepEqual(
-      sectionMinHeights,
-      Array(4).fill(testCase.sectionMinHeight),
-      `${testCase.name}: clear sections should share one minimum height`,
+      clippedSections,
+      [],
+      `${testCase.name}: sections must not hide clipped horizontal content`,
     );
 
-    for (const [section, expected] of Object.entries(testCase.columns)) {
-      const actual = await page
-        .locator(`.home-${section}-grid`)
-        .evaluate((element) => {
-          const columns = getComputedStyle(element).gridTemplateColumns;
-          return columns.split(" ").filter(Boolean).length;
-        });
-      assert.equal(
-        actual,
-        expected,
-        `${testCase.name}: ${section} grid column count`,
+    const productCount = await page.locator("[data-catalog-card]").count();
+    assert.equal(productCount, 6, `${testCase.name}: six product categories`);
+
+    const supplierCount = await page
+      .locator("[data-home-supplier-mark]")
+      .count();
+    assert.equal(supplierCount, 4, `${testCase.name}: four supplier marks`);
+
+    const supportStepCount = await page
+      .locator("[data-home-support-step]")
+      .count();
+    assert.equal(supportStepCount, 4, `${testCase.name}: four support steps`);
+
+    const heroBox = await page.locator('[data-home-section="hero"]').boundingBox();
+    const trustBox = await page.locator("[data-home-trust-strip]").boundingBox();
+    assert.ok(heroBox && trustBox, `${testCase.name}: hero and trust strip render`);
+    const heroBottom = heroBox.y + heroBox.height;
+    assert.ok(
+      trustBox.y < heroBottom && trustBox.y + trustBox.height > heroBottom,
+      `${testCase.name}: trust strip bridges hero and body`,
+    );
+
+    const featuredBox = await page
+      .locator("[data-home-product-featured]")
+      .boundingBox();
+    const secondaryBox = await page
+      .locator("[data-home-product-secondary]")
+      .first()
+      .boundingBox();
+    assert.ok(
+      featuredBox && secondaryBox,
+      `${testCase.name}: product hierarchy renders`,
+    );
+
+    if (testCase.viewport.width >= 1024) {
+      assert.ok(
+        featuredBox.width > secondaryBox.width,
+        `${testCase.name}: featured product is wider than secondary products`,
       );
     }
+
+    if (testCase.viewport.width <= 390) {
+      assert.ok(
+        Math.abs(featuredBox.width - secondaryBox.width) <= 1,
+        `${testCase.name}: product cards share the mobile width`,
+      );
+    }
+
+    const mediaCards = page.locator("[data-home-media-layout] > a");
+    const mediaCardCount = await mediaCards.count();
+    const hasVideoCard =
+      (await page.locator('[data-home-media-card="videos"]').count()) === 1;
+    assert.equal(
+      mediaCardCount,
+      hasVideoCard ? 2 : 1,
+      `${testCase.name}: media layout reflects published content`,
+    );
+
+    if (hasVideoCard && testCase.viewport.width >= 1024) {
+      const galleryBox = await mediaCards.nth(0).boundingBox();
+      const videoBox = await mediaCards.nth(1).boundingBox();
+      assert.ok(
+        galleryBox && videoBox && galleryBox.width > videoBox.width,
+        `${testCase.name}: gallery is wider than video`,
+      );
+    }
+
+    const ctaBox = await page.locator("[data-home-final-cta]").boundingBox();
+    const footerBox = await page.locator("[data-site-footer]").boundingBox();
+    assert.ok(ctaBox && footerBox, `${testCase.name}: CTA and footer render`);
+    assert.ok(
+      ctaBox.y + ctaBox.height <= footerBox.y,
+      `${testCase.name}: CTA does not overlap footer`,
+    );
 
     const header = page.locator("[data-site-header]");
     const expandedHeight = await header.evaluate(
@@ -208,7 +202,7 @@ try {
     );
     assert.ok(
       collapsedHeight < expandedHeight,
-      `${testCase.name}: header should shrink after scrolling (${expandedHeight}px → ${collapsedHeight}px)`,
+      `${testCase.name}: header shrinks after scrolling (${expandedHeight}px → ${collapsedHeight}px)`,
     );
 
     await context.close();
@@ -238,7 +232,7 @@ try {
   );
   await reducedContext.close();
 
-  console.log("Home layout verification passed.");
+  console.log("Home editorial layout verification passed.");
 } finally {
   await browser.close();
   await server.stop();

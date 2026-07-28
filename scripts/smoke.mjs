@@ -246,9 +246,21 @@ assertInOrder(home, [
   "data-site-footer",
 ], "Home section order");
 
+for (const hook of [
+  "data-home-trust-strip",
+  "data-home-products-layout",
+  "data-home-supplier-ecosystem",
+  "data-home-support-layout",
+  "data-home-event-story",
+  "data-home-media-layout",
+  "data-home-final-cta",
+]) {
+  assert(home.includes(hook), `Home should render editorial hook: ${hook}`);
+}
+
 assert(
-  (home.match(/data-home-accent-band/g) ?? []).length === 3,
-  "Home should render exactly three shared accent bands",
+  !home.includes("data-home-accent-band"),
+  "Home should not render the superseded accent bands",
 );
 
 for (const label of [
@@ -295,7 +307,10 @@ assert(catalogos.includes("Consulta por WhatsApp"), "Catalog page should include
 assert(!catalogos.includes("Solicitar información"), "Catalog cards should not keep secondary WhatsApp links inside each card");
 assert(catalogoCadera.includes("catalog-detail-shell"), "Catalog detail should use the redesigned dark/light layout shell");
 assert(!home.includes("data-professional-flow-item"), "Home should avoid the extra professional divider strip");
-assert(home.includes("data-suppliers-section"), "Home should include a brands and systems section");
+assert(
+  home.includes("data-home-supplier-ecosystem"),
+  "Home should include a brands and systems section",
+);
 assert(home.includes("MEDACTA"), "Brands section should mention Medacta");
 assert(home.includes("BONSS"), "Brands section should mention BONSS");
 assert(home.includes("Implantes Villalba"), "Brands section should mention Implantes Villalba");
@@ -327,8 +342,8 @@ assert(
 assert(home.includes("61° Congreso Argentino de Ortopedia y Traumatología"), "Home should highlight the latest institutional event");
 assert(
   home.includes('data-home-section="cta"') &&
-    home.includes('data-home-tone="2"'),
-  "Commercial CTA should use the shared accent rhythm",
+    home.includes("data-home-final-cta"),
+  "Commercial CTA should render the editorial final action",
 );
 assert((home.match(/data-nav-link/g) ?? []).length >= 6, "Header should expose nav link markers for state styling");
 assert(home.includes('data-active="true"'), "Current nav item should be marked active");
@@ -623,8 +638,8 @@ assert(/\.site-header\[data-transparent="true"\]\s*\.site-header-inner\s*{[\s\S]
 assert(/\.site-header\s*{[\s\S]*--logo-big:\s*clamp\(5rem, 10vh, 7\.5rem\)/.test(globalCss), "Home logo should retain its larger desktop top token (client request)");
 assert(/\.site-header\[data-transparent="true"\]\s*\.site-logo-mark\s*{[\s\S]*height:\s*var\(--logo-big\)/.test(globalCss), "Home logo should scale up in the larger top state (client request)");
 assert(
-  /\.hero-shell\s*{[\s\S]*min-block-size:\s*100dvh/.test(homeCss),
-  "Home hero should use the dynamic viewport as its minimum height",
+  /\.hero-shell\s*{[\s\S]*min-block-size:\s*100svh/.test(homeCss),
+  "Home hero should use the small viewport as its stable minimum height",
 );
 assert(/\.hero-bg-slide\s*{[\s\S]*opacity:\s*0/.test(homeCss), "Hero background slides should fade from hidden state");
 assert(/\.hero-bg-slide\[data-active="true"\]\s*{[\s\S]*opacity:\s*1/.test(homeCss), "Active hero background slide should be visible");
@@ -647,7 +662,7 @@ assert(/\.lightbox-panel\[data-lightbox-loading="true"\]\s*{[\s\S]*cursor:\s*pro
 assert(!/\.lightbox-panel\[data-lightbox-transitioning="true"\][\s\S]*opacity:\s*0/.test(globalCss), "Lightbox should not fade the current image to transparent before the next image is decoded");
 assert(/\.contact-link:hover\s*{[\s\S]*color:\s*var\(--deep\)/.test(globalCss), "Contact links should have a clearly visible dark-blue hover");
 assert(
-  /\.home-section-heading h2\s*{[\s\S]*letter-spacing:\s*-0\.025em/.test(homeCss),
+  /\.home-section-header h2\s*{[\s\S]*letter-spacing:\s*-0\.03em/.test(homeCss),
   "Home display headings should use restrained negative tracking",
 );
 assert(
