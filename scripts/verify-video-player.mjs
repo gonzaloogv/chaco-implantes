@@ -812,23 +812,44 @@ async function verifyDesktop(browser) {
       "El control debe volver a anunciar la entrada a pantalla completa.",
     );
 
-    await page.locator('[data-video-filter="Eventos"]').click();
-    await waitForState(page, second, "paused");
-    await waitForLocator(
-      page,
-      second,
-      ({ element }) =>
-        element.closest("[data-video-item]")?.classList.contains("hidden") ===
-        true,
-    );
-    await page.locator('[data-video-filter="Todos"]').click();
-    await waitForLocator(
-      page,
-      second,
-      ({ element }) =>
-        element.closest("[data-video-item]")?.classList.contains("hidden") ===
-        false,
-    );
+    const videoCategories = [
+      ...new Set(manifest.videos.map((video) => video.category)),
+    ];
+    if (videoCategories.length >= 2) {
+      const categoryToHideSecond = videoCategories.find(
+        (category) => category !== manifest.videos[1].category,
+      );
+      assert.ok(
+        categoryToHideSecond,
+        "Debe existir una categoría distinta a la del segundo video.",
+      );
+
+      await page
+        .locator(`[data-video-filter="${categoryToHideSecond}"]`)
+        .click();
+      await waitForState(page, second, "paused");
+      await waitForLocator(
+        page,
+        second,
+        ({ element }) =>
+          element.closest("[data-video-item]")?.classList.contains("hidden") ===
+          true,
+      );
+      await page.locator('[data-video-filter="Todos"]').click();
+      await waitForLocator(
+        page,
+        second,
+        ({ element }) =>
+          element.closest("[data-video-item]")?.classList.contains("hidden") ===
+          false,
+      );
+    } else {
+      assert.equal(
+        await page.locator("[data-video-filters]").count(),
+        0,
+        "Una sola categoría no debe mostrar filtros redundantes.",
+      );
+    }
 
     stalledSource = await fourthVideo.getAttribute("data-src");
     assert.ok(stalledSource, "El cuarto video debe exponer data-src.");
