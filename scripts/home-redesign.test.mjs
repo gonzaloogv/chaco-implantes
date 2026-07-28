@@ -148,6 +148,10 @@ test("defines the editorial layout without legacy symmetry rules", () => {
     homeCss,
     /\.home-media-layout\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*7fr\)\s+minmax\(0,\s*5fr\)/s,
   );
+  assert.match(
+    homeCss,
+    /\.home-supplier-more,\s*\.home-supplier-more span,\s*\.home-supplier-more svg\s*\{[^}]*color:\s*var\(--brand-blue-strong\)/s,
+  );
 });
 
 test("keeps the footer content while exposing the compact layout", () => {

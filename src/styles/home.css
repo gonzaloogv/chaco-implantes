@@ -335,6 +335,12 @@
   padding: 1.5rem;
 }
 
+.home-supplier-more,
+.home-supplier-more span,
+.home-supplier-more svg {
+  color: var(--brand-blue-strong);
+}
+
 .supplier-logo {
   display: block;
   width: auto;
@@ -581,6 +587,11 @@
   .home-support-layout,
   .home-supplier-ecosystem {
     row-gap: 3rem;
+  }
+
+  .home-supplier-ecosystem {
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: 0;
   }
 
   .home-support-media,
