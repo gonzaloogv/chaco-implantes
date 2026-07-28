@@ -275,7 +275,20 @@
 }
 
 .home-suppliers-section {
-  background: #eff5fa;
+  background: var(--brand-blue);
+  color: #fff;
+}
+
+.home-suppliers-section .home-section-header h2 {
+  color: #fff;
+}
+
+.home-suppliers-section .home-section-header p {
+  color: #f3f8ff;
+}
+
+.home-supplier-eyebrow {
+  color: #fff;
 }
 
 .home-supplier-ecosystem {
@@ -308,21 +321,24 @@
   align-content: center;
   gap: 0.9rem;
   padding: 1.5rem;
-  border-bottom: 1px solid var(--brand-border);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+  color: #fff;
   transition:
+    background-color 200ms var(--ease-out),
     color 200ms var(--ease-out),
     border-color 200ms var(--ease-out),
     transform 200ms var(--ease-out);
 }
 
 .home-supplier-mark:nth-child(odd) {
-  border-inline-end: 1px solid var(--brand-border);
+  border-inline-end: 1px solid rgba(255, 255, 255, 0.28);
 }
 
 .home-supplier-mark span {
-  color: var(--brand-muted);
+  color: #f3f8ff;
   font-size: 0.75rem;
   font-weight: 600;
+  transition: color 200ms var(--ease-out);
 }
 
 .home-supplier-more {
@@ -338,7 +354,7 @@
 .home-supplier-more,
 .home-supplier-more span,
 .home-supplier-more svg {
-  color: var(--brand-blue-strong);
+  color: #fff;
 }
 
 .supplier-logo {
@@ -347,7 +363,11 @@
   max-width: 100%;
   height: auto;
   object-fit: contain;
-  filter: none;
+  filter: brightness(0) invert(1);
+  opacity: 0.92;
+  transition:
+    filter 200ms var(--ease-out),
+    opacity 200ms var(--ease-out);
 }
 
 .supplier-logo-wide {
@@ -371,7 +391,7 @@
 }
 
 .home-support-section {
-  background: #fff;
+  background: #eff5fa;
 }
 
 .home-support-layout {
@@ -432,13 +452,37 @@
   font-size: 0.75rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
+  transition:
+    background-color 200ms var(--ease-out),
+    border-color 200ms var(--ease-out),
+    color 200ms var(--ease-out);
+}
+
+.home-support-step__copy {
+  min-width: 0;
+  padding-block-start: 0.1rem;
+}
+
+.home-support-step h3,
+.home-support-step p {
+  margin: 0;
+}
+
+.home-support-step h3 {
+  color: var(--brand-ink);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.35;
+  transition: color 200ms var(--ease-out);
 }
 
 .home-support-step p {
-  margin: 0;
-  align-self: center;
-  color: var(--brand-ink);
-  font-weight: 600;
+  max-width: 48ch;
+  margin-block-start: 0.35rem;
+  color: var(--brand-muted);
+  font-size: 0.875rem;
+  line-height: 1.55;
+  text-wrap: pretty;
 }
 
 .home-event-section {
@@ -522,9 +566,9 @@
   gap: 1rem;
   padding: clamp(2rem, 5vw, 4rem);
   border-radius: var(--home-radius);
-  background: var(--brand-navy);
+  background: var(--brand-blue);
   color: #fff;
-  box-shadow: 0 26px 60px -46px rgba(16, 41, 76, 0.72);
+  box-shadow: 0 26px 60px -42px rgba(26, 111, 212, 0.72);
 }
 
 .home-final-cta__copy {
@@ -545,13 +589,13 @@
 }
 
 .home-final-cta__copy > p:last-child {
-  color: var(--brand-on-dark);
+  color: #f3f8ff;
   line-height: 1.65;
   text-wrap: pretty;
 }
 
 .home-final-cta__eyebrow {
-  color: var(--brand-on-dark);
+  color: #fff;
 }
 
 @media (max-width: 63.999rem) {
@@ -730,10 +774,43 @@
     transform: scale(1.02);
   }
 
-  .home-supplier-mark:hover,
-  .home-supplier-more:hover {
+  .home-support-step:hover > span {
+    border-color: var(--brand-blue);
+    background: var(--brand-blue);
+    color: #fff;
+  }
+
+  .home-support-step:hover h3 {
     color: var(--brand-blue-strong);
+  }
+
+  .home-supplier-mark:hover {
+    border-color: #eff5fa;
+    background: #eff5fa;
+    color: var(--brand-ink);
     transform: translateY(-2px);
+  }
+
+  .home-supplier-mark:hover span {
+    color: var(--brand-muted);
+  }
+
+  .home-supplier-mark:hover .supplier-logo {
+    filter: none;
+    opacity: 1;
+  }
+
+  .home-supplier-more:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .home-final-cta .btn-light:hover,
+  .home-final-cta .btn-glass-outline:hover {
+    border-color: #fff;
+    background: #fff;
+    color: var(--brand-blue-strong);
   }
 }
 
@@ -744,7 +821,11 @@
   .home-page .catalog-image-card img,
   .home-media-card,
   .home-supplier-mark,
-  .home-supplier-more {
+  .home-supplier-more,
+  .home-supplier-mark span,
+  .supplier-logo,
+  .home-support-step > span,
+  .home-support-step h3 {
     transition-duration: 0.01ms !important;
   }
 

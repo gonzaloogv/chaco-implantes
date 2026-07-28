@@ -92,10 +92,30 @@ export const valuePillars = [
 ] as const;
 
 export const serviceFlow = [
-  { step: "01", label: "Consulta técnica" },
-  { step: "02", label: "Disponibilidad" },
-  { step: "03", label: "Coordinación" },
-  { step: "04", label: "Acompañamiento" },
+  {
+    step: "01",
+    label: "Consulta técnica",
+    description:
+      "Relevamos el procedimiento, el sistema requerido y las necesidades del equipo médico.",
+  },
+  {
+    step: "02",
+    label: "Disponibilidad",
+    description:
+      "Confirmamos stock, medidas e instrumental antes de coordinar la entrega.",
+  },
+  {
+    step: "03",
+    label: "Coordinación",
+    description:
+      "Acordamos tiempos, logística y documentación con la institución.",
+  },
+  {
+    step: "04",
+    label: "Acompañamiento",
+    description:
+      "Brindamos soporte técnico antes y durante el procedimiento, según las necesidades del equipo.",
+  },
 ] as const;
 
 export type HeroSlide = {

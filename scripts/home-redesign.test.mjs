@@ -52,8 +52,8 @@ test("declares the approved editorial order and retained data mappings", () => {
     "hero",
     "features",
     "products",
-    "suppliers",
     "process",
+    "suppliers",
     "congresses",
     "multimedia",
     "cta",
@@ -110,6 +110,55 @@ test("preserves the verified content and shared behavior boundaries", () => {
   );
 });
 
+test("rebalances support, suppliers, and final CTA with the electric brand color", () => {
+  for (const description of [
+    "Relevamos el procedimiento, el sistema requerido y las necesidades del equipo médico.",
+    "Confirmamos stock, medidas e instrumental antes de coordinar la entrega.",
+    "Acordamos tiempos, logística y documentación con la institución.",
+    "Brindamos soporte técnico antes y durante el procedimiento, según las necesidades del equipo.",
+  ]) {
+    assert.ok(
+      siteSource.includes(description),
+      `missing support description: ${description}`,
+    );
+  }
+
+  assert.match(indexSource, /<h3>\{item\.label\}<\/h3>/);
+  assert.match(
+    indexSource,
+    /data-home-support-description[^>]*>\s*\{item\.description\}/s,
+  );
+  assert.match(
+    homeCss,
+    /\.home-support-section\s*\{[^}]*background:\s*#eff5fa/s,
+  );
+  assert.match(
+    homeCss,
+    /\.home-suppliers-section\s*\{[^}]*background:\s*var\(--brand-blue\)/s,
+  );
+  assert.match(
+    homeCss,
+    /\.home-final-cta\s*\{[^}]*background:\s*var\(--brand-blue\)/s,
+  );
+  assert.doesNotMatch(
+    homeCss,
+    /#eaf3ff/,
+    "electric sections should use an AA-compliant ice text color",
+  );
+  assert.match(
+    homeCss,
+    /\.home-suppliers-section \.home-section-header p\s*\{[^}]*color:\s*#f3f8ff/s,
+  );
+  assert.match(
+    homeCss,
+    /\.home-support-step:hover\s*>\s*span\s*\{[^}]*background:\s*var\(--brand-blue\)[^}]*color:\s*#fff/s,
+  );
+  assert.match(
+    homeCss,
+    /\.home-supplier-mark:hover\s*\{[^}]*background:\s*#eff5fa[^}]*color:\s*var\(--brand-ink\)/s,
+  );
+});
+
 test("defines the editorial layout without legacy symmetry rules", () => {
   for (const selector of [
     ".home-trust-strip",
@@ -150,7 +199,7 @@ test("defines the editorial layout without legacy symmetry rules", () => {
   );
   assert.match(
     homeCss,
-    /\.home-supplier-more,\s*\.home-supplier-more span,\s*\.home-supplier-more svg\s*\{[^}]*color:\s*var\(--brand-blue-strong\)/s,
+    /\.home-supplier-more,\s*\.home-supplier-more span,\s*\.home-supplier-more svg\s*\{[^}]*color:\s*#fff/s,
   );
 });
 

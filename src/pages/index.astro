@@ -147,16 +147,47 @@ const [featuredCategory, ...secondaryCategories] = featuredCategories;
     </div>
   </section>
 
+  <section
+    aria-labelledby="home-process-title"
+    data-home-section="process"
+    class="home-editorial-section home-support-section"
+  >
+    <div data-home-support-layout class="home-editorial-inner home-support-layout">
+      <figure class="home-support-media">
+        <img
+          src={images.quirofano}
+          alt="Instrumental y actividad en quirófano"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+      <div class="home-support-copy">
+        <header class="home-section-header">
+          <span class="home-eyebrow">Acompañamiento profesional</span>
+          <h2 id="home-process-title">Cómo coordinamos cada solicitud</h2>
+        </header>
+        <ol class="home-support-steps">
+          {serviceFlow.map((item) => (
+            <li data-home-support-step class="home-support-step">
+              <span aria-hidden="true">{item.step}</span>
+              <div class="home-support-step__copy">
+                <h3>{item.label}</h3>
+                <p data-home-support-description>{item.description}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
   <section data-home-section="suppliers" class="home-editorial-section home-suppliers-section">
     <div
       data-home-supplier-ecosystem
       class="home-editorial-inner home-supplier-ecosystem"
     >
       <div class="home-section-header">
-        <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase text-primary-glow">
-          <span class="h-px w-6 bg-primary-glow"></span>
-          Proveedores y sistemas
-        </span>
+        <span class="home-eyebrow home-supplier-eyebrow">Proveedores y sistemas</span>
         <h2 class="mt-3 font-display text-2xl font-extrabold sm:text-3xl">Líneas destacadas para resolver cada procedimiento</h2>
         <p class="mt-3 max-w-xl text-sm leading-relaxed sm:text-base">
           Combinamos sistemas internacionales, líneas exclusivas y productos nacionales para dar respuesta comercial, disponibilidad e instrumental según cada caso.
@@ -191,40 +222,9 @@ const [featuredCategory, ...secondaryCategories] = featuredCategories;
           rel="noopener noreferrer"
           class="home-supplier-more group"
         >
-          <span class="font-display text-sm font-semibold text-brand">Consultar otras líneas</span>
-          <Icon name="arrow-right" class="h-4 w-4 text-brand transition-transform duration-200 ease-out group-hover:translate-x-1" />
+          <span class="font-display text-sm font-semibold">Consultar otras líneas</span>
+          <Icon name="arrow-right" class="h-4 w-4 transition-transform duration-200 ease-out group-hover:translate-x-1" />
         </a>
-      </div>
-    </div>
-  </section>
-
-  <section
-    aria-labelledby="home-process-title"
-    data-home-section="process"
-    class="home-editorial-section home-support-section"
-  >
-    <div data-home-support-layout class="home-editorial-inner home-support-layout">
-      <figure class="home-support-media">
-        <img
-          src={images.quirofano}
-          alt="Instrumental y actividad en quirófano"
-          loading="lazy"
-          decoding="async"
-        />
-      </figure>
-      <div class="home-support-copy">
-        <header class="home-section-header">
-          <span class="home-eyebrow">Acompañamiento profesional</span>
-          <h2 id="home-process-title">Cómo coordinamos cada solicitud</h2>
-        </header>
-        <ol class="home-support-steps">
-          {serviceFlow.map((item) => (
-            <li data-home-support-step class="home-support-step">
-              <span aria-hidden="true">{item.step}</span>
-              <p>{item.label}</p>
-            </li>
-          ))}
-        </ol>
       </div>
     </div>
   </section>
