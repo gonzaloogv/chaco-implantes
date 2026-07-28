@@ -208,6 +208,72 @@ try {
     await context.close();
   }
 
+  const heroControlContext = await browser.newContext({
+    viewport: { width: 1440, height: 1000 },
+    reducedMotion: "no-preference",
+  });
+  const heroControlPage = await heroControlContext.newPage();
+  await heroControlPage.goto(baseUrl, { waitUntil: "domcontentloaded" });
+
+  const heroDots = heroControlPage.locator("[data-hero-dot]");
+  const activeDotIndex = async () =>
+    heroDots.evaluateAll((elements) =>
+      elements.findIndex(
+        (element) => element.getAttribute("aria-pressed") === "true",
+      ),
+    );
+
+  await heroControlPage.locator("[data-hero-next]").click();
+  assert.equal(await activeDotIndex(), 1, "next selects the following slide");
+  await heroControlPage.locator("[data-hero-previous]").click();
+  assert.equal(await activeDotIndex(), 0, "previous returns to the first slide");
+  await heroControlPage.locator("[data-hero-previous]").click();
+  assert.equal(await activeDotIndex(), 2, "previous wraps to the last slide");
+  await heroDots.nth(0).click();
+
+  const autoplay = heroControlPage.locator("[data-hero-autoplay]");
+  if (
+    (await autoplay.getAttribute("aria-label")) ===
+    "Reanudar rotación automática"
+  ) {
+    await autoplay.click();
+  }
+  await heroControlPage.waitForTimeout(250);
+  const offsetWhilePlaying = Number.parseFloat(
+    await heroDots.nth(0).evaluate((element) =>
+      getComputedStyle(element).getPropertyValue("--hero-progress-offset"),
+    ),
+  );
+  await autoplay.click();
+  const offsetAtPause = Number.parseFloat(
+    await heroDots.nth(0).evaluate((element) =>
+      getComputedStyle(element).getPropertyValue("--hero-progress-offset"),
+    ),
+  );
+  await heroControlPage.waitForTimeout(250);
+  const offsetAfterPause = Number.parseFloat(
+    await heroDots.nth(0).evaluate((element) =>
+      getComputedStyle(element).getPropertyValue("--hero-progress-offset"),
+    ),
+  );
+  assert.ok(offsetWhilePlaying < 100, "progress advances while playing");
+  assert.ok(
+    Math.abs(offsetAfterPause - offsetAtPause) < 0.5,
+    "progress freezes while paused",
+  );
+  await autoplay.click();
+  await heroControlPage.waitForTimeout(250);
+  const offsetAfterResume = Number.parseFloat(
+    await heroDots.nth(0).evaluate((element) =>
+      getComputedStyle(element).getPropertyValue("--hero-progress-offset"),
+    ),
+  );
+  assert.ok(
+    offsetAfterResume < offsetAfterPause,
+    "progress resumes without reset",
+  );
+  await heroControlContext.close();
+
   const reducedContext = await browser.newContext({
     viewport: { width: 1440, height: 1000 },
     reducedMotion: "reduce",
@@ -229,6 +295,30 @@ try {
   assert.ok(
     transitionMilliseconds.every((value) => value <= 0.01),
     `reduced motion transition should be <= 0.01ms, got ${transitionDuration}`,
+  );
+
+  const reducedDots = reducedPage.locator("[data-hero-dot]");
+  const reducedOffsetBefore = Number.parseFloat(
+    await reducedDots.nth(0).evaluate((element) =>
+      getComputedStyle(element).getPropertyValue("--hero-progress-offset"),
+    ),
+  );
+  await reducedPage.waitForTimeout(250);
+  const reducedOffsetAfter = Number.parseFloat(
+    await reducedDots.nth(0).evaluate((element) =>
+      getComputedStyle(element).getPropertyValue("--hero-progress-offset"),
+    ),
+  );
+  assert.equal(
+    reducedOffsetAfter,
+    reducedOffsetBefore,
+    "reduced motion keeps progress static",
+  );
+  await reducedPage.locator("[data-hero-next]").click();
+  assert.equal(
+    await reducedDots.nth(1).getAttribute("aria-pressed"),
+    "true",
+    "reduced motion keeps manual navigation available",
   );
   await reducedContext.close();
 

@@ -110,6 +110,26 @@ test("preserves the verified content and shared behavior boundaries", () => {
   );
 });
 
+test("defines accessible hero navigation with synchronized progress", () => {
+  for (const hook of [
+    "data-hero-previous",
+    "data-hero-next",
+    "data-hero-progress-ring",
+    "data-hero-autoplay",
+  ]) {
+    assert.ok(indexSource.includes(hook), `missing hero control: ${hook}`);
+  }
+
+  assert.match(indexSource, /aria-label="Slide anterior"/);
+  assert.match(indexSource, /aria-label="Slide siguiente"/);
+  assert.match(indexSource, /pathLength="100"/);
+  assert.match(homeCss, /\.hero-carousel-nav\s*\{[^}]*background:/s);
+  assert.match(
+    homeCss,
+    /\.hero-dot__progress-circle\s*\{[^}]*stroke-dashoffset:\s*var\(--hero-progress-offset,\s*100\)/s,
+  );
+});
+
 test("rebalances support, suppliers, and final CTA with the electric brand color", () => {
   for (const description of [
     "Relevamos el procedimiento, el sistema requerido y las necesidades del equipo médico.",
