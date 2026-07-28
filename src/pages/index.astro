@@ -9,6 +9,7 @@ import {
   featuredEvent,
   heroSlides,
   images,
+  serviceFlow,
   supplierSystems,
   valuePillars,
   videos,
@@ -17,7 +18,8 @@ import {
 ---
 
 <BaseLayout canonicalPath="/">
-  <section id="inicio" data-hero-carousel class="hero-shell relative flex min-h-screen overflow-hidden">
+  <div data-home-page class="home-page">
+  <section id="inicio" data-home-section="hero" data-home-tone="1" data-hero-carousel class="hero-shell relative flex overflow-hidden">
     <h1 class="sr-only">Prótesis, implantes e instrumental para equipos quirúrgicos</h1>
     {heroSlides.map((slide, index) => (
       <img
@@ -99,21 +101,27 @@ import {
     </div>
   </section>
 
-  <section data-value-pillars class="value-pillars-band px-4 py-4 sm:px-6 lg:px-8">
-    <h2 class="sr-only">Diferenciales de Chaco Implantes</h2>
-    <div class="mx-auto grid max-w-7xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
-      {valuePillars.map((pillar) => (
-        <article data-value-pillar class="value-pillar-card flex min-h-20 items-center gap-3 rounded-lg border px-4 py-3">
-          <span class="value-pillar-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-white">
-            <Icon name={pillar.icon} class="h-5 w-5" />
-          </span>
-          <p class="value-pillar-label text-sm font-semibold leading-snug">{pillar.label}</p>
-        </article>
-      ))}
+  <section
+    data-home-section="features"
+    data-home-tone="2"
+    class="home-accent-rail home-accent-rail--hero-overlap"
+  >
+    <div data-home-accent-band class="home-accent-band">
+      <h2 class="sr-only">Diferenciales de Chaco Implantes</h2>
+      <div class="home-accent-grid">
+        {valuePillars.map((pillar) => (
+          <article data-value-pillar class="home-accent-item">
+            <span class="home-accent-icon">
+              <Icon name={pillar.icon} class="h-5 w-5" />
+            </span>
+            <p class="home-accent-label">{pillar.label}</p>
+          </article>
+        ))}
+      </div>
     </div>
   </section>
 
-  <section class="section-dark-gradient">
+  <section data-home-section="products" data-home-tone="0" class="section-dark-gradient">
     <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
       <div class="flex flex-wrap items-end justify-between gap-4">
         <div>
@@ -135,7 +143,7 @@ import {
     </div>
   </section>
 
-  <section data-suppliers-section class="suppliers-section">
+  <section data-home-section="suppliers" data-home-tone="0" data-suppliers-section class="suppliers-section">
     <div class="mx-auto max-w-7xl px-4 py-16 text-white sm:px-6 lg:px-8">
       <div class="max-w-2xl">
         <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase text-primary-glow">
@@ -181,7 +189,26 @@ import {
     </div>
   </section>
 
-  <section class="bg-surface">
+  <section
+    aria-labelledby="home-process-title"
+    data-home-section="process"
+    data-home-tone="2"
+    class="home-accent-rail"
+  >
+    <div data-home-accent-band class="home-accent-band">
+      <h2 id="home-process-title" class="sr-only">Cómo coordinamos cada solicitud</h2>
+      <ol class="home-accent-grid home-process-grid">
+        {serviceFlow.map((item) => (
+          <li class="home-accent-item home-process-item">
+            <span class="home-process-step" aria-hidden="true">{item.step}</span>
+            <span>{item.label}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section data-home-section="congresses" data-home-tone="0" class="bg-surface">
     <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
       <div class="max-w-2xl">
         <h2 class="font-display text-2xl font-extrabold text-deep sm:text-3xl">Presencia activa en congresos y formación profesional</h2>
@@ -229,7 +256,7 @@ import {
     </div>
   </section>
 
-  <section class="media-band">
+  <section data-home-section="multimedia" data-home-tone="0" class="media-band">
     <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
       <div class="max-w-2xl">
         <h2 class="font-display text-2xl font-extrabold text-white sm:text-3xl">
@@ -290,18 +317,24 @@ import {
     </div>
   </section>
 
-  <section id="profesionales" data-commercial-band="primary" class="commercial-band scroll-mt-20">
-    <div class="mx-auto flex max-w-7xl flex-col items-start gap-5 px-4 py-14 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-      <div class="max-w-xl">
-        <p class="font-display text-sm font-bold uppercase text-primary-glow">
+  <section
+    id="profesionales"
+    data-home-section="cta"
+    data-home-tone="2"
+    class="home-accent-rail home-accent-rail--footer-overlap scroll-mt-20"
+  >
+    <div data-home-accent-band class="home-accent-band">
+      <div class="home-accent-cta">
+        <div class="home-accent-cta__copy">
+          <p class="home-accent-cta__eyebrow">
           Calidad que se siente. Confianza que se nota.
-        </p>
-        <h2 class="mt-2 font-display text-xl font-extrabold text-white sm:text-2xl">Trabajamos con traumatólogos, cirujanos, clínicas y sanatorios</h2>
-        <p class="mt-2 text-sm text-white/85">
-          Consultas comerciales e institucionales: coordinamos pedidos, disponibilidad y suministro de prótesis, implantes e instrumental.
-        </p>
-      </div>
-      <div class="flex w-full flex-col gap-3 sm:flex-row lg:w-auto">
+          </p>
+          <h2>Trabajamos con traumatólogos, cirujanos, clínicas y sanatorios</h2>
+          <p>
+            Consultas comerciales e institucionales: coordinamos pedidos,
+            disponibilidad y suministro de prótesis, implantes e instrumental.
+          </p>
+        </div>
         <a
           href={wa.general}
           target="_blank"
@@ -310,12 +343,16 @@ import {
         >
           <Icon name="message-circle" class="h-4 w-4" /> WhatsApp
         </a>
-        <a href="/catalogos" class="btn-glass-outline inline-flex items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold">
+        <a
+          href="/catalogos"
+          class="btn-glass-outline inline-flex items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold"
+        >
           Ver catálogos <Icon name="arrow-right" class="h-4 w-4" />
         </a>
       </div>
     </div>
   </section>
+  </div>
 </BaseLayout>
 
 <script>

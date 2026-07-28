@@ -86,6 +86,16 @@ function assert(condition, message) {
   }
 }
 
+function assertInOrder(source, markers, label) {
+  let previous = -1;
+  for (const marker of markers) {
+    const current = source.indexOf(marker);
+    assert(current >= 0, `${label} missing marker: ${marker}`);
+    assert(current > previous, `${label} marker out of order: ${marker}`);
+    previous = current;
+  }
+}
+
 function readOutputFiles(dir) {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
     const fullPath = join(dir, entry.name);
@@ -223,6 +233,32 @@ assert(!catalogoOtros.includes("data-catalog-viewer"), "Other trauma catalog sho
 assert(catalogoPerforador.includes("data-catalog-viewer"), "Other trauma product detail should use the catalog viewer");
 assert(catalogoPerforador.includes("Motor Overfix para perforación"), "Other trauma product detail should render the description");
 assert(catalogoPerforador.includes("Solicitar catálogo PDF"), "Other trauma product detail should expose the catalog request action");
+assertInOrder(home, [
+  'data-home-section="hero"',
+  'data-home-section="features"',
+  'data-home-section="products"',
+  'data-home-section="suppliers"',
+  'data-home-section="process"',
+  'data-home-section="congresses"',
+  'data-home-section="multimedia"',
+  'data-home-section="cta"',
+  "data-site-footer",
+], "Home section order");
+
+assert(
+  (home.match(/data-home-accent-band/g) ?? []).length === 3,
+  "Home should render exactly three shared accent bands",
+);
+
+for (const label of [
+  "Consulta técnica",
+  "Disponibilidad",
+  "Coordinación",
+  "Acompañamiento",
+]) {
+  assert(home.includes(label), `Home should render service flow label: ${label}`);
+}
+
 assert((home.match(/data-value-pillar(?=[\s>])/g) ?? []).length === 4, "Home should render four compact value pillars");
 assert(
   (home.match(/data-catalog-card/g) ?? []).length >= 6,
@@ -271,7 +307,11 @@ assert(
   "Home should promote the videos page only when synchronized videos exist",
 );
 assert(home.includes("61° Congreso Argentino de Ortopedia y Traumatología"), "Home should highlight the latest institutional event");
-assert(home.includes('data-commercial-band="primary"'), "Commercial CTA band should retain a clear blue commercial cue");
+assert(
+  home.includes('data-home-section="cta"') &&
+    home.includes('data-home-tone="2"'),
+  "Commercial CTA should use the shared accent rhythm",
+);
 assert(home.includes("btn-primary-soft"), "Hero catalog CTA should use the softer primary treatment by default");
 assert(home.includes("link-primary-soft"), "Catalog text CTA should use the softer primary link treatment by default");
 assert(home.includes("btn-glass-outline"), "Commercial catalog CTA should use the glass card outline treatment");

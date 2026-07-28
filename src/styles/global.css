@@ -33,6 +33,16 @@
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --border-white-subtle: rgba(255, 255, 255, 0.15);
+  --brand-navy: #10294c;
+  --brand-blue: #1a6fd4;
+  --brand-blue-strong: #1552a3;
+  --brand-surface: #f6f9fd;
+  --brand-surface-cool: #eef5fc;
+  --brand-surface-inner: #f0f6fd;
+  --brand-border: #dce8f7;
+  --brand-ink: #10294c;
+  --brand-muted: #4a6485;
+  --brand-on-dark: #bfd6f4;
 }
 
 @theme inline {

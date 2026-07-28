@@ -91,6 +91,13 @@ export const valuePillars = [
   { icon: "map-pin", label: "Cobertura en Chaco y el NEA" },
 ] as const;
 
+export const serviceFlow = [
+  { step: "01", label: "Consulta técnica" },
+  { step: "02", label: "Disponibilidad" },
+  { step: "03", label: "Coordinación" },
+  { step: "04", label: "Acompañamiento" },
+] as const;
+
 export type HeroSlide = {
   eyebrow: string;
   title: string;
