@@ -110,6 +110,46 @@ test("preserves the verified content and shared behavior boundaries", () => {
   );
 });
 
+test("defines the editorial layout without legacy symmetry rules", () => {
+  for (const selector of [
+    ".home-trust-strip",
+    ".home-products-layout",
+    ".home-product-featured",
+    ".home-supplier-ecosystem",
+    ".home-support-layout",
+    ".home-event-story",
+    ".home-media-layout",
+    ".home-final-cta",
+  ]) {
+    assert.ok(homeCss.includes(selector), `home.css should own ${selector}`);
+  }
+
+  for (const obsolete of [
+    "--home-accent-min-height",
+    "--home-section-min-height",
+    ".home-accent-band",
+    ".home-accent-rail",
+    ".home-products-grid",
+    ".home-suppliers-grid",
+    ".home-process-grid",
+  ]) {
+    assert.ok(!homeCss.includes(obsolete), `remove obsolete CSS: ${obsolete}`);
+  }
+
+  assert.match(
+    homeCss,
+    /\.home-products-layout\s*\{[^}]*grid-template-columns:\s*repeat\(12,/s,
+  );
+  assert.match(
+    homeCss,
+    /\.home-support-layout\s*\{[^}]*grid-template-columns:\s*repeat\(12,/s,
+  );
+  assert.match(
+    homeCss,
+    /\.home-media-layout\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*7fr\)\s+minmax\(0,\s*5fr\)/s,
+  );
+});
+
 test("removes superseded declarations without touching shared components", () => {
   assert.doesNotMatch(globalCss, /--ease-in-out:/);
   assert.doesNotMatch(homeCss, /\.section-dark-gradient/);
