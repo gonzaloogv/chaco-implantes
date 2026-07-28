@@ -10,6 +10,8 @@
     "demo:video": "node scripts/grabar-demo.js",
     "check": "astro check",
     "build": "astro build",
+    "test:home": "node --test scripts/home-redesign.test.mjs",
+    "test:header": "node --test scripts/header-shrink.test.mjs",
     "sync:cloudinary": "node scripts/sync-cloudinary.mjs",
     "verify:cloudinary-video-audio": "node scripts/verify-cloudinary-video-audio.mjs",
     "test:cloudinary": "node --test scripts/cloudinary-*.test.mjs scripts/sync-cloudinary.test.mjs",

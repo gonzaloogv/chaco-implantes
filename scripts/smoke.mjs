@@ -5,6 +5,7 @@ import { join } from "node:path";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const dist = join(root, "dist");
 const globalCss = readFileSync(join(root, "src/styles/global.css"), "utf8");
+const homeCss = readFileSync(join(root, "src/styles/home.css"), "utf8");
 const siteSource = readFileSync(join(root, "src/data/site.ts"), "utf8");
 const cloudinaryManifest = JSON.parse(
   readFileSync(
@@ -570,10 +571,10 @@ assert(/\.site-header\s*{[\s\S]*--header-big-h:\s*15vh/.test(globalCss), "Home h
 assert(/\.site-header\[data-transparent="true"\]\s*\.site-header-inner\s*{[\s\S]*height:\s*var\(--header-big-h\)/.test(globalCss), "Home header should use the larger top-state height (client request)");
 assert(/\.site-header\s*{[\s\S]*--logo-big:\s*clamp\(5rem, 10vh, 7\.5rem\)/.test(globalCss), "Home logo should retain its larger desktop top token (client request)");
 assert(/\.site-header\[data-transparent="true"\]\s*\.site-logo-mark\s*{[\s\S]*height:\s*var\(--logo-big\)/.test(globalCss), "Home logo should scale up in the larger top state (client request)");
-assert(/\.hero-shell\s*{[\s\S]*min-height:\s*100vh/.test(globalCss), "Hero should occupy the full viewport height");
-assert(/\.hero-shell\s*{[\s\S]*background:\s*linear-gradient\(150deg, #0f172a/.test(globalCss), "Hero should use the deep blue gradient direction");
-assert(/\.hero-bg-slide\s*{[\s\S]*opacity:\s*0/.test(globalCss), "Hero background slides should fade from hidden state");
-assert(/\.hero-bg-slide\[data-active="true"\]\s*{[\s\S]*opacity:\s*1/.test(globalCss), "Active hero background slide should be visible");
+assert(/\.hero-shell\s*{[\s\S]*min-height:\s*100vh/.test(homeCss), "Hero should occupy the full viewport height");
+assert(/\.hero-shell\s*{[\s\S]*background:\s*linear-gradient\(150deg, #0f172a/.test(homeCss), "Hero should keep its current gradient during CSS extraction");
+assert(/\.hero-bg-slide\s*{[\s\S]*opacity:\s*0/.test(homeCss), "Hero background slides should fade from hidden state");
+assert(/\.hero-bg-slide\[data-active="true"\]\s*{[\s\S]*opacity:\s*1/.test(homeCss), "Active hero background slide should be visible");
 assert(/\.mobile-menu\[data-state="open"\]\s*{[\s\S]*transform:\s*translateY\(0\)/.test(globalCss), "Mobile menu should enter with a small transform-to-rest transition");
 assert(/\.mobile-menu\[data-state="closed"\]\s*{[\s\S]*transform:\s*translateY\(-0\.375rem\)/.test(globalCss), "Mobile menu should rest hidden with a minimal upward offset");
 assert(/\.menu-icon-state\s*{[\s\S]*transition:[\s\S]*opacity 150ms/.test(globalCss), "Mobile menu icons should crossfade quickly");

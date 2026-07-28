@@ -1,0 +1,211 @@
+.hero-bg-slide {
+  backface-visibility: hidden;
+  opacity: 0;
+  transform: scale(1.02);
+  transition:
+    opacity 420ms var(--ease-out),
+    transform 1200ms var(--ease-out);
+}
+
+.hero-bg-slide[data-active="true"] {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hero-shell {
+  background: linear-gradient(150deg, #0f172a 0%, #192338 42%, #1e2e4f 72%, #2b6cb8 100%);
+  isolation: isolate;
+  min-height: 100vh;
+}
+
+.hero-shell::before {
+  background:
+    radial-gradient(circle at 76% 42%, rgba(74, 144, 196, 0.42), transparent 22rem),
+    radial-gradient(circle at 12% 12%, rgba(0, 136, 255, 0.14), transparent 28rem);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.hero-photo-glow {
+  filter: none;
+}
+
+.section-dark-gradient {
+  background:
+    radial-gradient(circle at 85% 8%, rgba(74, 144, 196, 0.16), transparent 22rem),
+    linear-gradient(180deg, #eef5fb 0%, #dceaf5 100%);
+  color: var(--ink);
+}
+
+.suppliers-section {
+  background: linear-gradient(180deg, var(--ink) 0%, var(--background) 100%);
+}
+
+.commercial-band {
+  background:
+    radial-gradient(circle at 88% 18%, rgba(96, 165, 250, 0.3), transparent 22rem),
+    linear-gradient(120deg, var(--deep) 0%, var(--primary-strong) 52%, var(--primary) 100%);
+}
+
+.media-band {
+  background:
+    radial-gradient(circle at 12% 88%, rgba(74, 144, 196, 0.16), transparent 22rem),
+    linear-gradient(180deg, var(--background) 0%, var(--ink) 100%);
+}
+
+.supplier-brand-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.025)),
+    rgba(10, 28, 49, 0.72);
+  border-color: rgba(143, 179, 226, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 16px 32px -30px rgba(0, 0, 0, 0.82);
+  min-height: 4.875rem;
+  transition:
+    background-color 200ms var(--ease-out),
+    border-color 200ms var(--ease-out),
+    box-shadow 200ms var(--ease-out),
+    transform 200ms var(--ease-out);
+}
+
+.supplier-brand-card-muted {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018)),
+    rgba(10, 28, 49, 0.64);
+}
+
+.supplier-logo {
+  display: block;
+  filter: grayscale(1) brightness(0) invert(1);
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+  opacity: 1;
+  transition:
+    filter 200ms var(--ease-out),
+    opacity 200ms var(--ease-out),
+    transform 200ms var(--ease-out);
+  width: auto;
+}
+
+.supplier-logo-wide {
+  max-height: 2.45rem;
+  max-width: 86%;
+}
+
+.supplier-logo-mark {
+  max-height: 2.7rem;
+  max-width: 92%;
+}
+
+.supplier-logo-tall {
+  max-height: 3.6rem;
+  max-width: 78%;
+}
+
+.supplier-logo-ross {
+  max-height: 2.55rem;
+  max-width: 92%;
+}
+
+.hero-slide {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.hero-slide[data-active="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-dot {
+  background-color: rgba(217, 225, 241, 0.42);
+  opacity: 0.76;
+  min-width: 0.75rem;
+  outline-offset: 4px;
+  width: 0.75rem;
+}
+
+.hero-dot[aria-pressed="true"] {
+  background-color: var(--primary);
+  opacity: 1;
+  width: 2rem;
+}
+
+.hero-dot-controls {
+  pointer-events: none;
+}
+
+.hero-dot-controls button {
+  pointer-events: auto;
+}
+
+.hero-shell a,
+.hero-shell button {
+  cursor: pointer;
+}
+
+.value-pillars-band {
+  background-color: var(--deep);
+  box-shadow:
+    inset 0 1px 0 rgba(143, 179, 226, 0.08),
+    inset 0 -1px 0 rgba(15, 23, 42, 0.26);
+  overflow: hidden;
+  position: relative;
+  transform: translateZ(0);
+  z-index: 2;
+}
+
+.value-pillar-card {
+  background-color: rgba(74, 144, 196, 0.1);
+  border-color: rgba(74, 144, 196, 0.58);
+  box-shadow: inset 0 1px 0 rgba(143, 179, 226, 0.08);
+}
+
+.value-pillar-icon {
+  background-color: rgba(74, 144, 196, 0.24);
+  box-shadow: inset 0 0 0 1px rgba(74, 144, 196, 0.4);
+}
+
+.value-pillar-label {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+@media (min-width: 64rem) {
+  .hero-photo-glow {
+    filter: drop-shadow(0 0 34px rgba(96, 165, 250, 0.42));
+  }
+}
+
+@media (max-width: 63.999rem) {
+  .hero-dot-controls {
+    bottom: 1.25rem;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .supplier-brand-card:hover {
+    border-color: rgba(143, 179, 226, 0.52);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 18px 36px -30px rgba(0, 0, 0, 0.9);
+    transform: translateY(-2px);
+  }
+
+  .supplier-brand-card:not(.supplier-brand-card-muted):hover {
+    background: rgba(207, 225, 255, 0.95);
+  }
+
+  .supplier-brand-card-muted:hover {
+    background-color: rgba(13, 38, 66, 0.9);
+  }
+
+  .supplier-brand-card:hover .supplier-logo {
+    filter: none;
+    opacity: 1;
+    transform: translateY(-1px);
+  }
+}
