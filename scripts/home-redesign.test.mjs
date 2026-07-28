@@ -26,15 +26,9 @@ const [siteSource, footerSource] = await Promise.all([
 const homeOnlySelectors = [
   ".hero-bg-slide",
   ".hero-shell",
-  ".section-dark-gradient",
-  ".suppliers-section",
-  ".commercial-band",
-  ".media-band",
   ".supplier-brand-card",
   ".hero-slide",
   ".hero-dot",
-  ".value-pillars-band",
-  ".value-pillar-card",
 ];
 
 test("isolates home-only CSS from the global stylesheet", () => {
@@ -145,4 +139,17 @@ test("assigns each clear section the approved responsive grid", () => {
     homeCss,
     /\.home-content-section\s*\{[^}]*min-block-size:\s*var\(--home-section-min-height\)/s,
   );
+});
+
+test("removes superseded declarations without touching shared components", () => {
+  assert.doesNotMatch(globalCss, /--ease-in-out:/);
+  assert.doesNotMatch(homeCss, /\.section-dark-gradient/);
+  assert.doesNotMatch(homeCss, /\.suppliers-section/);
+  assert.doesNotMatch(homeCss, /\.commercial-band/);
+  assert.doesNotMatch(homeCss, /\.media-band/);
+  assert.doesNotMatch(homeCss, /\.value-pillar(?:s-band|-card|-icon|-label)/);
+  assert.match(globalCss, /\.site-header\s*\{/);
+  assert.match(globalCss, /\.footer-link\s*\{/);
+  assert.match(globalCss, /\.catalog-image-card\s*\{/);
+  assert.match(globalCss, /\.contact-field\s*\{/);
 });

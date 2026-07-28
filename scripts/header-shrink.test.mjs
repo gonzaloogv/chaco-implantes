@@ -101,6 +101,30 @@ test("uses the compact expanded dimensions below the desktop breakpoint", () => 
   );
 });
 
+test("keeps internal pages collapsed independently of scroll position", () => {
+  const state = headerShrinkModule.computeHeaderVisualState({
+    isHome: false,
+    reducedMotion: false,
+    rootFontSize: 16,
+    scrollY: 0,
+    viewportHeight: 1000,
+    viewportWidth: 1440,
+  });
+
+  assert.deepEqual(
+    {
+      shrink: state.shrink,
+      headerHeight: state.headerHeight,
+      logoSize: state.logoSize,
+    },
+    {
+      shrink: 1,
+      headerHeight: 72,
+      logoSize: 44,
+    },
+  );
+});
+
 test("interpolates the header atmosphere together with its dimensions", () => {
   const middle = headerShrinkModule.computeHeaderVisualState({
     isHome: true,
@@ -150,6 +174,15 @@ test("wires the computed state through valid CSS variables without collapsing th
     /import\s*{\s*computeHeaderVisualState\s*}\s*from\s*"\.\.\/scripts\/header-shrink\.mjs"/,
   );
   assert.match(headerSource, /const visualState = computeHeaderVisualState\(/);
+  assert.match(
+    headerSource,
+    /window\.addEventListener\("scroll",\s*syncHeaderFrame,\s*{\s*passive:\s*true\s*}\)/,
+  );
+  assert.match(headerSource, /window\.requestAnimationFrame\(/);
+  assert.match(
+    headerSource,
+    /isHomeHeader\s*&&\s*visualState\.shrink\s*===\s*0\s*&&\s*!menuOpen/,
+  );
   assert.match(
     headerSource,
     /header\.style\.setProperty\("--header-height",\s*`\$\{visualState\.headerHeight\}px`\)/,

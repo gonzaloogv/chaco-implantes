@@ -31,7 +31,6 @@
   --input: #e4eaf4;
   --ring: #0088ff;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --border-white-subtle: rgba(255, 255, 255, 0.15);
   --brand-navy: #10294c;
   --brand-blue: #1a6fd4;
@@ -309,6 +308,14 @@ svg {
   transition: transform 200ms var(--ease-out);
 }
 
+.site-header .nav-link::after {
+  background: var(--brand-blue);
+}
+
+.site-header .btn-primary {
+  background: var(--brand-blue);
+}
+
 .nav-link:hover,
 .nav-link[data-active="true"] {
   color: var(--primary-foreground);
@@ -349,8 +356,8 @@ svg {
   --header-shadow-alpha: 0.75;
   --logo-glow-size: 8px;
   --logo-glow-alpha: 0.5;
-  background-color: rgba(30, 46, 79, var(--header-background-alpha));
-  border-color: rgba(143, 179, 226, var(--header-border-alpha));
+  background-color: rgb(16 41 76 / var(--header-background-alpha));
+  border-color: rgb(98 154 224 / var(--header-border-alpha));
   backdrop-filter: blur(var(--header-blur));
   box-shadow: 0 12px 32px -24px rgba(0, 0, 0, var(--header-shadow-alpha));
 }
@@ -364,8 +371,8 @@ svg {
 
 /* Menú abierto: fondo sólido inmediato sin colapsar el logo grande. */
 .site-header[data-menu-open="true"] {
-  background-color: rgba(30, 46, 79, 0.94);
-  border-color: rgba(143, 179, 226, 0.18);
+  background-color: rgb(16 41 76 / 0.94);
+  border-color: rgb(98 154 224 / 0.18);
   backdrop-filter: blur(18px);
   box-shadow: 0 12px 32px -24px rgba(0, 0, 0, 0.75);
 }
@@ -652,13 +659,26 @@ svg {
 }
 
 .footer-link {
-  color: #d9e1f1;
+  color: var(--brand-on-dark);
   display: inline-block;
   opacity: 0.86;
   transition:
     color 200ms var(--ease-out),
     opacity 200ms var(--ease-out),
     transform 200ms var(--ease-out);
+}
+
+.site-footer {
+  background: var(--brand-navy);
+  color: var(--brand-on-dark);
+}
+
+main:has([data-home-section="cta"]) + .site-footer .site-footer__grid {
+  padding-block-start: 5.5rem;
+}
+
+.site-footer__legal {
+  border-color: rgba(191, 214, 244, 0.14);
 }
 
 .page-hero-dark {
@@ -749,7 +769,6 @@ svg {
   }
 
   .btn-primary-soft:hover {
-    background-color: var(--primary);
     box-shadow: 0 0 18px rgba(74, 144, 196, 0.32);
     color: var(--primary-foreground);
   }
@@ -767,7 +786,7 @@ svg {
   }
 
   .link-primary-soft:hover {
-    color: var(--primary);
+    opacity: 1;
   }
 
   .catalog-card-link:hover {
@@ -801,9 +820,9 @@ svg {
   }
 
   .footer-link:hover {
-    color: var(--brand);
+    color: #fff;
     opacity: 1;
-    transform: translateX(2px);
+    transform: translateX(0.125rem);
   }
 
   .lift-card:hover {

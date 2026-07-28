@@ -71,29 +71,6 @@
   filter: none;
 }
 
-.section-dark-gradient {
-  background:
-    radial-gradient(circle at 85% 8%, rgba(74, 144, 196, 0.16), transparent 22rem),
-    linear-gradient(180deg, #eef5fb 0%, #dceaf5 100%);
-  color: var(--ink);
-}
-
-.suppliers-section {
-  background: linear-gradient(180deg, var(--ink) 0%, var(--background) 100%);
-}
-
-.commercial-band {
-  background:
-    radial-gradient(circle at 88% 18%, rgba(96, 165, 250, 0.3), transparent 22rem),
-    linear-gradient(120deg, var(--deep) 0%, var(--primary-strong) 52%, var(--primary) 100%);
-}
-
-.media-band {
-  background:
-    radial-gradient(circle at 12% 88%, rgba(74, 144, 196, 0.16), transparent 22rem),
-    linear-gradient(180deg, var(--background) 0%, var(--ink) 100%);
-}
-
 .supplier-brand-card {
   display: grid;
   min-block-size: 7rem;
@@ -190,32 +167,6 @@
 .hero-shell a,
 .hero-shell button {
   cursor: pointer;
-}
-
-.value-pillars-band {
-  background-color: var(--deep);
-  box-shadow:
-    inset 0 1px 0 rgba(143, 179, 226, 0.08),
-    inset 0 -1px 0 rgba(15, 23, 42, 0.26);
-  overflow: hidden;
-  position: relative;
-  transform: translateZ(0);
-  z-index: 2;
-}
-
-.value-pillar-card {
-  background-color: rgba(74, 144, 196, 0.1);
-  border-color: rgba(74, 144, 196, 0.58);
-  box-shadow: inset 0 1px 0 rgba(143, 179, 226, 0.08);
-}
-
-.value-pillar-icon {
-  background-color: rgba(74, 144, 196, 0.24);
-  box-shadow: inset 0 0 0 1px rgba(74, 144, 196, 0.4);
-}
-
-.value-pillar-label {
-  color: rgba(255, 255, 255, 0.88);
 }
 
 .home-page {

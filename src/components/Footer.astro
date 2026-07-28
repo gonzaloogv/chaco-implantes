@@ -5,9 +5,9 @@ import { categories, footerNav, images, site, whatsappLink } from "../data/site"
 const currentYear = new Date().getFullYear();
 ---
 
-<footer data-site-footer data-home-tone="1" class="site-footer relative overflow-hidden bg-ink text-[#D9E1F1]">
+<footer data-site-footer data-home-tone="1" class="site-footer relative overflow-hidden">
   <div aria-hidden="true" class="brand-medallion pointer-events-none absolute -left-28 -bottom-28 h-[360px] w-[360px] rounded-full opacity-30"></div>
-  <div class="relative mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-4 lg:px-8">
+  <div class="site-footer__grid relative mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-4 lg:px-8">
     <div>
       <a href="/" class="flex items-center gap-2.5">
         <img
@@ -74,7 +74,7 @@ const currentYear = new Date().getFullYear();
     </div>
   </div>
 
-  <div class="border-t border-white/10">
+  <div class="site-footer__legal border-t">
     <div class="mx-auto max-w-7xl px-4 py-6 text-center text-xs text-[#D9E1F1]/70 sm:px-6 lg:px-8">
       © {currentYear} {site.name}. {site.tagline}.
     </div>

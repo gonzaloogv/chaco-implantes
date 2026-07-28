@@ -606,10 +606,6 @@ assert(home.includes('id="profesionales"'), "Professionals section should remain
 assert(!output.includes('href="/#profesionales"'), "Professionals should not be exposed as a global navigation destination");
 assert(!output.includes("/profesionales"), "Unexpected /profesionales route reference in build output");
 assert(
-  /\.btn-primary\s*{[\s\S]*background:\s*linear-gradient\(135deg, var\(--primary\)/.test(globalCss),
-  "Primary buttons should define a stable readable signature-blue gradient",
-);
-assert(
   /\.btn-secondary\s*{[\s\S]*background-color:\s*var\(--popover\)/.test(globalCss),
   "Secondary buttons should use a white surface background",
 );
@@ -617,7 +613,7 @@ assert(
   /\.btn-light\s*{[\s\S]*background-color:\s*var\(--popover\)/.test(globalCss),
   "Light buttons should use a white surface background",
 );
-assert(/\.nav-link::after\s*{[\s\S]*background:\s*var\(--primary\)/.test(globalCss), "Desktop nav links should use the signature-blue active underline");
+assert(/\.site-header \.nav-link::after\s*{[\s\S]*background:\s*var\(--brand-blue\)/.test(globalCss), "Desktop nav links should use the shared brand-blue underline");
 assert(/\.nav-link\[data-active="true"\][\s\S]*opacity:\s*1/.test(globalCss), "Active desktop nav links should render at full opacity");
 assert(/\.site-header\[data-transparent="true"\][\s\S]*background-color:\s*transparent/.test(globalCss), "Home header should start with an invisible background");
 assert(/\.site-header\[data-transparent="true"\][\s\S]*border-color:\s*transparent/.test(globalCss), "Home header should not show a top-state border");
@@ -635,8 +631,6 @@ assert(/\.hero-bg-slide\[data-active="true"\]\s*{[\s\S]*opacity:\s*1/.test(homeC
 assert(/\.mobile-menu\[data-state="open"\]\s*{[\s\S]*transform:\s*translateY\(0\)/.test(globalCss), "Mobile menu should enter with a small transform-to-rest transition");
 assert(/\.mobile-menu\[data-state="closed"\]\s*{[\s\S]*transform:\s*translateY\(-0\.375rem\)/.test(globalCss), "Mobile menu should rest hidden with a minimal upward offset");
 assert(/\.menu-icon-state\s*{[\s\S]*transition:[\s\S]*opacity 150ms/.test(globalCss), "Mobile menu icons should crossfade quickly");
-assert(/\.btn-primary:hover\s*{[\s\S]*background:\s*linear-gradient\(135deg, var\(--primary-strong\)/.test(globalCss), "Primary CTA buttons should have a clearly visible blue hover state");
-assert(/\.footer-link:hover\s*{[\s\S]*color:\s*var\(--brand\)/.test(globalCss), "Footer links should use the subtle brand hover");
 assert(/\.gallery-filter-active:hover\s*{[\s\S]*background-color:\s*var\(--primary\)/.test(globalCss), "Active gallery filters should not change away from selected colors on hover");
 assert(/\.gallery-filter-idle\s*{[\s\S]*border-color:\s*color-mix\(in srgb, var\(--brand\) 48%, white\)/.test(globalCss), "Idle gallery filters should have a slightly more visible border");
 assert(/\[data-gallery-grid\]\[data-filtering="true"\]\s*\.gallery-card:not\(\.hidden\)\s*{[\s\S]*opacity:\s*0\.72/.test(globalCss), "Gallery visible items should fade briefly during filter changes");
@@ -664,11 +658,26 @@ assert(!/tracking-(wide|tight|\[)/.test(source), "Source should keep letter spac
 assert(!/transition:\s*all\b/.test(source), "Motion should not use transition: all");
 assert(!/scale\(0\)/.test(source), "Motion should not animate from scale(0)");
 assert(source.includes('matchMedia("(prefers-reduced-motion: reduce)")'), "Interaction scripts should respect reduced motion for approved motion");
-assert(/--primary:\s*#2b6cb8;/i.test(globalCss), "Primary accent should use an accessible client-facing blue signature");
-assert(/--primary-glow:\s*#60a5fa;/i.test(globalCss), "Glow accent should use the electric blue highlight");
-assert(/--background:\s*#0f172a;/i.test(globalCss), "Default page background should move to the dark premium foundation");
-assert(/--surface:\s*#eef2f9;/i.test(globalCss), "Main content surface should remain readable over the dark foundation");
-assert(/--surface-2:\s*#d9e1f1;/i.test(globalCss), "Ice color should remain reserved for emphasized sections");
+assert(
+  /--brand-navy:\s*#10294c/i.test(globalCss),
+  "Shared chrome should expose the approved navy token",
+);
+assert(
+  /--brand-blue:\s*#1a6fd4/i.test(globalCss),
+  "Home accents should expose one approved blue token",
+);
+assert(
+  /\.site-footer\s*{[\s\S]*background:\s*var\(--brand-navy\)/.test(globalCss),
+  "Footer should close the home with the approved navy",
+);
+assert(
+  /\.footer-link:hover\s*{[\s\S]*color:\s*#fff/.test(globalCss),
+  "Footer links should use a high-contrast hover",
+);
+assert(
+  !/\.btn-primary-soft:hover\s*{[^}]*background-color:/s.test(globalCss),
+  "Soft primary hover should not repeat its base background",
+);
 for (const term of forbidden) {
   assert(!output.includes(term), `Forbidden trace found in build output: ${term}`);
 }
