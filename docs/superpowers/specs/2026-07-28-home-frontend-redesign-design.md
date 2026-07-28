@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-07-28
 
-**Estado:** aprobado para planificación
+**Estado:** reemplazado por `2026-07-28-home-editorial-medical-redesign-design.md`
 
 **Alcance:** home, header, footer y estilos compartidos estrictamente necesarios
 
