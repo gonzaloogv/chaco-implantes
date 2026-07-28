@@ -192,11 +192,16 @@ try {
       (element) => element.getBoundingClientRect().height,
     );
     await page.evaluate(() => window.scrollTo(0, 200));
-    await page.evaluate(
-      () =>
-        new Promise((resolve) =>
-          requestAnimationFrame(() => requestAnimationFrame(resolve)),
-        ),
+    await page.waitForFunction(
+      (initialHeight) => {
+        const element = document.querySelector("[data-site-header]");
+        return (
+          element instanceof HTMLElement &&
+          window.scrollY >= 100 &&
+          element.getBoundingClientRect().height < initialHeight - 1
+        );
+      },
+      expandedHeight,
     );
     const collapsedHeight = await header.evaluate(
       (element) => element.getBoundingClientRect().height,
