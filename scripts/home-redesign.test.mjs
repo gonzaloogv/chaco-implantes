@@ -130,11 +130,11 @@ test("defines accessible hero navigation with synchronized progress", () => {
   );
   assert.match(
     homeCss,
-    /\.hero-carousel-nav\s*\{[^}]*padding:\s*0 0\.25rem/s,
+    /\.hero-carousel-nav\s*\{[^}]*padding:\s*0\.125rem 0\.25rem/s,
   );
   assert.match(
     homeCss,
-    /@media \(max-width:\s*39\.999rem\)[\s\S]*\.hero-carousel-nav\s*\{[^}]*padding:\s*0 0\.1875rem/s,
+    /@media \(max-width:\s*39\.999rem\)[\s\S]*\.hero-carousel-nav\s*\{[^}]*padding:\s*0\.125rem 0\.1875rem/s,
   );
 });
 
@@ -159,6 +159,10 @@ test("rebalances support, suppliers, and final CTA with the electric brand color
   assert.match(
     homeCss,
     /\.home-support-section\s*\{[^}]*background:\s*#eff5fa/s,
+  );
+  assert.match(
+    homeCss,
+    /\.home-support-copy::before\s*\{[^}]*top:\s*50%[^}]*right:\s*clamp\(-5rem,\s*-5vw,\s*-2rem\)[^}]*width:\s*clamp\(15rem,\s*28vw,\s*22rem\)[^}]*00_icono_globo_CHACO_IMPLANTES_zxpybc\.png[^}]*opacity:\s*0\.055/s,
   );
   assert.match(
     homeCss,

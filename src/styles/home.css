@@ -107,7 +107,7 @@
 
 .hero-carousel-nav {
   gap: 0.125rem;
-  padding: 0 0.25rem;
+  padding: 0.125rem 0.25rem;
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 999px;
   background: rgba(7, 22, 42, 0.72);
@@ -547,7 +547,26 @@
 }
 
 .home-support-section {
+  position: relative;
+  overflow: hidden;
   background: #eff5fa;
+  isolation: isolate;
+}
+
+.home-support-copy::before {
+  position: absolute;
+  top: 50%;
+  right: clamp(-5rem, -5vw, -2rem);
+  z-index: -1;
+  width: clamp(15rem, 28vw, 22rem);
+  aspect-ratio: 1;
+  transform: translateY(-50%);
+  background:
+    url("https://res.cloudinary.com/dz9tuwczf/image/upload/f_auto,q_auto,w_600/v1784654455/00_icono_globo_CHACO_IMPLANTES_zxpybc.png")
+    no-repeat center / contain;
+  content: "";
+  opacity: 0.055;
+  pointer-events: none;
 }
 
 .home-support-layout {
@@ -574,7 +593,9 @@
 }
 
 .home-support-copy {
+  position: relative;
   grid-column: 7 / -1;
+  isolation: isolate;
 }
 
 .home-support-steps {
@@ -827,7 +848,7 @@
   }
 
   .hero-carousel-nav {
-    padding: 0 0.1875rem;
+    padding: 0.125rem 0.1875rem;
   }
 
   .home-trust-strip {
