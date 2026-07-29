@@ -7,12 +7,6 @@ import { categoryImages, galleryFilters, videos } from "../data/site";
 // Filtros solo para categorías que realmente tienen videos (evita filtros vacíos)
 const usedCategories = galleryFilters.filter((filter) => videos.some((video) => video.category === filter));
 const showFilters = usedCategories.length >= 2;
-
-// Título genérico que genera el pipeline cuando no hay metadata por video.
-// Mientras todos sean de "cajas", la serie numerada es la etiqueta honesta.
-const GENERIC_VIDEO_TITLE = "Producto instrumental";
-const displayTitle = (video: (typeof videos)[number], index: number) =>
-  video.title === GENERIC_VIDEO_TITLE ? `Caja de instrumental N.º ${index + 1}` : video.title;
 ---
 
 <BaseLayout
@@ -116,12 +110,12 @@ const displayTitle = (video: (typeof videos)[number], index: number) =>
                   assetId={video.id}
                   src={video.src}
                   poster={video.poster}
-                  title={displayTitle(video, index)}
+                  title={video.title}
                   duration={video.duration}
                   position={index + 1}
                 />
                 <div class="px-4 py-3">
-                  <h2 class="font-display text-sm font-semibold text-deep">{displayTitle(video, index)}</h2>
+                  <h2 class="font-display text-sm font-semibold text-deep">{video.title}</h2>
                   <p class="mt-0.5 text-xs text-muted-foreground">{video.category}</p>
                 </div>
               </article>

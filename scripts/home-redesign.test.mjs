@@ -110,6 +110,40 @@ test("preserves the verified content and shared behavior boundaries", () => {
   );
 });
 
+test("uses the approved optimized Cloudinary images in the home", () => {
+  for (const url of [
+    "f_auto,q_auto,c_fill,g_auto,w_1400,h_960/v1785277687/chaco-36_yd3o1w.jpg",
+    "f_auto,q_auto,c_fill,g_auto,w_1200,h_960/v1783107299/Congreso_Traumato-82_cc6z1u.jpg",
+    "f_auto,q_auto,c_fill,g_auto,w_1200,h_1400/v1785277685/chaco-34_pof7i8.jpg",
+  ]) {
+    assert.ok(siteSource.includes(url), `missing optimized home image: ${url}`);
+  }
+
+  assert.match(
+    indexSource,
+    /src=\{images\.homeSupport\}[\s\S]*?alt="Preparación y control de instrumental en Chaco Implantes"/,
+  );
+  assert.match(
+    indexSource,
+    /src=\{images\.homeGallery\}[\s\S]*?alt="Preparación de cajas e instrumental quirúrgico"/,
+  );
+  assert.match(
+    indexSource,
+    /src=\{images\.homeVideos\}[\s\S]*?alt="Profesionales durante el 61° Congreso de Traumatología"/,
+  );
+});
+
+test("uses the approved optimized supplier logos", () => {
+  for (const logo of [
+    "f_auto,q_auto,c_limit,w_600/v1785295619/BONSS_hbor6w.png",
+    "f_auto,q_auto,c_limit,w_600/v1785295629/RosMedical_nomflr.png",
+    "f_auto,q_auto,c_limit,w_600/v1785295625/Medacta_international_fxxqfm.png",
+    "f_auto,q_auto,c_limit,w_600/v1785295621/Implantes_Villalba_pan8nq.png",
+  ]) {
+    assert.ok(siteSource.includes(logo), `missing optimized supplier logo: ${logo}`);
+  }
+});
+
 test("defines accessible hero navigation with synchronized progress", () => {
   for (const hook of [
     "data-hero-previous",
@@ -162,7 +196,7 @@ test("rebalances support, suppliers, and final CTA with the electric brand color
   );
   assert.match(
     homeCss,
-    /\.home-support-copy::before\s*\{[^}]*top:\s*50%[^}]*right:\s*clamp\(-5rem,\s*-5vw,\s*-2rem\)[^}]*width:\s*clamp\(15rem,\s*28vw,\s*22rem\)[^}]*00_icono_globo_CHACO_IMPLANTES_zxpybc\.png[^}]*opacity:\s*0\.055/s,
+    /\.home-support-copy::before\s*\{[^}]*top:\s*46%[^}]*right:\s*clamp\(-3\.5rem,\s*-3vw,\s*-1rem\)[^}]*width:\s*clamp\(16\.5rem,\s*30vw,\s*24rem\)[^}]*00_icono_globo_CHACO_IMPLANTES_zxpybc\.png[^}]*opacity:\s*0\.055/s,
   );
   assert.match(
     homeCss,

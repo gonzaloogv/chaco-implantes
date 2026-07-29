@@ -14,9 +14,13 @@ const LOGO_FOOTER_TRANSFORM = "f_auto,q_auto,w_128";
 export const images = {
   hero: "/assets/images/hero.jpg",
   heroBg: "/assets/images/hero-instrumental.JPG",
-  heroNextAR: `${CLOUDINARY_BASE}/${HERO_TRANSFORM}/v1781474473/nextar-hero_pdfhha.png`,
-  heroAmis: `${CLOUDINARY_BASE}/${HERO_TRANSFORM}/v1781474563/amis-hero_snoht3.png`,
+  heroNextAR: `${CLOUDINARY_BASE}/${HERO_TRANSFORM}/v1785284880/NextAR_HERO_twzvis.png`,
+  heroAmis: `${CLOUDINARY_BASE}/${HERO_TRANSFORM}/v1785290373/amis_noxkiq.png`,
   heroEventos: `${CLOUDINARY_BASE}/${HERO_TRANSFORM}/foto-evento_d0eg2f.jpg`,
+  homeGallery: `${CLOUDINARY_BASE}/f_auto,q_auto,c_fill,g_auto,w_1400,h_960/v1785277687/chaco-36_yd3o1w.jpg`,
+  homeSupport: `${CLOUDINARY_BASE}/f_auto,q_auto,c_fill,g_auto,w_1200,h_1400/v1785277685/chaco-34_pof7i8.jpg`,
+  homeVideos: `${CLOUDINARY_BASE}/f_auto,q_auto,c_fill,g_auto,w_1200,h_960/v1783107299/Congreso_Traumato-82_cc6z1u.jpg`,
+  productAmis: `${CLOUDINARY_BASE}/${HERO_TRANSFORM}/v1781474563/amis-hero_snoht3.png`,
   quirofano: "/assets/images/quirofano.jpg",
   congreso: "/assets/images/congreso-traumatologia-2024.JPG",
   productos: "/assets/images/productos.jpg",
@@ -172,25 +176,25 @@ export const supplierSystems: SupplierSystem[] = [
   {
     name: "MEDACTA",
     href: "https://www.medacta.com/",
-    logo: `${CLOUDINARY_BASE}/f_auto,q_auto,w_600/v1784641411/Gemini_Generated_Image_13dauo13dauo13da-Photoroom_edbvnf.png`,
+    logo: `${CLOUDINARY_BASE}/f_auto,q_auto,c_limit,w_600/v1785295625/Medacta_international_fxxqfm.png`,
     logoAlt: "Logo de Medacta International",
-    logoWidth: 2400,
-    logoHeight: 1256,
+    logoWidth: 2193,
+    logoHeight: 823,
     logoClass: "supplier-logo-mark",
   },
   {
     name: "BONSS",
     href: "https://es.bonss.com.cn/",
-    logo: "/assets/brands/bonss-medical-brand-color.png",
+    logo: `${CLOUDINARY_BASE}/f_auto,q_auto,c_limit,w_600/v1785295619/BONSS_hbor6w.png`,
     logoAlt: "Logo de BONSS Medical",
-    logoWidth: 900,
-    logoHeight: 258,
+    logoWidth: 1840,
+    logoHeight: 855,
     logoClass: "supplier-logo-wide",
   },
   {
     name: "Implantes Villalba",
     href: "https://implantesvillalba.com.ar/",
-    logo: `${CLOUDINARY_BASE}/f_auto,q_auto,w_600/v1784641387/Implantes_Villalba_sjvhr7.png`,
+    logo: `${CLOUDINARY_BASE}/f_auto,q_auto,c_limit,w_600/v1785295621/Implantes_Villalba_pan8nq.png`,
     logoAlt: "Logo de Implantes Villalba",
     logoWidth: 1787,
     logoHeight: 780,
@@ -199,10 +203,10 @@ export const supplierSystems: SupplierSystem[] = [
   {
     name: "RosMedical",
     href: "https://ros-medical.com/",
-    logo: "/assets/brands/ross-medical-brand-color.png",
+    logo: `${CLOUDINARY_BASE}/f_auto,q_auto,c_limit,w_600/v1785295629/RosMedical_nomflr.png`,
     logoAlt: "Logo de RosMedical",
-    logoWidth: 900,
-    logoHeight: 210,
+    logoWidth: 1874,
+    logoHeight: 839,
     logoClass: "supplier-logo-ross",
   },
 ] as const;
@@ -341,7 +345,7 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Espaciadores de cadera",
     description:
       "Espaciadores de cadera para planificación y soporte en procedimientos que requieren alternativas temporales o de revisión.",
-    image: images.heroAmis,
+    image: images.productAmis,
     href: "/catalogos/cadera/productos/cadera-xl",
   },
   {
@@ -381,7 +385,7 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Endoprótesis modular",
     description:
       "Sistema modular para reconstrucción y reemplazo de cadera en procedimientos que exigen configuración por necesidad quirúrgica.",
-    image: images.heroAmis,
+    image: images.productAmis,
     href: "/catalogos/cadera/productos/endoprotesis-modular-cadera",
   },
   {
@@ -411,7 +415,7 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Prótesis para reemplazo total de cadera",
     description:
       "Línea no cementada Hip-Lock para reemplazo total de cadera, con referencias para planificación y consulta comercial.",
-    image: images.heroAmis,
+    image: images.productAmis,
     href: "/catalogos/cadera/productos/cadera-no-cementada-hip-lock",
   },
   {
@@ -431,7 +435,7 @@ export const catalogProducts: CatalogProduct[] = [
     label: "Tallo no cementado",
     description:
       "Tallo SP no cementado con información organizada para consulta de características, medidas y coordinación de pedidos.",
-    image: images.heroAmis,
+    image: images.productAmis,
     href: "/catalogos/cadera/productos/tallo-sp",
   },
   {

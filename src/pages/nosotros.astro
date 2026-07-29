@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Icon from "../components/Icon.astro";
 import { images, site } from "../data/site";
+import "../styles/nosotros.css";
 
 const features = [
   {
@@ -32,79 +33,104 @@ const features = [
   description="Chaco Implantes: distribución de prótesis, implantes e instrumental traumatológico en Resistencia, Chaco, con atención a profesionales e instituciones."
   canonicalPath="/nosotros"
 >
-  <section data-nosotros-page class="page-hero-dark border-b border-white/10 px-4 pb-14 pt-32 text-white sm:px-6 lg:px-8">
-    <div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
-      <div>
-        <h1 class="font-display text-4xl font-black sm:text-5xl">Nosotros</h1>
-        <p class="mt-3 max-w-2xl text-brand">
-          Distribuimos prótesis, implantes e instrumental traumatológico para profesionales e instituciones de salud.
-        </p>
-        <p class="mt-5 max-w-xl font-display text-xl font-black leading-tight text-white sm:text-2xl">
-          Calidad que se siente. Confianza que se nota.
-        </p>
-      </div>
-
-      <div class="catalog-image-card relative hidden h-64 overflow-hidden rounded-xl border border-primary/20 bg-deep lg:block">
-        <img
-          src={images.quirofano}
-          alt="Quirófano equipado para cirugía traumatológica"
-          loading="lazy"
-          decoding="async"
-          width="1200"
-          height="900"
-          class="absolute inset-0 h-full w-full object-cover"
-        />
-        <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-deep via-deep/40 to-transparent"></div>
-        <div class="relative flex h-full items-end p-6">
-          <p class="max-w-sm text-sm font-semibold text-white">
-            Coordinación comercial, disponibilidad e instrumental para procedimientos programados.
+  <div class="nosotros-page">
+    <section data-nosotros-page class="nosotros-hero page-hero-dark">
+      <div class="nosotros-shell nosotros-hero__layout">
+        <div class="nosotros-hero__copy">
+          <h1>Nosotros</h1>
+          <p class="nosotros-hero__intro">
+            Distribuimos prótesis, implantes e instrumental traumatológico para profesionales e instituciones de salud.
           </p>
+          <p class="nosotros-hero__statement">Calidad que se siente. Confianza que se nota.</p>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <section class="page-surface">
-    <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-      <div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-        <div class="premium-card rounded-xl border p-6 sm:p-8">
-          <h2 class="font-display text-2xl font-extrabold text-deep">Productos traumatológicos con atención profesional</h2>
-          <p class="mt-4 text-sm leading-relaxed text-muted-foreground">
+        <figure data-nosotros-hero-media class="nosotros-hero__media">
+          <img
+            src={images.quirofano}
+            alt="Quirófano equipado para cirugía traumatológica"
+            loading="eager"
+            decoding="async"
+            fetchpriority="high"
+            width="1200"
+            height="900"
+          />
+          <figcaption>
+            Coordinación comercial, disponibilidad e instrumental para procedimientos programados.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section data-nosotros-story class="nosotros-story">
+      <div class="nosotros-shell nosotros-story__layout">
+        <div class="nosotros-story__copy">
+          <p class="nosotros-label">Chaco Implantes</p>
+          <h2>Productos traumatológicos con atención profesional</h2>
+          <p>
             {site.name} acompaña a equipos médicos e instituciones con coordinación de implantes, instrumental y líneas de producto para traumatología.
           </p>
-          <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
+          <p>
             Nuestra tarea combina disponibilidad comercial, respuesta cercana y seguimiento de cada requerimiento para que el profesional pueda consultar por especialidad, sistema o procedimiento.
           </p>
-          <a href="/contacto" class="btn-primary mt-6 inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-bold">
-            Contactar a Chaco Implantes <Icon name="arrow-right" class="h-4 w-4" />
+          <a href="/contacto" class="btn-primary nosotros-story__action">
+            Contactar a Chaco Implantes
+            <Icon name="arrow-right" class="h-4 w-4" />
           </a>
         </div>
 
-        <div class="grid gap-4 sm:grid-cols-2">
+        <figure class="nosotros-story__media">
+          <img
+            src={images.homeGallery}
+            alt="Preparación y control de instrumental en Chaco Implantes"
+            loading="lazy"
+            decoding="async"
+            width="1400"
+            height="960"
+          />
+          <figcaption>Atención cercana para profesionales e instituciones de salud.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="nosotros-capabilities" aria-labelledby="nosotros-capabilities-title">
+      <div class="nosotros-shell nosotros-capabilities__layout">
+        <header class="nosotros-capabilities__header">
+          <p class="nosotros-label">Nuestra forma de trabajar</p>
+          <h2 id="nosotros-capabilities-title">Una respuesta pensada para el trabajo profesional</h2>
+        </header>
+
+        <ul data-nosotros-feature-list class="nosotros-feature-list">
           {
             features.map((feature) => (
-              <article class="lift-card premium-card flex items-start gap-4 rounded-xl border p-5">
-                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-secondary text-primary ring-1 ring-border">
-                  <Icon name={feature.icon} class="h-4 w-4" />
-                </div>
+              <li data-nosotros-feature class="nosotros-feature">
+                <span class="nosotros-feature__icon" aria-hidden="true">
+                  <Icon name={feature.icon} class="h-5 w-5" />
+                </span>
                 <div>
-                  <h2 class="font-display text-base font-bold text-deep">{feature.title}</h2>
-                  <p class="mt-1 text-sm leading-relaxed text-muted-foreground">{feature.text}</p>
+                  <h3>{feature.title}</h3>
+                  <p>{feature.text}</p>
                 </div>
-              </article>
+              </li>
             ))
           }
-        </div>
+        </ul>
       </div>
+    </section>
 
-      <div class="dark-card mt-10 grid gap-6 rounded-xl border p-6 text-white lg:grid-cols-[0.75fr_1.25fr] lg:items-center">
-        <div>
-          <p class="font-display text-2xl font-extrabold">Atención cercana, criterio técnico y respuesta comercial</p>
-        </div>
-        <p class="text-sm leading-relaxed text-brand">
+    <section data-nosotros-cta class="nosotros-cta">
+      <div class="nosotros-shell nosotros-cta__layout">
+        <h2>Atención cercana, criterio técnico y respuesta comercial</h2>
+        <p>
           Trabajamos desde Resistencia para acompañar a profesionales, clínicas y sanatorios con productos para traumatología, coordinación de pedidos y consultas por catálogo.
         </p>
+        <div class="nosotros-cta__actions">
+          <a href="/contacto" class="btn-light nosotros-cta__action">
+            Hacer una consulta
+            <Icon name="arrow-right" class="h-4 w-4" />
+          </a>
+          <a href="/catalogos" class="nosotros-cta__catalog">Ver catálogos</a>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </BaseLayout>

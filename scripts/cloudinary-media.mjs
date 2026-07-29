@@ -439,8 +439,8 @@ function assignGeneratedImageLabels({
 
       usedNumbers.add(previousNumber);
       candidate.image.generatedLabelNumber = previousNumber;
-      candidate.image.title = `${candidate.label} ${previousNumber}`;
-      candidate.image.alt = candidate.image.title;
+      candidate.image.title = candidate.label;
+      candidate.image.alt = candidate.label;
     }
 
     for (const candidate of unassigned) {
@@ -449,8 +449,8 @@ function assignGeneratedImageLabels({
 
       usedNumbers.add(nextNumber);
       candidate.image.generatedLabelNumber = nextNumber;
-      candidate.image.title = `${candidate.label} ${nextNumber}`;
-      candidate.image.alt = candidate.image.title;
+      candidate.image.title = candidate.label;
+      candidate.image.alt = candidate.label;
     }
   }
 }

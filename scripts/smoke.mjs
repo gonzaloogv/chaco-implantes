@@ -281,6 +281,27 @@ assert(!home.includes("data-catalog-card-icon"), "Catalog cards should not rende
 assert(home.includes("nextar-hero_pdfhha"), "Home should use the Cloudinary NextAR full-hero image");
 assert(home.includes("amis-hero_snoht3"), "Home should use the Cloudinary AMIS full-hero image");
 assert(home.includes(eventHeroImage), "Home should use the events full-hero image");
+for (const optimizedHomeImage of [
+  "f_auto,q_auto,c_fill,g_auto,w_1400,h_960/v1785277687/chaco-36_yd3o1w.jpg",
+  "f_auto,q_auto,c_fill,g_auto,w_1200,h_960/v1783107299/Congreso_Traumato-82_cc6z1u.jpg",
+  "f_auto,q_auto,c_fill,g_auto,w_1200,h_1400/v1785277685/chaco-34_pof7i8.jpg",
+]) {
+  assert(
+    home.includes(optimizedHomeImage),
+    `Home should render optimized media: ${optimizedHomeImage}`,
+  );
+}
+for (const optimizedSupplierLogo of [
+  "f_auto,q_auto,c_limit,w_600/v1785295619/BONSS_hbor6w.png",
+  "f_auto,q_auto,c_limit,w_600/v1785295629/RosMedical_nomflr.png",
+  "f_auto,q_auto,c_limit,w_600/v1785295625/Medacta_international_fxxqfm.png",
+  "f_auto,q_auto,c_limit,w_600/v1785295621/Implantes_Villalba_pan8nq.png",
+]) {
+  assert(
+    home.includes(optimizedSupplierLogo),
+    `Home should render optimized supplier logo: ${optimizedSupplierLogo}`,
+  );
+}
 assert(home.includes("data-hero-carousel"), "Home hero should include the differentiator carousel");
 assert((home.match(/<article data-hero-slide/g) ?? []).length === 3, "Hero carousel should render three differentiator slides");
 assert(
@@ -399,10 +420,10 @@ for (const image of renderedGeneratedImages) {
   assert(galeria.includes(image.full), `Gallery should render synchronized full image ${image.assetId}`);
 }
 for (const image of generatedInstrumentalImages) {
-  const expectedLabel = `Producto instrumental ${image.generatedLabelNumber}`;
   assert(
-    image.title === expectedLabel && image.alt === expectedLabel,
-    `Generated instrumental label should match its number: ${image.assetId}`,
+    image.title === "Producto instrumental" &&
+      image.alt === "Producto instrumental",
+    `Generated instrumental label should omit its internal number: ${image.assetId}`,
   );
   assert(
     galeria.includes(expectedLabel),
@@ -547,8 +568,17 @@ for (const video of cloudinaryManifest.videos) {
     video.sourceFolder.startsWith("chaco-implantes/cajas/");
   if (isCajasVideo) {
     assert(
-      video.title === "Producto instrumental",
+      video.title === "Instrumental",
       `Cajas video should use the approved title: ${video.assetId}`,
+    );
+  } else if (
+    video.sourceFolder === "chaco-implantes/stand" ||
+    video.sourceFolder.startsWith("chaco-implantes/stand/")
+  ) {
+    assert(
+      video.title ===
+        "61° Congreso de Traumatología — Stand Chaco Implantes",
+      `Stand video should use the approved title: ${video.assetId}`,
     );
   }
   assert(videos.includes(video.src), `Videos page should render source ${video.assetId}`);
@@ -562,6 +592,10 @@ for (const video of cloudinaryManifest.videos) {
     `Video poster should preserve its full frame: ${video.assetId}`,
   );
 }
+assert(
+  !videos.includes("Caja de instrumental N.º"),
+  "Videos page should not add presentation numbering",
+);
 if (hasSyncedVideos) {
   assert(!videos.includes("Próximamente:"), "Videos hero should not announce upcoming content after synchronization");
 }

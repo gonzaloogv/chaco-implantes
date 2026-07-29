@@ -22,13 +22,14 @@ const sources = [
     imageCategory: "Eventos",
     videoCategory: "Eventos",
     fixedImageTitle: "61° Congreso Traumatología",
+    fixedVideoTitle: "61° Congreso de Traumatología — Stand Chaco Implantes",
   },
   {
     path: "chaco-implantes/cajas",
     imageCategory: "Instrumental",
     videoCategory: "Instrumental",
     unnamedImageLabel: "Producto instrumental",
-    fixedVideoTitle: "Producto instrumental",
+    fixedVideoTitle: "Instrumental",
   },
 ];
 
@@ -281,8 +282,8 @@ test("runSync passes previous label assignments to the manifest builder", async 
       generatedLabelNumber: cajasImage.generatedLabelNumber,
     },
     {
-      title: "Producto instrumental 4",
-      alt: "Producto instrumental 4",
+      title: "Producto instrumental",
+      alt: "Producto instrumental",
       generatedLabelNumber: 4,
     },
   );
@@ -343,7 +344,7 @@ test("runSync verifies built manifest videos before publishing", async (t) => {
     [
       {
         assetId: "cajas-video",
-        title: "Producto instrumental",
+        title: "Instrumental",
         src:
           "https://res.cloudinary.com/demo/video/upload/f_mp4,q_auto,ac_none/v1/cajas-video.mp4",
       },

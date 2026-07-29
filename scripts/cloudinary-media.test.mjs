@@ -6,6 +6,7 @@ import {
   buildSearchExpression,
   validateCloudinaryConfig,
 } from "./cloudinary-media.mjs";
+import { cloudinaryFolders } from "./cloudinary-folders.config.mjs";
 
 const validSources = [
   {
@@ -13,15 +14,31 @@ const validSources = [
     imageCategory: "Eventos",
     videoCategory: "Eventos",
     fixedImageTitle: "61° Congreso Traumatología",
+    fixedVideoTitle: "61° Congreso de Traumatología — Stand Chaco Implantes",
   },
   {
     path: "chaco-implantes/cajas",
     imageCategory: "Instrumental",
     videoCategory: "Instrumental",
     unnamedImageLabel: "Producto instrumental",
-    fixedVideoTitle: "Producto instrumental",
+    fixedVideoTitle: "Instrumental",
   },
 ];
+
+test("configured folders use their approved video titles", () => {
+  const standSource = cloudinaryFolders.find(
+    ({ path }) => path === "chaco-implantes/stand",
+  );
+  const cajasSource = cloudinaryFolders.find(
+    ({ path }) => path === "chaco-implantes/cajas",
+  );
+
+  assert.equal(
+    standSource?.fixedVideoTitle,
+    "61° Congreso de Traumatología — Stand Chaco Implantes",
+  );
+  assert.equal(cajasSource?.fixedVideoTitle, "Instrumental");
+});
 
 test("validateCloudinaryConfig accepts the approved independent sources", () => {
   const sources = validateCloudinaryConfig({
@@ -287,7 +304,7 @@ test("buildManifest normalizes dynamic images and visual videos", () => {
     publicId: "recorrido_caja_qwerty",
     category: "Eventos",
     createdAt: "2026-07-25T09:30:00.000Z",
-    title: "Recorrido por el stand",
+    title: "61° Congreso de Traumatología — Stand Chaco Implantes",
     poster:
       "https://res.cloudinary.com/demo/video/upload/so_0,f_jpg,q_auto,b_rgb:0f172a,c_pad,ar_16:9,w_600/v1780000002/recorrido_caja_qwerty.jpg",
     src:
@@ -331,7 +348,7 @@ test("buildManifest applies fixed titles over editorial and technical text", () 
       alt: "61° Congreso Traumatología",
     },
   );
-  assert.equal(manifest.videos[0].title, "Producto instrumental");
+  assert.equal(manifest.videos[0].title, "Instrumental");
 });
 
 test("buildManifest reads folder in fixed mode and preserves Unicode fallback text", () => {
@@ -418,8 +435,8 @@ test("buildManifest assigns stable labels only to unnamed cajas images", () => {
     [
       {
         assetId: "caja-newest",
-        title: "Producto instrumental 1",
-        alt: "Producto instrumental 1",
+        title: "Producto instrumental",
+        alt: "Producto instrumental",
         generatedLabelNumber: 1,
       },
       {
@@ -430,8 +447,8 @@ test("buildManifest assigns stable labels only to unnamed cajas images", () => {
       },
       {
         assetId: "caja-older",
-        title: "Producto instrumental 2",
-        alt: "Producto instrumental 2",
+        title: "Producto instrumental",
+        alt: "Producto instrumental",
         generatedLabelNumber: 2,
       },
     ],

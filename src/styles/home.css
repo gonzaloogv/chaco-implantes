@@ -555,10 +555,10 @@
 
 .home-support-copy::before {
   position: absolute;
-  top: 50%;
-  right: clamp(-5rem, -5vw, -2rem);
+  top: 46%;
+  right: clamp(-3.5rem, -3vw, -1rem);
   z-index: -1;
-  width: clamp(15rem, 28vw, 22rem);
+  width: clamp(16.5rem, 30vw, 24rem);
   aspect-ratio: 1;
   transform: translateY(-50%);
   background:

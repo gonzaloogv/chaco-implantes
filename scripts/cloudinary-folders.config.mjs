@@ -6,12 +6,13 @@ export const cloudinaryFolders = [
     imageCategory: "Eventos",
     videoCategory: "Eventos",
     fixedImageTitle: "61° Congreso Traumatología",
+    fixedVideoTitle: "61° Congreso de Traumatología — Stand Chaco Implantes",
   },
   {
     path: "chaco-implantes/cajas",
     imageCategory: "Instrumental",
     videoCategory: "Instrumental",
     unnamedImageLabel: "Producto instrumental",
-    fixedVideoTitle: "Producto instrumental",
+    fixedVideoTitle: "Instrumental",
   },
 ];
