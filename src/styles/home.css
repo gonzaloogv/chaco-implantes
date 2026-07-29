@@ -107,7 +107,7 @@
 
 .hero-carousel-nav {
   gap: 0.125rem;
-  padding: 0.25rem;
+  padding: 0 0.25rem;
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 999px;
   background: rgba(7, 22, 42, 0.72);
@@ -827,7 +827,7 @@
   }
 
   .hero-carousel-nav {
-    padding: 0.1875rem;
+    padding: 0 0.1875rem;
   }
 
   .home-trust-strip {

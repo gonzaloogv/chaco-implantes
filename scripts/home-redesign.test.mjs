@@ -128,6 +128,14 @@ test("defines accessible hero navigation with synchronized progress", () => {
     homeCss,
     /\.hero-dot__progress-circle\s*\{[^}]*stroke-dashoffset:\s*var\(--hero-progress-offset,\s*100\)/s,
   );
+  assert.match(
+    homeCss,
+    /\.hero-carousel-nav\s*\{[^}]*padding:\s*0 0\.25rem/s,
+  );
+  assert.match(
+    homeCss,
+    /@media \(max-width:\s*39\.999rem\)[\s\S]*\.hero-carousel-nav\s*\{[^}]*padding:\s*0 0\.1875rem/s,
+  );
 });
 
 test("rebalances support, suppliers, and final CTA with the electric brand color", () => {
