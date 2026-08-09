@@ -1,0 +1,41 @@
+{
+  "webps": [
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\MUST-Legible\\output\\must-01.webp",
+      "fileName": "must-01.webp",
+      "quality": 85,
+      "bytes": 72100
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\MUST-Legible\\output\\must-02.webp",
+      "fileName": "must-02.webp",
+      "quality": 85,
+      "bytes": 84732
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\MUST-Legible\\output\\must-03.webp",
+      "fileName": "must-03.webp",
+      "quality": 85,
+      "bytes": 93172
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\MUST-Legible\\output\\must-04.webp",
+      "fileName": "must-04.webp",
+      "quality": 85,
+      "bytes": 88366
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\MUST-Legible\\output\\must-05.webp",
+      "fileName": "must-05.webp",
+      "quality": 85,
+      "bytes": 92524
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\MUST-Legible\\output\\must-06.webp",
+      "fileName": "must-06.webp",
+      "quality": 85,
+      "bytes": 105114
+    }
+  ],
+  "pdfPath": "C:\\Users\\Gonzalo\\Documents\\Folletos\\MUST-Legible\\output\\must-folleto.pdf"
+}

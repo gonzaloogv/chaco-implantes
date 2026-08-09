@@ -1,0 +1,47 @@
+{
+  "webps": [
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\M-Vizion-Legible\\output\\m-vizion-01.webp",
+      "fileName": "m-vizion-01.webp",
+      "quality": 85,
+      "bytes": 71262
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\M-Vizion-Legible\\output\\m-vizion-02.webp",
+      "fileName": "m-vizion-02.webp",
+      "quality": 85,
+      "bytes": 101392
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\M-Vizion-Legible\\output\\m-vizion-03.webp",
+      "fileName": "m-vizion-03.webp",
+      "quality": 85,
+      "bytes": 84106
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\M-Vizion-Legible\\output\\m-vizion-04.webp",
+      "fileName": "m-vizion-04.webp",
+      "quality": 85,
+      "bytes": 83066
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\M-Vizion-Legible\\output\\m-vizion-05.webp",
+      "fileName": "m-vizion-05.webp",
+      "quality": 85,
+      "bytes": 90032
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\M-Vizion-Legible\\output\\m-vizion-06.webp",
+      "fileName": "m-vizion-06.webp",
+      "quality": 85,
+      "bytes": 84832
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\M-Vizion-Legible\\output\\m-vizion-07.webp",
+      "fileName": "m-vizion-07.webp",
+      "quality": 85,
+      "bytes": 106786
+    }
+  ],
+  "pdfPath": "C:\\Users\\Gonzalo\\Documents\\Folletos\\M-Vizion-Legible\\output\\m-vizion-folleto.pdf"
+}

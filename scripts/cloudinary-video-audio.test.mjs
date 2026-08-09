@@ -6,8 +6,10 @@ import test from "node:test";
 
 import {
   DEFAULT_MP4_INSPECTION_OPTIONS,
+  ensureVideoSourcesHaveAudio,
   ensureVideoSourcesHaveNoAudio,
   inspectMp4Moov,
+  inspectMp4MoovHasAudio,
 } from "./cloudinary-video-audio.mjs";
 import { runVideoAudioVerification } from "./verify-cloudinary-video-audio.mjs";
 
@@ -73,6 +75,10 @@ function moov(...handlerTypes) {
 
 function cloudinarySrc(assetId = "video-asset") {
   return `https://res.cloudinary.com/demo/video/upload/f_mp4,q_auto,ac_none/v1/${assetId}.mp4`;
+}
+
+function cloudinaryAudioSrc(assetId = "video-asset") {
+  return `https://res.cloudinary.com/demo/video/upload/f_mp4,q_auto,ac_aac/v1/${assetId}.mp4`;
 }
 
 function createRangeFetch(bytes, { respond } = {}) {
@@ -217,6 +223,30 @@ test("inspectMp4Moov rejects an audio track", () => {
     () => inspectMp4Moov(moov("vide", "soun")),
     /pista de audio \(soun\)/,
   );
+});
+
+test("inspectMp4MoovHasAudio requires video and audio tracks", () => {
+  assert.deepEqual(inspectMp4MoovHasAudio(moov("vide", "soun")), {
+    trackCount: 2,
+    videoTrackCount: 1,
+    handlerTypes: ["vide", "soun"],
+  });
+  assert.throws(
+    () => inspectMp4MoovHasAudio(moov("vide")),
+    /pista de audio \(soun\)/,
+  );
+});
+
+test("ensureVideoSourcesHaveAudio accepts an AAC Cloudinary variant with audio", async () => {
+  const bytes = concat(box("ftyp"), moov("vide", "soun"));
+  const rangeFetch = createRangeFetch(bytes);
+
+  await ensureVideoSourcesHaveAudio(
+    [{ assetId: "stand-video", src: cloudinaryAudioSrc("stand-video") }],
+    { fetchImpl: rangeFetch.fetchImpl },
+  );
+
+  assert.ok(rangeFetch.requests.length > 0);
 });
 
 test("inspectMp4Moov requires a video track", () => {
@@ -921,13 +951,22 @@ function manifestVideo() {
 
 test("runVideoAudioVerification reads the manifest and reports its count", async (t) => {
   const video = manifestVideo();
+  const audioVideo = {
+    ...manifestVideo(),
+    assetId: "stand-video",
+    sourceFolder: "chaco-implantes/stand",
+    publicId: "stand-video",
+    src: cloudinaryAudioSrc("stand-video"),
+    audioEnabled: true,
+  };
   const manifestPath = await createManifestFile(t, {
     schemaVersion: 1,
     images: [],
-    videos: [video],
+    videos: [video, audioVideo],
   });
   const messages = [];
-  let receivedVideos;
+  let receivedSilentVideos;
+  let receivedAudioVideos;
 
   const result = await runVideoAudioVerification({
     manifestPath,
@@ -937,15 +976,25 @@ test("runVideoAudioVerification reads the manifest and reports its count", async
       },
     },
     async videoAudioInspection(videos) {
-      receivedVideos = videos;
+      receivedSilentVideos = videos;
+    },
+    async videoAudioPresenceInspection(videos) {
+      receivedAudioVideos = videos;
     },
   });
 
-  assert.deepEqual(receivedVideos, [video]);
-  assert.deepEqual(result, { count: 1 });
+  assert.deepEqual(receivedSilentVideos, [video]);
+  assert.deepEqual(receivedAudioVideos, [audioVideo]);
+  assert.deepEqual(result, {
+    count: 2,
+    silentCount: 1,
+    audioEnabledCount: 1,
+  });
   assert.deepEqual(messages, [
-    "Inspeccionando audio de 1 videos...",
+    "Inspeccionando ausencia de audio en 1 videos...",
     "Videos sin pista de audio: 1.",
+    "Inspeccionando presencia de audio en 1 videos...",
+    "Videos con pista de audio: 1.",
   ]);
 });
 

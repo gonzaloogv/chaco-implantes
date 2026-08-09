@@ -10,6 +10,7 @@ const IMAGE_THUMB_TRANSFORM =
   "f_auto,q_auto,c_fill,g_auto,w_600,h_400";
 const IMAGE_FULL_TRANSFORM = "f_auto,q_auto,c_limit,w_1920";
 const VIDEO_SOURCE_TRANSFORM = "f_mp4,q_auto,ac_none";
+const VIDEO_SOURCE_WITH_AUDIO_TRANSFORM = "f_mp4,q_auto,ac_aac";
 const VIDEO_POSTER_TRANSFORM =
   "so_0,f_jpg,q_auto,b_rgb:0f172a,c_pad,ar_16:9,w_600";
 
@@ -78,6 +79,14 @@ export function validateCloudinaryConfig({ folderMode, sources }) {
     ) {
       throw new Error(`allowEmpty debe ser booleano para ${source.path}.`);
     }
+    if (
+      source.videoAudioEnabled !== undefined &&
+      typeof source.videoAudioEnabled !== "boolean"
+    ) {
+      throw new Error(
+        `videoAudioEnabled debe ser booleano para ${source.path}.`,
+      );
+    }
 
     const unnamedImageLabel = normalizeOptionalTextOption(
       source,
@@ -106,6 +115,9 @@ export function validateCloudinaryConfig({ folderMode, sources }) {
       ...(unnamedImageLabel ? { unnamedImageLabel } : {}),
       ...(fixedImageTitle ? { fixedImageTitle } : {}),
       ...(fixedVideoTitle ? { fixedVideoTitle } : {}),
+      ...(source.videoAudioEnabled === undefined
+        ? {}
+        : { videoAudioEnabled: source.videoAudioEnabled }),
     };
   });
 
@@ -617,6 +629,7 @@ export function buildManifest({
       }
 
       const videoTitle = source.fixedVideoTitle ?? texts.title;
+      const audioEnabled = source.videoAudioEnabled === true;
       const video = {
         assetId: base.assetId,
         sourceFolder: base.sourceFolder,
@@ -633,9 +646,12 @@ export function buildManifest({
         src: deliveryVariant(
           base.secureUrl,
           "video",
-          VIDEO_SOURCE_TRANSFORM,
+          audioEnabled
+            ? VIDEO_SOURCE_WITH_AUDIO_TRANSFORM
+            : VIDEO_SOURCE_TRANSFORM,
           "mp4",
         ),
+        ...(audioEnabled ? { audioEnabled: true } : {}),
         width,
         height,
       };

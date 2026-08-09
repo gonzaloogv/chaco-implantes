@@ -2,7 +2,9 @@
 import CatalogViewer from "../../../../components/CatalogViewer.astro";
 import Icon from "../../../../components/Icon.astro";
 import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import { getCatalogDocument } from "../../../../data/catalog-documents";
 import { catalogProducts, categories } from "../../../../data/site";
+import "../../../../styles/catalogo-producto.css";
 
 export function getStaticPaths() {
   return catalogProducts.map((product) => ({
@@ -14,11 +16,13 @@ export function getStaticPaths() {
 const { product } = Astro.props;
 const category = categories.find((item) => item.slug === product.categorySlug);
 const categoryTitle = category?.title ?? "Catálogos";
+const catalogDocument = getCatalogDocument(product.categorySlug, product.slug);
 
 // Texto del link de retorno por categoría (más corto que el título formal)
 const backLabels: Record<string, string> = {
   cadera: "Volver a productos de cadera",
   rodilla: "Volver a productos de rodilla",
+  hombro: "Volver a productos de hombro",
   "osteosintesis-placas": "Volver a productos de osteosíntesis",
   "osteosintesis-tornillos": "Volver a productos de osteosíntesis",
   "otros-productos": "Volver a productos complementarios",
@@ -27,42 +31,142 @@ const backLabel = backLabels[product.categorySlug] ?? `Volver a ${categoryTitle}
 ---
 
 <BaseLayout
-  title={`${product.title} · ${categoryTitle} — Chaco Implantes`}
+  title={`${product.title} | ${categoryTitle} | Chaco Implantes`}
   description={product.description}
   canonicalPath={product.href}
 >
-  <section class="page-hero-dark relative overflow-hidden border-b border-white/10 px-4 pb-14 pt-32 text-white sm:px-6 lg:px-8">
-    <img
-      src={product.image}
-      alt={product.title}
-      loading="eager"
-      decoding="async"
-      width="1024"
-      height="768"
-      class="pointer-events-none absolute inset-y-0 right-0 hidden h-full w-1/2 object-cover opacity-[0.24] lg:block"
-    />
-    <div aria-hidden="true" class="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[#0f172a] via-[#192338]/96 to-[#192338]/20 lg:block"></div>
+  <div class="catalog-product-page">
+    <section
+      class="catalog-product-hero"
+      data-catalog-product-hero
+      aria-labelledby="catalog-product-title"
+    >
+      <div class="catalog-product-shell">
+        <a
+          href={`/catalogos/${product.categorySlug}`}
+          class="catalog-product-back"
+        >
+          <Icon name="arrow-left" class="h-4 w-4" />
+          {backLabel}
+        </a>
 
-    <div class="relative mx-auto max-w-7xl">
-      <a href={`/catalogos/${product.categorySlug}`} class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand transition-colors hover:text-white">
-        <Icon name="arrow-left" class="h-4 w-4" /> {backLabel}
-      </a>
-      <div class="mt-6 max-w-3xl">
-        <span class="inline-flex rounded-full border border-primary-glow/30 bg-primary/15 px-3 py-1.5 text-xs font-bold uppercase text-brand">
-          {product.label}
-        </span>
-        <h1 class="mt-4 font-display text-4xl font-black sm:text-5xl">{product.title}</h1>
+        <div class="catalog-product-hero__copy">
+          <p class="catalog-product-eyebrow">{product.label}</p>
+          <h1 id="catalog-product-title">{product.title}</h1>
+          <p>{product.description}</p>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="catalog-detail-shell px-4 py-12 sm:px-6 lg:px-8">
-    <CatalogViewer
-      title={product.title}
-      eyebrow={product.label}
-      description={product.description}
-      image={product.image}
-      whatsappMessage={`Hola, quisiera información sobre el producto ${product.title} del catálogo de ${categoryTitle}.`}
-    />
-  </section>
+    <section
+      class="catalog-product-content"
+      data-catalog-product-content
+    >
+      <div class="catalog-product-shell">
+        <CatalogViewer
+          title={product.title}
+          eyebrow={product.label}
+          description={product.description}
+          image={product.image}
+          document={catalogDocument}
+          whatsappMessage={`Hola, quisiera información sobre el producto ${product.title} del catálogo de ${categoryTitle}.`}
+        />
+      </div>
+    </section>
+  </div>
 </BaseLayout>
+
+<script>
+  import {
+    computeViewerMaximumShift,
+    computeViewerRevealOffset,
+  } from "../../../../scripts/catalog-viewer-scroll.mjs";
+
+  const hero = document.querySelector<HTMLElement>(
+    "[data-catalog-product-hero]",
+  );
+  const content = document.querySelector<HTMLElement>(
+    "[data-catalog-product-content]",
+  );
+  const layout = content?.querySelector<HTMLElement>(
+    ".catalog-product-layout",
+  );
+  const viewer = content?.querySelector<HTMLElement>(
+    "[data-catalog-document-viewer]",
+  );
+  const desktopQuery = window.matchMedia("(min-width: 60.0625rem)");
+  const reducedMotionQuery = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  );
+
+  if (hero && content && layout && viewer) {
+    let frameId = 0;
+    let maximumShift = 0;
+
+    const clearReveal = () => {
+      maximumShift = 0;
+      layout.style.removeProperty("--catalog-viewer-max-shift");
+      viewer.style.removeProperty("--catalog-viewer-reveal-offset");
+    };
+
+    const updateReveal = () => {
+      frameId = 0;
+
+      if (!desktopQuery.matches) {
+        clearReveal();
+        return;
+      }
+
+      const offset = computeViewerRevealOffset({
+        maxShift: maximumShift,
+        reducedMotion: reducedMotionQuery.matches,
+        scrollY: window.scrollY,
+      });
+      viewer.style.setProperty(
+        "--catalog-viewer-reveal-offset",
+        `${offset}px`,
+      );
+    };
+
+    const queueRevealUpdate = () => {
+      if (frameId) {
+        return;
+      }
+
+      frameId = window.requestAnimationFrame(updateReveal);
+    };
+
+    const measureReveal = () => {
+      if (!desktopQuery.matches) {
+        clearReveal();
+        return;
+      }
+
+      const heroBottom =
+        hero.getBoundingClientRect().bottom + window.scrollY;
+      const contentTop =
+        content.getBoundingClientRect().top + window.scrollY;
+      const endSpacing =
+        Number.parseFloat(getComputedStyle(content).paddingBottom) || 0;
+      maximumShift = computeViewerMaximumShift({
+        endSpacing,
+        overlap: heroBottom - contentTop,
+      });
+      layout.style.setProperty(
+        "--catalog-viewer-max-shift",
+        `${maximumShift}px`,
+      );
+      queueRevealUpdate();
+    };
+
+    window.addEventListener("scroll", queueRevealUpdate, {
+      passive: true,
+    });
+    window.addEventListener("resize", measureReveal, {
+      passive: true,
+    });
+    desktopQuery.addEventListener("change", measureReveal);
+    reducedMotionQuery.addEventListener("change", queueRevealUpdate);
+    window.requestAnimationFrame(measureReveal);
+  }
+</script>

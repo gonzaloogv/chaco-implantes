@@ -1,0 +1,100 @@
+{
+  "generatedAt": "2026-08-04T21:50:49.728Z",
+  "passed": true,
+  "specification": {
+    "width": 1200,
+    "height": 1698,
+    "colorSpace": "srgb",
+    "embeddedColorProfile": true,
+    "maximumRecommendedBytes": 204800,
+    "pageCount": 5,
+    "lastWebp": "moto-medial-05.webp"
+  },
+  "webps": [
+    {
+      "fileName": "moto-medial-01.webp",
+      "bytes": 64404,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "moto-medial-02.webp",
+      "bytes": 93120,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "moto-medial-03.webp",
+      "bytes": 70152,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "moto-medial-04.webp",
+      "bytes": 76414,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "moto-medial-05.webp",
+      "bytes": 88224,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    }
+  ],
+  "pdf": {
+    "fileName": "moto-medial-folleto.pdf",
+    "bytes": 6264838,
+    "pageCount": 5,
+    "pageSizesPoints": [
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      }
+    ]
+  },
+  "editable": {
+    "master": "C:\\Users\\Gonzalo\\Documents\\Folletos\\MOTO-Medial-Legible\\output\\moto-medial-folleto-editable.svg",
+    "printHtml": "C:\\Users\\Gonzalo\\Documents\\Folletos\\MOTO-Medial-Legible\\output\\moto-medial-folleto-fuente.html",
+    "pages": [
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\MOTO-Medial-Legible\\output\\editable\\moto-medial-01.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\MOTO-Medial-Legible\\output\\editable\\moto-medial-02.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\MOTO-Medial-Legible\\output\\editable\\moto-medial-03.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\MOTO-Medial-Legible\\output\\editable\\moto-medial-04.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\MOTO-Medial-Legible\\output\\editable\\moto-medial-05.svg"
+    ]
+  },
+  "errors": [],
+  "warnings": []
+}

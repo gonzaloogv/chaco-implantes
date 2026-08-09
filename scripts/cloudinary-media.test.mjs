@@ -15,6 +15,7 @@ const validSources = [
     videoCategory: "Eventos",
     fixedImageTitle: "61° Congreso Traumatología",
     fixedVideoTitle: "61° Congreso de Traumatología — Stand Chaco Implantes",
+    videoAudioEnabled: true,
   },
   {
     path: "chaco-implantes/cajas",
@@ -38,6 +39,8 @@ test("configured folders use their approved video titles", () => {
     "61° Congreso de Traumatología — Stand Chaco Implantes",
   );
   assert.equal(cajasSource?.fixedVideoTitle, "Instrumental");
+  assert.equal(standSource?.videoAudioEnabled, true);
+  assert.equal(cajasSource?.videoAudioEnabled, undefined);
 });
 
 test("validateCloudinaryConfig accepts the approved independent sources", () => {
@@ -126,6 +129,17 @@ test("validateCloudinaryConfig requires allowEmpty to be boolean", () => {
         sources: [{ ...validSources[0], allowEmpty: "yes" }],
       }),
     /allowEmpty debe ser booleano/,
+  );
+});
+
+test("validateCloudinaryConfig requires videoAudioEnabled to be boolean", () => {
+  assert.throws(
+    () =>
+      validateCloudinaryConfig({
+        folderMode: "dynamic",
+        sources: [{ ...validSources[0], videoAudioEnabled: "yes" }],
+      }),
+    /videoAudioEnabled debe ser booleano/,
   );
 });
 
@@ -308,7 +322,8 @@ test("buildManifest normalizes dynamic images and visual videos", () => {
     poster:
       "https://res.cloudinary.com/demo/video/upload/so_0,f_jpg,q_auto,b_rgb:0f172a,c_pad,ar_16:9,w_600/v1780000002/recorrido_caja_qwerty.jpg",
     src:
-      "https://res.cloudinary.com/demo/video/upload/f_mp4,q_auto,ac_none/v1780000002/recorrido_caja_qwerty.mp4",
+      "https://res.cloudinary.com/demo/video/upload/f_mp4,q_auto,ac_aac/v1780000002/recorrido_caja_qwerty.mp4",
+    audioEnabled: true,
     width: 1920,
     height: 1080,
     duration: 12.5,
@@ -349,6 +364,8 @@ test("buildManifest applies fixed titles over editorial and technical text", () 
     },
   );
   assert.equal(manifest.videos[0].title, "Instrumental");
+  assert.match(manifest.videos[0].src, /ac_none/);
+  assert.equal(manifest.videos[0].audioEnabled, undefined);
 });
 
 test("buildManifest reads folder in fixed mode and preserves Unicode fallback text", () => {

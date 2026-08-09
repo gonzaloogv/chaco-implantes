@@ -1,0 +1,97 @@
+{
+  "pdf": "C:\\Users\\Gonzalo\\Documents\\Folletos\\X-Acta-Legible\\output\\x-acta-folleto.pdf",
+  "pageCount": 7,
+  "fontCount": 5,
+  "fonts": [
+    {
+      "resource": "/F7",
+      "baseFont": "/AAAAAA+MontserratThin-ExtraBold",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1,
+        2,
+        3,
+        6,
+        7
+      ]
+    },
+    {
+      "resource": "/F8",
+      "baseFont": "/BAAAAA+Kurale-Regular",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1,
+        7
+      ]
+    },
+    {
+      "resource": "/F9",
+      "baseFont": "/CAAAAA+MontserratThin-Bold",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "resource": "/F10",
+      "baseFont": "/DAAAAA+MontserratThin-Black",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "resource": "/F12",
+      "baseFont": "/EAAAAA+Poppins-Regular",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
+    }
+  ],
+  "errors": [],
+  "passed": true
+}

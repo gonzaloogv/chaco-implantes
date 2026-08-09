@@ -1,0 +1,104 @@
+{
+  "pdf": "C:\\Users\\Gonzalo\\Documents\\Folletos\\AMIS\\output\\amis-folleto.pdf",
+  "pageCount": 5,
+  "fontCount": 6,
+  "fonts": [
+    {
+      "resource": "/F7",
+      "baseFont": "/AAAAAA+MontserratThin-Black",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1,
+        5
+      ]
+    },
+    {
+      "resource": "/F8",
+      "baseFont": "/BAAAAA+Kurale-Regular",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1,
+        5
+      ]
+    },
+    {
+      "resource": "/F9",
+      "baseFont": "/CAAAAA+Poppins-SemiBold",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "resource": "/F15",
+      "baseFont": "/DAAAAA+MontserratThin-ExtraBold",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "resource": "/F16",
+      "baseFont": "/EAAAAA+Poppins-Regular",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "resource": "/F29",
+      "baseFont": "/FAAAAA+MontserratThin-Bold",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  ],
+  "errors": [],
+  "passed": true
+}

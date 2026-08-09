@@ -1,0 +1,41 @@
+{
+  "webps": [
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\MPact-Legible\\output\\mpact-01.webp",
+      "fileName": "mpact-01.webp",
+      "quality": 85,
+      "bytes": 79554
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\MPact-Legible\\output\\mpact-02.webp",
+      "fileName": "mpact-02.webp",
+      "quality": 85,
+      "bytes": 96884
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\MPact-Legible\\output\\mpact-03.webp",
+      "fileName": "mpact-03.webp",
+      "quality": 85,
+      "bytes": 126608
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\MPact-Legible\\output\\mpact-04.webp",
+      "fileName": "mpact-04.webp",
+      "quality": 85,
+      "bytes": 100030
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\MPact-Legible\\output\\mpact-05.webp",
+      "fileName": "mpact-05.webp",
+      "quality": 85,
+      "bytes": 83962
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\MPact-Legible\\output\\mpact-06.webp",
+      "fileName": "mpact-06.webp",
+      "quality": 85,
+      "bytes": 106850
+    }
+  ],
+  "pdfPath": "C:\\Users\\Gonzalo\\Documents\\Folletos\\MPact-Legible\\output\\mpact-folleto.pdf"
+}

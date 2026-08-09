@@ -1,0 +1,127 @@
+{
+  "generatedAt": "2026-08-04T00:08:59.961Z",
+  "passed": true,
+  "specification": {
+    "width": 1200,
+    "height": 1698,
+    "colorSpace": "srgb",
+    "embeddedColorProfile": true,
+    "maximumRecommendedBytes": 204800,
+    "pageCount": 7
+  },
+  "webps": [
+    {
+      "fileName": "quadra-01.webp",
+      "bytes": 84982,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "quadra-02.webp",
+      "bytes": 74520,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "quadra-03.webp",
+      "bytes": 103676,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "quadra-04.webp",
+      "bytes": 68044,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "quadra-05.webp",
+      "bytes": 97376,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "quadra-06.webp",
+      "bytes": 99532,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "quadra-07.webp",
+      "bytes": 106966,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    }
+  ],
+  "pdf": {
+    "fileName": "quadra-folleto.pdf",
+    "bytes": 6902652,
+    "pageCount": 7,
+    "pageSizesPoints": [
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      }
+    ]
+  },
+  "editable": {
+    "master": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Quadra-Legible\\output\\quadra-folleto-editable.svg",
+    "printHtml": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Quadra-Legible\\output\\quadra-folleto-fuente.html",
+    "pages": [
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Quadra-Legible\\output\\editable\\quadra-01.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Quadra-Legible\\output\\editable\\quadra-02.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Quadra-Legible\\output\\editable\\quadra-03.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Quadra-Legible\\output\\editable\\quadra-04.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Quadra-Legible\\output\\editable\\quadra-05.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Quadra-Legible\\output\\editable\\quadra-06.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Quadra-Legible\\output\\editable\\quadra-07.svg"
+    ]
+  },
+  "errors": [],
+  "warnings": []
+}

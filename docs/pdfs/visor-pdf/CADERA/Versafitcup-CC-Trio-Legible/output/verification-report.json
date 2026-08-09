@@ -1,0 +1,128 @@
+{
+  "generatedAt": "2026-08-04T00:08:59.957Z",
+  "passed": true,
+  "specification": {
+    "width": 1200,
+    "height": 1698,
+    "colorSpace": "srgb",
+    "embeddedColorProfile": true,
+    "maximumRecommendedBytes": 204800,
+    "pageCount": 7,
+    "lastWebp": "versafitcup-cc-trio-07.webp"
+  },
+  "webps": [
+    {
+      "fileName": "versafitcup-cc-trio-01.webp",
+      "bytes": 87644,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "versafitcup-cc-trio-02.webp",
+      "bytes": 92838,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "versafitcup-cc-trio-03.webp",
+      "bytes": 98206,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "versafitcup-cc-trio-04.webp",
+      "bytes": 74630,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "versafitcup-cc-trio-05.webp",
+      "bytes": 92966,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "versafitcup-cc-trio-06.webp",
+      "bytes": 65284,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "versafitcup-cc-trio-07.webp",
+      "bytes": 115310,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    }
+  ],
+  "pdf": {
+    "fileName": "versafitcup-cc-trio-folleto.pdf",
+    "bytes": 10141426,
+    "pageCount": 7,
+    "pageSizesPoints": [
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      }
+    ]
+  },
+  "editable": {
+    "master": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Versafitcup-CC-Trio-Legible\\output\\versafitcup-cc-trio-folleto-editable.svg",
+    "printHtml": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Versafitcup-CC-Trio-Legible\\output\\versafitcup-cc-trio-folleto-fuente.html",
+    "pages": [
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Versafitcup-CC-Trio-Legible\\output\\editable\\versafitcup-cc-trio-01.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Versafitcup-CC-Trio-Legible\\output\\editable\\versafitcup-cc-trio-02.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Versafitcup-CC-Trio-Legible\\output\\editable\\versafitcup-cc-trio-03.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Versafitcup-CC-Trio-Legible\\output\\editable\\versafitcup-cc-trio-04.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Versafitcup-CC-Trio-Legible\\output\\editable\\versafitcup-cc-trio-05.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Versafitcup-CC-Trio-Legible\\output\\editable\\versafitcup-cc-trio-06.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Versafitcup-CC-Trio-Legible\\output\\editable\\versafitcup-cc-trio-07.svg"
+    ]
+  },
+  "errors": [],
+  "warnings": []
+}

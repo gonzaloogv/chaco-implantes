@@ -1,0 +1,128 @@
+{
+  "generatedAt": "2026-08-04T00:09:00.005Z",
+  "passed": true,
+  "specification": {
+    "width": 1200,
+    "height": 1698,
+    "colorSpace": "srgb",
+    "embeddedColorProfile": true,
+    "maximumRecommendedBytes": 204800,
+    "pageCount": 7,
+    "lastWebp": "gmk-sphere-07.webp"
+  },
+  "webps": [
+    {
+      "fileName": "gmk-sphere-01.webp",
+      "bytes": 73574,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "gmk-sphere-02.webp",
+      "bytes": 72850,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "gmk-sphere-03.webp",
+      "bytes": 80426,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "gmk-sphere-04.webp",
+      "bytes": 84660,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "gmk-sphere-05.webp",
+      "bytes": 78698,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "gmk-sphere-06.webp",
+      "bytes": 77550,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "gmk-sphere-07.webp",
+      "bytes": 104618,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    }
+  ],
+  "pdf": {
+    "fileName": "gmk-sphere-folleto.pdf",
+    "bytes": 7364566,
+    "pageCount": 7,
+    "pageSizesPoints": [
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      }
+    ]
+  },
+  "editable": {
+    "master": "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Sphere-Legible\\output\\gmk-sphere-folleto-editable.svg",
+    "printHtml": "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Sphere-Legible\\output\\gmk-sphere-folleto-fuente.html",
+    "pages": [
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Sphere-Legible\\output\\editable\\gmk-sphere-01.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Sphere-Legible\\output\\editable\\gmk-sphere-02.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Sphere-Legible\\output\\editable\\gmk-sphere-03.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Sphere-Legible\\output\\editable\\gmk-sphere-04.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Sphere-Legible\\output\\editable\\gmk-sphere-05.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Sphere-Legible\\output\\editable\\gmk-sphere-06.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Sphere-Legible\\output\\editable\\gmk-sphere-07.svg"
+    ]
+  },
+  "errors": [],
+  "warnings": []
+}

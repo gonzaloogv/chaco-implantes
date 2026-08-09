@@ -8,9 +8,20 @@ interface Props {
   title: string;
   duration?: number;
   position: number;
+  showIdleControls?: boolean;
+  audioEnabled?: boolean;
 }
 
-const { assetId, src, poster, title, duration, position } = Astro.props;
+const {
+  assetId,
+  src,
+  poster,
+  title,
+  duration,
+  position,
+  showIdleControls = false,
+  audioEnabled = false,
+} = Astro.props;
 
 const formatTime = (value?: number) => {
   if (typeof value !== "number" || !Number.isFinite(value)) return "--:--";
@@ -23,6 +34,7 @@ const formatTime = (value?: number) => {
 
 const safeId = assetId.replace(/[^A-Za-z0-9_-]/g, "-");
 const progressId = `video-progress-${safeId}-${position}`;
+const volumeId = `video-volume-${safeId}-${position}`;
 const videoName = `video ${position}: ${title}`;
 const durationLabel = formatTime(duration);
 ---
@@ -32,6 +44,8 @@ const durationLabel = formatTime(duration);
   data-video-id={assetId}
   data-state="idle"
   data-controls-visible="true"
+  data-show-idle-controls={String(showIdleControls)}
+  data-audio-enabled={String(audioEnabled)}
   data-duration={duration}
   class="video-player"
   role="group"
@@ -54,13 +68,13 @@ const durationLabel = formatTime(duration);
     data-src={src}
     preload="none"
     playsinline
-    muted
+    muted={!audioEnabled}
     aria-hidden="true"
     class="video-player__media"
   ></video>
 
   <div class="video-player__shade" aria-hidden="true"></div>
-  <span class="video-player__badge">SIN AUDIO</span>
+  {!audioEnabled && <span class="video-player__badge">SIN AUDIO</span>}
 
   <button
     type="button"
@@ -143,6 +157,46 @@ const durationLabel = formatTime(duration);
       00:00 / {durationLabel}
     </output>
 
+    {audioEnabled && (
+      <div
+        data-video-volume-control
+        class="video-player__volume-control"
+      >
+        <button
+          type="button"
+          data-video-volume
+          class="video-player__button"
+          aria-label={`Silenciar ${videoName}`}
+        >
+          <span data-video-volume-on>
+            <Icon name="volume-2" class="h-4 w-4" />
+          </span>
+          <span data-video-volume-off hidden>
+            <Icon name="volume-x" class="h-4 w-4" />
+          </span>
+        </button>
+
+        <div
+          class="video-player__volume-panel"
+          role="group"
+          aria-label={`Volumen de ${videoName}`}
+        >
+          <input
+            id={volumeId}
+            data-video-volume-range
+            class="video-player__volume-range"
+            type="range"
+            min="0"
+            max="100"
+            value="100"
+            step="1"
+            aria-label={`Volumen de ${videoName}`}
+            aria-valuetext="Volumen al 100%"
+          />
+        </div>
+      </div>
+    )}
+
     <button
       type="button"
       data-video-fullscreen
@@ -186,6 +240,15 @@ const durationLabel = formatTime(duration);
       const time = root.querySelector<HTMLOutputElement>("[data-video-time]");
       const fullscreen = root.querySelector<HTMLButtonElement>(
         "[data-video-fullscreen]",
+      );
+      const volume = root.querySelector<HTMLButtonElement>(
+        "[data-video-volume]",
+      );
+      const volumeControl = root.querySelector<HTMLElement>(
+        "[data-video-volume-control]",
+      );
+      const volumeRange = root.querySelector<HTMLInputElement>(
+        "[data-video-volume-range]",
       );
       const status = root.querySelector<HTMLElement>("[data-video-status]");
       const errorPanel = root.querySelector<HTMLElement>("[data-video-error]");
@@ -234,12 +297,19 @@ const durationLabel = formatTime(duration);
       const minimize = fullscreen.querySelector<HTMLElement>(
         "[data-video-minimize]",
       );
+      const volumeOn = volume?.querySelector<HTMLElement>(
+        "[data-video-volume-on]",
+      );
+      const volumeOff = volume?.querySelector<HTMLElement>(
+        "[data-video-volume-off]",
+      );
       const label = root.getAttribute("aria-label") || "";
       const videoTitle =
         label.replace(/^Reproductor del\s*/, "") || "video seleccionado";
 
       let hasStarted = false;
       let controlsTimeout: number | undefined;
+      let lastNonZeroVolume = video.volume > 0 ? video.volume : 1;
 
       const isPlaying = () => !video.paused && !video.ended;
 
@@ -302,6 +372,31 @@ const durationLabel = formatTime(duration);
         if (togglePlay) togglePlay.hidden = playing || ended;
         if (togglePause) togglePause.hidden = !playing;
         if (toggleReplay) toggleReplay.hidden = !ended;
+      };
+
+      const syncVolumeControls = () => {
+        if (!volume) return;
+        const isMuted = video.muted || video.volume === 0;
+        const volumePercentage = isMuted
+          ? 0
+          : Math.round(video.volume * 100);
+
+        if (!video.muted && video.volume > 0) {
+          lastNonZeroVolume = video.volume;
+        }
+        if (volumeOn) volumeOn.hidden = isMuted;
+        if (volumeOff) volumeOff.hidden = !isMuted;
+        volume.setAttribute(
+          "aria-label",
+          `${isMuted ? "Activar audio de" : "Silenciar"} ${videoTitle}`,
+        );
+        if (volumeRange) {
+          volumeRange.value = String(volumePercentage);
+          volumeRange.setAttribute(
+            "aria-valuetext",
+            isMuted ? "Silenciado" : `Volumen al ${volumePercentage}%`,
+          );
+        }
       };
 
       const revealControls = () => {
@@ -456,6 +551,35 @@ const durationLabel = formatTime(duration);
       });
 
       video.addEventListener("timeupdate", updateTime);
+      video.addEventListener("volumechange", syncVolumeControls);
+
+      volume?.addEventListener("click", () => {
+        if (video.muted || video.volume === 0) {
+          if (video.volume === 0) video.volume = lastNonZeroVolume;
+          video.muted = false;
+        } else {
+          lastNonZeroVolume = video.volume;
+          video.muted = true;
+        }
+        volumeControl?.toggleAttribute("data-open", true);
+        syncVolumeControls();
+      });
+
+      volumeRange?.addEventListener("input", () => {
+        const requestedVolume = Number(volumeRange.value);
+
+        if (!Number.isFinite(requestedVolume)) return;
+
+        const nextVolume = Math.min(
+          1,
+          Math.max(0, requestedVolume / 100),
+        );
+
+        if (nextVolume > 0) lastNonZeroVolume = nextVolume;
+        video.volume = nextVolume;
+        video.muted = nextVolume === 0;
+        syncVolumeControls();
+      });
 
       progress.addEventListener("input", () => {
         const requestedTime = Number(progress.value);
@@ -495,7 +619,16 @@ const durationLabel = formatTime(duration);
       });
 
       root.addEventListener("pointermove", revealControls);
-      root.addEventListener("pointerdown", revealControls);
+      root.addEventListener("pointerdown", (event) => {
+        revealControls();
+        if (
+          volumeControl &&
+          event.target instanceof Node &&
+          !volumeControl.contains(event.target)
+        ) {
+          volumeControl.removeAttribute("data-open");
+        }
+      });
       root.addEventListener("focusin", revealControls);
       root.addEventListener("focusout", () => {
         window.requestAnimationFrame(revealControls);
@@ -505,6 +638,7 @@ const durationLabel = formatTime(duration);
       root.dataset.enhanced = "true";
       updateTime();
       syncButtons();
+      syncVolumeControls();
     });
 
   function formatVideoTime(value: number) {
@@ -605,11 +739,24 @@ const durationLabel = formatTime(duration);
     transition: opacity 180ms ease;
   }
 
+  .video-player[data-audio-enabled="true"] .video-player__controls {
+    grid-template-columns: 2.75rem minmax(0, 1fr) auto 2.75rem 2.75rem;
+  }
+
   .video-player[data-state="idle"] .video-player__controls,
   .video-player[data-state="ended"] .video-player__controls {
     visibility: hidden;
     opacity: 0;
     pointer-events: none;
+  }
+
+  .video-player[data-show-idle-controls="true"][data-state="idle"]
+    .video-player__controls,
+  .video-player[data-show-idle-controls="true"][data-state="ended"]
+    .video-player__controls {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
   }
 
   .video-player[data-controls-visible="false"] .video-player__controls {
@@ -639,6 +786,52 @@ const durationLabel = formatTime(duration);
   .video-player__primary span {
     display: grid;
     place-items: center;
+  }
+
+  .video-player__volume-control {
+    position: relative;
+    display: grid;
+    place-items: center;
+  }
+
+  .video-player__volume-panel {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 0.45rem);
+    display: flex;
+    width: 7.5rem;
+    min-height: 2.75rem;
+    align-items: center;
+    border: 1px solid rgb(255 255 255 / 24%);
+    border-radius: 0.75rem;
+    padding: 0 0.75rem;
+    background: rgb(15 23 42 / 94%);
+    box-shadow: 0 0.65rem 1.5rem rgb(2 8 23 / 28%);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(0.25rem);
+    pointer-events: none;
+    transition:
+      opacity 160ms ease,
+      transform 160ms ease,
+      visibility 160ms ease;
+  }
+
+  .video-player__volume-control:hover .video-player__volume-panel,
+  .video-player__volume-control:focus-within .video-player__volume-panel,
+  .video-player__volume-control[data-open] .video-player__volume-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .video-player__volume-range {
+    width: 100%;
+    min-height: 2.75rem;
+    accent-color: #60a5fa;
+    cursor: pointer;
+    touch-action: pan-x;
   }
 
   .video-player__progress {
@@ -740,6 +933,7 @@ const durationLabel = formatTime(duration);
   .video-player__primary:focus-visible,
   .video-player__retry:focus-visible,
   .video-player__progress:focus-visible,
+  .video-player__volume-range:focus-visible,
   .video-player__fallback:focus-visible {
     outline: 3px solid #60a5fa;
     outline-offset: 2px;
@@ -758,6 +952,10 @@ const durationLabel = formatTime(duration);
       grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem;
     }
 
+    .video-player[data-audio-enabled="true"] .video-player__controls {
+      grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem 2.75rem;
+    }
+
     .video-player__time {
       display: none;
     }
@@ -767,6 +965,7 @@ const durationLabel = formatTime(duration);
     .video-player__media,
     .video-player__controls,
     .video-player__button,
+    .video-player__volume-panel,
     .video-player__primary {
       transition: none;
     }

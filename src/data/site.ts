@@ -12,27 +12,30 @@ const LOGO_HEADER_TRANSFORM = "f_auto,q_auto,w_256";
 const LOGO_FOOTER_TRANSFORM = "f_auto,q_auto,w_128";
 
 export const images = {
-  hero: "/assets/images/hero.jpg",
-  heroBg: "/assets/images/hero-instrumental.JPG",
+  instrumental: `${CLOUDINARY_BASE}/f_auto,q_auto,c_fill,g_auto,w_1400,h_960/v1785277783/chaco-120_fxo1fj.jpg`,
+  professionalWork: `${CLOUDINARY_BASE}/f_auto,q_auto,c_fill,g_auto,w_1400,h_960/v1785277685/chaco-34_pof7i8.jpg`,
+  productOverview: `${CLOUDINARY_BASE}/f_auto,q_auto,c_fill,g_auto,w_1400,h_960/v1785277764/chaco-100_jrh9me.jpg`,
+  eventMain: `${CLOUDINARY_BASE}/f_auto,q_auto,c_fill,g_auto,w_1600,h_1000/v1783105553/Congreso_Traumato-100_jvbmaf.jpg`,
   heroNextAR: `${CLOUDINARY_BASE}/${HERO_TRANSFORM}/v1785284880/NextAR_HERO_twzvis.png`,
   heroAmis: `${CLOUDINARY_BASE}/${HERO_TRANSFORM}/v1785290373/amis_noxkiq.png`,
-  heroEventos: `${CLOUDINARY_BASE}/${HERO_TRANSFORM}/foto-evento_d0eg2f.jpg`,
+  heroEventos: `${CLOUDINARY_BASE}/f_auto,q_auto,c_fill,g_faces,w_1600,h_900/v1783107290/Congreso_Traumato-65_yvgqxc.jpg`,
   homeGallery: `${CLOUDINARY_BASE}/f_auto,q_auto,c_fill,g_auto,w_1400,h_960/v1785277687/chaco-36_yd3o1w.jpg`,
   homeSupport: `${CLOUDINARY_BASE}/f_auto,q_auto,c_fill,g_auto,w_1200,h_1400/v1785277685/chaco-34_pof7i8.jpg`,
   homeVideos: `${CLOUDINARY_BASE}/f_auto,q_auto,c_fill,g_auto,w_1200,h_960/v1783107299/Congreso_Traumato-82_cc6z1u.jpg`,
-  productAmis: `${CLOUDINARY_BASE}/${HERO_TRANSFORM}/v1781474563/amis-hero_snoht3.png`,
-  quirofano: "/assets/images/quirofano.jpg",
-  congreso: "/assets/images/congreso-traumatologia-2024.JPG",
-  productos: "/assets/images/productos.jpg",
   logoCircular: `${CLOUDINARY_BASE}/${LOGO_FOOTER_TRANSFORM}/v1784636792/logo-circular_ybzerb.png`,
   logoCircularWhite: `${CLOUDINARY_BASE}/${LOGO_HEADER_TRANSFORM}/v1784636793/logo-circular-white_saci0q.png`,
   ogImage: "/assets/brand/og-image.jpg",
 } as const;
 
+export const catalogPreviewImages = {
+  cadera: "/catalogos/previews/VERSAFITCUP_2.webp",
+  rodilla: "/catalogos/previews/GMK_PRIMARY_PS_2.webp",
+  hombro: "/catalogos/previews/PROTESIS_REVERSA_2.webp",
+  columna: "/catalogos/previews/MUST_2.webp",
+} as const;
+
 export const categoryImages = {
-  cadera: `${CLOUDINARY_BASE}/${CATEGORY_TRANSFORM}/v1784637756/cat-cadera_gql4el.png`,
-  rodilla: `${CLOUDINARY_BASE}/${CATEGORY_TRANSFORM}/v1784637759/cat-rodilla_in1fhx.png`,
-  columna: `${CLOUDINARY_BASE}/${CATEGORY_TRANSFORM}/v1784637757/cat-columna_eezmaq.png`,
+  ...catalogPreviewImages,
   maxilofacial: `${CLOUDINARY_BASE}/${CATEGORY_TRANSFORM}/v1784637757/cat-maxilofacial_xdiyvh.png`,
   "osteosintesis-placas": `${CLOUDINARY_BASE}/${CATEGORY_TRANSFORM}/v1784637758/cat-osteosintesis-placas_qllsio.png`,
   "osteosintesis-tornillos": `${CLOUDINARY_BASE}/${CATEGORY_TRANSFORM}/v1784637758/cat-osteosintesis-tornillos_ryg1l4.png`,
@@ -238,11 +241,21 @@ export const categories: Category[] = [
     icon: "bone",
   },
   {
+    slug: "hombro",
+    title: "Hombro",
+    type: "Prótesis e implantes",
+    tag: "Artroplastia",
+    description:
+      "Sistemas de artroplastia anatómica y reversa de hombro, con alternativas primarias y convertibles.",
+    icon: "bone",
+  },
+  {
     slug: "columna",
     title: "Columna",
     type: "Sistemas de fijación",
     tag: "Fijación",
-    description: "Fijación espinal, tornillos pediculares, barras y conectores.",
+    description:
+      "Sistemas de fijación espinal con tornillos pediculares, barras y conectores para diferentes configuraciones quirúrgicas.",
     icon: "layers",
   },
   {
@@ -250,7 +263,8 @@ export const categories: Category[] = [
     title: "Maxilofacial",
     type: "Osteosíntesis",
     tag: "Osteosíntesis",
-    description: "Placas y tornillos de bajo perfil para fijación maxilofacial.",
+    description:
+      "Sistemas de placas y tornillos de bajo perfil para fijación maxilofacial y planificación por región anatómica.",
     icon: "shield-check",
   },
   {
@@ -258,7 +272,8 @@ export const categories: Category[] = [
     title: "Osteosíntesis: placas",
     type: "Osteosíntesis",
     tag: "Osteosíntesis",
-    description: "Placas anatómicas y de compresión para traumatología.",
+    description:
+      "Placas anatómicas, bloqueadas y de compresión para traumatología, disponibles para distintas regiones anatómicas.",
     icon: "shield-check",
   },
   {
@@ -266,7 +281,8 @@ export const categories: Category[] = [
     title: "Osteosíntesis: tornillos",
     type: "Osteosíntesis",
     tag: "Osteosíntesis",
-    description: "Tornillos corticales, esponjosos y canulados en distintas medidas.",
+    description:
+      "Tornillos corticales, esponjosos y canulados en distintas medidas para sistemas de fijación y osteosíntesis.",
     icon: "shield-check",
   },
   {
@@ -297,456 +313,229 @@ export type CatalogProduct = {
   href: string;
 };
 
+export const catalogProductImages = {
+  "amis": "/catalogos/productos/AMIs.webp",
+  "cotilo-doble": "/catalogos/productos/VERSAFITCUP.webp",
+  "sistema-mpact": "/catalogos/productos/MPACT.webp",
+  "tallo-masterloc": "/catalogos/productos/MASTERLOC.webp",
+  "tallo-x-acta": "/catalogos/productos/X-ACTA.webp",
+  "tallo-revision-vizion": "/catalogos/productos/M-VIZION.webp",
+  "tallo-femoral-sms": "/catalogos/productos/SMS.webp",
+  "sistema-quadra": "/catalogos/productos/QUADRA.webp",
+  "versafitcup-cc-trio": "/catalogos/productos/CC-TRIO.webp",
+  "gmk-primary": "/catalogos/productos/GMK-PRIMARY-PS.webp",
+  "gmk-sphere": "/catalogos/productos/GMK-SPHERE.webp",
+  "gmk-primary-ps": "/catalogos/productos/GMK-PRIMARY-PS.webp",
+  "rodilla-sphere-medial-pivot": "/catalogos/productos/SPHERE-MEDIAL.webp",
+  "gmk-revision": "/catalogos/productos/GMK-REVISION.webp",
+  "moto-medial": "/catalogos/productos/MOTO-MEDIAL.webp",
+  "nextar-knee": "/catalogos/productos/NEXTAR.webp",
+  "columna-must": "/catalogos/productos/MUST.webp",
+  "hombro-anatomico": "/catalogos/productos/HOMBRO-ANATOMICO.webp",
+  "protesis-reversa-hombro": "/catalogos/productos/PROTESIS-REVERSA.webp",
+  "sistema-hombro": "/catalogos/productos/SISTEMA-HOMBRO.webp",
+} as const;
+
 export const catalogProducts: CatalogProduct[] = [
   {
     categorySlug: "cadera",
-    slug: "cotilo-doble",
-    title: "Cotilo doble",
-    label: "Cotilo",
+    slug: "amis",
+    title: "AMIS",
+    label: "Técnica quirúrgica",
     description:
-      "Opciones de cotilo para artroplastia de cadera, con foco en estabilidad, disponibilidad de medidas y coordinación de instrumental.",
-    image: categoryImages.cadera,
+      "Abordaje anterior mínimamente invasivo para artroplastia total de cadera, con posicionador móvil de miembro inferior.",
+    image: catalogProductImages["amis"],
+    href: "/catalogos/cadera/productos/amis",
+  },
+  {
+    categorySlug: "cadera",
+    slug: "cotilo-doble",
+    title: "Cadera de doble movilidad VersafitCup",
+    label: "Cotilo acetabular press-fit",
+    description:
+      "Sistema acetabular de doble movilidad para artroplastia de cadera, con opciones de medidas y componentes asociados.",
+    image: catalogProductImages["cotilo-doble"],
     href: "/catalogos/cadera/productos/cotilo-doble",
   },
   {
     categorySlug: "cadera",
-    slug: "charnley-muller",
-    title: "Charnley-Müller",
-    label: "Caja de instrumental",
+    slug: "sistema-mpact",
+    title: "Sistema Mpact",
+    label: "Cotilo sin cementar",
     description:
-      "Instrumental asociado a sistemas Charnley-Müller para procedimientos de cadera y recambios planificados.",
-    image: categoryImages.cadera,
-    href: "/catalogos/cadera/productos/charnley-muller",
+      "Sistema de cotilos hemisféricos sin cementar para artroplastia total de cadera primaria y de revisión.",
+    image: catalogProductImages["sistema-mpact"],
+    href: "/catalogos/cadera/productos/sistema-mpact",
   },
   {
     categorySlug: "cadera",
-    slug: "thompson",
-    title: "Thompson",
-    label: "Caja de instrumental",
+    slug: "tallo-masterloc",
+    title: "Tallo Masterloc",
+    label: "Vástago en cuña cónica",
     description:
-      "Caja de instrumental Thompson para resolver preparación, prueba y asistencia intraoperatoria en procedimientos de cadera.",
-    image: categoryImages.cadera,
-    href: "/catalogos/cadera/productos/thompson",
+      "Sistema femoral con vástago en cuña cónica para artroplastia total de cadera.",
+    image: catalogProductImages["tallo-masterloc"],
+    href: "/catalogos/cadera/productos/tallo-masterloc",
   },
   {
     categorySlug: "cadera",
-    slug: "judett-plus",
-    title: "Judett Plus",
-    label: "Caja de instrumental",
+    slug: "tallo-x-acta",
+    title: "Tallo X-Acta",
+    label: "Tallo femoral cementado",
     description:
-      "Instrumental Judett Plus orientado a equipos que requieren organización clara de componentes y disponibilidad por cirugía.",
-    image: categoryImages.cadera,
-    href: "/catalogos/cadera/productos/judett-plus",
+      "Tallo femoral cementado de doble conicidad y sin collar para artroplastia de cadera.",
+    image: catalogProductImages["tallo-x-acta"],
+    href: "/catalogos/cadera/productos/tallo-x-acta",
   },
   {
     categorySlug: "cadera",
-    slug: "cadera-xl",
-    title: "Cadera XL",
-    label: "Espaciadores de cadera",
+    slug: "tallo-revision-vizion",
+    title: "Tallo de revisión Vizion",
+    label: "Sistema femoral modular",
     description:
-      "Espaciadores de cadera para planificación y soporte en procedimientos que requieren alternativas temporales o de revisión.",
-    image: images.productAmis,
-    href: "/catalogos/cadera/productos/cadera-xl",
+      "Sistema femoral modular no cementado para procedimientos de revisión de cadera.",
+    image: catalogProductImages["tallo-revision-vizion"],
+    href: "/catalogos/cadera/productos/tallo-revision-vizion",
   },
   {
     categorySlug: "cadera",
-    slug: "explant",
-    title: "Explant",
-    label: "Caja de instrumental",
+    slug: "tallo-femoral-sms",
+    title: "Tallo femoral SMS",
+    label: "Tallo corto no cementado",
     description:
-      "Caja de instrumental Explant para extracción, recambio y asistencia técnica en escenarios de mayor complejidad.",
-    image: categoryImages.cadera,
-    href: "/catalogos/cadera/productos/explant",
+      "Tallo femoral corto y conservador de hueso para artroplastia total o parcial de cadera.",
+    image: catalogProductImages["tallo-femoral-sms"],
+    href: "/catalogos/cadera/productos/tallo-femoral-sms",
   },
   {
     categorySlug: "cadera",
-    slug: "giliberty",
-    title: "Giliberty",
-    label: "Caja de instrumental",
+    slug: "sistema-quadra",
+    title: "Sistema Quadra",
+    label: "Tallo femoral",
     description:
-      "Instrumental Giliberty para acompañar procedimientos de cadera con componentes identificables y flujo de trabajo ordenado.",
-    image: categoryImages.cadera,
-    href: "/catalogos/cadera/productos/giliberty",
+      "Sistema de tallos femorales para artroplastia total de cadera primaria.",
+    image: catalogProductImages["sistema-quadra"],
+    href: "/catalogos/cadera/productos/sistema-quadra",
   },
   {
     categorySlug: "cadera",
-    slug: "refuerzo-acetabular",
-    title: "Refuerzo acetabular",
-    label: "Caja de instrumental",
+    slug: "versafitcup-cc-trio",
+    title: "VersafitCup CC Trio",
+    label: "Cotilo acetabular sin cementar",
     description:
-      "Opciones de refuerzo acetabular para casos que requieren soporte adicional, planificación de medidas y coordinación previa.",
-    image: categoryImages.cadera,
-    href: "/catalogos/cadera/productos/refuerzo-acetabular",
-  },
-  {
-    categorySlug: "cadera",
-    slug: "endoprotesis-modular-cadera",
-    title: "Endoprótesis modular de cadera",
-    label: "Endoprótesis modular",
-    description:
-      "Sistema modular para reconstrucción y reemplazo de cadera en procedimientos que exigen configuración por necesidad quirúrgica.",
-    image: images.productAmis,
-    href: "/catalogos/cadera/productos/endoprotesis-modular-cadera",
-  },
-  {
-    categorySlug: "cadera",
-    slug: "hip-lock",
-    title: "Hip-Lock",
-    label: "Cúpula no cementada",
-    description:
-      "Cúpula no cementada Hip-Lock con información de referencia para selección, medidas disponibles y componentes asociados.",
-    image: categoryImages.cadera,
-    href: "/catalogos/cadera/productos/hip-lock",
-  },
-  {
-    categorySlug: "cadera",
-    slug: "monoblock",
-    title: "Monoblock",
-    label: "Caja de instrumental",
-    description:
-      "Instrumental Monoblock para preparación y asistencia en procedimientos de cadera con necesidades de caja específica.",
-    image: categoryImages.cadera,
-    href: "/catalogos/cadera/productos/monoblock",
-  },
-  {
-    categorySlug: "cadera",
-    slug: "cadera-no-cementada-hip-lock",
-    title: "Cadera no cementada Hip-Lock",
-    label: "Prótesis para reemplazo total de cadera",
-    description:
-      "Línea no cementada Hip-Lock para reemplazo total de cadera, con referencias para planificación y consulta comercial.",
-    image: images.productAmis,
-    href: "/catalogos/cadera/productos/cadera-no-cementada-hip-lock",
-  },
-  {
-    categorySlug: "cadera",
-    slug: "tallo-spotorno",
-    title: "Tallo Spotorno",
-    label: "Tallo",
-    description:
-      "Tallo Spotorno para procedimientos de cadera, con descripción técnica inicial y acceso al PDF de referencia.",
-    image: categoryImages.cadera,
-    href: "/catalogos/cadera/productos/tallo-spotorno",
-  },
-  {
-    categorySlug: "cadera",
-    slug: "tallo-sp",
-    title: "Tallo SP",
-    label: "Tallo no cementado",
-    description:
-      "Tallo SP no cementado con información organizada para consulta de características, medidas y coordinación de pedidos.",
-    image: images.productAmis,
-    href: "/catalogos/cadera/productos/tallo-sp",
-  },
-  {
-    categorySlug: "cadera",
-    slug: "tallo-delta",
-    title: "Tallo delta",
-    label: "Tallo no cementado",
-    description:
-      "Tallo delta para reemplazo de cadera no cementado, con acceso rápido al PDF y detalle de uso comercial inicial.",
-    image: categoryImages.cadera,
-    href: "/catalogos/cadera/productos/tallo-delta",
+      "Cotilo acetabular sin cementar para artroplastia total de cadera.",
+    image: catalogProductImages["versafitcup-cc-trio"],
+    href: "/catalogos/cadera/productos/versafitcup-cc-trio",
   },
   {
     categorySlug: "rodilla",
-    slug: "rodilla-anv-ii",
-    title: "Rodilla ANV II",
-    label: "Caja de instrumental",
+    slug: "gmk-primary",
+    title: "GMK Primary",
+    label: "Sistema de rodilla primaria",
     description:
-      "Sistema de rodilla ANV II para artroplastia, con instrumental asociado y referencias para planificación, medidas y coordinación comercial.",
-    image: categoryImages.rodilla,
-    href: "/catalogos/rodilla/productos/rodilla-anv-ii",
+      "Sistema para artroplastia total primaria de rodilla con diferentes necesidades de estabilidad.",
+    image: catalogProductImages["gmk-primary"],
+    href: "/catalogos/rodilla/productos/gmk-primary",
   },
   {
     categorySlug: "rodilla",
-    slug: "suplementos-anv-ii",
-    title: "Suplementos ANV II",
-    label: "Caja de instrumental",
+    slug: "gmk-sphere",
+    title: "GMK Sphere",
+    label: "Rodilla medialmente estabilizada",
     description:
-      "Suplementos para rodilla ANV II orientados a complementar la línea principal con componentes e instrumental de apoyo por procedimiento.",
-    image: categoryImages.rodilla,
-    href: "/catalogos/rodilla/productos/suplementos-anv-ii",
+      "Sistema de artroplastia total de rodilla con concepto de estabilidad medial.",
+    image: catalogProductImages["gmk-sphere"],
+    href: "/catalogos/rodilla/productos/gmk-sphere",
   },
   {
     categorySlug: "rodilla",
-    slug: "rodilla-mf",
-    title: "Rodilla MF",
-    label: "Caja de instrumental",
+    slug: "gmk-primary-ps",
+    title: "GMK Primary PS",
+    label: "Rodilla estabilizada posterior",
     description:
-      "Sistema de rodilla MF abisagrada para casos que requieren mayor estabilidad, con instrumental y referencias para consulta técnica-comercial.",
-    image: categoryImages.rodilla,
-    href: "/catalogos/rodilla/productos/rodilla-mf",
+      "Sistema de artroplastia total de rodilla con estabilización posterior.",
+    image: catalogProductImages["gmk-primary-ps"],
+    href: "/catalogos/rodilla/productos/gmk-primary-ps",
   },
   {
     categorySlug: "rodilla",
-    slug: "rodilla-modular",
-    title: "Rodilla Modular",
-    label: "Caja de instrumental",
+    slug: "rodilla-sphere-medial-pivot",
+    title: "Rodilla Sphere Medial Pivot",
+    label: "Artroplastia total de rodilla",
     description:
-      "Sistema de rodilla modular para procedimientos de reemplazo y revisión, con opciones de configuración y coordinación de instrumental.",
-    image: categoryImages.rodilla,
-    href: "/catalogos/rodilla/productos/rodilla-modular",
+      "Sistema de rodilla con diseño medial pivot para artroplastia total.",
+    image: catalogProductImages["rodilla-sphere-medial-pivot"],
+    href: "/catalogos/rodilla/productos/rodilla-sphere-medial-pivot",
   },
   {
-    categorySlug: "osteosintesis-tornillos",
-    slug: "de-tobillo",
-    title: "De tobillo",
-    label: "Clavo para artrodesis",
+    categorySlug: "rodilla",
+    slug: "gmk-revision",
+    title: "GMK Revision",
+    label: "Sistema de rodilla de revisión",
     description:
-      "Clavo para artrodesis de tobillo, con referencias para planificación, disponibilidad de medidas y coordinación del instrumental.",
-    image: categoryImages["osteosintesis-tornillos"],
-    href: "/catalogos/osteosintesis-tornillos/productos/de-tobillo",
+      "Sistema de revisión de rodilla para reconstrucción y estabilización protésica.",
+    image: catalogProductImages["gmk-revision"],
+    href: "/catalogos/rodilla/productos/gmk-revision",
   },
   {
-    categorySlug: "osteosintesis-tornillos",
-    slug: "multidireccional",
-    title: "Multidireccional",
-    label: "Clavo de tibia",
+    categorySlug: "rodilla",
+    slug: "moto-medial",
+    title: "MOTO Medial",
+    label: "Sistema de rodilla parcial",
     description:
-      "Clavo de tibia multidireccional para osteosíntesis, con información de sistema, opciones de bloqueo y consulta técnico-comercial.",
-    image: categoryImages["osteosintesis-tornillos"],
-    href: "/catalogos/osteosintesis-tornillos/productos/multidireccional",
+      "Sistema de reemplazo unicompartimental medial para artroplastia parcial de rodilla.",
+    image: catalogProductImages["moto-medial"],
+    href: "/catalogos/rodilla/productos/moto-medial",
   },
   {
-    categorySlug: "osteosintesis-tornillos",
-    slug: "retrogrado",
-    title: "Retrógrado",
-    label: "Clavo de fémur",
+    categorySlug: "rodilla",
+    slug: "nextar-knee",
+    title: "NextAR Knee",
+    label: "Navegación en artroplastia",
     description:
-      "Clavo de fémur retrógrado para fracturas femorales seleccionadas, con instrumental asociado y referencias para planificación.",
-    image: categoryImages["osteosintesis-tornillos"],
-    href: "/catalogos/osteosintesis-tornillos/productos/retrogrado",
+      "Plataforma de navegación para artroplastia de rodilla con sensores y gafas inteligentes.",
+    image: catalogProductImages["nextar-knee"],
+    href: "/catalogos/rodilla/productos/nextar-knee",
   },
   {
-    categorySlug: "osteosintesis-tornillos",
-    slug: "gamma-gn",
-    title: "Gamma GN",
-    label: "Clavo de fémur",
+    categorySlug: "columna",
+    slug: "columna-must",
+    title: "Columna M.U.S.T.",
+    label: "Fijación vertebral posterior",
     description:
-      "Clavo de fémur Gamma GN para osteosíntesis proximal, con componentes e instrumental para coordinar disponibilidad por procedimiento.",
-    image: categoryImages["osteosintesis-tornillos"],
-    href: "/catalogos/osteosintesis-tornillos/productos/gamma-gn",
+      "Sistema universal de tornillos pediculares para fijación vertebral posterior.",
+    image: catalogProductImages["columna-must"],
+    href: "/catalogos/columna/productos/columna-must",
   },
   {
-    categorySlug: "osteosintesis-tornillos",
-    slug: "clavo-acerrojado-de-humero",
-    title: "Clavo acerrojado de húmero",
-    label: "Caja de instrumental",
+    categorySlug: "hombro",
+    slug: "hombro-anatomico",
+    title: "Hombro anatómico",
+    label: "Artroplastia anatómica",
     description:
-      "Caja de instrumental para clavo acerrojado de húmero, orientada a procedimientos de osteosíntesis con soporte de medidas y componentes.",
-    image: categoryImages["osteosintesis-tornillos"],
-    href: "/catalogos/osteosintesis-tornillos/productos/clavo-acerrojado-de-humero",
+      "Sistema de artroplastia anatómica de hombro para reconstrucción protésica.",
+    image: catalogProductImages["hombro-anatomico"],
+    href: "/catalogos/hombro/productos/hombro-anatomico",
   },
   {
-    categorySlug: "osteosintesis-tornillos",
-    slug: "clavo-placa-tubo-deslizante-richard",
-    title: "Clavo placa tubo deslizante (Richard)",
-    label: "Caja de instrumental",
+    categorySlug: "hombro",
+    slug: "protesis-reversa-hombro",
+    title: "Prótesis reversa de hombro",
+    label: "Artroplastia reversa",
     description:
-      "Caja de instrumental para clavo placa tubo deslizante Richard, con referencias para planificación y coordinación comercial.",
-    image: categoryImages["osteosintesis-tornillos"],
-    href: "/catalogos/osteosintesis-tornillos/productos/clavo-placa-tubo-deslizante-richard",
+      "Sistema de artroplastia reversa de hombro con configuración de vástago corto.",
+    image: catalogProductImages["protesis-reversa-hombro"],
+    href: "/catalogos/hombro/productos/protesis-reversa-hombro",
   },
   {
-    categorySlug: "osteosintesis-placas",
-    slug: "placa-bloqueada-35mm",
-    title: "Ø3,5mm",
-    label: "Placa bloqueada",
+    categorySlug: "hombro",
+    slug: "sistema-hombro",
+    title: "Sistema de hombro",
+    label: "Configuración anatómica y reversa",
     description:
-      "Placa bloqueada de Ø3,5 mm para osteosíntesis, con referencias para planificación, medidas disponibles y coordinación de instrumental.",
-    image: categoryImages["osteosintesis-placas"],
-    href: "/catalogos/osteosintesis-placas/productos/placa-bloqueada-35mm",
-  },
-  {
-    categorySlug: "osteosintesis-placas",
-    slug: "placa-bloqueada-45mm",
-    title: "Ø4,5mm",
-    label: "Placa bloqueada",
-    description:
-      "Placa bloqueada de Ø4,5 mm para fijación de mayor demanda, con opciones de medidas e instrumental asociado.",
-    image: categoryImages["osteosintesis-placas"],
-    href: "/catalogos/osteosintesis-placas/productos/placa-bloqueada-45mm",
-  },
-  {
-    categorySlug: "osteosintesis-placas",
-    slug: "clavicula",
-    title: "Clavícula",
-    label: "Placa",
-    description:
-      "Placa para clavícula orientada a fijación anatómica, con referencias de sistema para consulta técnica y disponibilidad.",
-    image: categoryImages["osteosintesis-placas"],
-    href: "/catalogos/osteosintesis-placas/productos/clavicula",
-  },
-  {
-    categorySlug: "osteosintesis-placas",
-    slug: "tibia-proximal",
-    title: "Proximal",
-    label: "Placa tibia",
-    description:
-      "Placa tibial proximal para osteosíntesis, con información de medidas, configuración y coordinación comercial.",
-    image: categoryImages["osteosintesis-placas"],
-    href: "/catalogos/osteosintesis-placas/productos/tibia-proximal",
-  },
-  {
-    categorySlug: "osteosintesis-placas",
-    slug: "humero-distal",
-    title: "Húmero distal",
-    label: "Placa",
-    description:
-      "Placa de húmero distal para fijación anatómica, con instrumental asociado y referencias para planificación del procedimiento.",
-    image: categoryImages["osteosintesis-placas"],
-    href: "/catalogos/osteosintesis-placas/productos/humero-distal",
-  },
-  {
-    categorySlug: "osteosintesis-placas",
-    slug: "tibia-perone-distal",
-    title: "Distal",
-    label: "Placa para tibia/peroné",
-    description:
-      "Placa distal para tibia y peroné, con opciones para fijación y acompañamiento en selección de medidas.",
-    image: categoryImages["osteosintesis-placas"],
-    href: "/catalogos/osteosintesis-placas/productos/tibia-perone-distal",
-  },
-  {
-    categorySlug: "osteosintesis-placas",
-    slug: "philo",
-    title: "Philo",
-    label: "Placa húmero proximal",
-    description:
-      "Placa Philo para húmero proximal, con referencias de sistema, medidas y soporte para coordinación de instrumental.",
-    image: categoryImages["osteosintesis-placas"],
-    href: "/catalogos/osteosintesis-placas/productos/philo",
-  },
-  {
-    categorySlug: "osteosintesis-placas",
-    slug: "calcaneo",
-    title: "Calcáneo",
-    label: "Placa",
-    description:
-      "Placa para calcáneo destinada a fijación de fracturas seleccionadas, con información de componentes e instrumental.",
-    image: categoryImages["osteosintesis-placas"],
-    href: "/catalogos/osteosintesis-placas/productos/calcaneo",
-  },
-  {
-    categorySlug: "osteosintesis-placas",
-    slug: "volar",
-    title: "Volar",
-    label: "Placa",
-    description:
-      "Placa volar para fijación distal, con referencias de medidas y consulta comercial para disponibilidad del sistema.",
-    image: categoryImages["osteosintesis-placas"],
-    href: "/catalogos/osteosintesis-placas/productos/volar",
-  },
-  {
-    categorySlug: "osteosintesis-placas",
-    slug: "volar-poliaxial",
-    title: "Volar poliaxial",
-    label: "Placa",
-    description:
-      "Placa volar poliaxial para fijación con opciones de orientación, medidas e instrumental por procedimiento.",
-    image: categoryImages["osteosintesis-placas"],
-    href: "/catalogos/osteosintesis-placas/productos/volar-poliaxial",
-  },
-  {
-    categorySlug: "osteosintesis-placas",
-    slug: "femur-distal",
-    title: "Distal",
-    label: "Placa de fémur",
-    description:
-      "Placa de fémur distal para osteosíntesis, con referencias de configuración, medidas y coordinación técnica-comercial.",
-    image: categoryImages["osteosintesis-placas"],
-    href: "/catalogos/osteosintesis-placas/productos/femur-distal",
-  },
-  {
-    categorySlug: "osteosintesis-placas",
-    slug: "femur-gancho",
-    title: "Gancho",
-    label: "Placa para fémur tipo",
-    description:
-      "Placa para fémur tipo gancho, con información de sistema y disponibilidad para planificación quirúrgica.",
-    image: categoryImages["osteosintesis-placas"],
-    href: "/catalogos/osteosintesis-placas/productos/femur-gancho",
-  },
-  {
-    categorySlug: "osteosintesis-placas",
-    slug: "cervical",
-    title: "Cervical",
-    label: "Placa",
-    description:
-      "Placa cervical para sistemas de fijación, con referencias de medidas, componentes e instrumental asociado.",
-    image: categoryImages["osteosintesis-placas"],
-    href: "/catalogos/osteosintesis-placas/productos/cervical",
-  },
-  {
-    categorySlug: "osteosintesis-placas",
-    slug: "tornillos-canulados-35-45mm",
-    title: "Ø3,5 y Ø4,5mm",
-    label: "Tornillos canulados",
-    description:
-      "Tornillos canulados de Ø3,5 y Ø4,5 mm para fijación, con referencias de medidas y coordinación de disponibilidad.",
-    image: categoryImages["osteosintesis-placas"],
-    href: "/catalogos/osteosintesis-placas/productos/tornillos-canulados-35-45mm",
-  },
-  {
-    categorySlug: "osteosintesis-placas",
-    slug: "minifragmentos-15-20mm",
-    title: "Ø1,5mm y Ø2,0mm",
-    label: "Minifragmentos",
-    description:
-      "Minifragmentos bloqueados de titanio de Ø1,5 y Ø2,0 mm, con instrumental y referencias para sistemas pequeños.",
-    image: categoryImages["osteosintesis-placas"],
-    href: "/catalogos/osteosintesis-placas/productos/minifragmentos-15-20mm",
-  },
-  {
-    categorySlug: "osteosintesis-placas",
-    slug: "tornillos-canulados-27mm",
-    title: "Ø2,7mm",
-    label: "Tornillos canulados",
-    description:
-      "Tornillos canulados de Ø2,7 mm para fijación, con información de referencias y soporte para consulta comercial.",
-    image: categoryImages["osteosintesis-placas"],
-    href: "/catalogos/osteosintesis-placas/productos/tornillos-canulados-27mm",
-  },
-  {
-    categorySlug: "osteosintesis-placas",
-    slug: "herbert-barouk",
-    title: "Herbert-Barouk",
-    label: "Tornillos",
-    description:
-      "Tornillos Herbert-Barouk para fijación específica, con referencias de medidas y coordinación de instrumental según necesidad.",
-    image: categoryImages["osteosintesis-placas"],
-    href: "/catalogos/osteosintesis-placas/productos/herbert-barouk",
-  },
-  {
-    categorySlug: "otros-productos",
-    slug: "perforador-sierra",
-    title: "Perforador y Sierra",
-    label: "Motor Overfix",
-    description:
-      "Motor Overfix para perforación y sierra, con referencias de uso, componentes y coordinación de disponibilidad para quirófano.",
-    image: categoryImages["otros-productos"],
-    href: "/catalogos/otros-productos/productos/perforador-sierra",
-  },
-  {
-    categorySlug: "otros-productos",
-    slug: "universal",
-    title: "Universal",
-    label: "Sistema de extracción",
-    description:
-      "Sistema de extracción universal con instrumental organizado para procedimientos que requieren retiro, recambio o asistencia técnica.",
-    image: categoryImages["instrumental-quirurgico"],
-    href: "/catalogos/otros-productos/productos/universal",
-  },
-  {
-    categorySlug: "otros-productos",
-    slug: "emergencia",
-    title: "Emergencia",
-    label: "Caja de instrumental",
-    description:
-      "Caja de instrumental de emergencia para resolver requerimientos complementarios en quirófano con disponibilidad y coordinación previa.",
-    image: categoryImages["instrumental-quirurgico"],
-    href: "/catalogos/otros-productos/productos/emergencia",
+      "Sistema completo y convertible con configuraciones anatómica y reversa de hombro.",
+    image: catalogProductImages["sistema-hombro"],
+    href: "/catalogos/hombro/productos/sistema-hombro",
   },
 ];
 
@@ -770,7 +559,7 @@ export const featuredEvent = {
   venue: "Hotel Hilton, Buenos Aires",
   description:
     "Participamos del 61° Congreso Argentino de Ortopedia y Traumatología, un encuentro dedicado a la innovación y la medicina personalizada para mejorar el bienestar de los pacientes. Junto a destacados expositores y referentes del rubro, compartimos los productos y el servicio de calidad que ofrecemos.",
-  image: images.congreso,
+  image: images.eventMain,
   imageAlt:
     "Equipo de Chaco Implantes en el 61° Congreso Argentino de Ortopedia y Traumatología, Hotel Hilton Buenos Aires 2024",
 } as const;
@@ -810,6 +599,7 @@ type GeneratedCloudinaryVideo = {
   width: number;
   height: number;
   duration?: number;
+  audioEnabled?: boolean;
 };
 
 type CloudinaryMediaManifest = {
@@ -925,17 +715,21 @@ const eventGalleryImages = [
 ] as const;
 
 const galleryPool: { category: GalleryCategory; image: string; alt: string }[] = [
-  { category: "Productos", image: images.productos, alt: "Placas y tornillos de osteosíntesis" },
-  { category: "Productos", image: categoryImages.cadera, alt: "Prótesis de cadera" },
-  { category: "Productos", image: categoryImages.rodilla, alt: "Prótesis de rodilla" },
-  { category: "Productos", image: categoryImages.columna, alt: "Sistema de fijación de columna" },
-  { category: "Productos", image: categoryImages.maxilofacial, alt: "Placas maxilofaciales" },
-  { category: "Productos", image: categoryImages["osteosintesis-placas"], alt: "Placas de osteosíntesis" },
-  { category: "Productos", image: categoryImages["osteosintesis-tornillos"], alt: "Tornillos de osteosíntesis" },
-  { category: "Instrumental", image: categoryImages["instrumental-quirurgico"], alt: "Caja de instrumental quirúrgico" },
-  { category: "Instrumental", image: images.hero, alt: "Instrumental traumatológico" },
-  { category: "Instrumental", image: categoryImages["otros-productos"], alt: "Insumos y descartables" },
-  { category: "Quirófano", image: images.quirofano, alt: "Quirófano equipado para cirugía" },
+  {
+    category: "Productos",
+    image: images.productOverview,
+    alt: "Preparación de instrumental y componentes traumatológicos",
+  },
+  {
+    category: "Instrumental",
+    image: images.instrumental,
+    alt: "Instrumental motorizado para procedimientos traumatológicos",
+  },
+  {
+    category: "Quirófano",
+    image: images.professionalWork,
+    alt: "Preparación y organización de instrumental",
+  },
 ];
 
 const eventGalleryPool: { category: GalleryCategory; image: string; alt: string }[] = eventGalleryImages.map((image) => ({
@@ -966,6 +760,7 @@ export type VideoItem = {
   src: string;
   title: string;
   duration?: number;
+  audioEnabled: boolean;
 };
 
 const synchronizedMedia = buildSiteMediaCollections({

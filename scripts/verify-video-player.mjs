@@ -675,10 +675,18 @@ async function verifyDesktop(browser) {
       0,
       "No debe solicitar MP4 antes de iniciar reproducción.",
     );
+    const audioEnabledVideoCount = manifest.videos.filter(
+      (video) => video.audioEnabled === true,
+    ).length;
     assert.equal(
       await page.locator("[data-video-volume]").count(),
-      0,
-      "El reproductor sin audio no debe incluir controles de volumen.",
+      audioEnabledVideoCount,
+      "Solo los reproductores con audio deben incluir control de volumen.",
+    );
+    assert.equal(
+      await page.locator("[data-video-volume-range]").count(),
+      audioEnabledVideoCount,
+      "Solo los reproductores con audio deben incluir selector de volumen.",
     );
 
     const first = players.nth(0);
@@ -696,6 +704,49 @@ async function verifyDesktop(browser) {
     const firstToggle = first.locator("[data-video-toggle]");
     const secondToggle = second.locator("[data-video-toggle]");
     const thirdToggle = third.locator("[data-video-toggle]");
+    const featuredFullscreen = first.locator("[data-video-fullscreen]");
+    const featuredVolume = first.locator("[data-video-volume]");
+    const featuredVolumeRange = first.locator("[data-video-volume-range]");
+
+    assert.equal(
+      await featuredFullscreen.isVisible(),
+      true,
+      "El video destacado debe permitir pantalla completa antes de reproducirse.",
+    );
+    assert.equal(
+      audioEnabledVideoCount,
+      1,
+      "Solo el video del stand debe estar habilitado con audio.",
+    );
+    assert.equal(
+      await first.getAttribute("data-audio-enabled"),
+      "true",
+      "El video destacado del stand debe estar habilitado con audio.",
+    );
+    assert.equal(
+      await featuredVolume.isVisible(),
+      true,
+      "El video destacado con audio debe mostrar el control de volumen.",
+    );
+    await featuredVolume.focus();
+    await waitForLocator(
+      page,
+      featuredVolumeRange,
+      ({ element }) => {
+        const panel = element.closest(".video-player__volume-panel");
+        return panel !== null && getComputedStyle(panel).visibility === "visible";
+      },
+    );
+    assert.equal(
+      await featuredVolumeRange.isVisible(),
+      true,
+      "El selector de volumen debe desplegarse al enfocar el control.",
+    );
+    assert.equal(
+      await second.locator("[data-video-volume]").count(),
+      0,
+      "Los videos instrumentales no deben mostrar control de volumen.",
+    );
 
     await firstVideo.evaluate((video) => {
       video.loop = true;
@@ -714,13 +765,54 @@ async function verifyDesktop(browser) {
     await waitForCurrentTime(page, firstVideo, 0.1);
     assert.equal(
       await firstVideo.evaluate((video) => video.muted),
-      true,
-      "El video debe permanecer silenciado.",
+      false,
+      "El video destacado debe iniciar con audio.",
     );
     assert.match(
       await firstVideo.evaluate((video) => video.currentSrc),
-      /ac_none/,
-      "La fuente reproducida debe excluir la pista de audio.",
+      /ac_aac/,
+      "La fuente del video destacado debe incluir audio AAC.",
+    );
+    await featuredVolumeRange.evaluate((range) => {
+      range.value = "35";
+      range.dispatchEvent(new Event("input", { bubbles: true }));
+    });
+    assert.equal(
+      await firstVideo.evaluate((video) => Math.round(video.volume * 100)),
+      35,
+      "El selector debe aplicar el volumen elegido al medio.",
+    );
+    assert.equal(
+      await firstVideo.evaluate((video) => video.muted),
+      false,
+      "Elegir un volumen mayor que cero debe mantener el audio activo.",
+    );
+    assert.equal(
+      await featuredVolumeRange.getAttribute("aria-valuetext"),
+      "Volumen al 35%",
+      "El selector debe anunciar el volumen actual.",
+    );
+    await featuredVolume.click();
+    assert.equal(
+      await firstVideo.evaluate((video) => video.muted),
+      true,
+      "El control de volumen debe poder silenciar el video destacado.",
+    );
+    assert.match(
+      (await featuredVolume.getAttribute("aria-label")) ?? "",
+      /Activar audio/,
+      "El control silenciado debe anunciar que puede activar el audio.",
+    );
+    await featuredVolume.click();
+    assert.equal(
+      await firstVideo.evaluate((video) => video.muted),
+      false,
+      "El control de volumen debe poder reactivar el audio.",
+    );
+    assert.equal(
+      await firstVideo.evaluate((video) => Math.round(video.volume * 100)),
+      35,
+      "Reactivar el audio debe conservar el último volumen elegido.",
     );
     assert.equal(
       new Set(mp4Requests).size,
@@ -732,6 +824,16 @@ async function verifyDesktop(browser) {
     await waitForState(page, second, "playing");
     await waitForCurrentTime(page, secondVideo, 0.1);
     await waitForState(page, first, "paused");
+    assert.equal(
+      await secondVideo.evaluate((video) => video.muted),
+      true,
+      "Los videos instrumentales deben permanecer silenciados.",
+    );
+    assert.match(
+      await secondVideo.evaluate((video) => video.currentSrc),
+      /ac_none/,
+      "La fuente instrumental debe excluir la pista de audio.",
+    );
 
     await secondToggle.focus();
     await page.keyboard.press("Space");
@@ -958,6 +1060,24 @@ async function verifyDesktop(browser) {
       1,
       "Debe existir el reproductor del video vertical.",
     );
+    const verticalItem = page.locator(
+      `[data-video-item]:has([data-video-player][data-video-id="${verticalAsset.assetId}"])`,
+    );
+    const loadMoreVideos = page.locator("[data-video-load-more]");
+
+    while (
+      !(await verticalItem.isVisible()) &&
+      (await loadMoreVideos.isVisible())
+    ) {
+      await loadMoreVideos.click();
+    }
+
+    assert.equal(
+      await verticalItem.isVisible(),
+      true,
+      "La carga progresiva debe permitir acceder al video vertical.",
+    );
+
     const verticalVideo = vertical.locator("[data-video-media]");
     const verticalState = await vertical.getAttribute("data-state");
 
@@ -1059,6 +1179,8 @@ async function verifyTouch(browser) {
     const primary = first.locator("[data-video-primary]");
     const toggle = first.locator("[data-video-toggle]");
     const progress = first.locator("[data-video-progress]");
+    const volumeButton = first.locator("[data-video-volume]");
+    const volumeRange = first.locator("[data-video-volume-range]");
     const fullscreen = first.locator("[data-video-fullscreen]");
     const video = first.locator("[data-video-media]");
 
@@ -1081,6 +1203,21 @@ async function verifyTouch(browser) {
     );
     await assertMinimumBox(toggle, "El toggle táctil");
     await assertMinimumBox(progress, "El progreso táctil");
+    await volumeButton.tap();
+    await waitForLocator(
+      page,
+      volumeRange,
+      ({ element }) => {
+        const panel = element.closest(".video-player__volume-panel");
+        return panel !== null && getComputedStyle(panel).visibility === "visible";
+      },
+    );
+    assert.equal(
+      await volumeRange.isVisible(),
+      true,
+      "El selector táctil debe desplegarse al enfocar el control de volumen.",
+    );
+    await assertMinimumBox(volumeRange, "El selector de volumen táctil");
     if (await fullscreen.isVisible()) {
       await assertMinimumBox(fullscreen, "El botón de pantalla completa");
     }

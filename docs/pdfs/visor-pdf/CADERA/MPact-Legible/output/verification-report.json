@@ -1,0 +1,113 @@
+{
+  "generatedAt": "2026-08-04T00:08:59.946Z",
+  "passed": true,
+  "specification": {
+    "width": 1200,
+    "height": 1698,
+    "colorSpace": "srgb",
+    "embeddedColorProfile": true,
+    "maximumRecommendedBytes": 204800,
+    "pageCount": 6
+  },
+  "webps": [
+    {
+      "fileName": "mpact-01.webp",
+      "bytes": 79554,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "mpact-02.webp",
+      "bytes": 96884,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "mpact-03.webp",
+      "bytes": 126608,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "mpact-04.webp",
+      "bytes": 100030,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "mpact-05.webp",
+      "bytes": 83962,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "mpact-06.webp",
+      "bytes": 106850,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    }
+  ],
+  "pdf": {
+    "fileName": "mpact-folleto.pdf",
+    "bytes": 5557109,
+    "pageCount": 6,
+    "pageSizesPoints": [
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      }
+    ]
+  },
+  "editable": {
+    "master": "C:\\Users\\Gonzalo\\Documents\\Folletos\\MPact-Legible\\output\\mpact-folleto-editable.svg",
+    "printHtml": "C:\\Users\\Gonzalo\\Documents\\Folletos\\MPact-Legible\\output\\mpact-folleto-fuente.html",
+    "pages": [
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\MPact-Legible\\output\\editable\\mpact-01.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\MPact-Legible\\output\\editable\\mpact-02.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\MPact-Legible\\output\\editable\\mpact-03.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\MPact-Legible\\output\\editable\\mpact-04.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\MPact-Legible\\output\\editable\\mpact-05.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\MPact-Legible\\output\\editable\\mpact-06.svg"
+    ]
+  },
+  "errors": [],
+  "warnings": []
+}

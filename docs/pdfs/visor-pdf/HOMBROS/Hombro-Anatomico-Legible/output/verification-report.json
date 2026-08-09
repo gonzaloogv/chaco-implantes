@@ -1,0 +1,129 @@
+{
+  "generatedAt": "2026-08-08T07:33:28.072Z",
+  "passed": true,
+  "pageCount": 7,
+  "specification": {
+    "width": 1200,
+    "height": 1698,
+    "colorSpace": "srgb",
+    "embeddedColorProfile": true,
+    "maximumRecommendedBytes": 204800,
+    "pageCount": 7,
+    "lastWebp": "hombro-anatomico-07.webp"
+  },
+  "webps": [
+    {
+      "fileName": "hombro-anatomico-01.webp",
+      "bytes": 62506,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "hombro-anatomico-02.webp",
+      "bytes": 80762,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "hombro-anatomico-03.webp",
+      "bytes": 97212,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "hombro-anatomico-04.webp",
+      "bytes": 101024,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "hombro-anatomico-05.webp",
+      "bytes": 90730,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "hombro-anatomico-06.webp",
+      "bytes": 83572,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "hombro-anatomico-07.webp",
+      "bytes": 92426,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    }
+  ],
+  "pdf": {
+    "fileName": "hombro-anatomico-folleto.pdf",
+    "bytes": 9218826,
+    "pageCount": 7,
+    "pageSizesPoints": [
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      }
+    ]
+  },
+  "editable": {
+    "master": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Hombro-Anatomico-Legible\\output\\hombro-anatomico-folleto-editable.svg",
+    "printHtml": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Hombro-Anatomico-Legible\\output\\hombro-anatomico-folleto-fuente.html",
+    "pages": [
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Hombro-Anatomico-Legible\\output\\editable\\hombro-anatomico-01.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Hombro-Anatomico-Legible\\output\\editable\\hombro-anatomico-02.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Hombro-Anatomico-Legible\\output\\editable\\hombro-anatomico-03.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Hombro-Anatomico-Legible\\output\\editable\\hombro-anatomico-04.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Hombro-Anatomico-Legible\\output\\editable\\hombro-anatomico-05.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Hombro-Anatomico-Legible\\output\\editable\\hombro-anatomico-06.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Hombro-Anatomico-Legible\\output\\editable\\hombro-anatomico-07.svg"
+    ]
+  },
+  "errors": [],
+  "warnings": []
+}

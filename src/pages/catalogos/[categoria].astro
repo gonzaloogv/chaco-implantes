@@ -2,7 +2,14 @@
 import CatalogViewer from "../../components/CatalogViewer.astro";
 import Icon from "../../components/Icon.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { categories, catalogProducts, categoryImages, whatsappLink } from "../../data/site";
+import {
+  categories,
+  catalogProducts,
+  categoryImages,
+  catalogPreviewImages,
+  whatsappLink,
+} from "../../data/site";
+import "../../styles/catalogo-especialidad.css";
 
 export function getStaticPaths() {
   return categories.map((category) => ({
@@ -12,9 +19,16 @@ export function getStaticPaths() {
 }
 
 const { category } = Astro.props;
-const image = categoryImages[category.slug as keyof typeof categoryImages];
-const products = catalogProducts.filter((product) => product.categorySlug === category.slug);
+const image =
+  categoryImages[category.slug as keyof typeof categoryImages];
+const products = catalogProducts.filter(
+  (product) => product.categorySlug === category.slug,
+);
+const hasCatalogPreview = category.slug in catalogPreviewImages;
 const hasProducts = products.length > 0;
+const productCountLabel = `${products.length} ${
+  products.length === 1 ? "producto disponible" : "productos disponibles"
+}`;
 ---
 
 <BaseLayout
@@ -22,96 +36,148 @@ const hasProducts = products.length > 0;
   description={category.description}
   canonicalPath={`/catalogos/${category.slug}`}
 >
-  <section class="page-hero-dark relative overflow-hidden border-b border-white/10 px-4 pb-14 pt-32 text-white sm:px-6 lg:px-8">
-    <img
-      src={image}
-      alt={category.title}
-      loading="eager"
-      decoding="async"
-      width="1024"
-      height="768"
-      class="pointer-events-none absolute inset-y-0 right-0 hidden h-full w-1/2 object-cover opacity-[0.24] lg:block"
-    />
-    <div aria-hidden="true" class="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[#0f172a] via-[#192338]/96 to-[#192338]/20 lg:block"></div>
+  <div class="catalog-specialty-page">
+    <section
+      class="catalog-specialty-hero"
+      data-catalog-specialty-hero
+      aria-labelledby="catalog-specialty-title"
+    >
+      <div class="catalog-specialty-shell catalog-specialty-hero__layout">
+        <div class="catalog-specialty-hero__copy">
+          <a href="/catalogos" class="catalog-specialty-back">
+            <Icon name="arrow-left" class="h-4 w-4" />
+            Volver a catálogos
+          </a>
 
-    <div class="relative mx-auto max-w-7xl">
-      <a href="/catalogos" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand transition-colors hover:text-white">
-        <Icon name="arrow-left" class="h-4 w-4" /> Volver a catálogos
-      </a>
-      <div class="mt-6 max-w-3xl">
-        <span class="inline-flex rounded-full border border-primary-glow/30 bg-primary/15 px-3 py-1.5 text-xs font-bold uppercase text-brand">
-          {category.type}
-        </span>
-        <h1 class="mt-4 font-display text-4xl font-black sm:text-5xl">{category.title}</h1>
-        <p class="mt-4 max-w-2xl text-brand">{category.description}</p>
-      </div>
-    </div>
-  </section>
+          <p class="catalog-specialty-eyebrow">{category.type}</p>
+          <h1 id="catalog-specialty-title">{category.title}</h1>
+          <p class="catalog-specialty-hero__description">
+            {category.description}
+          </p>
 
-  <section class="catalog-detail-shell px-4 py-12 sm:px-6 lg:px-8">
-    {hasProducts ? (
-      <div class="mx-auto max-w-7xl">
-        <div class="mb-8 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-          <div class="max-w-3xl">
-            <span class="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3 py-1.5 text-xs font-bold uppercase text-primary">
-              {products.length} productos disponibles
-            </span>
-            <h2 class="mt-4 font-display text-3xl font-extrabold text-deep sm:text-4xl">Productos de {category.title}</h2>
-            <p class="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
-              Seleccioná un producto para abrir su visor de catálogo.
-            </p>
-          </div>
           <a
-            href={whatsappLink(`Hola, quisiera información sobre productos del catálogo de ${category.title}.`)}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-primary inline-flex w-full items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-bold sm:w-auto"
+            href={hasProducts ? "#productos" : "#solicitar-catalogo"}
+            class="catalog-specialty-hero__action"
           >
-            <Icon name="message-circle" class="h-4 w-4" /> Consultar línea
+            {hasProducts ? "Explorar productos" : "Solicitar documentación"}
+            <Icon name="arrow-right" class="h-4 w-4" />
           </a>
         </div>
 
-        <div data-catalog-products class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {products.map((product) => (
-            <article data-catalog-product class="catalog-product-card group overflow-hidden rounded-xl border bg-white">
-              <a href={product.href} class="flex h-full flex-col" aria-label={`Ver catálogo de ${product.title}`}>
-                <div class="catalog-product-media relative aspect-[4/3] overflow-hidden bg-deep">
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    loading="lazy"
-                    decoding="async"
-                    width="1024"
-                    height="768"
-                    class="absolute inset-0 h-full w-full object-cover"
-                  />
-                  <div aria-hidden="true" class="absolute inset-0 bg-[linear-gradient(135deg,rgba(15,23,42,0.22)_0%,rgba(43,108,184,0.76)_48%,rgba(25,35,56,0.7)_100%)]"></div>
-                  <div aria-hidden="true" class="catalog-product-dots absolute bottom-0 left-0 h-24 w-40 opacity-80"></div>
-                </div>
-
-                <div class="flex flex-1 items-start justify-between gap-4 p-5">
-                  <div>
-                    <p class="flex items-center gap-2 text-[11px] font-bold uppercase text-primary">
-                      <span class="h-px w-7 bg-primary"></span>
-                      {product.label}
-                    </p>
-                    <h3 class="mt-3 font-display text-xl font-bold leading-tight text-deep">{product.title}</h3>
-                  </div>
-                  <Icon name="arrow-right" class="catalog-product-arrow mt-1 h-5 w-5 shrink-0 text-primary transition-transform duration-200 ease-out group-hover:translate-x-1" />
-                </div>
-              </a>
-            </article>
-          ))}
+        <div
+          class:list={[
+            "catalog-specialty-hero__visual",
+            hasCatalogPreview && "catalog-specialty-hero__visual--preview",
+          ]}
+          data-catalog-specialty-image
+        >
+          <span
+            class="catalog-specialty-hero__accent"
+            aria-hidden="true"
+          ></span>
+          <img
+            src={image}
+            alt={category.title}
+            loading="eager"
+            decoding="async"
+            width="1024"
+            height="768"
+          />
+          {hasProducts && (
+            <p class="catalog-specialty-hero__count">
+              <strong>{products.length}</strong>
+              <span>
+                {products.length === 1
+                  ? "producto disponible"
+                  : "productos disponibles"}
+              </span>
+            </p>
+          )}
         </div>
       </div>
-    ) : (
-      <CatalogViewer
-        title={category.title}
-        eyebrow={category.type}
-        description={category.description}
-        image={image}
-        whatsappMessage={`Hola, quisiera información sobre el catálogo de ${category.title}.`}
-      />
-    )}
-  </section>
+    </section>
+
+    <section
+      id={hasProducts ? "productos" : "solicitar-catalogo"}
+      class="catalog-specialty-content"
+    >
+      <div class="catalog-specialty-shell">
+        {hasProducts ? (
+          <>
+            <header class="catalog-specialty-directory__header">
+              <div>
+                <p class="catalog-specialty-label">{productCountLabel}</p>
+                <h2>Explorá la línea {category.title}</h2>
+                <p>
+                  Revisá cada producto y accedé a su ficha para consultar el
+                  catálogo y la documentación disponible.
+                </p>
+              </div>
+              <a
+                href={whatsappLink(
+                  `Hola, quisiera información sobre productos del catálogo de ${category.title}.`,
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="catalog-specialty-button"
+              >
+                <Icon name="message-circle" class="h-4 w-4" />
+                Consultar línea
+              </a>
+            </header>
+
+            <div
+              data-catalog-products
+              class="catalog-specialty-grid"
+            >
+              {products.map((product) => (
+                <article
+                  data-catalog-product
+                  class="catalog-specialty-card"
+                >
+                  <a
+                    href={product.href}
+                    class="catalog-specialty-card__link"
+                    aria-label={`Ver catálogo de ${product.title}`}
+                  >
+                    <div class="catalog-specialty-card__media">
+                      <img
+                        src={product.image}
+                        alt={product.title}
+                        loading="lazy"
+                        decoding="async"
+                        width="1024"
+                        height="768"
+                      />
+                    </div>
+
+                    <div class="catalog-specialty-card__body">
+                      <p class="catalog-specialty-card__label">
+                        {product.label}
+                      </p>
+                      <h3>{product.title}</h3>
+                      <p class="catalog-specialty-card__description">
+                        {product.description}
+                      </p>
+                      <strong>
+                        Ver producto
+                        <Icon name="arrow-right" class="h-4 w-4" />
+                      </strong>
+                    </div>
+                  </a>
+                </article>
+              ))}
+            </div>
+          </>
+        ) : (
+          <CatalogViewer
+            title={category.title}
+            eyebrow={category.type}
+            image={image}
+            whatsappMessage={`Hola, quisiera información sobre el catálogo de ${category.title}.`}
+          />
+        )}
+      </div>
+    </section>
+  </div>
 </BaseLayout>

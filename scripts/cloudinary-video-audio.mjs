@@ -139,7 +139,7 @@ function exactlyOne(children, type, parentType) {
   return matches[0];
 }
 
-export function inspectMp4Moov(input, {
+function inspectMp4Tracks(input, {
   maxParsedBoxes = DEFAULT_MP4_INSPECTION_OPTIONS.maxParsedBoxes,
 } = {}) {
   requirePositiveInteger(maxParsedBoxes, "maxParsedBoxes");
@@ -178,22 +178,37 @@ export function inspectMp4Moov(input, {
     return fourCc(bytes, handlerBox.contentStart + 8);
   });
 
-  if (handlerTypes.includes("soun")) {
-    throw new Error("El MP4 contiene una pista de audio (soun).");
-  }
-
   const videoTrackCount = handlerTypes
     .filter((handlerType) => handlerType === "vide")
     .length;
-  if (videoTrackCount === 0) {
-    throw new Error("El MP4 debe contener al menos una pista de video (vide).");
-  }
 
   return {
     trackCount: tracks.length,
     videoTrackCount,
     handlerTypes,
   };
+}
+
+export function inspectMp4Moov(input, options = {}) {
+  const details = inspectMp4Tracks(input, options);
+  if (details.handlerTypes.includes("soun")) {
+    throw new Error("El MP4 contiene una pista de audio (soun).");
+  }
+  if (details.videoTrackCount === 0) {
+    throw new Error("El MP4 debe contener al menos una pista de video (vide).");
+  }
+  return details;
+}
+
+export function inspectMp4MoovHasAudio(input, options = {}) {
+  const details = inspectMp4Tracks(input, options);
+  if (!details.handlerTypes.includes("soun")) {
+    throw new Error("El MP4 no contiene una pista de audio (soun).");
+  }
+  if (details.videoTrackCount === 0) {
+    throw new Error("El MP4 debe contener al menos una pista de video (vide).");
+  }
+  return details;
 }
 
 function describeError(error) {
@@ -486,7 +501,7 @@ async function findRemoteMoov(video, options) {
   return moovBytes;
 }
 
-function validateCloudinaryVideo(video, index) {
+function validateCloudinaryVideo(video, index, requiredAudioTransform) {
   const hasAssetId =
     typeof video?.assetId === "string" &&
     video.assetId.trim().length > 0;
@@ -536,12 +551,14 @@ function validateCloudinaryVideo(video, index) {
         `videos[${index}].src debe incluir una versión de Cloudinary.`,
       );
     }
-    const hasAudioRemoval = deliverySegments
+    const hasRequiredAudioTransform = deliverySegments
       .slice(0, versionIndex)
-      .some((segment) => segment.split(",").includes("ac_none"));
-    if (versionIndex === 0 || !hasAudioRemoval) {
+      .some((segment) =>
+        segment.split(",").includes(requiredAudioTransform)
+      );
+    if (versionIndex === 0 || !hasRequiredAudioTransform) {
       throw new Error(
-        `videos[${index}].src debe incluir la transformación ac_none antes de la primera versión.`,
+        `videos[${index}].src debe incluir la transformación ${requiredAudioTransform} antes de la primera versión.`,
       );
     }
 
@@ -583,8 +600,12 @@ function buildRemoteInspectionOptions(overrides) {
   return options;
 }
 
-export async function ensureVideoSourcesHaveNoAudio(
+async function ensureVideoSourcesMatchAudioPolicy(
   videos,
+  {
+    inspectMoov,
+    requiredAudioTransform,
+  },
   overrides = {},
 ) {
   if (!Array.isArray(videos)) {
@@ -594,7 +615,13 @@ export async function ensureVideoSourcesHaveNoAudio(
   const options = buildRemoteInspectionOptions(overrides);
   const safeVideos = [];
   for (let index = 0; index < videos.length; index += 1) {
-    safeVideos.push(validateCloudinaryVideo(videos[index], index));
+    safeVideos.push(
+      validateCloudinaryVideo(
+        videos[index],
+        index,
+        requiredAudioTransform,
+      ),
+    );
   }
 
   let nextIndex = 0;
@@ -608,7 +635,7 @@ export async function ensureVideoSourcesHaveNoAudio(
       const video = safeVideos[index];
       try {
         const moovBytes = await findRemoteMoov(video, options);
-        inspectMp4Moov(moovBytes, {
+        inspectMoov(moovBytes, {
           maxParsedBoxes: options.maxParsedBoxes,
         });
       } catch (error) {
@@ -626,4 +653,32 @@ export async function ensureVideoSourcesHaveNoAudio(
   );
 
   if (firstError !== undefined) throw firstError;
+}
+
+export async function ensureVideoSourcesHaveNoAudio(
+  videos,
+  overrides = {},
+) {
+  return ensureVideoSourcesMatchAudioPolicy(
+    videos,
+    {
+      inspectMoov: inspectMp4Moov,
+      requiredAudioTransform: "ac_none",
+    },
+    overrides,
+  );
+}
+
+export async function ensureVideoSourcesHaveAudio(
+  videos,
+  overrides = {},
+) {
+  return ensureVideoSourcesMatchAudioPolicy(
+    videos,
+    {
+      inspectMoov: inspectMp4MoovHasAudio,
+      requiredAudioTransform: "ac_aac",
+    },
+    overrides,
+  );
 }

@@ -1,0 +1,30 @@
+export const brochure = Object.freeze({
+  product: "GMK SPHERE",
+  line: "GLOBAL MEDACTA KNEE",
+  descriptor: "Sistema de rodilla medialmente estabilizado",
+  document: Object.freeze({ reference: "99.26SPHERE.32", revision: "01" }),
+  specifications: Object.freeze({
+    femoralProfiles: 13,
+    tibialSizes: 6,
+    insertSizes: 6,
+    insertThicknesses: Object.freeze([10, 11, 12, 13, 14, 17, 20]),
+    insertFamilies: Object.freeze(["SPHERE FLEX", "CR"]),
+    versions: Object.freeze(["ESTÁNDAR", "SENSITIN"]),
+    patellaDesigns: Object.freeze(["RESURFACING", "INSET"]),
+    patellaSizes: 4,
+    tibialExtensions: Object.freeze(["Ø11 mm × L30 mm", "Ø11 mm × L65 mm"]),
+  }),
+  contact: Object.freeze({
+    address: Object.freeze(["Corrientes 781", "Resistencia, Chaco (3500)"]),
+    instagram: "@chacoimplanteok",
+  }),
+  pages: Object.freeze([
+    Object.freeze({ number: "01 / 07", section: "PORTADA" }),
+    Object.freeze({ number: "02 / 07", section: "PRINCIPIO MEDIAL" }),
+    Object.freeze({ number: "03 / 07", section: "COMPONENTES Y VARIANTES" }),
+    Object.freeze({ number: "04 / 07", section: "CINEMÁTICA" }),
+    Object.freeze({ number: "05 / 07", section: "INSERTOS Y RÓTULA" }),
+    Object.freeze({ number: "06 / 07", section: "RANGO" }),
+    Object.freeze({ number: "07 / 07", section: "DOCUMENTACIÓN" }),
+  ]),
+});

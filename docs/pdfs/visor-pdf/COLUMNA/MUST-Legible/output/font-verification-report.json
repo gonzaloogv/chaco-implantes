@@ -1,0 +1,88 @@
+{
+  "pdf": "C:\\Users\\Gonzalo\\Documents\\Folletos\\MUST-Legible\\output\\must-folleto.pdf",
+  "pageCount": 6,
+  "fontCount": 5,
+  "fonts": [
+    {
+      "resource": "page-1//F7",
+      "baseFont": "/AAAAAA+Poppins-SemiBold",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "resource": "page-1//F8",
+      "baseFont": "/BAAAAA+Kurale-Regular",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1
+      ]
+    },
+    {
+      "resource": "page-1//F10",
+      "baseFont": "/CAAAAA+MontserratThin-Black",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1
+      ]
+    },
+    {
+      "resource": "page-1//F11",
+      "baseFont": "/DAAAAA+Poppins-Regular",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "resource": "page-2//F21",
+      "baseFont": "/EAAAAA+MontserratThin-ExtraBold",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    }
+  ],
+  "errors": [],
+  "passed": true
+}

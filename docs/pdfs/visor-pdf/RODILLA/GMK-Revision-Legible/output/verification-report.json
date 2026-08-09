@@ -1,0 +1,128 @@
+{
+  "generatedAt": "2026-08-04T20:03:47.138Z",
+  "passed": true,
+  "specification": {
+    "width": 1200,
+    "height": 1698,
+    "colorSpace": "srgb",
+    "embeddedColorProfile": true,
+    "maximumRecommendedBytes": 204800,
+    "pageCount": 7,
+    "lastWebp": "gmk-revision-07.webp"
+  },
+  "webps": [
+    {
+      "fileName": "gmk-revision-01.webp",
+      "bytes": 60198,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "gmk-revision-02.webp",
+      "bytes": 86682,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "gmk-revision-03.webp",
+      "bytes": 84190,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "gmk-revision-04.webp",
+      "bytes": 81952,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "gmk-revision-05.webp",
+      "bytes": 101718,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "gmk-revision-06.webp",
+      "bytes": 78620,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "gmk-revision-07.webp",
+      "bytes": 95556,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    }
+  ],
+  "pdf": {
+    "fileName": "gmk-revision-folleto.pdf",
+    "bytes": 9438884,
+    "pageCount": 7,
+    "pageSizesPoints": [
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      }
+    ]
+  },
+  "editable": {
+    "master": "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Revision-Legible\\output\\gmk-revision-folleto-editable.svg",
+    "printHtml": "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Revision-Legible\\output\\gmk-revision-folleto-fuente.html",
+    "pages": [
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Revision-Legible\\output\\editable\\gmk-revision-01.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Revision-Legible\\output\\editable\\gmk-revision-02.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Revision-Legible\\output\\editable\\gmk-revision-03.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Revision-Legible\\output\\editable\\gmk-revision-04.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Revision-Legible\\output\\editable\\gmk-revision-05.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Revision-Legible\\output\\editable\\gmk-revision-06.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Revision-Legible\\output\\editable\\gmk-revision-07.svg"
+    ]
+  },
+  "errors": [],
+  "warnings": []
+}

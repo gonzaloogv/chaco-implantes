@@ -121,6 +121,36 @@ test("stored manifests validate generated label numbers", async (t) => {
   }
 });
 
+test("stored manifests validate optional video audio flags", async (t) => {
+  const directory = await createTempDirectory(t);
+  const path = join(directory, "manifest.json");
+
+  await writeFile(
+    path,
+    JSON.stringify({
+      schemaVersion: 1,
+      images: [],
+      videos: [{ ...video, audioEnabled: true }],
+    }),
+    "utf8",
+  );
+  assert.equal((await readManifest(path)).videos[0].audioEnabled, true);
+
+  await writeFile(
+    path,
+    JSON.stringify({
+      schemaVersion: 1,
+      images: [],
+      videos: [{ ...video, audioEnabled: "yes" }],
+    }),
+    "utf8",
+  );
+  await assert.rejects(
+    () => readManifest(path),
+    /audioEnabled debe ser booleano/,
+  );
+});
+
 test("findRemovedAssetIds compares images and videos with stable ordering", () => {
   const previous = {
     schemaVersion: 1,

@@ -1,0 +1,115 @@
+{
+  "generatedAt": "2026-08-08T07:00:16.562Z",
+  "passed": true,
+  "pageCount": 6,
+  "specification": {
+    "width": 1200,
+    "height": 1698,
+    "colorSpace": "srgb",
+    "embeddedColorProfile": true,
+    "maximumRecommendedBytes": 204800,
+    "pageCount": 6,
+    "lastWebp": "nextar-06.webp"
+  },
+  "webps": [
+    {
+      "fileName": "nextar-01.webp",
+      "bytes": 91114,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "nextar-02.webp",
+      "bytes": 92300,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "nextar-03.webp",
+      "bytes": 99014,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "nextar-04.webp",
+      "bytes": 92030,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "nextar-05.webp",
+      "bytes": 78320,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "nextar-06.webp",
+      "bytes": 79506,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    }
+  ],
+  "pdf": {
+    "fileName": "nextar-folleto.pdf",
+    "bytes": 10409915,
+    "pageCount": 6,
+    "pageSizesPoints": [
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      }
+    ]
+  },
+  "editable": {
+    "master": "C:\\Users\\Gonzalo\\Documents\\Folletos\\NextAR-Legible\\output\\nextar-folleto-editable.svg",
+    "printHtml": "C:\\Users\\Gonzalo\\Documents\\Folletos\\NextAR-Legible\\output\\nextar-folleto-fuente.html",
+    "pages": [
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\NextAR-Legible\\output\\editable\\nextar-01.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\NextAR-Legible\\output\\editable\\nextar-02.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\NextAR-Legible\\output\\editable\\nextar-03.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\NextAR-Legible\\output\\editable\\nextar-04.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\NextAR-Legible\\output\\editable\\nextar-05.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\NextAR-Legible\\output\\editable\\nextar-06.svg"
+    ]
+  },
+  "errors": [],
+  "warnings": []
+}

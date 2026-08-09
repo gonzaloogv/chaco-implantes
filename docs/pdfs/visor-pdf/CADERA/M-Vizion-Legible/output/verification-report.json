@@ -1,0 +1,127 @@
+{
+  "generatedAt": "2026-08-02T01:14:15.904Z",
+  "passed": true,
+  "specification": {
+    "width": 1200,
+    "height": 1698,
+    "colorSpace": "srgb",
+    "embeddedColorProfile": true,
+    "maximumRecommendedBytes": 204800,
+    "pageCount": 7
+  },
+  "webps": [
+    {
+      "fileName": "m-vizion-01.webp",
+      "bytes": 71262,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "m-vizion-02.webp",
+      "bytes": 101392,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "m-vizion-03.webp",
+      "bytes": 84106,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "m-vizion-04.webp",
+      "bytes": 83066,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "m-vizion-05.webp",
+      "bytes": 90032,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "m-vizion-06.webp",
+      "bytes": 84832,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "m-vizion-07.webp",
+      "bytes": 106786,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    }
+  ],
+  "pdf": {
+    "fileName": "m-vizion-folleto.pdf",
+    "bytes": 5898505,
+    "pageCount": 7,
+    "pageSizesPoints": [
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      }
+    ]
+  },
+  "editable": {
+    "master": "C:\\Users\\Gonzalo\\Documents\\Folletos\\M-Vizion-Legible\\output\\m-vizion-folleto-editable.svg",
+    "printHtml": "C:\\Users\\Gonzalo\\Documents\\Folletos\\M-Vizion-Legible\\output\\m-vizion-folleto-fuente.html",
+    "pages": [
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\M-Vizion-Legible\\output\\editable\\m-vizion-01.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\M-Vizion-Legible\\output\\editable\\m-vizion-02.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\M-Vizion-Legible\\output\\editable\\m-vizion-03.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\M-Vizion-Legible\\output\\editable\\m-vizion-04.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\M-Vizion-Legible\\output\\editable\\m-vizion-05.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\M-Vizion-Legible\\output\\editable\\m-vizion-06.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\M-Vizion-Legible\\output\\editable\\m-vizion-07.svg"
+    ]
+  },
+  "errors": [],
+  "warnings": []
+}

@@ -1,0 +1,41 @@
+{
+  "webps": [
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Masterloc-Legible\\output\\masterloc-01.webp",
+      "fileName": "masterloc-01.webp",
+      "quality": 85,
+      "bytes": 79974
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Masterloc-Legible\\output\\masterloc-02.webp",
+      "fileName": "masterloc-02.webp",
+      "quality": 85,
+      "bytes": 98744
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Masterloc-Legible\\output\\masterloc-03.webp",
+      "fileName": "masterloc-03.webp",
+      "quality": 85,
+      "bytes": 192128
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Masterloc-Legible\\output\\masterloc-04.webp",
+      "fileName": "masterloc-04.webp",
+      "quality": 85,
+      "bytes": 89772
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Masterloc-Legible\\output\\masterloc-05.webp",
+      "fileName": "masterloc-05.webp",
+      "quality": 85,
+      "bytes": 102556
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Masterloc-Legible\\output\\masterloc-06.webp",
+      "fileName": "masterloc-06.webp",
+      "quality": 85,
+      "bytes": 95154
+    }
+  ],
+  "pdfPath": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Masterloc-Legible\\output\\masterloc-folleto.pdf"
+}

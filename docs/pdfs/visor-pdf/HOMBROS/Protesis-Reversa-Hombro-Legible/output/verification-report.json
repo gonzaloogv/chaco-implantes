@@ -1,0 +1,101 @@
+{
+  "generatedAt": "2026-08-08T09:25:31.790Z",
+  "passed": true,
+  "pageCount": 5,
+  "specification": {
+    "width": 1200,
+    "height": 1698,
+    "colorSpace": "srgb",
+    "embeddedColorProfile": true,
+    "maximumRecommendedBytes": 204800,
+    "pageCount": 5,
+    "lastWebp": "protesis-reversa-hombro-05.webp"
+  },
+  "webps": [
+    {
+      "fileName": "protesis-reversa-hombro-01.webp",
+      "bytes": 64592,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "protesis-reversa-hombro-02.webp",
+      "bytes": 99922,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "protesis-reversa-hombro-03.webp",
+      "bytes": 90588,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "protesis-reversa-hombro-04.webp",
+      "bytes": 90446,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "protesis-reversa-hombro-05.webp",
+      "bytes": 98780,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    }
+  ],
+  "pdf": {
+    "fileName": "protesis-reversa-hombro-folleto.pdf",
+    "bytes": 5699842,
+    "pageCount": 5,
+    "pageSizesPoints": [
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      }
+    ]
+  },
+  "editable": {
+    "master": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Protesis-Reversa-Hombro-Legible\\output\\protesis-reversa-hombro-folleto-editable.svg",
+    "printHtml": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Protesis-Reversa-Hombro-Legible\\output\\protesis-reversa-hombro-folleto-fuente.html",
+    "pages": [
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Protesis-Reversa-Hombro-Legible\\output\\editable\\protesis-reversa-hombro-01.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Protesis-Reversa-Hombro-Legible\\output\\editable\\protesis-reversa-hombro-02.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Protesis-Reversa-Hombro-Legible\\output\\editable\\protesis-reversa-hombro-03.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Protesis-Reversa-Hombro-Legible\\output\\editable\\protesis-reversa-hombro-04.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Protesis-Reversa-Hombro-Legible\\output\\editable\\protesis-reversa-hombro-05.svg"
+    ]
+  },
+  "errors": [],
+  "warnings": []
+}

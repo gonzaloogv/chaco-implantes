@@ -18,7 +18,10 @@ import {
   readManifest,
   writeManifestAtomic,
 } from "./cloudinary-sync-io.mjs";
-import { ensureVideoSourcesHaveNoAudio } from "./cloudinary-video-audio.mjs";
+import {
+  ensureVideoSourcesHaveAudio,
+  ensureVideoSourcesHaveNoAudio,
+} from "./cloudinary-video-audio.mjs";
 import { ensureVideoSourcesReady } from "./cloudinary-video-readiness.mjs";
 
 const DEFAULT_OUTPUT_PATH = fileURLToPath(
@@ -102,6 +105,7 @@ export async function runSync({
   logger = console,
   videoReadiness = ensureVideoSourcesReady,
   videoAudioInspection = ensureVideoSourcesHaveNoAudio,
+  videoAudioPresenceInspection = ensureVideoSourcesHaveAudio,
 }) {
   const safeCredentials = validateCredentials(credentials);
   const safeSources = validateCloudinaryConfig({ folderMode, sources });
@@ -124,6 +128,7 @@ export async function runSync({
   for (const [name, dependency] of [
     ["videoReadiness", videoReadiness],
     ["videoAudioInspection", videoAudioInspection],
+    ["videoAudioPresenceInspection", videoAudioPresenceInspection],
   ]) {
     if (typeof dependency !== "function") {
       throw new Error(`${name} debe ser una función.`);
@@ -163,8 +168,26 @@ export async function runSync({
       `Preparando variantes de ${manifest.videos.length} videos...`,
     );
     await videoReadiness(manifest.videos);
-    logger.log("Inspeccionando ausencia de audio...");
-    await videoAudioInspection(manifest.videos);
+
+    const silentVideos = manifest.videos.filter(
+      (video) => video.audioEnabled !== true,
+    );
+    const audioEnabledVideos = manifest.videos.filter(
+      (video) => video.audioEnabled === true,
+    );
+
+    if (silentVideos.length > 0) {
+      logger.log(
+        `Inspeccionando ausencia de audio en ${silentVideos.length} videos...`,
+      );
+      await videoAudioInspection(silentVideos);
+    }
+    if (audioEnabledVideos.length > 0) {
+      logger.log(
+        `Inspeccionando presencia de audio en ${audioEnabledVideos.length} videos...`,
+      );
+      await videoAudioPresenceInspection(audioEnabledVideos);
+    }
     logger.log(`Videos verificados: ${manifest.videos.length}.`);
   }
 

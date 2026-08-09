@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Icon from "../components/Icon.astro";
 import { featuredEvent, images, wa } from "../data/site";
+import "../styles/eventos.css";
 ---
 
 <BaseLayout
@@ -9,39 +10,40 @@ import { featuredEvent, images, wa } from "../data/site";
   description="Capacitaciones, jornadas y novedades de Chaco Implantes para profesionales e instituciones de salud en Resistencia, Chaco."
   canonicalPath="/eventos"
 >
-  <section data-eventos-page class="page-hero-dark border-b border-white/10 px-4 pb-14 pt-32 text-white sm:px-6 lg:px-8">
-    <div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
-      <div>
-        <h1 class="font-display text-4xl font-black sm:text-5xl">Capacitaciones y novedades</h1>
-        <p class="mt-3 max-w-2xl text-brand">
-          Presencia profesional, actualización y acompañamiento a equipos médicos e instituciones de salud.
-        </p>
-      </div>
-
-      <div class="catalog-image-card relative hidden h-64 overflow-hidden rounded-xl border border-primary/20 bg-deep lg:block">
-        <img
-          src={images.heroEventos}
-          alt="Chaco Implantes en eventos profesionales"
-          loading="lazy"
-          decoding="async"
-          width="1400"
-          height="900"
-          class="absolute inset-0 h-full w-full object-cover"
-        />
-        <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-deep via-deep/35 to-transparent"></div>
-        <div class="relative flex h-full items-end p-6">
-          <p class="max-w-sm text-sm font-semibold text-white">
-            Novedades, congresos y espacios de intercambio junto a profesionales del rubro.
+  <div class="eventos-page">
+    <section data-eventos-page class="eventos-hero page-hero-dark">
+      <div class="eventos-shell eventos-hero__layout">
+        <div class="eventos-hero__copy">
+          <h1>Capacitaciones y novedades</h1>
+          <p>
+            Participamos activamente en congresos, capacitaciones y espacios de intercambio para acercar novedades, fortalecer el vínculo con profesionales y acompañar la actualización de equipos médicos e instituciones de salud.
           </p>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <section class="page-surface">
-    <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-      <article data-featured-event class="premium-card overflow-hidden rounded-xl border md:grid md:grid-cols-2">
-        <div class="relative aspect-[16/10] md:aspect-auto">
+        <figure data-eventos-hero-media class="eventos-hero__media">
+          <img
+            src={images.heroEventos}
+            alt="Chaco Implantes en eventos profesionales"
+            loading="eager"
+            decoding="async"
+            fetchpriority="high"
+            width="1400"
+            height="900"
+          />
+          <figcaption>
+            Novedades, congresos y espacios de intercambio junto a profesionales del rubro.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="eventos-featured page-surface">
+      <article
+        data-featured-event
+        data-eventos-featured-layout
+        class="eventos-shell eventos-featured__layout"
+      >
+        <figure class="eventos-featured__media">
           <img
             src={featuredEvent.image}
             alt={featuredEvent.imageAlt}
@@ -49,64 +51,68 @@ import { featuredEvent, images, wa } from "../data/site";
             decoding="async"
             width="1400"
             height="1000"
-            class="h-full w-full object-cover"
           />
-        </div>
-        <div class="flex flex-col justify-center p-6 sm:p-8">
-          <span class="inline-flex w-fit items-center rounded-full bg-secondary px-3 py-1 text-xs font-bold uppercase text-primary ring-1 ring-border">
-            {featuredEvent.badge}
-          </span>
-          <h2 class="mt-4 font-display text-2xl font-extrabold leading-tight text-deep">
-            {featuredEvent.title}
-          </h2>
-          <p class="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground">
-            <Icon name="map-pin" class="h-4 w-4 text-primary" /> {featuredEvent.venue}
+          <figcaption>{featuredEvent.badge}</figcaption>
+        </figure>
+
+        <div class="eventos-featured__copy">
+          <p class="eventos-label">Presencia profesional</p>
+          <h2>{featuredEvent.title}</h2>
+          <p class="eventos-featured__venue">
+            <Icon name="map-pin" class="h-5 w-5" />
+            <span>{featuredEvent.venue}</span>
           </p>
-          <p class="mt-4 text-sm leading-relaxed text-muted-foreground">
-            {featuredEvent.description}
-          </p>
-          <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+          <p class="eventos-featured__description">{featuredEvent.description}</p>
+          <div class="eventos-featured__actions">
             <a
               href={wa.congreso}
               target="_blank"
               rel="noopener noreferrer"
-              class="btn-primary inline-flex w-fit items-center gap-2 rounded-md px-5 py-2.5 text-sm font-bold"
+              class="btn-primary eventos-button"
             >
-              <Icon name="message-circle" class="h-4 w-4" /> Consultanos
+              <Icon name="message-circle" class="h-4 w-4" />
+              Consultanos
             </a>
-            <a href="/galeria?categoria=Eventos" class="btn-secondary inline-flex w-fit items-center gap-2 rounded-md px-5 py-2.5 text-sm font-bold">
-              Ver imágenes <Icon name="arrow-right" class="h-4 w-4" />
+            <a href="/galeria?categoria=Eventos" class="btn-secondary eventos-button">
+              Ver imágenes
+              <Icon name="arrow-right" class="h-4 w-4" />
             </a>
           </div>
         </div>
       </article>
+    </section>
 
-      <div class="mt-8 grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
-        <section class="dark-card rounded-xl border p-6 text-white">
-          <div class="accent-icon-chip flex h-11 w-11 items-center justify-center rounded-lg border text-brand">
-            <Icon name="calendar-clock" class="h-5 w-5" />
+    <section data-eventos-agenda class="eventos-agenda">
+      <div class="eventos-shell eventos-agenda__layout">
+        <section class="eventos-agenda__upcoming" aria-labelledby="eventos-upcoming-title">
+          <span class="eventos-agenda__icon" aria-hidden="true">
+            <Icon name="calendar-clock" class="h-6 w-6" />
+          </span>
+          <div>
+            <p class="eventos-label">Agenda</p>
+            <h2 id="eventos-upcoming-title">Próximas actividades</h2>
+            <p>
+              Publicaremos nuevas fechas, jornadas y capacitaciones para equipos profesionales cuando estén confirmadas.
+            </p>
           </div>
-          <h2 class="mt-5 font-display text-xl font-bold">Próximas actividades</h2>
-          <p class="mt-2 text-sm leading-relaxed text-brand">
-            Publicaremos nuevas fechas, jornadas y capacitaciones para equipos profesionales cuando estén confirmadas.
-          </p>
         </section>
 
-        <section class="premium-card rounded-xl border p-6">
-          <h2 class="font-display text-xl font-bold text-deep">Consultas sobre capacitaciones</h2>
-          <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+        <section class="eventos-agenda__contact" aria-labelledby="eventos-contact-title">
+          <h2 id="eventos-contact-title">Consultas sobre capacitaciones</h2>
+          <p>
             Escribinos para conocer novedades, coordinar una visita técnica o solicitar información sobre líneas de producto para instituciones.
           </p>
           <a
             href={wa.capacitaciones}
             target="_blank"
             rel="noopener noreferrer"
-            class="btn-primary mt-5 inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-bold"
+            class="btn-primary eventos-button"
           >
-            <Icon name="message-circle" class="h-4 w-4" /> Consultar por WhatsApp
+            <Icon name="message-circle" class="h-4 w-4" />
+            Consultar por WhatsApp
           </a>
         </section>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </BaseLayout>

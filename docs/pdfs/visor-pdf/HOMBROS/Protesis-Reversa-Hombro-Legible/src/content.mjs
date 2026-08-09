@@ -1,0 +1,95 @@
+export const brochure = Object.freeze({
+  product: "PRÓTESIS REVERSA DE HOMBRO",
+  category: "LÍNEA HOMBRO",
+  document: Object.freeze({ reference: "99.81S.12", revision: "06" }),
+  address: Object.freeze(["Corrientes 781", "Resistencia, Chaco (3500)"]),
+  instagram: "@chacoimplanteok",
+  email: "chacoimplantes@gmail.com",
+  disclaimer: "Material destinado exclusivamente a profesionales de la salud",
+  assets: Object.freeze({
+    cover: "01-vista-explotada.png",
+    assembled: "02-armada-vastago-corto.png",
+    sensitin: "03-sensitin-armada.png",
+    compact: "04-compacta-vastago-corto.png",
+    stemless: "06-stemless.png",
+    baseplate: "07-baseplate-tornillos.png",
+    logoChaco: "logo-chaco.png",
+    logoMedacta: "logo-medacta.png",
+  }),
+  pages: Object.freeze([
+    Object.freeze({
+      type: "cover",
+      eyebrow: "SISTEMA DE ARTROPLASTIA REVERSA",
+      title: Object.freeze(["HOMBRO", "REVERSO"]),
+      subtitle: "Plataforma modular con vástago corto y fijación glenoidea",
+      statement: "ESTABILIDAD GLENOIDEA. CONFIGURACIÓN HUMERAL MODULAR.",
+      asset: "cover",
+    }),
+    Object.freeze({
+      type: "configurations",
+      number: "02 / 05",
+      section: "01 - PLATAFORMA HUMERAL",
+      title: Object.freeze(["Tres configuraciones.", "Una plataforma modular."]),
+      summary: Object.freeze([
+        "La estrategia humeral combina opciones con vástago corto",
+        "y una alternativa metafisaria sin vástago.",
+      ]),
+      items: Object.freeze([
+        Object.freeze({ asset: "assembled", title: "VÁSTAGO CORTO", copy: Object.freeze(["Configuración modular", "de apoyo diafisario."]) }),
+        Object.freeze({ asset: "compact", title: Object.freeze(["CONFIGURACIÓN", "COMPACTA"]), copy: Object.freeze(["Implante ensamblado", "con vástago corto."]) }),
+        Object.freeze({ asset: "stemless", title: "SIN VÁSTAGO", copy: Object.freeze(["Alternativa metafisaria", "de diseño compacto."]) }),
+      ]),
+      facts: Object.freeze([
+        Object.freeze({ label: "DIÁFISIS CORTA", value: "Tamaños 6-16" }),
+        Object.freeze({ label: "ALTURA METAFISARIA", value: "+0 o +9 mm" }),
+        Object.freeze({ label: "ORIENTACIÓN", value: "0° o +20°" }),
+      ]),
+    }),
+    Object.freeze({
+      type: "glenoid",
+      number: "03 / 05",
+      section: "02 - FIJACIÓN GLENOIDEA",
+      title: Object.freeze(["Base glenoidea.", "Fijación poliaxial."]),
+      summary: Object.freeze([
+        "La base sin cemento incorpora un perno central",
+        "y admite tornillos poliaxiales bloqueados o no bloqueados.",
+      ]),
+      asset: "baseplate",
+      facts: Object.freeze([
+        Object.freeze({ label: "BASES", value: "Ø22 / Ø24,5 / Ø27", copy: "Tres diámetros de base." }),
+        Object.freeze({ label: "PERNO CENTRAL", value: "15 / 25 / 35 mm", copy: "Tres longitudes disponibles." }),
+        Object.freeze({ label: "TORNILLOS", value: "L14-L50", copy: "Bloqueados y no bloqueados." }),
+      ]),
+      note: "La orientación de perforación se controla dentro de un cono de 15°.",
+    }),
+    Object.freeze({
+      type: "articulation",
+      number: "04 / 05",
+      section: "03 - GLENOSFERA E INSERTO",
+      title: Object.freeze(["Diámetros coordinados.", "Ajuste del inserto."]),
+      summary: Object.freeze([
+        "Glenosferas e insertos se combinan según el diámetro",
+        "de la base glenoidea y la configuración planificada.",
+      ]),
+      asset: "sensitin",
+      facts: Object.freeze([
+        Object.freeze({ label: "GLENOSFERAS", value: "Ø32 / Ø36 / Ø39 / Ø42", copy: "Estándar o lateralizadas." }),
+        Object.freeze({ label: "INSERTOS HCPE", value: "+0 / +3 / +6 mm", copy: "Cuatro diámetros coordinados." }),
+        Object.freeze({ label: "COMPATIBILIDAD", value: "Matriz por diámetro", copy: "La base define las combinaciones disponibles." }),
+      ]),
+    }),
+    Object.freeze({
+      type: "closing",
+      eyebrow: "DOCUMENTACIÓN Y CONTACTO",
+      title: Object.freeze(["Documentación técnica.", "Contacto profesional."]),
+      summary: Object.freeze([
+        "Accedé a la técnica quirúrgica completa y encontrá",
+        "la referencia del documento junto a los canales de contacto.",
+      ]),
+      documentLine: Object.freeze([
+        "Técnica quirúrgica Prótesis Reversa de Hombro",
+        "Ref. 99.81S.12 · REV. 06",
+      ]),
+    }),
+  ]),
+});

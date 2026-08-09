@@ -2,11 +2,17 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Icon from "../components/Icon.astro";
 import VideoPlayer from "../components/VideoPlayer.astro";
-import { categoryImages, galleryFilters, videos } from "../data/site";
+import { galleryFilters, images, videos } from "../data/site";
+import "../styles/videos.css";
 
 // Filtros solo para categorías que realmente tienen videos (evita filtros vacíos)
 const usedCategories = galleryFilters.filter((filter) => videos.some((video) => video.category === filter));
 const showFilters = usedCategories.length >= 2;
+const featuredVideo = videos.find((video) => video.category === "Eventos") ?? videos[0];
+const libraryVideos = featuredVideo
+  ? videos.filter((video) => video.id !== featuredVideo.id)
+  : [];
+const VIDEO_PAGE_SIZE = 12;
 ---
 
 <BaseLayout
@@ -14,132 +20,212 @@ const showFilters = usedCategories.length >= 2;
   description="Videos institucionales y de productos de Chaco Implantes. Reproducción bajo demanda."
   canonicalPath="/videos"
 >
-  <section data-videos-page class="page-hero-dark border-b border-white/10 px-4 pb-14 pt-32 text-white sm:px-6 lg:px-8">
-    <div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
-      <div>
-        <h1 class="font-display text-4xl font-black sm:text-5xl">Videos</h1>
-        <p class="mt-3 max-w-2xl text-brand">
-          {videos.length > 0
-            ? "Recorridos audiovisuales de eventos, productos e instrumental para profesionales e instituciones."
-            : "Un espacio para videos institucionales, productos e instrumental. El contenido audiovisual se publicará bajo demanda para profesionales e instituciones."}
-        </p>
-      </div>
-
-      <div class="catalog-image-card relative hidden h-64 overflow-hidden rounded-xl border border-primary/20 bg-deep lg:block">
-        <img
-          src={categoryImages["instrumental-quirurgico"]}
-          alt="Instrumental quirúrgico para productos traumatológicos"
-          loading="lazy"
-          decoding="async"
-          width="1024"
-          height="768"
-          class="absolute inset-0 h-full w-full object-cover"
-        />
-        <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-deep via-deep/45 to-transparent"></div>
-        <div class="relative flex h-full items-end p-6">
-          <p class="max-w-sm text-sm font-semibold text-white">
-            {videos.length > 0
-              ? "Recorridos de producto, material institucional y novedades de nuestras líneas."
-              : "Próximamente: recorridos de producto, material institucional y novedades de líneas destacadas."}
+  <div class="videos-page">
+    <section data-videos-page data-videos-hero class="videos-hero page-hero-dark">
+      <div class="videos-shell videos-hero__layout">
+        <div class="videos-hero__copy">
+          <p class="videos-label videos-label--dark">Archivo audiovisual</p>
+          <h1>Videos y recorridos</h1>
+          <p>
+            Contenido audiovisual de instrumental, productos y participación profesional,
+            disponible bajo demanda para equipos médicos e instituciones.
           </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="page-surface">
-    <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-      <div class="dark-card flex flex-col gap-5 rounded-xl border p-5 text-white sm:flex-row sm:items-center sm:justify-between">
-        <div class="flex items-center gap-3">
-          <div class="accent-icon-chip flex h-10 w-10 shrink-0 items-center justify-center rounded-full border text-brand">
-            <Icon name="images" class="h-5 w-5" />
-          </div>
-          <div>
-            <p class="font-display text-sm font-bold">También podés recorrer la galería</p>
-            <p class="text-xs text-brand">Productos, instrumental, quirófano y presencia profesional.</p>
-          </div>
-        </div>
-        <a href="/galeria" class="btn-primary inline-flex items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-bold">
-          <Icon name="images" class="h-4 w-4" /> Ver galería
-        </a>
-      </div>
-
-      {showFilters && (
-        <div class="mt-8 flex flex-wrap items-center gap-2" data-video-filters>
-          {["Todos", ...usedCategories].map((filter) => (
-            <button
-              type="button"
-              data-video-filter={filter}
-              aria-pressed={filter === "Todos" ? "true" : "false"}
-              class:list={[
-                "gallery-filter rounded-full border px-4 py-1.5 text-sm font-medium",
-                filter === "Todos" ? "gallery-filter-active" : "gallery-filter-idle",
-              ]}
-            >
-              {filter}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {videos.length === 0 ? (
-        <div data-videos-empty class="premium-card mt-8 flex flex-col items-start gap-5 rounded-xl border px-6 py-10 sm:flex-row sm:items-center sm:justify-between">
-          <div class="flex items-start gap-4">
-            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-secondary text-primary ring-1 ring-border">
-              <Icon name="calendar-clock" class="h-5 w-5" />
+          <a data-videos-hero-action class="videos-hero__action" href="/galeria">
+            <Icon name="images" class="h-4 w-4" />
+            Ver galería
+          </a>
+          <dl class="videos-hero__facts">
+            <div>
+              <dt>Archivo</dt>
+              <dd>{videos.length} videos</dd>
             </div>
             <div>
-              <p data-videos-empty-title class="font-display text-base font-bold text-deep">
+              <dt>Contenido</dt>
+              <dd>Reproducción bajo demanda</dd>
+            </div>
+          </dl>
+        </div>
+
+        <figure class="videos-hero__media">
+          <img
+            src={images.homeVideos}
+            alt="Actividad profesional de Chaco Implantes en un congreso de traumatología"
+            loading="eager"
+            decoding="async"
+            fetchpriority="high"
+            width="1200"
+            height="960"
+          />
+          <figcaption>
+            <Icon name="play-circle" class="h-5 w-5" />
+            Experiencias, productos y formación
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="videos-content">
+      <div class="videos-shell">
+        {showFilters && (
+          <div class="videos-filters" data-video-filters>
+            <span>Explorar por tema</span>
+            <div>
+              {["Todos", ...usedCategories].map((filter) => (
+                <button
+                  type="button"
+                  data-video-filter={filter}
+                  aria-pressed={filter === "Todos" ? "true" : "false"}
+                  class:list={[
+                    "videos-filter",
+                    filter === "Todos" ? "videos-filter-active" : "videos-filter-idle",
+                  ]}
+                >
+                  {filter}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {featuredVideo ? (
+          <>
+            <article
+              data-video-item
+              data-video-featured
+              data-category={featuredVideo.category}
+              class="videos-featured"
+            >
+              <div class="videos-featured__player">
+                <VideoPlayer
+                  assetId={featuredVideo.id}
+                  src={featuredVideo.src}
+                  poster={featuredVideo.poster}
+                  title={featuredVideo.title}
+                  duration={featuredVideo.duration}
+                  audioEnabled={featuredVideo.audioEnabled}
+                  position={1}
+                  showIdleControls
+                />
+              </div>
+              <div class="videos-featured__copy">
+                <p class="videos-label videos-label--dark">Video destacado</p>
+                <h2>{featuredVideo.title}</h2>
+                <p>
+                  Un registro de nuestra actividad profesional y del trabajo que realizamos
+                  junto a especialistas, instituciones y referentes del sector.
+                </p>
+                <span>{featuredVideo.category}</span>
+              </div>
+            </article>
+
+            <section data-videos-library class="videos-library">
+              <header class="videos-library__header">
+                <div>
+                  <p class="videos-label">Biblioteca audiovisual</p>
+                  <h2>Recorridos de producto e instrumental</h2>
+                </div>
+                <p>
+                  Explorá el archivo completo. Cada video se carga únicamente cuando decidís
+                  reproducirlo.
+                </p>
+              </header>
+
+              <div class="videos-grid" data-videos-grid>
+                {libraryVideos.map((video, index) => (
+                  <article
+                    data-video-item
+                    data-video-library
+                    data-category={video.category}
+                    class:list={[
+                      "videos-card",
+                      index >= VIDEO_PAGE_SIZE && "hidden",
+                    ]}
+                  >
+                    <VideoPlayer
+                      assetId={video.id}
+                      src={video.src}
+                      poster={video.poster}
+                      title={video.title}
+                      duration={video.duration}
+                      audioEnabled={video.audioEnabled}
+                      position={index + 2}
+                    />
+                    <div class="videos-card__copy">
+                      <span>{video.category}</span>
+                      <h3>{video.title}</h3>
+                      <small>Video {String(index + 2).padStart(2, "0")}</small>
+                    </div>
+                  </article>
+                ))}
+              </div>
+
+              {libraryVideos.length > VIDEO_PAGE_SIZE && (
+                <div class="videos-load-more" data-video-load-more-wrap>
+                  <button type="button" data-video-load-more>
+                    Cargar más videos
+                    <span data-video-load-more-count>
+                      ({libraryVideos.length - VIDEO_PAGE_SIZE})
+                    </span>
+                  </button>
+                </div>
+              )}
+            </section>
+
+            <div data-videos-empty class="videos-empty hidden">
+              <p data-videos-empty-title></p>
+              <p data-videos-empty-description></p>
+            </div>
+          </>
+        ) : (
+          <div data-videos-empty class="videos-empty">
+            <div class="videos-empty__icon">
+              <Icon name="calendar-clock" class="h-6 w-6" />
+            </div>
+            <div>
+              <p data-videos-empty-title>
                 Pronto publicaremos nuestros videos institucionales y de productos.
               </p>
-              <p data-videos-empty-description class="mt-1 max-w-xl text-sm text-muted-foreground">
+              <p data-videos-empty-description>
                 Mientras tanto, podés explorar imágenes de productos, instrumental y actividades profesionales.
               </p>
             </div>
+            <a href="/galeria">Ir a la galería</a>
           </div>
-          <a href="/galeria" class="btn-primary inline-flex shrink-0 items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-bold">
-            <Icon name="images" class="h-4 w-4" /> Ir a la galería
+        )}
+
+        <aside class="videos-gallery-link">
+          <span class="videos-gallery-link__icon">
+            <Icon name="images" class="h-6 w-6" />
+          </span>
+          <div>
+            <p>También podés recorrer la galería</p>
+            <span>Productos, instrumental y presencia profesional en imágenes.</span>
+          </div>
+          <a href="/galeria">
+            Ver galería
+            <Icon name="arrow-right" class="h-4 w-4" />
           </a>
-        </div>
-      ) : (
-        <>
-          <div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-videos-grid>
-            {videos.map((video, index) => (
-              <article data-video-item data-category={video.category} class="premium-card overflow-hidden rounded-xl border">
-                <VideoPlayer
-                  assetId={video.id}
-                  src={video.src}
-                  poster={video.poster}
-                  title={video.title}
-                  duration={video.duration}
-                  position={index + 1}
-                />
-                <div class="px-4 py-3">
-                  <h2 class="font-display text-sm font-semibold text-deep">{video.title}</h2>
-                  <p class="mt-0.5 text-xs text-muted-foreground">{video.category}</p>
-                </div>
-              </article>
-            ))}
-          </div>
-          <div data-videos-empty class="premium-card mt-8 hidden rounded-xl border px-6 py-10 text-center">
-            <p data-videos-empty-title class="font-display text-base font-bold text-deep"></p>
-            <p data-videos-empty-description class="mt-1 text-sm text-muted-foreground"></p>
-          </div>
-        </>
-      )}
-    </div>
-  </section>
+        </aside>
+      </div>
+    </section>
+  </div>
 </BaseLayout>
 
 <script>
   const filterWrap = document.querySelector("[data-video-filters]");
   const filterButtons = Array.from(document.querySelectorAll("[data-video-filter]"));
   const videoItems = Array.from(document.querySelectorAll("[data-video-item]"));
+  const loadMoreWrap = document.querySelector("[data-video-load-more-wrap]");
+  const loadMoreButton = document.querySelector("[data-video-load-more]");
+  const loadMoreCount = document.querySelector("[data-video-load-more-count]");
   const emptyState = document.querySelector("[data-videos-empty]");
   const emptyTitle = emptyState?.querySelector("[data-videos-empty-title]");
   const emptyDescription = emptyState?.querySelector("[data-videos-empty-description]");
   const defaultEmptyTitle = emptyTitle?.textContent?.trim() || "Pronto publicaremos nuevos videos.";
   const defaultEmptyDescription = emptyDescription?.textContent?.trim() || "Podés recorrer la galería mientras incorporamos nuevo material.";
+  const VIDEO_PAGE_SIZE = 12;
+  let visibleLimit = VIDEO_PAGE_SIZE;
+  let currentFilter = "Todos";
 
   const normalizeFilter = (value: string) =>
     value
@@ -174,24 +260,42 @@ const showFilters = usedCategories.length >= 2;
     }
   };
 
-  const setActiveFilter = (filter: string) => {
+  const updateLoadMore = (matchingLibraryItems: number) => {
+    if (!(loadMoreWrap instanceof HTMLElement)) return;
+
+    const remaining = Math.max(matchingLibraryItems - visibleLimit, 0);
+    loadMoreWrap.classList.toggle("hidden", remaining === 0);
+    if (loadMoreCount) loadMoreCount.textContent = `(${remaining})`;
+  };
+
+  const setActiveFilter = (filter: string, resetLimit = true) => {
     const button = findFilterButton(filter) || findFilterButton("Todos");
     if (!(button instanceof HTMLElement)) return;
 
     const activeFilter = button.dataset.videoFilter || "Todos";
+    currentFilter = activeFilter;
+    if (resetLimit) visibleLimit = VIDEO_PAGE_SIZE;
     let visibleVideos = 0;
+    let matchingLibraryItems = 0;
 
     filterButtons.forEach((item) => {
       if (!(item instanceof HTMLElement)) return;
       const active = item === button;
-      item.classList.toggle("gallery-filter-active", active);
-      item.classList.toggle("gallery-filter-idle", !active);
+      item.classList.toggle("videos-filter-active", active);
+      item.classList.toggle("videos-filter-idle", !active);
       item.setAttribute("aria-pressed", String(active));
     });
 
     videoItems.forEach((item) => {
       if (!(item instanceof HTMLElement)) return;
-      const visible = activeFilter === "Todos" || item.dataset.category === activeFilter;
+      const matchesCategory = activeFilter === "Todos" || item.dataset.category === activeFilter;
+      const isLibraryItem = item.hasAttribute("data-video-library");
+
+      if (isLibraryItem && matchesCategory) matchingLibraryItems += 1;
+
+      const withinVisibleLimit =
+        !isLibraryItem || matchingLibraryItems <= visibleLimit;
+      const visible = matchesCategory && withinVisibleLimit;
       item.classList.toggle("hidden", !visible);
       if (visible) visibleVideos += 1;
 
@@ -201,6 +305,7 @@ const showFilters = usedCategories.length >= 2;
       }
     });
 
+    updateLoadMore(matchingLibraryItems);
     updateEmptyState(activeFilter, visibleVideos > 0);
   };
 
@@ -210,6 +315,11 @@ const showFilters = usedCategories.length >= 2;
     const button = target.closest("[data-video-filter]");
     if (!(button instanceof HTMLElement)) return;
     setActiveFilter(button.dataset.videoFilter || "Todos");
+  });
+
+  loadMoreButton?.addEventListener("click", () => {
+    visibleLimit += VIDEO_PAGE_SIZE;
+    setActiveFilter(currentFilter, false);
   });
 
   const initialParams = new URLSearchParams(window.location.search);

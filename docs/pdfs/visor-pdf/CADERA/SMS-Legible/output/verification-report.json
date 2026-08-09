@@ -1,0 +1,113 @@
+{
+  "generatedAt": "2026-08-04T00:08:59.946Z",
+  "passed": true,
+  "specification": {
+    "width": 1200,
+    "height": 1698,
+    "colorSpace": "srgb",
+    "embeddedColorProfile": true,
+    "maximumRecommendedBytes": 204800,
+    "pageCount": 6
+  },
+  "webps": [
+    {
+      "fileName": "sms-01.webp",
+      "bytes": 100138,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "sms-02.webp",
+      "bytes": 94406,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "sms-03.webp",
+      "bytes": 81984,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "sms-04.webp",
+      "bytes": 75586,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "sms-05.webp",
+      "bytes": 75858,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "sms-06.webp",
+      "bytes": 118614,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    }
+  ],
+  "pdf": {
+    "fileName": "sms-folleto.pdf",
+    "bytes": 9613289,
+    "pageCount": 6,
+    "pageSizesPoints": [
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      }
+    ]
+  },
+  "editable": {
+    "master": "C:\\Users\\Gonzalo\\Documents\\Folletos\\SMS-Legible\\output\\sms-folleto-editable.svg",
+    "printHtml": "C:\\Users\\Gonzalo\\Documents\\Folletos\\SMS-Legible\\output\\sms-folleto-fuente.html",
+    "pages": [
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\SMS-Legible\\output\\editable\\sms-01.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\SMS-Legible\\output\\editable\\sms-02.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\SMS-Legible\\output\\editable\\sms-03.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\SMS-Legible\\output\\editable\\sms-04.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\SMS-Legible\\output\\editable\\sms-05.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\SMS-Legible\\output\\editable\\sms-06.svg"
+    ]
+  },
+  "errors": [],
+  "warnings": []
+}

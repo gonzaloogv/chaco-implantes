@@ -1,0 +1,41 @@
+{
+  "webps": [
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sphere-Medial-Pivot-Legible\\output\\sphere-medial-pivot-01.webp",
+      "fileName": "sphere-medial-pivot-01.webp",
+      "quality": 85,
+      "bytes": 70236
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sphere-Medial-Pivot-Legible\\output\\sphere-medial-pivot-02.webp",
+      "fileName": "sphere-medial-pivot-02.webp",
+      "quality": 85,
+      "bytes": 66176
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sphere-Medial-Pivot-Legible\\output\\sphere-medial-pivot-03.webp",
+      "fileName": "sphere-medial-pivot-03.webp",
+      "quality": 85,
+      "bytes": 75972
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sphere-Medial-Pivot-Legible\\output\\sphere-medial-pivot-04.webp",
+      "fileName": "sphere-medial-pivot-04.webp",
+      "quality": 85,
+      "bytes": 87092
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sphere-Medial-Pivot-Legible\\output\\sphere-medial-pivot-05.webp",
+      "fileName": "sphere-medial-pivot-05.webp",
+      "quality": 85,
+      "bytes": 77814
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sphere-Medial-Pivot-Legible\\output\\sphere-medial-pivot-06.webp",
+      "fileName": "sphere-medial-pivot-06.webp",
+      "quality": 85,
+      "bytes": 95714
+    }
+  ],
+  "pdfPath": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sphere-Medial-Pivot-Legible\\output\\sphere-medial-pivot-folleto.pdf"
+}

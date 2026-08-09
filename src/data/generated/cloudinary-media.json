@@ -2880,7 +2880,8 @@
       "createdAt": "2026-07-28T22:50:54.000Z",
       "title": "61° Congreso de Traumatología — Stand Chaco Implantes",
       "poster": "https://res.cloudinary.com/dz9tuwczf/video/upload/so_0,f_jpg,q_auto,b_rgb:0f172a,c_pad,ar_16:9,w_600/v1785279054/Resumen_Stand_lhahpr.jpg",
-      "src": "https://res.cloudinary.com/dz9tuwczf/video/upload/f_mp4,q_auto,ac_none/v1785279054/Resumen_Stand_lhahpr.mp4",
+      "src": "https://res.cloudinary.com/dz9tuwczf/video/upload/f_mp4,q_auto,ac_aac/v1785279054/Resumen_Stand_lhahpr.mp4",
+      "audioEnabled": true,
       "width": 1080,
       "height": 1080,
       "duration": 106.666667

@@ -1,0 +1,115 @@
+{
+  "generatedAt": "2026-08-08T08:38:51.270Z",
+  "passed": true,
+  "pageCount": 6,
+  "specification": {
+    "width": 1200,
+    "height": 1698,
+    "colorSpace": "srgb",
+    "embeddedColorProfile": true,
+    "maximumRecommendedBytes": 204800,
+    "pageCount": 6,
+    "lastWebp": "sistema-hombro-06.webp"
+  },
+  "webps": [
+    {
+      "fileName": "sistema-hombro-01.webp",
+      "bytes": 75392,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "sistema-hombro-02.webp",
+      "bytes": 126886,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "sistema-hombro-03.webp",
+      "bytes": 106996,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "sistema-hombro-04.webp",
+      "bytes": 91216,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "sistema-hombro-05.webp",
+      "bytes": 89380,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "sistema-hombro-06.webp",
+      "bytes": 95896,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    }
+  ],
+  "pdf": {
+    "fileName": "sistema-hombro-folleto.pdf",
+    "bytes": 8941095,
+    "pageCount": 6,
+    "pageSizesPoints": [
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      }
+    ]
+  },
+  "editable": {
+    "master": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sistema-Hombro-Legible\\output\\sistema-hombro-folleto-editable.svg",
+    "printHtml": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sistema-Hombro-Legible\\output\\sistema-hombro-folleto-fuente.html",
+    "pages": [
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sistema-Hombro-Legible\\output\\editable\\sistema-hombro-01.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sistema-Hombro-Legible\\output\\editable\\sistema-hombro-02.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sistema-Hombro-Legible\\output\\editable\\sistema-hombro-03.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sistema-Hombro-Legible\\output\\editable\\sistema-hombro-04.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sistema-Hombro-Legible\\output\\editable\\sistema-hombro-05.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sistema-Hombro-Legible\\output\\editable\\sistema-hombro-06.svg"
+    ]
+  },
+  "errors": [],
+  "warnings": []
+}

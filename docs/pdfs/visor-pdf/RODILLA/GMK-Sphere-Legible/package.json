@@ -1,0 +1,21 @@
+{
+  "name": "folleto-digital-gmk-sphere-legible",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Fuente editable y exportación legible del folleto digital GMK Sphere.",
+  "scripts": {
+    "prepare": "node scripts/prepare-assets.mjs",
+    "build": "node scripts/build.mjs",
+    "export": "node scripts/export.mjs",
+    "verify": "node scripts/verify.mjs",
+    "verify:fonts": "python scripts/verify-pdf-fonts.py",
+    "test": "node --test tests/*.test.mjs",
+    "release": "npm run prepare && npm test && npm run build && npm run export && npm run verify && npm run verify:fonts"
+  },
+  "dependencies": {
+    "pdf-lib": "^1.17.1",
+    "playwright": "^1.61.1",
+    "sharp": "^0.34.5"
+  }
+}

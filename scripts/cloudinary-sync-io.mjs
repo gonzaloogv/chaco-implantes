@@ -116,6 +116,14 @@ function validateManifest(manifest) {
         `Manifiesto inválido: ${location}.duration no es válida.`,
       );
     }
+    if (
+      item.audioEnabled !== undefined &&
+      typeof item.audioEnabled !== "boolean"
+    ) {
+      throw new Error(
+        `Manifiesto inválido: ${location}.audioEnabled debe ser booleano.`,
+      );
+    }
 
     if (seenAssetIds.has(item.assetId)) {
       throw new Error(`Manifiesto inválido: assetId duplicado ${item.assetId}.`);

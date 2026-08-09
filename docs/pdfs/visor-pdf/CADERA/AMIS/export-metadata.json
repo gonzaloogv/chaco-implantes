@@ -1,0 +1,35 @@
+{
+  "webps": [
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\AMIS\\output\\amis-01.webp",
+      "fileName": "amis-01.webp",
+      "quality": 85,
+      "bytes": 82662
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\AMIS\\output\\amis-02.webp",
+      "fileName": "amis-02.webp",
+      "quality": 85,
+      "bytes": 98504
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\AMIS\\output\\amis-03.webp",
+      "fileName": "amis-03.webp",
+      "quality": 85,
+      "bytes": 88550
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\AMIS\\output\\amis-04.webp",
+      "fileName": "amis-04.webp",
+      "quality": 85,
+      "bytes": 81634
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\AMIS\\output\\amis-05.webp",
+      "fileName": "amis-05.webp",
+      "quality": 85,
+      "bytes": 85256
+    }
+  ],
+  "pdfPath": "C:\\Users\\Gonzalo\\Documents\\Folletos\\AMIS\\output\\amis-folleto.pdf"
+}

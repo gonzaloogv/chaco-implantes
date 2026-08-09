@@ -1,0 +1,115 @@
+{
+  "generatedAt": "2026-08-08T09:25:31.790Z",
+  "passed": true,
+  "pageCount": 6,
+  "specification": {
+    "width": 1200,
+    "height": 1698,
+    "colorSpace": "srgb",
+    "embeddedColorProfile": true,
+    "maximumRecommendedBytes": 204800,
+    "pageCount": 6,
+    "lastWebp": "must-06.webp"
+  },
+  "webps": [
+    {
+      "fileName": "must-01.webp",
+      "bytes": 72100,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "must-02.webp",
+      "bytes": 84732,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "must-03.webp",
+      "bytes": 93172,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "must-04.webp",
+      "bytes": 88366,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "must-05.webp",
+      "bytes": 92524,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "must-06.webp",
+      "bytes": 105114,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    }
+  ],
+  "pdf": {
+    "fileName": "must-folleto.pdf",
+    "bytes": 8477667,
+    "pageCount": 6,
+    "pageSizesPoints": [
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      }
+    ]
+  },
+  "editable": {
+    "master": "C:\\Users\\Gonzalo\\Documents\\Folletos\\MUST-Legible\\output\\must-folleto-editable.svg",
+    "printHtml": "C:\\Users\\Gonzalo\\Documents\\Folletos\\MUST-Legible\\output\\must-folleto-fuente.html",
+    "pages": [
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\MUST-Legible\\output\\editable\\must-01.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\MUST-Legible\\output\\editable\\must-02.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\MUST-Legible\\output\\editable\\must-03.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\MUST-Legible\\output\\editable\\must-04.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\MUST-Legible\\output\\editable\\must-05.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\MUST-Legible\\output\\editable\\must-06.svg"
+    ]
+  },
+  "errors": [],
+  "warnings": []
+}

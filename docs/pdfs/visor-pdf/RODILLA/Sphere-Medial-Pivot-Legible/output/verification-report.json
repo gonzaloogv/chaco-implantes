@@ -1,0 +1,114 @@
+{
+  "generatedAt": "2026-08-04T05:18:47.284Z",
+  "passed": true,
+  "specification": {
+    "width": 1200,
+    "height": 1698,
+    "colorSpace": "srgb",
+    "embeddedColorProfile": true,
+    "maximumRecommendedBytes": 204800,
+    "pageCount": 6,
+    "lastWebp": "sphere-medial-pivot-06.webp"
+  },
+  "webps": [
+    {
+      "fileName": "sphere-medial-pivot-01.webp",
+      "bytes": 70236,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "sphere-medial-pivot-02.webp",
+      "bytes": 66176,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "sphere-medial-pivot-03.webp",
+      "bytes": 75972,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "sphere-medial-pivot-04.webp",
+      "bytes": 87092,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "sphere-medial-pivot-05.webp",
+      "bytes": 77814,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "sphere-medial-pivot-06.webp",
+      "bytes": 95714,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    }
+  ],
+  "pdf": {
+    "fileName": "sphere-medial-pivot-folleto.pdf",
+    "bytes": 5438677,
+    "pageCount": 6,
+    "pageSizesPoints": [
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      }
+    ]
+  },
+  "editable": {
+    "master": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sphere-Medial-Pivot-Legible\\output\\sphere-medial-pivot-folleto-editable.svg",
+    "printHtml": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sphere-Medial-Pivot-Legible\\output\\sphere-medial-pivot-folleto-fuente.html",
+    "pages": [
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sphere-Medial-Pivot-Legible\\output\\editable\\sphere-medial-pivot-01.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sphere-Medial-Pivot-Legible\\output\\editable\\sphere-medial-pivot-02.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sphere-Medial-Pivot-Legible\\output\\editable\\sphere-medial-pivot-03.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sphere-Medial-Pivot-Legible\\output\\editable\\sphere-medial-pivot-04.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sphere-Medial-Pivot-Legible\\output\\editable\\sphere-medial-pivot-05.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sphere-Medial-Pivot-Legible\\output\\editable\\sphere-medial-pivot-06.svg"
+    ]
+  },
+  "errors": [],
+  "warnings": []
+}

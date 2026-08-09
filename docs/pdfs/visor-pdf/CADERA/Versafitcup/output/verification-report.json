@@ -1,0 +1,99 @@
+{
+  "generatedAt": "2026-07-30T20:23:45.838Z",
+  "passed": true,
+  "specification": {
+    "width": 1200,
+    "height": 1698,
+    "colorSpace": "srgb",
+    "embeddedColorProfile": true,
+    "maximumRecommendedBytes": 204800,
+    "pageCount": 5
+  },
+  "webps": [
+    {
+      "fileName": "versafitcup-01.webp",
+      "bytes": 80134,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "versafitcup-02.webp",
+      "bytes": 115362,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "versafitcup-03.webp",
+      "bytes": 90186,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "versafitcup-04.webp",
+      "bytes": 89830,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "versafitcup-05.webp",
+      "bytes": 131904,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    }
+  ],
+  "pdf": {
+    "fileName": "versafitcup-folleto.pdf",
+    "bytes": 9187187,
+    "pageCount": 5,
+    "pageSizesPoints": [
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      }
+    ]
+  },
+  "editable": {
+    "master": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Versafitcup\\output\\versafitcup-folleto-editable.svg",
+    "printHtml": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Versafitcup\\output\\versafitcup-folleto-fuente.html",
+    "pages": [
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Versafitcup\\output\\editable\\versafitcup-01.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Versafitcup\\output\\editable\\versafitcup-02.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Versafitcup\\output\\editable\\versafitcup-03.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Versafitcup\\output\\editable\\versafitcup-04.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Versafitcup\\output\\editable\\versafitcup-05.svg"
+    ]
+  },
+  "errors": [],
+  "warnings": []
+}

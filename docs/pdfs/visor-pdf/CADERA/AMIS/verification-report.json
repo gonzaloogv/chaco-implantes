@@ -1,0 +1,99 @@
+{
+  "generatedAt": "2026-07-30T19:20:54.120Z",
+  "passed": true,
+  "specification": {
+    "width": 1200,
+    "height": 1698,
+    "colorSpace": "srgb",
+    "embeddedColorProfile": true,
+    "maximumRecommendedBytes": 204800,
+    "pageCount": 5
+  },
+  "webps": [
+    {
+      "fileName": "amis-01.webp",
+      "bytes": 82662,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "amis-02.webp",
+      "bytes": 98504,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "amis-03.webp",
+      "bytes": 88550,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "amis-04.webp",
+      "bytes": 81634,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "amis-05.webp",
+      "bytes": 85256,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    }
+  ],
+  "pdf": {
+    "fileName": "amis-folleto.pdf",
+    "bytes": 6818393,
+    "pageCount": 5,
+    "pageSizesPoints": [
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      }
+    ]
+  },
+  "editable": {
+    "master": "C:\\Users\\Gonzalo\\Documents\\Folletos\\AMIS\\output\\amis-folleto-editable.svg",
+    "printHtml": "C:\\Users\\Gonzalo\\Documents\\Folletos\\AMIS\\output\\amis-folleto-fuente.html",
+    "pages": [
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\AMIS\\output\\editable\\amis-01.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\AMIS\\output\\editable\\amis-02.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\AMIS\\output\\editable\\amis-03.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\AMIS\\output\\editable\\amis-04.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\AMIS\\output\\editable\\amis-05.svg"
+    ]
+  },
+  "errors": [],
+  "warnings": []
+}

@@ -1,0 +1,113 @@
+{
+  "generatedAt": "2026-08-01T21:20:52.547Z",
+  "passed": true,
+  "specification": {
+    "width": 1200,
+    "height": 1698,
+    "colorSpace": "srgb",
+    "embeddedColorProfile": true,
+    "maximumRecommendedBytes": 204800,
+    "pageCount": 6
+  },
+  "webps": [
+    {
+      "fileName": "masterloc-01.webp",
+      "bytes": 79974,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "masterloc-02.webp",
+      "bytes": 98744,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "masterloc-03.webp",
+      "bytes": 192128,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "masterloc-04.webp",
+      "bytes": 89772,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "masterloc-05.webp",
+      "bytes": 102556,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "masterloc-06.webp",
+      "bytes": 95154,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    }
+  ],
+  "pdf": {
+    "fileName": "masterloc-folleto.pdf",
+    "bytes": 10233973,
+    "pageCount": 6,
+    "pageSizesPoints": [
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      }
+    ]
+  },
+  "editable": {
+    "master": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Masterloc-Legible\\output\\masterloc-folleto-editable.svg",
+    "printHtml": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Masterloc-Legible\\output\\masterloc-folleto-fuente.html",
+    "pages": [
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Masterloc-Legible\\output\\editable\\masterloc-01.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Masterloc-Legible\\output\\editable\\masterloc-02.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Masterloc-Legible\\output\\editable\\masterloc-03.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Masterloc-Legible\\output\\editable\\masterloc-04.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Masterloc-Legible\\output\\editable\\masterloc-05.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\Masterloc-Legible\\output\\editable\\masterloc-06.svg"
+    ]
+  },
+  "errors": [],
+  "warnings": []
+}

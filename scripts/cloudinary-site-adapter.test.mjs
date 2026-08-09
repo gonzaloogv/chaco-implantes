@@ -43,6 +43,7 @@ const standVideo = {
   src: "https://example.com/video.mp4",
   title: "Recorrido por el stand",
   duration: 8.25,
+  audioEnabled: true,
 };
 
 test("buildSiteMediaCollections keeps fallback events for an empty manifest", () => {
@@ -100,6 +101,7 @@ test("buildSiteMediaCollections replaces fallback events and maps synchronized v
       src: standVideo.src,
       title: standVideo.title,
       duration: 8.25,
+      audioEnabled: true,
     },
   ]);
 });
@@ -130,6 +132,22 @@ test("buildSiteMediaCollections preserves a zero synchronized video duration", (
   });
 
   assert.equal(result.videos[0].duration, 0);
+});
+
+test("buildSiteMediaCollections rejects invalid synchronized audioEnabled", () => {
+  assert.throws(
+    () =>
+      buildSiteMediaCollections({
+        manifest: {
+          schemaVersion: 1,
+          images: [],
+          videos: [{ ...standVideo, audioEnabled: "yes" }],
+        },
+        baseGallery,
+        fallbackEvents,
+      }),
+    /audioEnabled no es válido/,
+  );
 });
 
 for (const duration of [

@@ -23,6 +23,7 @@ const sources = [
     videoCategory: "Eventos",
     fixedImageTitle: "61° Congreso Traumatología",
     fixedVideoTitle: "61° Congreso de Traumatología — Stand Chaco Implantes",
+    videoAudioEnabled: true,
   },
   {
     path: "chaco-implantes/cajas",
@@ -352,10 +353,59 @@ test("runSync verifies built manifest videos before publishing", async (t) => {
   );
   assert.deepEqual(logger.messages.slice(0, 3), [
     "Preparando variantes de 1 videos...",
-    "Inspeccionando ausencia de audio...",
+    "Inspeccionando ausencia de audio en 1 videos...",
     "Videos verificados: 1.",
   ]);
   assert.notEqual(await readFile(outputPath, "utf8"), previousContent);
+});
+
+test("runSync routes only the stand video through audio presence inspection", async (t) => {
+  const outputPath = await createTempOutput(t);
+  const inspected = { silent: [], audible: [] };
+  const client = {
+    async searchResources({ expression }) {
+      const isStand = expression.includes("/stand");
+      return [
+        videoResource({
+          assetId: isStand ? "stand-video" : "cajas-video",
+          folder: isStand
+            ? "chaco-implantes/stand"
+            : "chaco-implantes/cajas",
+        }),
+      ];
+    },
+    async getFolderMode() {
+      return "dynamic";
+    },
+  };
+
+  const result = await runSync({
+    credentials,
+    folderMode: "dynamic",
+    sources,
+    client,
+    outputPath,
+    logger: createLogger(),
+    async videoReadiness() {},
+    async videoAudioInspection(videos) {
+      inspected.silent = videos;
+    },
+    async videoAudioPresenceInspection(videos) {
+      inspected.audible = videos;
+    },
+  });
+
+  assert.deepEqual(inspected.silent.map(({ assetId }) => assetId), [
+    "cajas-video",
+  ]);
+  assert.deepEqual(inspected.audible.map(({ assetId }) => assetId), [
+    "stand-video",
+  ]);
+  assert.match(inspected.silent[0].src, /ac_none/);
+  assert.match(inspected.audible[0].src, /ac_aac/);
+  assert.equal(inspected.silent[0].audioEnabled, undefined);
+  assert.equal(inspected.audible[0].audioEnabled, true);
+  assert.equal(result.manifest.videos.length, 2);
 });
 
 test("runSync preserves the previous manifest when video readiness fails", async (t) => {
@@ -466,6 +516,20 @@ test("runSync validates videoAudioInspection before folder mode and Search", asy
 
   assert.equal(folderModeChecks, 0);
   assert.equal(searches, 0);
+
+  await assert.rejects(
+    () =>
+      runSync({
+        credentials,
+        folderMode: "dynamic",
+        sources,
+        client,
+        outputPath,
+        logger: createLogger(),
+        videoAudioPresenceInspection: null,
+      }),
+    /videoAudioPresenceInspection debe ser una función/,
+  );
 });
 
 test("runSync only verifies the remote folder mode when requested", async (t) => {

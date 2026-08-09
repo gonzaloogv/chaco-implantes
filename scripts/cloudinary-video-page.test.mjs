@@ -13,6 +13,6 @@ test("renders synchronized video titles without presentation numbering", () => {
   assert.match(source, /title=\{video\.title\}/);
   assert.match(
     source,
-    /<h2 class="font-display text-sm font-semibold text-deep">\{video\.title\}<\/h2>/,
+    /<h3>\{video\.title\}<\/h3>/,
   );
 });

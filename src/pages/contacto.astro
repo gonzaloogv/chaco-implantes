@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Icon from "../components/Icon.astro";
 import { site, wa, whatsappLink } from "../data/site";
+import "../styles/contacto.css";
 ---
 
 <BaseLayout
@@ -9,135 +10,172 @@ import { site, wa, whatsappLink } from "../data/site";
   description="Contactá a Chaco Implantes en Resistencia, Chaco. WhatsApp 0362-4571854, Corrientes 781."
   canonicalPath="/contacto"
 >
-  <section data-contacto-page class="page-hero-dark border-b border-white/10 px-4 pb-14 pt-32 text-white sm:px-6 lg:px-8">
-    <div class="mx-auto flex max-w-7xl flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-      <div>
-        <h1 class="font-display text-4xl font-black sm:text-5xl">Contacto</h1>
-        <p class="mt-3 max-w-2xl text-brand">
-          Escribinos para consultas comerciales, catálogos, disponibilidad de productos o coordinación institucional.
-        </p>
-      </div>
-      <a
-        href={wa.consulta}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="btn-primary inline-flex w-full items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-bold sm:w-auto"
-      >
-        <Icon name="message-circle" class="h-4 w-4" /> Hablar por WhatsApp
-      </a>
-    </div>
-  </section>
+  <div class="contacto-page">
+    <section data-contacto-page class="contacto-hero page-hero-dark">
+      <div class="contacto-shell contacto-hero__layout">
+        <div class="contacto-hero__copy">
+          <p class="contacto-hero__eyebrow">Atención profesional</p>
+          <h1>Contacto</h1>
+          <p>
+            Escribinos para consultas comerciales, catálogos, disponibilidad de productos o coordinación institucional.
+          </p>
+        </div>
 
-  <section class="page-surface">
-    <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-      <div class="grid gap-8 lg:grid-cols-[1fr_380px]">
-        <form data-contact-form class="premium-card rounded-xl border p-6 sm:p-8" novalidate>
-          <div class="max-w-2xl">
-            <span class="inline-flex items-center gap-2 text-xs font-bold uppercase text-primary">
-              <span class="h-px w-6 bg-brand"></span>
-              Consulta comercial
-            </span>
-            <h2 class="mt-3 font-display text-2xl font-extrabold text-deep">Contanos qué necesitás coordinar</h2>
-            <p class="mt-2 text-sm leading-relaxed text-muted-foreground">
+        <div class="contacto-hero__direct">
+          <span>Respuesta directa</span>
+          <p>Atendemos consultas de profesionales, clínicas y sanatorios.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="contacto-main">
+      <div data-contacto-layout class="contacto-shell contacto-main__layout">
+        <form data-contact-form class="contacto-form" novalidate>
+          <header class="contacto-form__header">
+            <p class="contacto-label">Consulta comercial</p>
+            <h2>Contanos qué necesitás coordinar</h2>
+            <p>
               Enviamos tu consulta por WhatsApp con los datos cargados para responder con mayor precisión.
             </p>
+          </header>
+
+          <div class="contacto-form__fields">
+            <label>
+              <span>Nombre</span>
+              <input
+                id="contact-nombre"
+                name="nombre"
+                required
+                maxlength="100"
+                minlength="2"
+                autocomplete="name"
+                aria-describedby="contact-nombre-error"
+                class="contact-field"
+                placeholder="Tu nombre"
+              />
+              <small id="contact-nombre-error" data-error-for="nombre" class="hidden" aria-live="polite"></small>
+            </label>
+            <label>
+              <span>Institución / especialidad</span>
+              <input
+                id="contact-institucion"
+                name="institucion"
+                required
+                maxlength="120"
+                minlength="2"
+                autocomplete="organization"
+                aria-describedby="contact-institucion-error"
+                class="contact-field"
+                placeholder="Clínica, sanatorio o especialidad"
+              />
+              <small id="contact-institucion-error" data-error-for="institucion" class="hidden" aria-live="polite"></small>
+            </label>
           </div>
 
-          <div class="mt-8 grid gap-5 sm:grid-cols-2">
-            <label class="block text-sm font-semibold text-deep">
-              Nombre
-              <input id="contact-nombre" name="nombre" required maxlength="100" minlength="2" autocomplete="name" aria-describedby="contact-nombre-error" class="contact-field mt-1.5 w-full rounded-md border px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-primary" placeholder="Tu nombre" />
-              <span id="contact-nombre-error" data-error-for="nombre" class="mt-1 hidden text-xs text-red-700" aria-live="polite"></span>
-            </label>
-            <label class="block text-sm font-semibold text-deep">
-              Institución / especialidad
-              <input id="contact-institucion" name="institucion" required maxlength="120" minlength="2" autocomplete="organization" aria-describedby="contact-institucion-error" class="contact-field mt-1.5 w-full rounded-md border px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-primary" placeholder="Clínica, sanatorio o especialidad" />
-              <span id="contact-institucion-error" data-error-for="institucion" class="mt-1 hidden text-xs text-red-700" aria-live="polite"></span>
-            </label>
-          </div>
-          <label class="mt-5 block text-sm font-semibold text-deep">
-            Mensaje
-            <textarea id="contact-mensaje" name="mensaje" required maxlength="1000" minlength="10" aria-describedby="contact-mensaje-error" class="contact-field mt-1.5 min-h-36 w-full resize-y rounded-md border px-3.5 py-2.5 text-sm outline-none transition-colors focus:border-primary" placeholder="Contanos tu consulta, línea de producto o requerimiento"></textarea>
-            <span id="contact-mensaje-error" data-error-for="mensaje" class="mt-1 hidden text-xs text-red-700" aria-live="polite"></span>
+          <label class="contacto-form__message">
+            <span>Mensaje</span>
+            <textarea
+              id="contact-mensaje"
+              name="mensaje"
+              required
+              maxlength="1000"
+              minlength="10"
+              aria-describedby="contact-mensaje-error"
+              class="contact-field"
+              placeholder="Contanos tu consulta, línea de producto o requerimiento"
+            ></textarea>
+            <small id="contact-mensaje-error" data-error-for="mensaje" class="hidden" aria-live="polite"></small>
           </label>
 
-          <div class="mt-6 flex flex-wrap gap-3">
-            <button type="submit" class="btn-primary inline-flex items-center gap-2 rounded-md px-5 py-3 text-sm font-bold">
-              <Icon name="message-circle" class="h-4 w-4" /> Enviar por WhatsApp
-            </button>
-          </div>
+          <button type="submit" class="btn-primary contacto-form__submit">
+            <Icon name="message-circle" class="h-4 w-4" />
+            Enviar por WhatsApp
+          </button>
         </form>
 
-        <aside class="space-y-5">
-          <section class="premium-card rounded-xl border p-6">
-            <h2 class="font-display text-lg font-semibold text-deep">Datos de contacto</h2>
-            <ul class="mt-4 space-y-3 text-sm text-muted-foreground">
-              <li class="flex items-start gap-2.5">
-                <Icon name="phone" class="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" class="contact-link font-semibold text-deep">{site.phoneDisplay}</a>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <Icon name="map-pin" class="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                <span>{site.address}</span>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <Icon name="instagram" class="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                <a href={site.instagramUrl} target="_blank" rel="noopener noreferrer" class="contact-link font-semibold text-deep">{site.instagramHandle}</a>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <Icon name="mail" class="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                <a href={`mailto:${site.email}`} class="contact-link font-semibold text-deep">{site.email}</a>
-              </li>
-            </ul>
-            <a
-              href={wa.consulta}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="btn-primary mt-5 flex items-center justify-center gap-2 rounded-md px-4 py-3 text-sm font-bold"
-            >
-              <Icon name="message-circle" class="h-4 w-4" /> Hablar por WhatsApp
-            </a>
-          </section>
+        <aside class="contacto-details" aria-labelledby="contacto-details-title">
+          <p class="contacto-details__eyebrow">Canales de atención</p>
+          <h2 id="contacto-details-title">Estamos cerca para responder</h2>
 
-          <section class="premium-card rounded-xl border p-6">
-            <h2 class="font-display text-lg font-semibold text-deep">Ubicación y horario</h2>
-            <ul class="mt-4 space-y-3 text-sm text-muted-foreground">
-              <li class="flex items-start gap-2.5">
-                <Icon name="map-pin" class="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                <span>{site.address}</span>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <Icon name="clock" class="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                <div class="space-y-0.5 text-sm text-muted-foreground">
-                  <p class="font-semibold text-deep">Horario comercial</p>
-                  <p>Lun a vie</p>
-                  <p>8:30 a 12:30 h</p>
-                  <p>16:30 a 20:30 h</p>
-                </div>
-              </li>
-            </ul>
-            <div class="mt-5 overflow-hidden rounded-lg border border-border">
-              <iframe
-                src={`https://www.google.com/maps?q=${encodeURIComponent(site.address)}&output=embed`}
-                title={`Mapa: ${site.address}`}
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-                class="block h-48 w-full sm:h-56"
-              ></iframe>
-            </div>
-            <a
-              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.address)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="contact-link mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-primary"
-            >
-              <Icon name="map-pin" class="h-4 w-4" /> Cómo llegar
-            </a>
-          </section>
+          <ul class="contacto-details__list">
+            <li>
+              <span class="contacto-details__icon"><Icon name="phone" class="h-5 w-5" /></span>
+              <div>
+                <span>WhatsApp</span>
+                <a href={whatsappLink()} target="_blank" rel="noopener noreferrer">{site.phoneDisplay}</a>
+              </div>
+            </li>
+            <li>
+              <span class="contacto-details__icon"><Icon name="mail" class="h-5 w-5" /></span>
+              <div>
+                <span>Correo electrónico</span>
+                <a href={`mailto:${site.email}`}>{site.email}</a>
+              </div>
+            </li>
+            <li>
+              <span class="contacto-details__icon"><Icon name="instagram" class="h-5 w-5" /></span>
+              <div>
+                <span>Instagram</span>
+                <a href={site.instagramUrl} target="_blank" rel="noopener noreferrer">{site.instagramHandle}</a>
+              </div>
+            </li>
+          </ul>
+
+          <a
+            href={wa.consulta}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="contacto-details__action"
+          >
+            Iniciar una conversación
+            <Icon name="arrow-right" class="h-4 w-4" />
+          </a>
         </aside>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <section data-contacto-location class="contacto-location">
+      <div class="contacto-shell contacto-location__layout">
+        <div class="contacto-location__map">
+          <iframe
+            src={`https://www.google.com/maps?q=${encodeURIComponent(site.address)}&output=embed`}
+            title={`Mapa: ${site.address}`}
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+
+        <div class="contacto-location__copy">
+          <p class="contacto-label">Resistencia, Chaco</p>
+          <h2>Encontranos en Corrientes 781</h2>
+
+          <div class="contacto-location__item">
+            <Icon name="map-pin" class="h-5 w-5" />
+            <span>{site.address}</span>
+          </div>
+
+          <div class="contacto-location__item">
+            <Icon name="clock" class="h-5 w-5" />
+            <div>
+              <strong>Horario comercial</strong>
+              <span>Lun a vie · 8:30 a 12:30 h</span>
+              <span>16:30 a 20:30 h</span>
+            </div>
+          </div>
+
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.address)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="contacto-location__action"
+          >
+            Cómo llegar
+            <Icon name="arrow-right" class="h-4 w-4" />
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
 </BaseLayout>
 
 <script is:inline define:vars={{ whatsappBase: whatsappLink() }}>

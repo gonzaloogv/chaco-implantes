@@ -1,0 +1,333 @@
+.eventos-page {
+  background: var(--brand-surface);
+  color: var(--brand-ink);
+}
+
+.eventos-shell {
+  width: min(100% - 2rem, 80rem);
+  margin-inline: auto;
+}
+
+.eventos-hero {
+  min-height: 34rem;
+  padding-block: 8.5rem 4rem;
+  color: white;
+}
+
+.eventos-hero::before {
+  top: 48%;
+  left: clamp(2rem, 6vw, 6rem);
+  width: clamp(18rem, 27vw, 24rem);
+  opacity: 0.16;
+}
+
+.eventos-hero__layout {
+  display: grid;
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: end;
+}
+
+.eventos-hero__copy {
+  position: relative;
+  z-index: 1;
+  max-width: 39rem;
+}
+
+.eventos-hero h1 {
+  max-width: 38rem;
+  margin: 0;
+  font-size: clamp(2.6rem, 6.2vw, 5rem);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.eventos-hero__copy p {
+  max-width: 38rem;
+  margin: 1.5rem 0 0;
+  color: var(--brand-on-dark);
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  line-height: 1.7;
+}
+
+.eventos-hero__media {
+  position: relative;
+  min-height: 17rem;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(191, 214, 244, 0.24);
+  border-radius: 0.85rem;
+  background: var(--brand-navy);
+  box-shadow: 0 2rem 5rem -2.5rem rgba(0, 0, 0, 0.75);
+}
+
+.eventos-hero__media::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(180deg, transparent 42%, rgba(16, 41, 76, 0.92) 100%);
+}
+
+.eventos-hero__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.eventos-hero__media figcaption {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  z-index: 1;
+  max-width: 29rem;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
+.eventos-featured {
+  padding-block: clamp(4.5rem, 8vw, 7.5rem);
+}
+
+.eventos-featured__layout {
+  display: grid;
+  gap: clamp(3rem, 7vw, 7rem);
+  align-items: center;
+}
+
+.eventos-featured__media {
+  position: relative;
+  min-height: clamp(25rem, 55vw, 38rem);
+  margin: 0;
+}
+
+.eventos-featured__media::before {
+  position: absolute;
+  bottom: -1rem;
+  left: -1rem;
+  width: 80%;
+  height: 80%;
+  border-radius: 0.85rem;
+  background: var(--brand-blue);
+  box-shadow: 0 2rem 4.5rem -2.5rem rgba(16, 41, 76, 0.58);
+  content: "";
+}
+
+.eventos-featured__media img {
+  position: absolute;
+  inset: 0;
+  width: 96%;
+  height: 96%;
+  margin-left: auto;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 0.85rem;
+  box-shadow: 0 2.4rem 5rem -3rem rgba(16, 41, 76, 0.62);
+}
+
+.eventos-featured__media figcaption {
+  position: absolute;
+  top: 1.25rem;
+  left: 0;
+  padding: 0.65rem 1rem;
+  border-left: 0.3rem solid var(--brand-blue);
+  background: white;
+  box-shadow: 0 1rem 2.5rem -1.75rem rgba(16, 41, 76, 0.55);
+  color: var(--brand-blue);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.eventos-featured__copy {
+  max-width: 38rem;
+}
+
+.eventos-label {
+  margin: 0 0 1rem;
+  color: var(--brand-blue);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.eventos-featured h2,
+.eventos-agenda h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+}
+
+.eventos-featured h2 {
+  max-width: 37rem;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1.08;
+}
+
+.eventos-featured__venue {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  margin: 1.5rem 0 0;
+  color: var(--brand-blue);
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.eventos-featured__venue svg {
+  flex: 0 0 auto;
+  margin-top: 0.1rem;
+}
+
+.eventos-featured__description {
+  margin: 1.5rem 0 0;
+  color: var(--brand-muted);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.eventos-featured__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 2rem;
+}
+
+.eventos-button {
+  display: inline-flex;
+  min-height: 2.9rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1.15rem;
+  border-radius: 0.45rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.eventos-agenda {
+  padding-block: clamp(4rem, 7vw, 6.5rem);
+  background: var(--brand-surface-cool);
+  border-block: 1px solid var(--brand-border);
+}
+
+.eventos-agenda__layout {
+  display: grid;
+  gap: clamp(2.75rem, 6vw, 6rem);
+}
+
+.eventos-agenda__upcoming {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1.25rem;
+}
+
+.eventos-agenda__icon {
+  display: inline-flex;
+  width: 3.25rem;
+  height: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 1rem 2.5rem -1.75rem rgba(16, 41, 76, 0.52);
+  color: var(--brand-blue);
+}
+
+.eventos-agenda h2 {
+  color: var(--brand-ink);
+  font-size: clamp(1.65rem, 3vw, 2.5rem);
+  line-height: 1.12;
+}
+
+.eventos-agenda__upcoming p:last-child,
+.eventos-agenda__contact p {
+  margin: 1rem 0 0;
+  color: var(--brand-muted);
+  font-size: 0.93rem;
+  line-height: 1.75;
+}
+
+.eventos-agenda__contact {
+  padding-top: 2.75rem;
+  border-top: 1px solid color-mix(in srgb, var(--brand-blue) 25%, var(--brand-border));
+}
+
+.eventos-agenda__contact .eventos-button {
+  margin-top: 1.75rem;
+}
+
+@media (min-width: 48rem) {
+  .eventos-shell {
+    width: min(100% - 3rem, 80rem);
+  }
+
+  .eventos-hero__layout {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  }
+
+  .eventos-agenda__layout {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  }
+
+  .eventos-agenda__contact {
+    padding-top: 0;
+    padding-left: clamp(2.5rem, 6vw, 6rem);
+    border-top: 0;
+    border-left: 1px solid color-mix(in srgb, var(--brand-blue) 25%, var(--brand-border));
+  }
+}
+
+@media (min-width: 60rem) {
+  .eventos-featured__layout {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  }
+}
+
+@media (min-width: 64rem) {
+  .eventos-hero {
+    min-height: 38rem;
+    padding-block: 9.5rem 4.5rem;
+  }
+
+  .eventos-hero__media {
+    min-height: 24rem;
+  }
+}
+
+@media (max-width: 47.999rem) {
+  .eventos-hero::before {
+    top: 28%;
+    left: 2rem;
+    width: 18rem;
+    opacity: 0.14;
+  }
+
+  .eventos-hero__media {
+    min-height: 15rem;
+  }
+
+  .eventos-featured__media::before {
+    bottom: -0.5rem;
+    left: -0.5rem;
+  }
+
+  .eventos-featured__actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eventos-button {
+    transition: none;
+  }
+}

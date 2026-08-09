@@ -1,0 +1,107 @@
+{
+  "pdf": "C:\\Users\\Gonzalo\\Documents\\Folletos\\Sphere-Medial-Pivot-Legible\\output\\sphere-medial-pivot-folleto.pdf",
+  "pageCount": 6,
+  "fontCount": 6,
+  "fonts": [
+    {
+      "resource": "page-1//X23//F7",
+      "baseFont": "/AAAAAA+MontserratThin-Black",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1,
+        6
+      ]
+    },
+    {
+      "resource": "page-1//X23//F8",
+      "baseFont": "/BAAAAA+Kurale-Regular",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1,
+        6
+      ]
+    },
+    {
+      "resource": "page-1//X23//F9",
+      "baseFont": "/CAAAAA+Poppins-SemiBold",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "resource": "page-1//X23//F10",
+      "baseFont": "/DAAAAA+MontserratThin-ExtraBold",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "resource": "page-1//X23//F22",
+      "baseFont": "/EAAAAA+Poppins-Regular",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "resource": "page-2//X35//F33",
+      "baseFont": "/FAAAAA+MontserratThin-Bold",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        2,
+        3,
+        4,
+        6
+      ]
+    }
+  ],
+  "errors": [],
+  "passed": true
+}

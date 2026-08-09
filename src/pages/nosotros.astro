@@ -4,6 +4,9 @@ import Icon from "../components/Icon.astro";
 import { images, site } from "../data/site";
 import "../styles/nosotros.css";
 
+const storyBackdrop =
+  "https://res.cloudinary.com/dz9tuwczf/image/upload/f_auto,q_auto,c_fill,g_auto,w_900,h_1100/v1785277685/chaco-34_pof7i8.jpg";
+
 const features = [
   {
     icon: "package-check",
@@ -46,8 +49,8 @@ const features = [
 
         <figure data-nosotros-hero-media class="nosotros-hero__media">
           <img
-            src={images.quirofano}
-            alt="Quirófano equipado para cirugía traumatológica"
+            src={images.professionalWork}
+            alt="Preparación y organización de instrumental en Chaco Implantes"
             loading="eager"
             decoding="async"
             fetchpriority="high"
@@ -80,12 +83,23 @@ const features = [
 
         <figure class="nosotros-story__media">
           <img
+            src={storyBackdrop}
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            decoding="async"
+            width="900"
+            height="1100"
+            class="nosotros-story__backdrop"
+          />
+          <img
             src={images.homeGallery}
             alt="Preparación y control de instrumental en Chaco Implantes"
             loading="lazy"
             decoding="async"
             width="1400"
             height="960"
+            class="nosotros-story__image"
           />
           <figcaption>Atención cercana para profesionales e instituciones de salud.</figcaption>
         </figure>
@@ -114,22 +128,6 @@ const features = [
             ))
           }
         </ul>
-      </div>
-    </section>
-
-    <section data-nosotros-cta class="nosotros-cta">
-      <div class="nosotros-shell nosotros-cta__layout">
-        <h2>Atención cercana, criterio técnico y respuesta comercial</h2>
-        <p>
-          Trabajamos desde Resistencia para acompañar a profesionales, clínicas y sanatorios con productos para traumatología, coordinación de pedidos y consultas por catálogo.
-        </p>
-        <div class="nosotros-cta__actions">
-          <a href="/contacto" class="btn-light nosotros-cta__action">
-            Hacer una consulta
-            <Icon name="arrow-right" class="h-4 w-4" />
-          </a>
-          <a href="/catalogos" class="nosotros-cta__catalog">Ver catálogos</a>
-        </div>
       </div>
     </section>
   </div>

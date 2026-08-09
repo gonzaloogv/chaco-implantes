@@ -1,0 +1,114 @@
+{
+  "generatedAt": "2026-08-04T00:09:00.026Z",
+  "passed": true,
+  "specification": {
+    "width": 1200,
+    "height": 1698,
+    "colorSpace": "srgb",
+    "embeddedColorProfile": true,
+    "maximumRecommendedBytes": 204800,
+    "pageCount": 6,
+    "lastWebp": "gmk-primary-ps-06.webp"
+  },
+  "webps": [
+    {
+      "fileName": "gmk-primary-ps-01.webp",
+      "bytes": 72744,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "gmk-primary-ps-02.webp",
+      "bytes": 86826,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "gmk-primary-ps-03.webp",
+      "bytes": 82140,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "gmk-primary-ps-04.webp",
+      "bytes": 76468,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "gmk-primary-ps-05.webp",
+      "bytes": 72574,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    },
+    {
+      "fileName": "gmk-primary-ps-06.webp",
+      "bytes": 100742,
+      "width": 1200,
+      "height": 1698,
+      "format": "webp",
+      "space": "srgb",
+      "hasProfile": true
+    }
+  ],
+  "pdf": {
+    "fileName": "gmk-primary-ps-folleto.pdf",
+    "bytes": 8772399,
+    "pageCount": 6,
+    "pageSizesPoints": [
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      },
+      {
+        "width": 900,
+        "height": 1273.91992
+      }
+    ]
+  },
+  "editable": {
+    "master": "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Primary-PS-Legible\\output\\gmk-primary-ps-folleto-editable.svg",
+    "printHtml": "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Primary-PS-Legible\\output\\gmk-primary-ps-folleto-fuente.html",
+    "pages": [
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Primary-PS-Legible\\output\\editable\\gmk-primary-ps-01.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Primary-PS-Legible\\output\\editable\\gmk-primary-ps-02.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Primary-PS-Legible\\output\\editable\\gmk-primary-ps-03.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Primary-PS-Legible\\output\\editable\\gmk-primary-ps-04.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Primary-PS-Legible\\output\\editable\\gmk-primary-ps-05.svg",
+      "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Primary-PS-Legible\\output\\editable\\gmk-primary-ps-06.svg"
+    ]
+  },
+  "errors": [],
+  "warnings": []
+}

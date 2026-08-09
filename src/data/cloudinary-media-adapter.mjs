@@ -100,6 +100,14 @@ export function buildSiteMediaCollections({
         `Manifiesto inválido: ${location}.duration no es válida.`,
       );
     }
+    if (
+      video.audioEnabled !== undefined &&
+      typeof video.audioEnabled !== "boolean"
+    ) {
+      throw new Error(
+        `Manifiesto inválido: ${location}.audioEnabled no es válido.`,
+      );
+    }
 
     if (seenAssetIds.has(video.assetId)) {
       throw new Error(`assetId duplicado: ${video.assetId}.`);
@@ -113,6 +121,7 @@ export function buildSiteMediaCollections({
       src: video.src,
       title: video.title,
       ...(video.duration === undefined ? {} : { duration: video.duration }),
+      audioEnabled: video.audioEnabled === true,
     };
   });
 

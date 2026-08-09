@@ -20,7 +20,7 @@ const syncedStandImages = cloudinaryManifest.images.filter(
 );
 const usesSyncedStandImages = syncedStandImages.length > 0;
 const expectedGalleryItems =
-  11 +
+  3 +
   cloudinaryManifest.images.length +
   (usesSyncedStandImages ? 0 : 80);
 const expectedEventImages = usesSyncedStandImages
@@ -39,7 +39,7 @@ const hasSyncedVideos = cloudinaryManifest.videos.length > 0;
 const syncedVideoCategories = new Set(
   cloudinaryManifest.videos.map(({ category }) => category),
 );
-const eventHeroImage = "https://res.cloudinary.com/dz9tuwczf/image/upload/f_auto,q_auto,c_limit,w_1920/foto-evento_d0eg2f.jpg";
+const eventHeroImage = "https://res.cloudinary.com/dz9tuwczf/image/upload/f_auto,q_auto,c_fill,g_faces,w_1600,h_900/v1783107290/Congreso_Traumato-65_yvgqxc.jpg";
 const oldProductTerm = String.fromCharCode(115, 117, 98, 99, 97, 116, 101, 103, 111, 114);
 const expectedPublicAssets = [
   "public/favicon.ico",
@@ -48,22 +48,21 @@ const expectedPublicAssets = [
   "public/icon-512.png",
   "public/site.webmanifest",
   "public/assets/brand/og-image.jpg",
-  "public/assets/images/hero.jpg",
-  "public/assets/images/hero-instrumental.JPG",
-  "public/assets/images/productos.jpg",
-  "public/assets/images/quirofano.jpg",
-  "public/assets/images/congreso-traumatologia-2024.JPG",
 ];
 
 const pages = [
   ["index.html", "Prótesis, implantes e instrumental para equipos quirúrgicos"],
   ["catalogos/index.html", "Catálogos"],
   ["catalogos/cadera/index.html", "Cadera"],
-  ["catalogos/cadera/productos/cotilo-doble/index.html", "Cotilo doble"],
-  ["catalogos/rodilla/productos/rodilla-anv-ii/index.html", "Rodilla ANV II"],
-  ["catalogos/osteosintesis-placas/productos/placa-bloqueada-35mm/index.html", "Ø3,5mm"],
-  ["catalogos/osteosintesis-tornillos/productos/de-tobillo/index.html", "De tobillo"],
-  ["catalogos/otros-productos/productos/perforador-sierra/index.html", "Perforador y Sierra"],
+  ["catalogos/cadera/productos/amis/index.html", "AMIS"],
+  ["catalogos/cadera/productos/cotilo-doble/index.html", "Cadera de doble movilidad VersafitCup"],
+  ["catalogos/cadera/productos/tallo-masterloc/index.html", "Tallo Masterloc"],
+  ["catalogos/rodilla/index.html", "Rodilla"],
+  ["catalogos/rodilla/productos/gmk-primary/index.html", "GMK Primary"],
+  ["catalogos/columna/index.html", "Columna"],
+  ["catalogos/columna/productos/columna-must/index.html", "Columna M.U.S.T."],
+  ["catalogos/hombro/index.html", "Hombro"],
+  ["catalogos/hombro/productos/hombro-anatomico/index.html", "Hombro anatómico"],
   ["galeria/index.html", "Galería"],
   ["eventos/index.html", "Capacitaciones y novedades"],
   ["nosotros/index.html", "Nosotros"],
@@ -122,15 +121,18 @@ const home = readFileSync(join(dist, "index.html"), "utf8");
 const expectedHomeMediaCards = hasSyncedVideos ? 2 : 1;
 const catalogos = readFileSync(join(dist, "catalogos/index.html"), "utf8");
 const catalogoCadera = readFileSync(join(dist, "catalogos/cadera/index.html"), "utf8");
+const catalogoAmis = readFileSync(join(dist, "catalogos/cadera/productos/amis/index.html"), "utf8");
 const catalogoCotiloDoble = readFileSync(join(dist, "catalogos/cadera/productos/cotilo-doble/index.html"), "utf8");
+const catalogoTalloMasterloc = readFileSync(join(dist, "catalogos/cadera/productos/tallo-masterloc/index.html"), "utf8");
 const catalogoRodilla = readFileSync(join(dist, "catalogos/rodilla/index.html"), "utf8");
-const catalogoRodillaAnv = readFileSync(join(dist, "catalogos/rodilla/productos/rodilla-anv-ii/index.html"), "utf8");
+const catalogoGmkPrimary = readFileSync(join(dist, "catalogos/rodilla/productos/gmk-primary/index.html"), "utf8");
+const catalogoColumna = readFileSync(join(dist, "catalogos/columna/index.html"), "utf8");
+const catalogoColumnaMust = readFileSync(join(dist, "catalogos/columna/productos/columna-must/index.html"), "utf8");
+const catalogoHombro = readFileSync(join(dist, "catalogos/hombro/index.html"), "utf8");
+const catalogoHombroAnatomico = readFileSync(join(dist, "catalogos/hombro/productos/hombro-anatomico/index.html"), "utf8");
 const catalogoPlacas = readFileSync(join(dist, "catalogos/osteosintesis-placas/index.html"), "utf8");
-const catalogoPlaca35 = readFileSync(join(dist, "catalogos/osteosintesis-placas/productos/placa-bloqueada-35mm/index.html"), "utf8");
 const catalogoTornillos = readFileSync(join(dist, "catalogos/osteosintesis-tornillos/index.html"), "utf8");
-const catalogoDeTobillo = readFileSync(join(dist, "catalogos/osteosintesis-tornillos/productos/de-tobillo/index.html"), "utf8");
 const catalogoOtros = readFileSync(join(dist, "catalogos/otros-productos/index.html"), "utf8");
-const catalogoPerforador = readFileSync(join(dist, "catalogos/otros-productos/productos/perforador-sierra/index.html"), "utf8");
 const galeria = readFileSync(join(dist, "galeria/index.html"), "utf8");
 const eventos = readFileSync(join(dist, "eventos/index.html"), "utf8");
 const nosotros = readFileSync(join(dist, "nosotros/index.html"), "utf8");
@@ -139,101 +141,128 @@ const videos = readFileSync(join(dist, "videos/index.html"), "utf8");
 const source = readOutputFiles(join(root, "src")).join("\n");
 assert(catalogoCadera.includes("data-catalog-products"), "Cadera catalog should expose the product grid");
 assert(
-  (catalogoCadera.match(/data-catalog-product(?=[\s>])/g) ?? []).length >= 15,
-  "Cadera catalog should render its product cards",
+  (catalogoCadera.match(/data-catalog-product(?=[\s>])/g) ?? []).length === 9,
+  "Cadera catalog should render the nine products represented by its PDFs",
 );
-assert(catalogoCadera.includes("Cotilo doble"), "Cadera catalog should include the Cotilo doble product");
-assert(catalogoCadera.includes("Tallo delta"), "Cadera catalog should include the Tallo delta product");
+for (const productTitle of [
+  "AMIS",
+  "Cadera de doble movilidad VersafitCup",
+  "Sistema Mpact",
+  "Tallo Masterloc",
+  "Tallo X-Acta",
+  "Tallo de revisión Vizion",
+  "Tallo femoral SMS",
+  "Sistema Quadra",
+  "VersafitCup CC Trio",
+]) {
+  assert(catalogoCadera.includes(productTitle), `Cadera catalog should include ${productTitle}`);
+}
 assert(catalogoCadera.includes("/catalogos/cadera/productos/cotilo-doble"), "Cadera products should link to viewer pages");
 assert(!catalogoCadera.toLowerCase().includes(oldProductTerm), "Cadera catalog should use product terminology");
 assert(!catalogoCadera.includes("Ver PDF"), "Cadera product grid should not expose PDF actions");
-assert(!catalogoCadera.includes("Opciones de cotilo para artroplastia"), "Cadera product grid should not render descriptions");
 assert(!catalogoCadera.includes("data-catalog-viewer"), "Cadera catalog should not use the single PDF viewer");
-assert(catalogoCotiloDoble.includes("data-catalog-viewer"), "Cadera product detail should use the catalog viewer");
-assert(catalogoCotiloDoble.includes("Opciones de cotilo para artroplastia"), "Cadera product detail should render the description");
-assert(catalogoCotiloDoble.includes("Solicitar catálogo PDF"), "Cadera product detail should use the catalog request label");
-assert(!catalogoCotiloDoble.includes("Descargar PDF"), "Cadera product detail should not expose a misleading download action");
+assert(catalogoAmis.includes("data-catalog-document-viewer"), "AMIS detail should expose its five-page document preview");
+assert(
+  (catalogoAmis.match(/data-viewer-page(?=[\s>])/g) ?? []).length === 5 &&
+    catalogoAmis.includes("amis-01") &&
+    catalogoAmis.includes(".svg"),
+  "AMIS detail should render five vector pages with WebP thumbnails",
+);
+assert(catalogoAmis.includes("Descargar ficha técnica"), "AMIS detail should expose its technical PDF");
+assert(catalogoCotiloDoble.includes("data-catalog-document-viewer"), "The existing VersafitCup detail should preserve its document preview");
+assert(
+  (catalogoCotiloDoble.match(/data-viewer-page(?=[\s>])/g) ?? []).length === 5 &&
+    catalogoCotiloDoble.includes("versafitcup-01") &&
+    catalogoCotiloDoble.includes(".svg"),
+  "VersafitCup detail should render five vector pages with WebP thumbnails",
+);
+assert(catalogoCotiloDoble.includes("Cadera de doble movilidad VersafitCup"), "VersafitCup detail should use the PDF product name");
+assert(catalogoCotiloDoble.includes("Descargar ficha técnica"), "VersafitCup detail should expose its existing technical sheet");
+assert(catalogoTalloMasterloc.includes("data-catalog-document-viewer"), "Masterloc detail should expose its six-page document preview");
+assert(
+  (catalogoTalloMasterloc.match(/data-viewer-page(?=[\s>])/g) ?? []).length === 6 &&
+    catalogoTalloMasterloc.includes("masterloc-01") &&
+    catalogoTalloMasterloc.includes(".svg"),
+  "Masterloc detail should render six vector pages with WebP thumbnails",
+);
+assert(catalogoTalloMasterloc.includes("Descargar ficha técnica"), "Masterloc detail should expose its technical PDF");
 assert(
   !existsSync(join(dist, "catalogos/cadera/productos/cotilo-doble.pdf")),
   "Cadera product should not generate static PDF output",
 );
 assert(catalogoRodilla.includes("data-catalog-products"), "Rodilla catalog should expose the product grid");
 assert(
-  (catalogoRodilla.match(/data-catalog-product(?=[\s>])/g) ?? []).length >= 4,
-  "Rodilla catalog should render its product cards",
+  (catalogoRodilla.match(/data-catalog-product(?=[\s>])/g) ?? []).length === 7,
+  "Rodilla catalog should render the seven products represented by its PDFs",
 );
-assert(catalogoRodilla.includes("Rodilla ANV II"), "Rodilla catalog should include the Rodilla ANV II product");
-assert(catalogoRodilla.includes("Suplementos ANV II"), "Rodilla catalog should include the Suplementos ANV II product");
-assert(catalogoRodilla.includes("Rodilla MF"), "Rodilla catalog should include the Rodilla MF product");
-assert(catalogoRodilla.includes("Rodilla Modular"), "Rodilla catalog should include the Rodilla Modular product");
-assert(catalogoRodilla.includes("/catalogos/rodilla/productos/rodilla-anv-ii"), "Rodilla products should link to viewer pages");
-assert(!catalogoRodilla.includes("Sistema de rodilla ANV II"), "Rodilla product grid should not render descriptions");
+for (const productTitle of [
+  "GMK Primary",
+  "GMK Sphere",
+  "GMK Primary PS",
+  "Rodilla Sphere Medial Pivot",
+  "GMK Revision",
+  "MOTO Medial",
+  "NextAR Knee",
+]) {
+  assert(catalogoRodilla.includes(productTitle), `Rodilla catalog should include ${productTitle}`);
+}
+assert(catalogoRodilla.includes("/catalogos/rodilla/productos/gmk-primary"), "Rodilla products should link to their detail pages");
 assert(!catalogoRodilla.includes("Ver PDF"), "Rodilla product grid should not expose PDF actions");
 assert(!catalogoRodilla.includes("data-catalog-viewer"), "Rodilla catalog should not use the single PDF viewer");
-assert(catalogoRodillaAnv.includes("data-catalog-viewer"), "Rodilla product detail should use the catalog viewer");
-assert(catalogoRodillaAnv.includes("Sistema de rodilla ANV II"), "Rodilla product detail should render the description");
-assert(catalogoRodillaAnv.includes("Solicitar catálogo PDF"), "Rodilla product detail should expose the catalog request action");
-assert(catalogoPlacas.includes("data-catalog-products"), "Osteosynthesis plates catalog should expose the product grid");
+assert(catalogoGmkPrimary.includes("data-catalog-document-viewer"), "GMK Primary detail should expose its seven-page document preview");
 assert(
-  (catalogoPlacas.match(/data-catalog-product(?=[\s>])/g) ?? []).length >= 17,
-  "Osteosynthesis plates catalog should render its product cards",
+  (catalogoGmkPrimary.match(/data-viewer-page(?=[\s>])/g) ?? []).length === 7 &&
+    catalogoGmkPrimary.includes("gmk-primary-01") &&
+    catalogoGmkPrimary.includes(".svg"),
+  "GMK Primary detail should render seven vector pages with WebP thumbnails",
 );
-assert(catalogoPlacas.includes("Ø3,5mm"), "Osteosynthesis plates catalog should include the 3.5mm blocked plate product");
-assert(catalogoPlacas.includes("Ø4,5mm"), "Osteosynthesis plates catalog should include the 4.5mm blocked plate product");
-assert(catalogoPlacas.includes("Clavícula"), "Osteosynthesis plates catalog should include the clavicle product");
-assert(catalogoPlacas.includes("Proximal"), "Osteosynthesis plates catalog should include the proximal tibia product");
-assert(catalogoPlacas.includes("Húmero distal"), "Osteosynthesis plates catalog should include the distal humerus product");
-assert(catalogoPlacas.includes("Volar poliaxial"), "Osteosynthesis plates catalog should include the polyaxial volar product");
-assert(catalogoPlacas.includes("Herbert-Barouk"), "Osteosynthesis plates catalog should include the Herbert-Barouk product");
+assert(catalogoGmkPrimary.includes("Descargar ficha técnica"), "GMK Primary detail should expose its technical PDF");
+
+assert(catalogoColumna.includes("data-catalog-products"), "Columna catalog should expose its product grid");
 assert(
-  catalogoPlacas.includes("/catalogos/osteosintesis-placas/productos/placa-bloqueada-35mm"),
-  "Osteosynthesis plates products should link to viewer pages",
+  (catalogoColumna.match(/data-catalog-product(?=[\s>])/g) ?? []).length === 1,
+  "Columna catalog should render its one PDF product",
 );
-assert(!catalogoPlacas.includes("Placa bloqueada de Ø3,5 mm"), "Osteosynthesis plates product grid should not render descriptions");
-assert(!catalogoPlacas.includes("Ver PDF"), "Osteosynthesis plates product grid should not expose PDF actions");
-assert(!catalogoPlacas.includes("data-catalog-viewer"), "Osteosynthesis plates catalog should not use the single PDF viewer");
-assert(catalogoPlaca35.includes("data-catalog-viewer"), "Osteosynthesis plates product detail should use the catalog viewer");
-assert(catalogoPlaca35.includes("Placa bloqueada de Ø3,5 mm"), "Osteosynthesis plates product detail should render the description");
-assert(catalogoPlaca35.includes("Solicitar catálogo PDF"), "Osteosynthesis plates product detail should expose the catalog request action");
-assert(catalogoTornillos.includes("data-catalog-products"), "Osteosynthesis screws catalog should expose the product grid");
+assert(catalogoColumna.includes("Columna M.U.S.T."), "Columna catalog should include Columna M.U.S.T.");
+assert(catalogoColumnaMust.includes("data-catalog-document-viewer"), "Columna M.U.S.T. detail should expose its six-page document preview");
 assert(
-  (catalogoTornillos.match(/data-catalog-product(?=[\s>])/g) ?? []).length >= 6,
-  "Osteosynthesis screws catalog should render its product cards",
+  (catalogoColumnaMust.match(/data-viewer-page(?=[\s>])/g) ?? []).length === 6 &&
+    catalogoColumnaMust.includes("must-01") &&
+    catalogoColumnaMust.includes(".svg"),
+  "Columna M.U.S.T. detail should render six vector pages with WebP thumbnails",
 );
-assert(catalogoTornillos.includes("De tobillo"), "Osteosynthesis screws catalog should include the De tobillo product");
-assert(catalogoTornillos.includes("Multidireccional"), "Osteosynthesis screws catalog should include the Multidireccional product");
-assert(catalogoTornillos.includes("Retrógrado"), "Osteosynthesis screws catalog should include the Retrógrado product");
-assert(catalogoTornillos.includes("Gamma GN"), "Osteosynthesis screws catalog should include the Gamma GN product");
-assert(catalogoTornillos.includes("Clavo acerrojado de húmero"), "Osteosynthesis screws catalog should include the humerus nail product");
-assert(catalogoTornillos.includes("Clavo placa tubo deslizante (Richard)"), "Osteosynthesis screws catalog should include the Richard product");
+assert(catalogoColumnaMust.includes("Descargar ficha técnica"), "Columna M.U.S.T. detail should expose its technical PDF");
+
+assert(catalogoHombro.includes("data-catalog-products"), "Hombro catalog should expose its product grid");
 assert(
-  catalogoTornillos.includes("/catalogos/osteosintesis-tornillos/productos/de-tobillo"),
-  "Osteosynthesis screws products should link to viewer pages",
+  (catalogoHombro.match(/data-catalog-product(?=[\s>])/g) ?? []).length === 3,
+  "Hombro catalog should render the three products represented by its PDFs",
 );
-assert(!catalogoTornillos.includes("Clavo para artrodesis de tobillo"), "Osteosynthesis screws product grid should not render descriptions");
-assert(!catalogoTornillos.includes("Ver PDF"), "Osteosynthesis screws product grid should not expose PDF actions");
-assert(!catalogoTornillos.includes("data-catalog-viewer"), "Osteosynthesis screws catalog should not use the single PDF viewer");
-assert(catalogoDeTobillo.includes("data-catalog-viewer"), "Osteosynthesis screws product detail should use the catalog viewer");
-assert(catalogoDeTobillo.includes("Clavo para artrodesis de tobillo"), "Osteosynthesis screws product detail should render the description");
-assert(catalogoDeTobillo.includes("Solicitar catálogo PDF"), "Osteosynthesis screws product detail should expose the catalog request action");
-assert(catalogoOtros.includes("data-catalog-products"), "Other trauma products catalog should expose the product grid");
+for (const productTitle of [
+  "Hombro anatómico",
+  "Prótesis reversa de hombro",
+  "Sistema de hombro",
+]) {
+  assert(catalogoHombro.includes(productTitle), `Hombro catalog should include ${productTitle}`);
+}
+assert(catalogoHombro.includes("/catalogos/hombro/productos/hombro-anatomico"), "Hombro products should link to their detail pages");
+assert(catalogoHombroAnatomico.includes("data-catalog-document-viewer"), "Hombro anatómico detail should expose its seven-page document preview");
 assert(
-  (catalogoOtros.match(/data-catalog-product(?=[\s>])/g) ?? []).length >= 3,
-  "Other trauma products catalog should render its product cards",
+  (catalogoHombroAnatomico.match(/data-viewer-page(?=[\s>])/g) ?? []).length === 7 &&
+    catalogoHombroAnatomico.includes("hombro-anatomico-01") &&
+    catalogoHombroAnatomico.includes(".svg"),
+  "Hombro anatómico detail should render seven vector pages with WebP thumbnails",
 );
-assert(catalogoOtros.includes("Perforador y Sierra"), "Other trauma products catalog should include the drill and saw product");
-assert(catalogoOtros.includes("Universal"), "Other trauma products catalog should include the extraction system product");
-assert(catalogoOtros.includes("Emergencia"), "Other trauma products catalog should include the emergency instrument product");
-assert(
-  catalogoOtros.includes("/catalogos/otros-productos/productos/perforador-sierra"),
-  "Other trauma products should link to viewer pages",
-);
-assert(!catalogoOtros.includes("Motor Overfix para perforación"), "Other trauma product grid should not render descriptions");
-assert(!catalogoOtros.includes("Ver PDF"), "Other trauma product grid should not expose PDF actions");
-assert(!catalogoOtros.includes("data-catalog-viewer"), "Other trauma catalog should not use the single PDF viewer");
-assert(catalogoPerforador.includes("data-catalog-viewer"), "Other trauma product detail should use the catalog viewer");
-assert(catalogoPerforador.includes("Motor Overfix para perforación"), "Other trauma product detail should render the description");
-assert(catalogoPerforador.includes("Solicitar catálogo PDF"), "Other trauma product detail should expose the catalog request action");
+assert(catalogoHombroAnatomico.includes("Descargar ficha técnica"), "Hombro anatómico detail should expose its technical PDF");
+
+for (const [catalog, label] of [
+  [catalogoPlacas, "Osteosynthesis plates"],
+  [catalogoTornillos, "Osteosynthesis screws"],
+  [catalogoOtros, "Other trauma products"],
+]) {
+  assert(!catalog.includes("data-catalog-products"), `${label} should not retain obsolete product cards`);
+  assert(catalog.includes("data-catalog-request"), `${label} should offer documentation by request`);
+}
 assertInOrder(home, [
   'data-home-section="hero"',
   'data-home-section="features"',
@@ -278,8 +307,8 @@ assert(
   "Home should render catalog cards with stable card markers",
 );
 assert(!home.includes("data-catalog-card-icon"), "Catalog cards should not render decorative icons");
-assert(home.includes("nextar-hero_pdfhha"), "Home should use the Cloudinary NextAR full-hero image");
-assert(home.includes("amis-hero_snoht3"), "Home should use the Cloudinary AMIS full-hero image");
+assert(home.includes("NextAR_HERO_twzvis"), "Home should use the Cloudinary NextAR full-hero image");
+assert(home.includes("amis_noxkiq"), "Home should use the Cloudinary AMIS full-hero image");
 assert(home.includes(eventHeroImage), "Home should use the events full-hero image");
 for (const optimizedHomeImage of [
   "f_auto,q_auto,c_fill,g_auto,w_1400,h_960/v1785277687/chaco-36_yd3o1w.jpg",
@@ -316,17 +345,17 @@ assert(!home.includes("Tecnolog\u00c3\u00ada Medacta"), "NextAR hero copy should
 assert(!home.includes("Consultar sistemas Medacta"), "NextAR hero CTA should not mention Medacta");
 assert(home.includes("Productos para traumatología"), "Home should clarify the product category without the old tagline");
 assert(!home.includes("Al servicio de la salud"), "Home should not render the old health-service tagline");
-assert(home.includes("cat-cadera_gql4el"), "Home catalog cards should use Cloudinary category photography");
+assert(home.includes("/catalogos/previews/VERSAFITCUP_2.webp"), "Home catalog cards should use the supplied local catalog previews");
 assert((home.match(/data-catalog-image-card/g) ?? []).length >= 6, "Home should render image-backed catalog cards");
 assert(home.includes("catalog-card-link"), "Catalog cards should render a text-style CTA link");
 assert(!home.includes("catalog-card-cta"), "Catalog cards should not render the catalog action as a button");
-assert((catalogos.match(/data-catalog-image-card/g) ?? []).length === 8, "Catalog page should render every category as an image-backed card");
+assert((catalogos.match(/data-catalog-category/g) ?? []).length === 9, "Catalog page should render every category as an image-backed card");
 assert(catalogos.includes("page-hero-dark"), "Catalog page should use the dark premium page hero");
-assert(catalogos.includes("cat-cadera_gql4el"), "Catalog page should preserve category background photography");
-assert(catalogos.includes("No encontrás la línea que buscás?"), "Catalog page should include the institutional request CTA");
-assert(catalogos.includes("Consulta por WhatsApp"), "Catalog page should include the WhatsApp CTA copy");
+assert(catalogos.includes("/catalogos/previews/VERSAFITCUP_2.webp"), "Catalog page should use the supplied local catalog previews");
+assert(catalogos.includes("¿Necesitás una línea o medida específica?"), "Catalog page should include the institutional request CTA");
+assert(catalogos.includes("Consultar por WhatsApp"), "Catalog page should include the WhatsApp CTA copy");
 assert(!catalogos.includes("Solicitar información"), "Catalog cards should not keep secondary WhatsApp links inside each card");
-assert(catalogoCadera.includes("catalog-detail-shell"), "Catalog detail should use the redesigned dark/light layout shell");
+assert(catalogoCadera.includes("catalog-specialty-page"), "Catalog specialty should use the redesigned dark/light layout shell");
 assert(!home.includes("data-professional-flow-item"), "Home should avoid the extra professional divider strip");
 assert(
   home.includes("data-home-supplier-ecosystem"),
@@ -376,7 +405,25 @@ assert(home.includes("/assets/brand/og-image.jpg"), "Pages should use the dedica
 assert(home.includes('content="summary_large_image"'), "Twitter card should use the large image format");
 assert(home.includes('data-mobile-menu') && home.includes('data-state="closed"'), "Mobile menu should expose a closed state for native motion");
 assert(home.includes("menu-icon-state"), "Mobile menu icons should be crossfade-ready");
-assert((catalogos.match(/data-catalog-card/g) ?? []).length === 8, "Catalog page should keep every catalog card directly clickable");
+assert(home.includes("data-floating-whatsapp"), "Pages should expose the global floating WhatsApp action");
+assert(
+  home.includes('aria-label="Contactar por WhatsApp"') &&
+    home.includes('href="https://wa.me/543624571854'),
+  "Floating WhatsApp should expose an accessible link to the configured number",
+);
+assert(
+  source.includes(".floating-whatsapp") &&
+    source.includes("env(safe-area-inset-bottom)") &&
+    source.includes("env(safe-area-inset-left)"),
+  "Floating WhatsApp should preserve safe mobile margins",
+);
+assert(
+  home.includes("data-whatsapp-logo") &&
+    source.includes("@keyframes whatsapp-breathe") &&
+    source.includes("@keyframes whatsapp-halo"),
+  "Floating WhatsApp should use the recognizable brand mark with a breathing halo",
+);
+assert((catalogos.match(/data-catalog-category/g) ?? []).length === 9, "Catalog page should keep every catalog card directly clickable");
 assert(
   galeria.includes("Ver videos") === hasSyncedVideos,
   "Gallery should promote videos only when synchronized videos exist",
@@ -426,8 +473,8 @@ for (const image of generatedInstrumentalImages) {
     `Generated instrumental label should omit its internal number: ${image.assetId}`,
   );
   assert(
-    galeria.includes(expectedLabel),
-    `Gallery should render generated instrumental label ${expectedLabel}`,
+    galeria.includes(image.title),
+    `Gallery should render generated instrumental label ${image.title}`,
   );
 }
 if (!usesSyncedStandImages) {
@@ -437,8 +484,8 @@ if (!usesSyncedStandImages) {
 }
 assert(galeria.includes("f_auto,q_auto,c_fill,g_auto,w_600,h_400"), "Gallery thumbnails should use bounded Cloudinary 600x400 variants");
 assert(galeria.includes("f_auto,q_auto,c_limit,w_1920"), "Gallery lightbox images should use Cloudinary 1920px capped variants");
-assert((galeria.match(/loading="eager"/g) ?? []).length === 12, "Gallery should eager-load only the first visible batch");
-assert((galeria.match(/fetchpriority="high"/g) ?? []).length === 4, "Gallery should give high priority only to the first visible row");
+assert((galeria.match(/loading="eager"/g) ?? []).length === 13, "Gallery should eager-load its hero and first visible batch");
+assert((galeria.match(/fetchpriority="high"/g) ?? []).length === 5, "Gallery should prioritize its hero and first visible row");
 assert(galeria.includes("Cargar más"), "Gallery should include a load-more control");
 assert(galeria.includes("data-gallery-album"), "Gallery should feature the events album card in the All view");
 assert(galeria.includes(`${expectedEventImages} fotos`), "Gallery album card should expose the event photo count");
@@ -456,7 +503,12 @@ assert(!contacto.includes('id="contact-email"'), "Contact form should not ask fo
 assert(!contacto.includes("data-email-submit"), "Contact form should not expose an email action");
 assert(!contacto.includes("Enviar por email"), "Contact form should not render an email submit button");
 assert(contacto.includes("Enviar por WhatsApp"), "Contact form should keep WhatsApp as the only submit action");
-assert((contacto.match(/contact-link/g) ?? []).length >= 4, "Contact phone, email, social and map links should share subtle hover feedback");
+assert(
+  contacto.includes("contacto-details__list") &&
+    contacto.includes("contacto-details__action") &&
+    contacto.includes("contacto-location__action"),
+  "Contact phone, email, social and map links should use the redesigned interaction hooks",
+);
 assert(
   videos.includes("Pronto publicaremos nuestros videos") ===
     !hasSyncedVideos,
@@ -464,8 +516,11 @@ assert(
 );
 assert(videos.includes("data-videos-page"), "Videos page should expose the redesigned page marker");
 assert(videos.includes("page-hero-dark"), "Videos page should use the dark premium page hero");
-assert(videos.includes("page-surface"), "Videos page should use the shared light content surface");
-assert(videos.includes("premium-card"), "Videos page empty state should use premium card treatment");
+assert(videos.includes("videos-content"), "Videos page should use its editorial light content surface");
+assert(
+  videos.includes("videos-featured") && videos.includes("videos-library"),
+  "Videos page should render its featured and library treatments",
+);
 assert(
   videos.includes('data-video-filter="') ===
     (hasSyncedVideos && syncedVideoCategories.size >= 2),
@@ -492,6 +547,7 @@ assert(
   "Videos page should render one video element per synchronized video",
 );
 for (const tag of videoTags) {
+  const audioEnabled = tag.includes("ac_aac");
   assert(
     /\sdata-video-media(?=[\s=>])/.test(tag),
     "Every video element should expose its media marker",
@@ -521,8 +577,10 @@ for (const tag of videoTags) {
     "Video elements should play inline",
   );
   assert(
-    /\smuted(?=[\s=>])/.test(tag),
-    "Video elements should remain muted",
+    /\smuted(?=[\s=>])/.test(tag) === !audioEnabled,
+    audioEnabled
+      ? "Audio-enabled videos should not render muted"
+      : "Silent videos should remain muted",
   );
 }
 assert(
@@ -554,8 +612,20 @@ assert(
     videoPlayerCount,
   "Every video player should expose a fallback link",
 );
-assert(videos.includes("SIN AUDIO"), "Video players should explain that playback is muted");
-assert(!videos.includes("data-video-volume"), "Video players should not expose volume controls");
+const silentVideoCount = cloudinaryManifest.videos.filter(
+  ({ audioEnabled }) => audioEnabled !== true,
+).length;
+const audioEnabledVideoCount =
+  cloudinaryManifest.videos.length - silentVideoCount;
+assert(
+  (videos.match(/SIN AUDIO/g) ?? []).length === silentVideoCount,
+  "Only silent video players should show the SIN AUDIO badge",
+);
+assert(
+  (videos.match(/data-video-volume(?=[\s=>])/g) ?? []).length ===
+    audioEnabledVideoCount,
+  "Only audio-enabled video players should expose a volume control",
+);
 assert(
   cloudinaryManifest.videos.every(
     ({ duration }) => duration === undefined || duration >= 2,
@@ -583,10 +653,21 @@ for (const video of cloudinaryManifest.videos) {
   }
   assert(videos.includes(video.src), `Videos page should render source ${video.assetId}`);
   assert(videos.includes(video.poster), `Videos page should render poster ${video.assetId}`);
-  assert(
-    video.src.includes("ac_none"),
-    `Video source should omit audio delivery: ${video.assetId}`,
-  );
+  if (video.audioEnabled === true) {
+    assert(
+      video.src.includes("ac_aac") && !video.src.includes("ac_none"),
+      `Audio-enabled video source should deliver AAC audio: ${video.assetId}`,
+    );
+    assert(
+      !isCajasVideo,
+      `Only stand videos may enable audio: ${video.assetId}`,
+    );
+  } else {
+    assert(
+      video.src.includes("ac_none"),
+      `Silent video source should omit audio delivery: ${video.assetId}`,
+    );
+  }
   assert(
     video.poster.includes("c_pad"),
     `Video poster should preserve its full frame: ${video.assetId}`,
@@ -622,13 +703,13 @@ assert(eventos.includes(eventHeroImage), "Events page should use the updated eve
 assert(eventos.includes('href="/galeria?categoria=Eventos"'), "Events page image CTA should open the gallery with the Events filter");
 assert(nosotros.includes("data-nosotros-page"), "About page should expose the redesigned page marker");
 assert(nosotros.includes("page-hero-dark"), "About page should use the dark premium page hero");
-assert(nosotros.includes("page-surface"), "About page should use the shared light content surface");
+assert(nosotros.includes("nosotros-story"), "About page should use its editorial story surface");
 assert(nosotros.includes("Calidad que se siente. Confianza que se nota."), "About page should carry the client slogan");
 assert(!nosotros.includes("Propuesta institucional"), "About page should not keep a generic eyebrow above the institutional heading");
 assert(contacto.includes("data-contacto-page"), "Contact page should expose the redesigned page marker");
 assert(contacto.includes("page-hero-dark"), "Contact page should use the dark premium page hero");
-assert(contacto.includes("page-surface"), "Contact page should use the shared light content surface");
-assert(contacto.includes("premium-card"), "Contact form should use premium card treatment");
+assert(contacto.includes("contacto-main"), "Contact page should use its redesigned light content surface");
+assert(contacto.includes("contacto-form"), "Contact form should use its dedicated card treatment");
 assert(!contacto.includes("dark-card"), "Contact sidebar should share the light premium card treatment");
 
 assert(!existsSync(join(dist, "profesionales/index.html")), "Unexpected /profesionales route output");
@@ -640,15 +721,21 @@ assert(source.includes("prefetchLightboxNeighbors"), "Gallery lightbox should wa
 assert(source.includes(".decode()"), "Gallery lightbox should decode full images before swapping visible content");
 assert(source.includes("lightboxRequestId"), "Gallery lightbox should ignore stale rapid navigation requests");
 assert(source.includes("new URLSearchParams(window.location.search)"), "Gallery should read an initial filter from the URL");
-assert((siteSource.match(/Congreso_[Tt]raumato-/g) ?? []).length === 80, "Source should keep the stand image list as event-only gallery content");
+const fallbackEventList =
+  siteSource.match(/const eventGalleryImages = \[([\s\S]*?)\] as const;/)?.[1] ??
+  "";
+assert((fallbackEventList.match(/Congreso_[Tt]raumato-/g) ?? []).length === 80, "Source should keep the stand image list as event-only gallery content");
 assert(source.includes("prefetchNextBatch"), "Gallery should progressively prefetch the next image batch");
 assert(source.includes("requestIdleCallback"), "Gallery prefetch should wait for idle time when available");
 assert(source.includes("new Image()"), "Gallery should warm upcoming thumbnail requests without rendering them");
 assert(!existsSync(join(root, "prototipo")), "Prototype folder should not remain in the project root");
 assert(!output.includes("prototipo"), "Build output should not reference prototype material");
 assert(output.includes("logo-circular-white_saci0q"), "Build output should use the optimized Cloudinary header logo");
-assert(output.includes("/assets/images/hero.jpg"), "Build output should use organized image asset paths");
-assert(output.includes("cat-cadera_gql4el"), "Build output should include Cloudinary category image assets");
+assert(
+  output.includes("res.cloudinary.com/dz9tuwczf/image/upload/"),
+  "Build output should use optimized Cloudinary image assets",
+);
+assert(output.includes("/catalogos/previews/versafitcup_2.webp"), "Build output should include the supplied local catalog preview assets");
 assert(!output.includes("/assets/logo-circular.png"), "Build output should not use old flat logo asset path");
 assert(!output.includes("/assets/hero.jpg"), "Build output should not use old flat hero asset path");
 assert(home.includes('id="profesionales"'), "Professionals section should remain only as a home section");

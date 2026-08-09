@@ -7,6 +7,7 @@ export const cloudinaryFolders = [
     videoCategory: "Eventos",
     fixedImageTitle: "61° Congreso Traumatología",
     fixedVideoTitle: "61° Congreso de Traumatología — Stand Chaco Implantes",
+    videoAudioEnabled: true,
   },
   {
     path: "chaco-implantes/cajas",

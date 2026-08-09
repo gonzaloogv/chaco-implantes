@@ -1,0 +1,47 @@
+{
+  "webps": [
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Primary-Legible\\output\\gmk-primary-01.webp",
+      "fileName": "gmk-primary-01.webp",
+      "quality": 85,
+      "bytes": 76952
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Primary-Legible\\output\\gmk-primary-02.webp",
+      "fileName": "gmk-primary-02.webp",
+      "quality": 85,
+      "bytes": 87112
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Primary-Legible\\output\\gmk-primary-03.webp",
+      "fileName": "gmk-primary-03.webp",
+      "quality": 85,
+      "bytes": 82636
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Primary-Legible\\output\\gmk-primary-04.webp",
+      "fileName": "gmk-primary-04.webp",
+      "quality": 85,
+      "bytes": 62346
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Primary-Legible\\output\\gmk-primary-05.webp",
+      "fileName": "gmk-primary-05.webp",
+      "quality": 85,
+      "bytes": 69848
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Primary-Legible\\output\\gmk-primary-06.webp",
+      "fileName": "gmk-primary-06.webp",
+      "quality": 85,
+      "bytes": 62538
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Primary-Legible\\output\\gmk-primary-07.webp",
+      "fileName": "gmk-primary-07.webp",
+      "quality": 85,
+      "bytes": 101772
+    }
+  ],
+  "pdfPath": "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Primary-Legible\\output\\gmk-primary-folleto.pdf"
+}

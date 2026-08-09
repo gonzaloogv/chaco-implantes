@@ -1,0 +1,47 @@
+{
+  "webps": [
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\X-Acta-Legible\\output\\x-acta-01.webp",
+      "fileName": "x-acta-01.webp",
+      "quality": 85,
+      "bytes": 63698
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\X-Acta-Legible\\output\\x-acta-02.webp",
+      "fileName": "x-acta-02.webp",
+      "quality": 85,
+      "bytes": 85592
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\X-Acta-Legible\\output\\x-acta-03.webp",
+      "fileName": "x-acta-03.webp",
+      "quality": 85,
+      "bytes": 88860
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\X-Acta-Legible\\output\\x-acta-04.webp",
+      "fileName": "x-acta-04.webp",
+      "quality": 85,
+      "bytes": 78654
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\X-Acta-Legible\\output\\x-acta-05.webp",
+      "fileName": "x-acta-05.webp",
+      "quality": 85,
+      "bytes": 72002
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\X-Acta-Legible\\output\\x-acta-06.webp",
+      "fileName": "x-acta-06.webp",
+      "quality": 85,
+      "bytes": 94106
+    },
+    {
+      "path": "C:\\Users\\Gonzalo\\Documents\\Folletos\\X-Acta-Legible\\output\\x-acta-07.webp",
+      "fileName": "x-acta-07.webp",
+      "quality": 85,
+      "bytes": 111596
+    }
+  ],
+  "pdfPath": "C:\\Users\\Gonzalo\\Documents\\Folletos\\X-Acta-Legible\\output\\x-acta-folleto.pdf"
+}

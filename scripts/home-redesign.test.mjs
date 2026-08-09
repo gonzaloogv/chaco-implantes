@@ -172,6 +172,21 @@ test("defines accessible hero navigation with synchronized progress", () => {
   );
 });
 
+test("keeps trust labels and support steps inside narrow mobile gutters", () => {
+  assert.match(
+    homeCss,
+    /@media \(max-width:\s*39\.999rem\)[\s\S]*\.home-trust-item\s*\{[^}]*flex-direction:\s*column[^}]*align-items:\s*flex-start[^}]*padding:\s*0\.625rem/s,
+  );
+  assert.match(
+    homeCss,
+    /@media \(max-width:\s*39\.999rem\)[\s\S]*\.home-trust-item p\s*\{[^}]*font-size:\s*0\.8125rem[^}]*overflow-wrap:\s*normal/s,
+  );
+  assert.match(
+    homeCss,
+    /@media \(max-width:\s*39\.999rem\)[\s\S]*\.home-support-steps\s*\{[^}]*padding-inline-start:\s*1\.25rem/s,
+  );
+});
+
 test("rebalances support, suppliers, and final CTA with the electric brand color", () => {
   for (const description of [
     "Relevamos el procedimiento, el sistema requerido y las necesidades del equipo médico.",
@@ -196,7 +211,7 @@ test("rebalances support, suppliers, and final CTA with the electric brand color
   );
   assert.match(
     homeCss,
-    /\.home-support-copy::before\s*\{[^}]*top:\s*46%[^}]*right:\s*clamp\(-3\.5rem,\s*-3vw,\s*-1rem\)[^}]*width:\s*clamp\(16\.5rem,\s*30vw,\s*24rem\)[^}]*00_icono_globo_CHACO_IMPLANTES_zxpybc\.png[^}]*opacity:\s*0\.055/s,
+    /\.home-support-copy::before\s*\{[^}]*top:\s*46%[^}]*right:\s*clamp\(-3\.5rem,\s*-3vw,\s*-1rem\)[^}]*width:\s*clamp\(19rem,\s*34vw,\s*28rem\)[^}]*00_icono_globo_CHACO_IMPLANTES_zxpybc\.png[^}]*opacity:\s*0\.055/s,
   );
   assert.match(
     homeCss,
@@ -257,6 +272,15 @@ test("presents supplier brands as crystal cards with optically balanced logos", 
       `missing optical scale for supplier-logo-${logoClass}`,
     );
   }
+
+  assert.match(
+    homeCss,
+    /\.supplier-logo-wide\s*\{[^}]*--supplier-logo-scale:\s*1\.12/s,
+  );
+  assert.match(
+    homeCss,
+    /\.supplier-logo-ross\s*\{[^}]*--supplier-logo-scale:\s*1\.3/s,
+  );
 });
 
 test("defines the editorial layout without legacy symmetry rules", () => {

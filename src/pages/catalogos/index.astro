@@ -1,60 +1,198 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import CatalogCard from "../../components/CatalogCard.astro";
 import Icon from "../../components/Icon.astro";
-import { categories, wa } from "../../data/site";
+import {
+  categories,
+  categoryImages,
+  catalogPreviewImages,
+  wa,
+} from "../../data/site";
+import "../../styles/catalogos.css";
+
+const catalogGroups = [
+  {
+    id: "articular",
+    number: "01",
+    title: "Reconstrucción articular",
+    description:
+      "Sistemas protésicos para procedimientos primarios, parciales y de revisión.",
+    slugs: ["cadera", "rodilla", "hombro"],
+  },
+  {
+    id: "fixacion",
+    number: "02",
+    title: "Fijación y especialidades",
+    description:
+      "Soluciones de osteosíntesis y fijación para distintas regiones anatómicas.",
+    slugs: [
+      "columna",
+      "maxilofacial",
+      "osteosintesis-placas",
+      "osteosintesis-tornillos",
+    ],
+  },
+  {
+    id: "soporte",
+    number: "03",
+    title: "Soporte quirúrgico",
+    description:
+      "Instrumental, cajas e insumos que acompañan cada procedimiento.",
+    slugs: ["instrumental-quirurgico", "otros-productos"],
+  },
+] as const;
+
+const findCategory = (slug: string) => {
+  const category = categories.find((item) => item.slug === slug);
+  if (!category) throw new Error(`Categoría de catálogo no encontrada: ${slug}`);
+  return category;
+};
+
+const directoryGroups = catalogGroups.map((group) => ({
+  ...group,
+  items: group.slugs.map(findCategory),
+}));
+
+const hasCatalogPreview = (slug: string) => slug in catalogPreviewImages;
 ---
 
 <BaseLayout
   title="Catálogos — Chaco Implantes"
-  description="Catálogos de cadera, rodilla, columna, maxilofacial, osteosíntesis e instrumental quirúrgico."
+  description="Catálogos de cadera, rodilla, hombro, columna, maxilofacial, osteosíntesis e instrumental quirúrgico."
   canonicalPath="/catalogos"
 >
-  <section class="page-hero-dark border-b border-white/10 px-4 pb-14 pt-32 text-white sm:px-6 lg:px-8">
-    <div class="mx-auto max-w-7xl">
-      <span class="inline-flex items-center gap-2 rounded-full border border-primary-glow/30 bg-primary/15 px-3 py-2 text-xs font-bold uppercase text-brand">
-        Catálogo técnico por especialidad
-      </span>
-      <div class="mt-5 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-        <div class="max-w-3xl">
-          <h1 class="font-display text-4xl font-black sm:text-5xl">Catálogos</h1>
-          <p class="mt-3 max-w-2xl text-brand">
-            Líneas de prótesis, implantes e instrumental organizadas por especialidad, con imágenes de referencia para explorar cada familia de producto.
+  <div class="catalogos-page">
+    <section class="catalogos-hero page-hero-dark">
+      <div class="catalogos-shell catalogos-hero__layout">
+        <div class="catalogos-hero__copy">
+          <p class="catalogos-label catalogos-label--dark">Catálogo técnico</p>
+          <h1>Catálogos</h1>
+          <p>
+            Prótesis, implantes e instrumental agrupados por especialidad para
+            facilitar la consulta de cada familia de producto.
           </p>
+          <div class="catalogos-hero__actions">
+            <a class="catalogos-button catalogos-button--primary" href="#catalog-directory">
+              Explorar especialidades
+              <Icon name="arrow-down" class="h-4 w-4" />
+            </a>
+            <a
+              class="catalogos-button catalogos-button--text"
+              href={wa.catalogos}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Consultar por WhatsApp
+              <Icon name="message-circle" class="h-4 w-4" />
+            </a>
+          </div>
         </div>
-        <a
-          href={wa.catalogos}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn-primary inline-flex w-full items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-bold sm:w-auto"
-        >
-          <Icon name="message-circle" class="h-4 w-4" /> Consultar catálogos
-        </a>
-      </div>
-    </div>
-  </section>
 
-  <section class="page-surface">
-    <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {categories.map((category) => <CatalogCard category={category} />)}
-        <div class="premium-card flex flex-col gap-4 rounded-xl border p-5 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between lg:col-span-3">
+        <nav
+          data-catalog-hero-index
+          class="catalogos-hero__index"
+          aria-label="Índice de especialidades"
+        >
+          <p>{categories.length} especialidades</p>
+          <ol>
+            {categories.map((category) => (
+              <li>
+                <a href={`#${category.slug}`}>{category.title}</a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      </div>
+    </section>
+
+    <section
+      id="catalog-directory"
+      data-catalog-directory
+      class="catalogos-directory"
+    >
+      <div class="catalogos-shell">
+        <header class="catalogos-intro">
           <div>
-            <h2 class="font-display text-xl font-bold text-deep">¿No encontrás la línea que buscás?</h2>
-            <p class="mt-1 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              Consultanos por disponibilidad, alternativas o líneas especiales para tu equipo.
+            <p class="catalogos-label">Directorio de productos</p>
+            <h2>Elegí una especialidad</h2>
+          </div>
+          <p>
+            Cada acceso reúne los sistemas, componentes e instrumental
+            disponibles para esa línea.
+          </p>
+        </header>
+
+        {directoryGroups.map((group) => (
+          <section
+            data-catalog-group={group.id}
+            class={`catalogos-group catalogos-group--${group.id}`}
+            aria-labelledby={`catalog-group-${group.id}`}
+          >
+            <header class="catalogos-group__header">
+              <span>{group.number}</span>
+              <div>
+                <h2 id={`catalog-group-${group.id}`}>{group.title}</h2>
+                <p>{group.description}</p>
+              </div>
+            </header>
+
+            <div class="catalogos-group__grid">
+              {group.items.map((category) => (
+                <a
+                  id={category.slug}
+                  data-catalog-category
+                  href={`/catalogos/${category.slug}`}
+                  class:list={[
+                    "catalogos-card",
+                    hasCatalogPreview(category.slug) &&
+                      "catalogos-card--preview",
+                  ]}
+                  aria-label={`Ver catálogo de ${category.title}`}
+                >
+                  <div class="catalogos-card__media">
+                    <img
+                      src={categoryImages[category.slug as keyof typeof categoryImages]}
+                      alt={category.title}
+                      loading="lazy"
+                      decoding="async"
+                      width="1024"
+                      height="768"
+                    />
+                  </div>
+                  <div class="catalogos-card__body">
+                    <p>{category.tag}</p>
+                    <h3>{category.title}</h3>
+                    <span>{category.description}</span>
+                    <strong>
+                      Ver especialidad
+                      <Icon name="arrow-right" class="h-4 w-4" />
+                    </strong>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+        ))}
+
+        <section data-catalog-cta class="catalogos-cta">
+          <div>
+            <p class="catalogos-label catalogos-label--dark">Consulta comercial</p>
+            <h2>¿Necesitás una línea o medida específica?</h2>
+            <p>
+              Te ayudamos a revisar disponibilidad, alternativas e instrumental
+              para el procedimiento.
             </p>
           </div>
           <a
             href={wa.lineaFaltante}
             target="_blank"
             rel="noopener noreferrer"
-            class="btn-primary inline-flex w-full items-center justify-center gap-2 rounded-md px-5 py-3 text-sm font-bold sm:w-auto"
+            class="catalogos-button catalogos-button--light"
           >
-            <Icon name="message-circle" class="h-4 w-4" /> Consulta por WhatsApp
+            Consultar por WhatsApp
+            <Icon name="message-circle" class="h-4 w-4" />
           </a>
-        </div>
+        </section>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </BaseLayout>

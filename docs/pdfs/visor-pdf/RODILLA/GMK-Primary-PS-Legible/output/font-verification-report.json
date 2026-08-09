@@ -1,0 +1,107 @@
+{
+  "pdf": "C:\\Users\\Gonzalo\\Documents\\Folletos\\GMK-Primary-PS-Legible\\output\\gmk-primary-ps-folleto.pdf",
+  "pageCount": 6,
+  "fontCount": 6,
+  "fonts": [
+    {
+      "resource": "/F7",
+      "baseFont": "/AAAAAA+MontserratThin-Black",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1,
+        6
+      ]
+    },
+    {
+      "resource": "/F8",
+      "baseFont": "/BAAAAA+Kurale-Regular",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1,
+        6
+      ]
+    },
+    {
+      "resource": "/F9",
+      "baseFont": "/CAAAAA+Poppins-SemiBold",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "resource": "/F10",
+      "baseFont": "/DAAAAA+MontserratThin-ExtraBold",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "resource": "/F22",
+      "baseFont": "/EAAAAA+Poppins-Regular",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    {
+      "resource": "/F32",
+      "baseFont": "/FAAAAA+MontserratThin-Bold",
+      "subtype": "/Type0",
+      "embeddedStreams": [
+        "/FontFile2"
+      ],
+      "convertedToGlyphs": false,
+      "embeddedOrConverted": true,
+      "pages": [
+        2,
+        3,
+        5,
+        6
+      ]
+    }
+  ],
+  "errors": [],
+  "passed": true
+}

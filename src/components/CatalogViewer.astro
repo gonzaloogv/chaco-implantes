@@ -1,71 +1,725 @@
 ---
-import Icon from "./Icon.astro";
+import type { CatalogDocument } from "../data/catalog-documents";
 import { whatsappLink } from "../data/site";
+import Icon from "./Icon.astro";
 
 interface Props {
   title: string;
   eyebrow: string;
-  description: string;
+  description?: string;
   image: string;
+  document?: CatalogDocument;
   whatsappMessage: string;
 }
 
-const { title, eyebrow, description, image, whatsappMessage } = Astro.props;
+const {
+  title,
+  eyebrow,
+  description,
+  image,
+  document: catalogDocument,
+  whatsappMessage,
+} = Astro.props;
+
+const previewPages =
+  catalogDocument?.previewImages.map((thumbnail, index) => ({
+    thumbnail,
+    source: catalogDocument.previewSources?.[index] ?? thumbnail,
+  })) ?? [];
 ---
 
-<div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1fr_340px]">
-  <section class="premium-card rounded-xl border p-4 sm:p-6" data-catalog-viewer>
-    <div class="relative overflow-hidden rounded-xl border border-border bg-deep">
-      <div class="relative aspect-[4/3]">
+{
+  description && catalogDocument ? (
+    <div class="catalog-product-layout">
+      <section
+        class="catalog-document-viewer"
+        data-catalog-viewer
+        data-catalog-document-viewer
+        aria-label={`Vista previa de ${catalogDocument.title}`}
+        tabindex="0"
+      >
+        <header class="catalog-document-toolbar">
+          <p>Vista previa del documento</p>
+          <div class="catalog-document-toolbar__actions">
+            <div
+              class="catalog-document-zoom-controls"
+              role="group"
+              aria-label="Zoom del documento"
+            >
+              <button
+                type="button"
+                data-viewer-zoom-out
+                aria-label="Alejar documento"
+                title="Alejar"
+                disabled
+              >
+                <span aria-hidden="true">−</span>
+              </button>
+              <output data-viewer-zoom-value aria-live="polite">
+                100%
+              </output>
+              <button
+                type="button"
+                data-viewer-zoom-in
+                aria-label="Ampliar documento"
+                title="Ampliar"
+              >
+                <span aria-hidden="true">+</span>
+              </button>
+              <button
+                type="button"
+                class="catalog-document-zoom-reset"
+                data-viewer-zoom-reset
+                disabled
+              >
+                Ajustar
+              </button>
+            </div>
+
+            <p class="catalog-document-counter" aria-live="polite">
+              <span data-viewer-counter>1</span>
+              <span aria-hidden="true"> / </span>
+              <span class="sr-only">de</span>
+              {previewPages.length}
+            </p>
+          </div>
+        </header>
+
+        <div class="catalog-document-canvas" data-viewer-swipe-area>
+          {previewPages.map((page, index) => (
+            <figure
+              id={`catalog-page-${index + 1}`}
+              role="tabpanel"
+              aria-labelledby={`catalog-tab-${index + 1}`}
+              data-viewer-page
+              data-page-index={index}
+              hidden={index !== 0}
+            >
+              <img
+                src={page.source}
+                alt={`${catalogDocument.title}, página ${index + 1} de ${previewPages.length}`}
+                loading={index === 0 ? "eager" : "lazy"}
+                decoding="async"
+                draggable="false"
+                width="1200"
+                height="1698"
+              />
+            </figure>
+          ))}
+        </div>
+
+        <div class="catalog-document-navigation">
+          <button
+            type="button"
+            class="catalog-document-arrow"
+            data-viewer-prev
+            aria-label="Ver página anterior"
+            disabled
+          >
+            <Icon name="chevron-left" class="h-5 w-5" />
+          </button>
+
+          <div
+            class="catalog-document-thumbnails"
+            role="tablist"
+            aria-label="Seleccionar página de la vista previa"
+          >
+            {previewPages.map((page, index) => (
+              <button
+                type="button"
+                id={`catalog-tab-${index + 1}`}
+                role="tab"
+                aria-controls={`catalog-page-${index + 1}`}
+                aria-selected={index === 0 ? "true" : "false"}
+                aria-label={`Ver página ${index + 1}`}
+                tabindex={index === 0 ? "0" : "-1"}
+                class="catalog-document-thumbnail"
+                data-viewer-thumbnail
+                data-page-index={index}
+              >
+                <img
+                  src={page.thumbnail}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  draggable="false"
+                  width="120"
+                  height="170"
+                />
+                <span>{index + 1}</span>
+              </button>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            class="catalog-document-arrow"
+            data-viewer-next
+            aria-label="Ver página siguiente"
+          >
+            <Icon name="chevron-right" class="h-5 w-5" />
+          </button>
+        </div>
+      </section>
+
+      <aside class="catalog-product-panel">
+        <div>
+          <p class="catalog-product-panel__label">Ficha técnica</p>
+          <h2>{catalogDocument.title}</h2>
+          <p class="catalog-product-panel__description">
+            Folleto de {previewPages.length} páginas para una consulta rápida
+            del sistema.
+          </p>
+        </div>
+
+        <dl class="catalog-product-meta">
+          <div>
+            <dt>Vista previa</dt>
+            <dd>{previewPages.length} páginas</dd>
+          </div>
+          <div>
+            <dt>Documento completo</dt>
+            <dd>PDF</dd>
+          </div>
+        </dl>
+
+        <p
+          class="catalog-product-complete-message"
+          data-viewer-complete-message
+          hidden
+        >
+          Llegaste al final de la vista previa. Podés descargar ahora el
+          documento técnico completo.
+        </p>
+
+        <div class="catalog-product-actions">
+          <a
+            href={catalogDocument.downloadUrl}
+            download={catalogDocument.fileName}
+            class="catalog-product-button catalog-product-button--primary"
+          >
+            <Icon name="file-text" class="h-4 w-4" />
+            Descargar ficha técnica
+          </a>
+          <a
+            href={whatsappLink(whatsappMessage)}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="catalog-product-button catalog-product-button--secondary"
+          >
+            <Icon name="message-circle" class="h-4 w-4" />
+            Consultar por WhatsApp
+          </a>
+        </div>
+
+        <p class="catalog-product-panel__note">
+          El folleto resume el producto. Consultá siempre la ficha técnica
+          completa antes de utilizar la información.
+        </p>
+      </aside>
+    </div>
+  ) : description ? (
+    <div class="catalog-product-layout catalog-product-layout--request">
+      <figure class="catalog-product-request__media" data-catalog-viewer>
         <img
           src={image}
           alt={title}
           loading="eager"
           decoding="async"
-          class="absolute inset-0 h-full w-full object-cover"
+          width="1024"
+          height="768"
         />
-        <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-t from-deep via-deep/35 to-transparent"></div>
-        <div class="absolute inset-x-0 bottom-0 p-6">
-          <p class="text-xs font-bold uppercase text-brand">{eyebrow}</p>
-          <p class="mt-1 font-display text-2xl font-black text-white">{title}</p>
+      </figure>
+
+      <aside class="catalog-product-panel catalog-product-panel--request">
+        <div>
+          <p class="catalog-product-panel__label">Documento bajo solicitud</p>
+          <h2>Consultá la documentación técnica</h2>
+          <p class="catalog-product-panel__description">
+            Coordinamos el material disponible, sus referencias y la
+            información necesaria para revisar este producto.
+          </p>
         </div>
-      </div>
-    </div>
-    <p class="mt-5 flex items-start gap-2 text-sm text-muted-foreground">
-      <Icon name="file-text" class="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-      El catálogo técnico completo en PDF se envía a pedido, con medidas, componentes y referencias del sistema.
-    </p>
-  </section>
 
-  <aside class="space-y-5">
-    <section class="premium-card rounded-xl border p-6">
-      <p class="text-xs font-bold uppercase text-primary">{eyebrow}</p>
-      <h2 class="mt-1 font-display text-2xl font-extrabold text-deep">{title}</h2>
-      <p class="mt-3 text-sm text-muted-foreground">{description}</p>
-
-      <dl class="mt-5 space-y-2 border-t border-border pt-5 text-sm">
-        <div class="flex justify-between gap-4">
-          <dt class="text-muted-foreground">Tipo de producto</dt>
-          <dd class="text-right font-semibold text-deep">{eyebrow}</dd>
+        <div class="catalog-product-actions">
+          <a
+            href={whatsappLink(whatsappMessage)}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="catalog-product-button catalog-product-button--primary"
+          >
+            <Icon name="message-circle" class="h-4 w-4" />
+            Solicitar ficha técnica
+          </a>
+          <a
+            href="/contacto"
+            class="catalog-product-button catalog-product-button--secondary"
+          >
+            <Icon name="file-text" class="h-4 w-4" />
+            Ir a contacto
+          </a>
         </div>
-      </dl>
-    </section>
-
-    <div class="space-y-3">
-      <a
-        href="/contacto"
-        class="btn-secondary flex w-full items-center justify-center gap-2 rounded-md px-4 py-3 text-sm font-bold"
-      >
-        <Icon name="file-text" class="h-4 w-4" /> Solicitar catálogo PDF
-      </a>
-      <a
-        href={whatsappLink(whatsappMessage)}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="btn-primary flex w-full items-center justify-center gap-2 rounded-md px-4 py-3 text-sm font-bold"
-      >
-        <Icon name="message-circle" class="h-4 w-4" /> Contactar por WhatsApp
-      </a>
+      </aside>
     </div>
-  </aside>
-</div>
+  ) : (
+    <div
+      class="catalog-specialty-request"
+      data-catalog-viewer
+      data-catalog-request
+    >
+      <figure class="catalog-specialty-request__media">
+        <img
+          src={image}
+          alt={`Sistema de ${title}`}
+          loading="lazy"
+          decoding="async"
+          width="1024"
+          height="768"
+        />
+        <figcaption>
+          <span>{eyebrow}</span>
+          <strong>Información técnica a pedido</strong>
+        </figcaption>
+      </figure>
+
+      <section
+        class="catalog-specialty-request__content"
+        aria-labelledby="catalog-request-title"
+      >
+        <p class="catalog-specialty-label">Catálogo bajo solicitud</p>
+        <h2 id="catalog-request-title">Solicitá la documentación técnica</h2>
+        <p>
+          Te enviamos el material disponible con medidas, componentes y
+          referencias para revisar esta línea con tu equipo.
+        </p>
+
+        <ul>
+          <li>
+            <Icon name="file-text" class="h-5 w-5" />
+            Catálogo técnico en PDF
+          </li>
+          <li>
+            <Icon name="clipboard-list" class="h-5 w-5" />
+            Detalle de componentes y referencias
+          </li>
+          <li>
+            <Icon name="message-circle" class="h-5 w-5" />
+            Asistencia para coordinar la consulta
+          </li>
+        </ul>
+
+        <div class="catalog-specialty-request__actions">
+          <a
+            href="/contacto"
+            class="catalog-specialty-button catalog-specialty-button--secondary"
+          >
+            <Icon name="file-text" class="h-4 w-4" />
+            Solicitar catálogo PDF
+          </a>
+          <a
+            href={whatsappLink(whatsappMessage)}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="catalog-specialty-button"
+          >
+            <Icon name="message-circle" class="h-4 w-4" />
+            Contactar por WhatsApp
+          </a>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+<script>
+  import {
+    clampViewerPan,
+    computePinchZoom,
+    computeSteppedZoom,
+    VIEWER_ZOOM_MAX,
+    VIEWER_ZOOM_MIN,
+  } from "../scripts/catalog-viewer-zoom.mjs";
+
+  const clampPage = (value: number, maximum: number) =>
+    Math.min(Math.max(value, 0), maximum);
+
+  document
+    .querySelectorAll<HTMLElement>("[data-catalog-document-viewer]")
+    .forEach((viewer) => {
+      const pages = Array.from(
+        viewer.querySelectorAll<HTMLElement>("[data-viewer-page]"),
+      );
+      const thumbnails = Array.from(
+        viewer.querySelectorAll<HTMLButtonElement>(
+          "[data-viewer-thumbnail]",
+        ),
+      );
+      const previousButton =
+        viewer.querySelector<HTMLButtonElement>("[data-viewer-prev]");
+      const nextButton =
+        viewer.querySelector<HTMLButtonElement>("[data-viewer-next]");
+      const counter = viewer.querySelector<HTMLElement>(
+        "[data-viewer-counter]",
+      );
+      const zoomOutButton = viewer.querySelector<HTMLButtonElement>(
+        "[data-viewer-zoom-out]",
+      );
+      const zoomValue = viewer.querySelector<HTMLOutputElement>(
+        "[data-viewer-zoom-value]",
+      );
+      const zoomInButton = viewer.querySelector<HTMLButtonElement>(
+        "[data-viewer-zoom-in]",
+      );
+      const zoomResetButton = viewer.querySelector<HTMLButtonElement>(
+        "[data-viewer-zoom-reset]",
+      );
+      const completeMessage = viewer.parentElement?.querySelector<HTMLElement>(
+        "[data-viewer-complete-message]",
+      );
+      const swipeArea = viewer.querySelector<HTMLElement>(
+        "[data-viewer-swipe-area]",
+      );
+
+      if (
+        !pages.length ||
+        !previousButton ||
+        !nextButton ||
+        !counter ||
+        !zoomOutButton ||
+        !zoomValue ||
+        !zoomInButton ||
+        !zoomResetButton ||
+        !swipeArea
+      ) {
+        return;
+      }
+
+      let currentPage = 0;
+      let currentZoom = VIEWER_ZOOM_MIN;
+      let panX = 0;
+      let panY = 0;
+      let touchStartX = 0;
+      let touchHadMultiplePoints = false;
+      let pinchInitialDistance = 0;
+      let pinchInitialZoom = VIEWER_ZOOM_MIN;
+      const pointerPositions = new Map<
+        number,
+        { x: number; y: number }
+      >();
+
+      const getPointerDistance = () => {
+        const [first, second] = Array.from(pointerPositions.values());
+
+        if (!first || !second) {
+          return 0;
+        }
+
+        return Math.hypot(second.x - first.x, second.y - first.y);
+      };
+
+      const syncZoomView = () => {
+        const activePage = pages[currentPage];
+
+        if (!activePage) {
+          return;
+        }
+
+        activePage.style.setProperty(
+          "--viewer-page-size",
+          `${currentZoom * 100}%`,
+        );
+        const boundedPan = clampViewerPan({
+          contentHeight: activePage.offsetHeight,
+          contentWidth: activePage.offsetWidth,
+          panX,
+          panY,
+          viewportHeight: swipeArea.clientHeight,
+          viewportWidth: swipeArea.clientWidth,
+        });
+        panX = boundedPan.panX;
+        panY = boundedPan.panY;
+
+        activePage.style.setProperty("--viewer-pan-x", `${panX}px`);
+        activePage.style.setProperty("--viewer-pan-y", `${panY}px`);
+        zoomValue.textContent = `${Math.round(currentZoom * 100)}%`;
+        zoomOutButton.disabled = currentZoom <= VIEWER_ZOOM_MIN;
+        zoomInButton.disabled = currentZoom >= VIEWER_ZOOM_MAX;
+        zoomResetButton.disabled = currentZoom <= VIEWER_ZOOM_MIN;
+        viewer.toggleAttribute(
+          "data-viewer-zoomed",
+          currentZoom > VIEWER_ZOOM_MIN,
+        );
+      };
+
+      const setZoom = (nextZoom: number) => {
+        currentZoom = Math.min(
+          Math.max(nextZoom, VIEWER_ZOOM_MIN),
+          VIEWER_ZOOM_MAX,
+        );
+
+        if (currentZoom <= VIEWER_ZOOM_MIN) {
+          currentZoom = VIEWER_ZOOM_MIN;
+          panX = 0;
+          panY = 0;
+        }
+
+        syncZoomView();
+      };
+
+      const resetZoom = () => {
+        currentZoom = VIEWER_ZOOM_MIN;
+        panX = 0;
+        panY = 0;
+        pages.forEach((page) => {
+          page.style.removeProperty("--viewer-page-size");
+          page.style.removeProperty("--viewer-pan-x");
+          page.style.removeProperty("--viewer-pan-y");
+        });
+        syncZoomView();
+      };
+
+      const showPage = (requestedPage: number, moveFocus = false) => {
+        const nextPage = clampPage(requestedPage, pages.length - 1);
+        const pageChanged = nextPage !== currentPage;
+        currentPage = nextPage;
+
+        pages.forEach((page, index) => {
+          page.hidden = index !== currentPage;
+        });
+
+        if (pageChanged) {
+          resetZoom();
+        }
+
+        thumbnails.forEach((thumbnail, index) => {
+          const isCurrent = index === currentPage;
+          thumbnail.setAttribute("aria-selected", String(isCurrent));
+          thumbnail.tabIndex = isCurrent ? 0 : -1;
+        });
+
+        if (pageChanged) {
+          thumbnails[currentPage]?.scrollIntoView({
+            block: "nearest",
+            inline: "nearest",
+          });
+        }
+
+        previousButton.disabled = currentPage === 0;
+        nextButton.disabled = currentPage === pages.length - 1;
+        counter.textContent = String(currentPage + 1);
+
+        if (completeMessage) {
+          completeMessage.hidden = currentPage !== pages.length - 1;
+        }
+
+        viewer.toggleAttribute(
+          "data-viewer-complete",
+          currentPage === pages.length - 1,
+        );
+
+        if (moveFocus) {
+          thumbnails[currentPage]?.focus();
+        }
+      };
+
+      previousButton.addEventListener("click", () => {
+        showPage(currentPage - 1);
+      });
+
+      nextButton.addEventListener("click", () => {
+        showPage(currentPage + 1);
+      });
+
+      thumbnails.forEach((thumbnail, index) => {
+        thumbnail.addEventListener("click", () => {
+          showPage(index);
+        });
+      });
+
+      zoomOutButton.addEventListener("click", () => {
+        setZoom(
+          computeSteppedZoom({
+            currentZoom,
+            direction: -1,
+          }),
+        );
+      });
+
+      zoomInButton.addEventListener("click", () => {
+        setZoom(
+          computeSteppedZoom({
+            currentZoom,
+            direction: 1,
+          }),
+        );
+      });
+
+      zoomResetButton.addEventListener("click", resetZoom);
+
+      viewer.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          showPage(currentPage - 1, true);
+        }
+
+        if (event.key === "ArrowRight") {
+          event.preventDefault();
+          showPage(currentPage + 1, true);
+        }
+
+        if (event.key === "Home") {
+          event.preventDefault();
+          showPage(0, true);
+        }
+
+        if (event.key === "End") {
+          event.preventDefault();
+          showPage(pages.length - 1, true);
+        }
+
+        if (event.key === "+" || event.key === "=") {
+          event.preventDefault();
+          setZoom(
+            computeSteppedZoom({
+              currentZoom,
+              direction: 1,
+            }),
+          );
+        }
+
+        if (event.key === "-") {
+          event.preventDefault();
+          setZoom(
+            computeSteppedZoom({
+              currentZoom,
+              direction: -1,
+            }),
+          );
+        }
+
+        if (event.key === "0") {
+          event.preventDefault();
+          resetZoom();
+        }
+      });
+
+      swipeArea.addEventListener("pointerdown", (event) => {
+        if (event.pointerType === "mouse" && event.button !== 0) {
+          return;
+        }
+
+        pointerPositions.set(event.pointerId, {
+          x: event.clientX,
+          y: event.clientY,
+        });
+
+        if (pointerPositions.size >= 2) {
+          touchHadMultiplePoints = true;
+          pinchInitialDistance = getPointerDistance();
+          pinchInitialZoom = currentZoom;
+          viewer.toggleAttribute("data-viewer-dragging", true);
+        } else if (currentZoom > VIEWER_ZOOM_MIN) {
+          viewer.toggleAttribute("data-viewer-dragging", true);
+        }
+
+        if (
+          pointerPositions.size >= 2 ||
+          currentZoom > VIEWER_ZOOM_MIN
+        ) {
+          swipeArea.setPointerCapture?.(event.pointerId);
+        }
+      });
+
+      swipeArea.addEventListener("pointermove", (event) => {
+        const previousPosition = pointerPositions.get(event.pointerId);
+
+        if (!previousPosition) {
+          return;
+        }
+
+        pointerPositions.set(event.pointerId, {
+          x: event.clientX,
+          y: event.clientY,
+        });
+
+        if (pointerPositions.size >= 2) {
+          event.preventDefault();
+          setZoom(
+            computePinchZoom({
+              currentDistance: getPointerDistance(),
+              initialDistance: pinchInitialDistance,
+              initialZoom: pinchInitialZoom,
+            }),
+          );
+          return;
+        }
+
+        if (currentZoom > VIEWER_ZOOM_MIN) {
+          event.preventDefault();
+          panX += event.clientX - previousPosition.x;
+          panY += event.clientY - previousPosition.y;
+          syncZoomView();
+        }
+      });
+
+      const releasePointer = (event: PointerEvent) => {
+        pointerPositions.delete(event.pointerId);
+
+        if (pointerPositions.size < 2) {
+          pinchInitialDistance = 0;
+          pinchInitialZoom = currentZoom;
+        }
+
+        if (!pointerPositions.size) {
+          viewer.removeAttribute("data-viewer-dragging");
+        }
+      };
+
+      swipeArea.addEventListener("pointerup", releasePointer);
+      swipeArea.addEventListener("pointercancel", releasePointer);
+      swipeArea.addEventListener("dragstart", (event) => {
+        event.preventDefault();
+      });
+
+      swipeArea.addEventListener(
+        "touchstart",
+        (event) => {
+          touchHadMultiplePoints =
+            touchHadMultiplePoints || event.touches.length > 1;
+          touchStartX = event.changedTouches[0]?.clientX ?? 0;
+        },
+        { passive: true },
+      );
+
+      swipeArea.addEventListener(
+        "touchend",
+        (event) => {
+          const shouldIgnoreSwipe =
+            touchHadMultiplePoints || currentZoom > VIEWER_ZOOM_MIN;
+
+          if (!event.touches.length) {
+            touchHadMultiplePoints = false;
+          }
+
+          if (shouldIgnoreSwipe) {
+            return;
+          }
+
+          const touchEndX = event.changedTouches[0]?.clientX ?? touchStartX;
+          const distance = touchEndX - touchStartX;
+
+          if (Math.abs(distance) < 48) {
+            return;
+          }
+
+          showPage(currentPage + (distance < 0 ? 1 : -1));
+        },
+        { passive: true },
+      );
+
+      window.addEventListener("resize", syncZoomView, {
+        passive: true,
+      });
+      syncZoomView();
+    });
+</script>
