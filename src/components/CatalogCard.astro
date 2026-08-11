@@ -17,6 +17,7 @@ const image = categoryImages[category.slug as keyof typeof categoryImages];
   aria-label={`Ver catálogo de ${category.title}`}
   data-catalog-card
   data-catalog-image-card
+  data-catalog-category={category.slug}
   class:list={[
     "catalog-image-card card-link group relative flex flex-col justify-end overflow-hidden rounded-xl border border-border bg-deep",
     compact ? "h-72" : "h-80",

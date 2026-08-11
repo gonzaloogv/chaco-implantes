@@ -357,6 +357,9 @@
     var(--brand-blue) 18%,
     var(--brand-border)
   );
+  background:
+    radial-gradient(circle at 72% 18%, rgba(87, 158, 218, 0.2), transparent 42%),
+    linear-gradient(155deg, #173c69 0%, var(--brand-ink) 72%);
   border-radius: var(--home-radius);
   box-shadow: 0 22px 48px -40px rgba(16, 41, 76, 0.6);
 }
@@ -364,6 +367,23 @@
 .home-page .catalog-image-card img {
   filter: none;
   transition: transform 240ms var(--ease-out);
+}
+
+.home-page [data-catalog-image-card] > img {
+  inset: 0 0 auto auto;
+  width: 88%;
+  height: 76%;
+  padding: clamp(0.625rem, 1vw, 0.875rem);
+  object-fit: contain;
+  object-position: right top;
+  filter: drop-shadow(0 1rem 1.25rem rgba(4, 17, 38, 0.24));
+}
+
+.home-product-featured [data-catalog-category="cadera"] > img {
+  width: 74%;
+  height: 100%;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  object-position: right center;
 }
 
 .home-suppliers-section {
@@ -991,6 +1011,10 @@
   .home-page .catalog-image-card:hover img,
   .home-media-card:hover img {
     transform: scale(1.02);
+  }
+
+  .home-page [data-catalog-image-card]:hover > img {
+    transform: scale(1.012);
   }
 
   .home-support-step:hover > span {

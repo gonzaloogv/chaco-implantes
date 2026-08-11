@@ -18,9 +18,10 @@ const [indexSource, homeCss, globalCss] = await Promise.all([
   read("src/styles/global.css"),
 ]);
 
-const [siteSource, footerSource] = await Promise.all([
+const [siteSource, footerSource, catalogCardSource] = await Promise.all([
   read("src/data/site.ts"),
   read("src/components/Footer.astro"),
+  read("src/components/CatalogCard.astro"),
 ]);
 
 const homeOnlySelectors = [
@@ -89,6 +90,49 @@ test("declares the approved editorial order and retained data mappings", () => {
   assert.match(indexSource, /videos\.length > 0/);
   assert.doesNotMatch(indexSource, /data-home-accent-band/);
   assert.doesNotMatch(indexSource, /home-accent-rail/);
+});
+
+test("curates complete catalog previews without changing the home card structure", () => {
+  const featuredSlugs = siteSource.match(
+    /export const featuredCatalogSlugs = \[([\s\S]*?)\] as const;/,
+  );
+
+  assert.ok(featuredSlugs, "missing featured catalog configuration");
+  assert.deepEqual(
+    [...featuredSlugs[1].matchAll(/"([^"]+)"/g)].map((match) => match[1]),
+    [
+      "cadera",
+      "rodilla",
+      "hombro",
+      "maxilofacial",
+      "columna",
+      "osteosintesis-tornillos",
+    ],
+  );
+
+  assert.match(
+    catalogCardSource,
+    /data-catalog-category=\{category\.slug\}/,
+  );
+  assert.match(
+    homeCss,
+    /\.home-page \[data-catalog-image-card\] > img\s*\{[^}]*object-fit:\s*contain/s,
+  );
+  assert.match(
+    homeCss,
+    /\[data-catalog-category="cadera"\] > img/,
+  );
+
+  for (const previewPath of [
+    "/catalogos/previews/osteosintesis-maxilofacial.png",
+    "/catalogos/previews/osteosintesis-placas.png",
+    "/catalogos/previews/osteosintesis-tornillos.png",
+  ]) {
+    assert.ok(
+      siteSource.includes(previewPath),
+      `missing transparent catalog preview: ${previewPath}`,
+    );
+  }
 });
 
 test("preserves the verified content and shared behavior boundaries", () => {

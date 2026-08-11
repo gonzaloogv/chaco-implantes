@@ -32,13 +32,14 @@ export const catalogPreviewImages = {
   rodilla: "/catalogos/previews/GMK_PRIMARY_PS_2.webp",
   hombro: "/catalogos/previews/PROTESIS_REVERSA_2.webp",
   columna: "/catalogos/previews/MUST_2.webp",
+  maxilofacial: "/catalogos/previews/osteosintesis-maxilofacial.png",
+  "osteosintesis-placas": "/catalogos/previews/osteosintesis-placas.png",
+  "osteosintesis-tornillos":
+    "/catalogos/previews/osteosintesis-tornillos.png",
 } as const;
 
 export const categoryImages = {
   ...catalogPreviewImages,
-  maxilofacial: `${CLOUDINARY_BASE}/${CATEGORY_TRANSFORM}/v1784637757/cat-maxilofacial_xdiyvh.png`,
-  "osteosintesis-placas": `${CLOUDINARY_BASE}/${CATEGORY_TRANSFORM}/v1784637758/cat-osteosintesis-placas_qllsio.png`,
-  "osteosintesis-tornillos": `${CLOUDINARY_BASE}/${CATEGORY_TRANSFORM}/v1784637758/cat-osteosintesis-tornillos_ryg1l4.png`,
   "instrumental-quirurgico": `${CLOUDINARY_BASE}/${CATEGORY_TRANSFORM}/v1784637756/cat-instrumental-quirurgico_se6ozy.jpg`,
   "otros-productos": `${CLOUDINARY_BASE}/${CATEGORY_TRANSFORM}/v1784637759/cat-otros-productos_pbymtq.jpg`,
 } as const;
@@ -542,9 +543,9 @@ export const catalogProducts: CatalogProduct[] = [
 export const featuredCatalogSlugs = [
   "cadera",
   "rodilla",
-  "columna",
+  "hombro",
   "maxilofacial",
-  "osteosintesis-placas",
+  "columna",
   "osteosintesis-tornillos",
 ] as const;
 
