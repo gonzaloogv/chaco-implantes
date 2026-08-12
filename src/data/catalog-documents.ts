@@ -1,23 +1,23 @@
-import amisPdf from "../../docs/pdfs/ficha-tecnica/AMIS.pdf?url";
-import cotiloDoblePdf from "../../docs/pdfs/ficha-tecnica/CADERA_DOBLE_MOVILIDAD_VERSAFITCUP_CHACO_IMPLANTES_ES.pdf?url";
-import mustPdf from "../../docs/pdfs/ficha-tecnica/COLUMNA_MUST_CHACO_IMPLANTES_ES.pdf?url";
-import mpactPdf from "../../docs/pdfs/ficha-tecnica/Folleto Sistema Mpact.pdf?url";
-import gmkPrimaryPdf from "../../docs/pdfs/ficha-tecnica/GMK Primaria.pdf?url";
-import hombroAnatomicoPdf from "../../docs/pdfs/ficha-tecnica/HOMBRO_ANATOMICO_CHACO_IMPLANTES_ES.pdf?url";
-import nextarPdf from "../../docs/pdfs/ficha-tecnica/NEXTAR_CHACO_IMPLANTES_ES.pdf?url";
-import hombroReversoPdf from "../../docs/pdfs/ficha-tecnica/PROTESIS_REVERSA_DE_HOMBRO_CHACO_IMPLANTES_ES.pdf?url";
-import gmkSpherePdf from "../../docs/pdfs/ficha-tecnica/RODILLA GMK.pdf?url";
-import gmkPrimaryPsPdf from "../../docs/pdfs/ficha-tecnica/RODILLA_GMK_ESTABILIZADA_POSTERIOR_CHACO_IMPLANTES_ES.pdf?url";
-import sphereMedialPivotPdf from "../../docs/pdfs/ficha-tecnica/RODILLA_SPHERE_MEDIAL_PIVOT_CHACO_IMPLANTES_ES.pdf?url";
-import sistemaHombroPdf from "../../docs/pdfs/ficha-tecnica/Sistema de Hombro - Brochure.pdf?url";
-import masterlocPdf from "../../docs/pdfs/ficha-tecnica/TALLO MASTERLOC.pdf?url";
-import vizionPdf from "../../docs/pdfs/ficha-tecnica/TALLO_REVISION_VIZION_CHACO_IMPLANTES_ES.pdf?url";
-import smsPdf from "../../docs/pdfs/ficha-tecnica/TALLO_SMS_CHACO_IMPLANTES_ES.pdf?url";
-import xActaPdf from "../../docs/pdfs/ficha-tecnica/Tallo X-Acta.pdf?url";
-import gmkRevisionPdf from "../../docs/pdfs/ficha-tecnica/Tecnica Quirurgica GMK Revision.pdf?url";
-import motoMedialPdf from "../../docs/pdfs/ficha-tecnica/Tecnica Quirurgica MOTO Medial.pdf?url";
-import quadraPdf from "../../docs/pdfs/ficha-tecnica/Tecnica Quirurgica Quadra.pdf?url";
-import versafitcupCcTrioPdf from "../../docs/pdfs/ficha-tecnica/VERSAFITCUP CC TRIO.pdf?url";
+import amisPdf from "../../docs/pdfs/ficha-tecnica/AMIS - Tecnica Quirurgica - CHACO IMPLANTES.pdf?url";
+import cotiloDoblePdf from "../../docs/pdfs/ficha-tecnica/Versafitcup Doble Movilidad - Tecnica Quirurgica - CHACO IMPLANTES.pdf?url";
+import mustPdf from "../../docs/pdfs/ficha-tecnica/Columna MUST - Tecnica Quirurgica - CHACO IMPLANTES.pdf?url";
+import mpactPdf from "../../docs/pdfs/ficha-tecnica/Sistema Mpact - Folleto - CHACO IMPLANTES.pdf?url";
+import gmkPrimaryPdf from "../../docs/pdfs/ficha-tecnica/GMK Primary - Folleto - CHACO IMPLANTES.pdf?url";
+import hombroAnatomicoPdf from "../../docs/pdfs/ficha-tecnica/Hombro Anatomico - Tecnica Quirurgica - CHACO IMPLANTES.pdf?url";
+import nextarPdf from "../../docs/pdfs/ficha-tecnica/NextAR Knee - Manual Tecnico - CHACO IMPLANTES.pdf?url";
+import hombroReversoPdf from "../../docs/pdfs/ficha-tecnica/Protesis Reversa de Hombro - Tecnica Quirurgica - CHACO IMPLANTES.pdf?url";
+import gmkSpherePdf from "../../docs/pdfs/ficha-tecnica/Rodilla GMK Sphere - Tecnica Quirurgica - CHACO IMPLANTES.pdf?url";
+import gmkPrimaryPsPdf from "../../docs/pdfs/ficha-tecnica/Rodilla GMK Estabilizada Posterior - Tecnica Quirurgica - CHACO IMPLANTES.pdf?url";
+import sphereMedialPivotPdf from "../../docs/pdfs/ficha-tecnica/Rodilla Sphere Medial Pivot - Tecnica Quirurgica - CHACO IMPLANTES.pdf?url";
+import sistemaHombroPdf from "../../docs/pdfs/ficha-tecnica/Sistema de Hombro - Folleto - CHACO IMPLANTES.pdf?url";
+import masterlocPdf from "../../docs/pdfs/ficha-tecnica/Masterloc - Fundamento de Diseno - CHACO IMPLANTES.pdf?url";
+import vizionPdf from "../../docs/pdfs/ficha-tecnica/Tallo de Revision Vizion - Tecnica Quirurgica - CHACO IMPLANTES.pdf?url";
+import smsPdf from "../../docs/pdfs/ficha-tecnica/Tallo SMS - Tecnica Quirurgica - CHACO IMPLANTES.pdf?url";
+import xActaPdf from "../../docs/pdfs/ficha-tecnica/Tallo X-acta - Tecnica Quirurgica - CHACO IMPLANTES.pdf?url";
+import gmkRevisionPdf from "../../docs/pdfs/ficha-tecnica/GMK Revision - Tecnica Quirurgica - CHACO IMPLANTES.pdf?url";
+import motoMedialPdf from "../../docs/pdfs/ficha-tecnica/MOTO Medial - Tecnica Quirurgica - CHACO IMPLANTES.pdf?url";
+import quadraPdf from "../../docs/pdfs/ficha-tecnica/Sistema Quadra - Tecnica Quirurgica - CHACO IMPLANTES.pdf?url";
+import versafitcupCcTrioPdf from "../../docs/pdfs/ficha-tecnica/Versafitcup CC Trio - Ficha Tecnica - CHACO IMPLANTES.pdf?url";
 
 export type CatalogDocument = {
   title: string;
@@ -89,7 +89,7 @@ const createCatalogDocument = ({
 const catalogDocuments: Record<string, CatalogDocument> = {
   "cadera/amis": createCatalogDocument({
     title: "AMIS",
-    fileName: "AMIS.pdf",
+    fileName: "AMIS - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     downloadUrl: amisPdf,
     assetDirectory: "CADERA/AMIS",
     assetPrefix: "amis",
@@ -97,7 +97,8 @@ const catalogDocuments: Record<string, CatalogDocument> = {
   }),
   "cadera/cotilo-doble": createCatalogDocument({
     title: "Cadera de doble movilidad VersafitCup",
-    fileName: "CADERA_DOBLE_MOVILIDAD_VERSAFITCUP_CHACO_IMPLANTES_ES.pdf",
+    fileName:
+      "Versafitcup Doble Movilidad - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     downloadUrl: cotiloDoblePdf,
     assetDirectory: "CADERA/Versafitcup/output",
     assetPrefix: "versafitcup",
@@ -105,7 +106,7 @@ const catalogDocuments: Record<string, CatalogDocument> = {
   }),
   "cadera/sistema-mpact": createCatalogDocument({
     title: "Sistema Mpact",
-    fileName: "Folleto Sistema Mpact.pdf",
+    fileName: "Sistema Mpact - Folleto - CHACO IMPLANTES.pdf",
     downloadUrl: mpactPdf,
     assetDirectory: "CADERA/MPact-Legible/output",
     assetPrefix: "mpact",
@@ -113,7 +114,7 @@ const catalogDocuments: Record<string, CatalogDocument> = {
   }),
   "cadera/tallo-masterloc": createCatalogDocument({
     title: "Tallo Masterloc",
-    fileName: "TALLO MASTERLOC.pdf",
+    fileName: "Masterloc - Fundamento de Diseno - CHACO IMPLANTES.pdf",
     downloadUrl: masterlocPdf,
     assetDirectory: "CADERA/Masterloc-Legible/output",
     assetPrefix: "masterloc",
@@ -121,7 +122,7 @@ const catalogDocuments: Record<string, CatalogDocument> = {
   }),
   "cadera/tallo-x-acta": createCatalogDocument({
     title: "Tallo X-Acta",
-    fileName: "Tallo X-Acta.pdf",
+    fileName: "Tallo X-acta - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     downloadUrl: xActaPdf,
     assetDirectory: "CADERA/X-Acta-Legible/output",
     assetPrefix: "x-acta",
@@ -129,7 +130,8 @@ const catalogDocuments: Record<string, CatalogDocument> = {
   }),
   "cadera/tallo-revision-vizion": createCatalogDocument({
     title: "Tallo de revisión Vizion",
-    fileName: "TALLO_REVISION_VIZION_CHACO_IMPLANTES_ES.pdf",
+    fileName:
+      "Tallo de Revision Vizion - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     downloadUrl: vizionPdf,
     assetDirectory: "CADERA/M-Vizion-Legible/output",
     assetPrefix: "m-vizion",
@@ -137,7 +139,7 @@ const catalogDocuments: Record<string, CatalogDocument> = {
   }),
   "cadera/tallo-femoral-sms": createCatalogDocument({
     title: "Tallo femoral SMS",
-    fileName: "TALLO_SMS_CHACO_IMPLANTES_ES.pdf",
+    fileName: "Tallo SMS - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     downloadUrl: smsPdf,
     assetDirectory: "CADERA/SMS-Legible/output",
     assetPrefix: "sms",
@@ -145,7 +147,7 @@ const catalogDocuments: Record<string, CatalogDocument> = {
   }),
   "cadera/sistema-quadra": createCatalogDocument({
     title: "Sistema Quadra",
-    fileName: "Tecnica Quirurgica Quadra.pdf",
+    fileName: "Sistema Quadra - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     downloadUrl: quadraPdf,
     assetDirectory: "CADERA/Quadra-Legible/output",
     assetPrefix: "quadra",
@@ -153,7 +155,7 @@ const catalogDocuments: Record<string, CatalogDocument> = {
   }),
   "cadera/versafitcup-cc-trio": createCatalogDocument({
     title: "VersafitCup CC Trio",
-    fileName: "VERSAFITCUP CC TRIO.pdf",
+    fileName: "Versafitcup CC Trio - Ficha Tecnica - CHACO IMPLANTES.pdf",
     downloadUrl: versafitcupCcTrioPdf,
     assetDirectory: "CADERA/Versafitcup-CC-Trio-Legible/output",
     assetPrefix: "versafitcup-cc-trio",
@@ -161,7 +163,7 @@ const catalogDocuments: Record<string, CatalogDocument> = {
   }),
   "rodilla/gmk-primary": createCatalogDocument({
     title: "GMK Primary",
-    fileName: "GMK Primaria.pdf",
+    fileName: "GMK Primary - Folleto - CHACO IMPLANTES.pdf",
     downloadUrl: gmkPrimaryPdf,
     assetDirectory: "RODILLA/GMK-Primary-Legible/output",
     assetPrefix: "gmk-primary",
@@ -169,7 +171,8 @@ const catalogDocuments: Record<string, CatalogDocument> = {
   }),
   "rodilla/gmk-sphere": createCatalogDocument({
     title: "GMK Sphere",
-    fileName: "RODILLA GMK.pdf",
+    fileName:
+      "Rodilla GMK Sphere - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     downloadUrl: gmkSpherePdf,
     assetDirectory: "RODILLA/GMK-Sphere-Legible/output",
     assetPrefix: "gmk-sphere",
@@ -177,7 +180,8 @@ const catalogDocuments: Record<string, CatalogDocument> = {
   }),
   "rodilla/gmk-primary-ps": createCatalogDocument({
     title: "GMK Primary PS",
-    fileName: "RODILLA_GMK_ESTABILIZADA_POSTERIOR_CHACO_IMPLANTES_ES.pdf",
+    fileName:
+      "Rodilla GMK Estabilizada Posterior - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     downloadUrl: gmkPrimaryPsPdf,
     assetDirectory: "RODILLA/GMK-Primary-PS-Legible/output",
     assetPrefix: "gmk-primary-ps",
@@ -185,7 +189,8 @@ const catalogDocuments: Record<string, CatalogDocument> = {
   }),
   "rodilla/rodilla-sphere-medial-pivot": createCatalogDocument({
     title: "Rodilla Sphere Medial Pivot",
-    fileName: "RODILLA_SPHERE_MEDIAL_PIVOT_CHACO_IMPLANTES_ES.pdf",
+    fileName:
+      "Rodilla Sphere Medial Pivot - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     downloadUrl: sphereMedialPivotPdf,
     assetDirectory: "RODILLA/Sphere-Medial-Pivot-Legible/output",
     assetPrefix: "sphere-medial-pivot",
@@ -193,7 +198,7 @@ const catalogDocuments: Record<string, CatalogDocument> = {
   }),
   "rodilla/gmk-revision": createCatalogDocument({
     title: "GMK Revision",
-    fileName: "Tecnica Quirurgica GMK Revision.pdf",
+    fileName: "GMK Revision - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     downloadUrl: gmkRevisionPdf,
     assetDirectory: "RODILLA/GMK-Revision-Legible/output",
     assetPrefix: "gmk-revision",
@@ -201,7 +206,7 @@ const catalogDocuments: Record<string, CatalogDocument> = {
   }),
   "rodilla/moto-medial": createCatalogDocument({
     title: "MOTO Medial",
-    fileName: "Tecnica Quirurgica MOTO Medial.pdf",
+    fileName: "MOTO Medial - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     downloadUrl: motoMedialPdf,
     assetDirectory: "RODILLA/MOTO-Medial-Legible/output",
     assetPrefix: "moto-medial",
@@ -209,7 +214,7 @@ const catalogDocuments: Record<string, CatalogDocument> = {
   }),
   "rodilla/nextar-knee": createCatalogDocument({
     title: "NextAR Knee",
-    fileName: "NEXTAR_CHACO_IMPLANTES_ES.pdf",
+    fileName: "NextAR Knee - Manual Tecnico - CHACO IMPLANTES.pdf",
     downloadUrl: nextarPdf,
     assetDirectory: "RODILLA/NextAR-Legible/output",
     assetPrefix: "nextar",
@@ -217,7 +222,7 @@ const catalogDocuments: Record<string, CatalogDocument> = {
   }),
   "columna/columna-must": createCatalogDocument({
     title: "Columna M.U.S.T.",
-    fileName: "COLUMNA_MUST_CHACO_IMPLANTES_ES.pdf",
+    fileName: "Columna MUST - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     downloadUrl: mustPdf,
     assetDirectory: "COLUMNA/MUST-Legible/output",
     assetPrefix: "must",
@@ -225,7 +230,8 @@ const catalogDocuments: Record<string, CatalogDocument> = {
   }),
   "hombro/hombro-anatomico": createCatalogDocument({
     title: "Hombro anatómico",
-    fileName: "HOMBRO_ANATOMICO_CHACO_IMPLANTES_ES.pdf",
+    fileName:
+      "Hombro Anatomico - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     downloadUrl: hombroAnatomicoPdf,
     assetDirectory: "HOMBROS/Hombro-Anatomico-Legible/output",
     assetPrefix: "hombro-anatomico",
@@ -233,7 +239,8 @@ const catalogDocuments: Record<string, CatalogDocument> = {
   }),
   "hombro/protesis-reversa-hombro": createCatalogDocument({
     title: "Prótesis reversa de hombro",
-    fileName: "PROTESIS_REVERSA_DE_HOMBRO_CHACO_IMPLANTES_ES.pdf",
+    fileName:
+      "Protesis Reversa de Hombro - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     downloadUrl: hombroReversoPdf,
     assetDirectory: "HOMBROS/Protesis-Reversa-Hombro-Legible/output",
     assetPrefix: "protesis-reversa-hombro",
@@ -241,7 +248,7 @@ const catalogDocuments: Record<string, CatalogDocument> = {
   }),
   "hombro/sistema-hombro": createCatalogDocument({
     title: "Sistema de hombro",
-    fileName: "Sistema de Hombro - Brochure.pdf",
+    fileName: "Sistema de Hombro - Folleto - CHACO IMPLANTES.pdf",
     downloadUrl: sistemaHombroPdf,
     assetDirectory: "HOMBROS/Sistema-Hombro-Legible/output",
     assetPrefix: "sistema-hombro",

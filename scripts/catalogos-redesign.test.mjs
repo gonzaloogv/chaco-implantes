@@ -68,7 +68,7 @@ const catalogDocumentFixtures = [
     assetDirectory: "CADERA/AMIS",
     assetPrefix: "amis",
     pageCount: 5,
-    pdfFile: "AMIS.pdf",
+    pdfFile: "AMIS - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     pdfVariable: "amisPdf",
   },
   {
@@ -76,7 +76,8 @@ const catalogDocumentFixtures = [
     assetDirectory: "CADERA/Versafitcup/output",
     assetPrefix: "versafitcup",
     pageCount: 5,
-    pdfFile: "CADERA_DOBLE_MOVILIDAD_VERSAFITCUP_CHACO_IMPLANTES_ES.pdf",
+    pdfFile:
+      "Versafitcup Doble Movilidad - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     pdfVariable: "cotiloDoblePdf",
   },
   {
@@ -84,7 +85,7 @@ const catalogDocumentFixtures = [
     assetDirectory: "CADERA/MPact-Legible/output",
     assetPrefix: "mpact",
     pageCount: 6,
-    pdfFile: "Folleto Sistema Mpact.pdf",
+    pdfFile: "Sistema Mpact - Folleto - CHACO IMPLANTES.pdf",
     pdfVariable: "mpactPdf",
   },
   {
@@ -92,7 +93,7 @@ const catalogDocumentFixtures = [
     assetDirectory: "CADERA/Masterloc-Legible/output",
     assetPrefix: "masterloc",
     pageCount: 6,
-    pdfFile: "TALLO MASTERLOC.pdf",
+    pdfFile: "Masterloc - Fundamento de Diseno - CHACO IMPLANTES.pdf",
     pdfVariable: "masterlocPdf",
   },
   {
@@ -100,7 +101,7 @@ const catalogDocumentFixtures = [
     assetDirectory: "CADERA/X-Acta-Legible/output",
     assetPrefix: "x-acta",
     pageCount: 7,
-    pdfFile: "Tallo X-Acta.pdf",
+    pdfFile: "Tallo X-acta - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     pdfVariable: "xActaPdf",
   },
   {
@@ -108,7 +109,8 @@ const catalogDocumentFixtures = [
     assetDirectory: "CADERA/M-Vizion-Legible/output",
     assetPrefix: "m-vizion",
     pageCount: 7,
-    pdfFile: "TALLO_REVISION_VIZION_CHACO_IMPLANTES_ES.pdf",
+    pdfFile:
+      "Tallo de Revision Vizion - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     pdfVariable: "vizionPdf",
   },
   {
@@ -116,7 +118,7 @@ const catalogDocumentFixtures = [
     assetDirectory: "CADERA/SMS-Legible/output",
     assetPrefix: "sms",
     pageCount: 6,
-    pdfFile: "TALLO_SMS_CHACO_IMPLANTES_ES.pdf",
+    pdfFile: "Tallo SMS - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     pdfVariable: "smsPdf",
   },
   {
@@ -124,7 +126,7 @@ const catalogDocumentFixtures = [
     assetDirectory: "CADERA/Quadra-Legible/output",
     assetPrefix: "quadra",
     pageCount: 7,
-    pdfFile: "Tecnica Quirurgica Quadra.pdf",
+    pdfFile: "Sistema Quadra - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     pdfVariable: "quadraPdf",
   },
   {
@@ -132,7 +134,7 @@ const catalogDocumentFixtures = [
     assetDirectory: "CADERA/Versafitcup-CC-Trio-Legible/output",
     assetPrefix: "versafitcup-cc-trio",
     pageCount: 7,
-    pdfFile: "VERSAFITCUP CC TRIO.pdf",
+    pdfFile: "Versafitcup CC Trio - Ficha Tecnica - CHACO IMPLANTES.pdf",
     pdfVariable: "versafitcupCcTrioPdf",
   },
   {
@@ -140,7 +142,7 @@ const catalogDocumentFixtures = [
     assetDirectory: "RODILLA/GMK-Primary-Legible/output",
     assetPrefix: "gmk-primary",
     pageCount: 7,
-    pdfFile: "GMK Primaria.pdf",
+    pdfFile: "GMK Primary - Folleto - CHACO IMPLANTES.pdf",
     pdfVariable: "gmkPrimaryPdf",
   },
   {
@@ -148,7 +150,7 @@ const catalogDocumentFixtures = [
     assetDirectory: "RODILLA/GMK-Sphere-Legible/output",
     assetPrefix: "gmk-sphere",
     pageCount: 7,
-    pdfFile: "RODILLA GMK.pdf",
+    pdfFile: "Rodilla GMK Sphere - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     pdfVariable: "gmkSpherePdf",
   },
   {
@@ -156,7 +158,8 @@ const catalogDocumentFixtures = [
     assetDirectory: "RODILLA/GMK-Primary-PS-Legible/output",
     assetPrefix: "gmk-primary-ps",
     pageCount: 6,
-    pdfFile: "RODILLA_GMK_ESTABILIZADA_POSTERIOR_CHACO_IMPLANTES_ES.pdf",
+    pdfFile:
+      "Rodilla GMK Estabilizada Posterior - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     pdfVariable: "gmkPrimaryPsPdf",
   },
   {
@@ -164,7 +167,8 @@ const catalogDocumentFixtures = [
     assetDirectory: "RODILLA/Sphere-Medial-Pivot-Legible/output",
     assetPrefix: "sphere-medial-pivot",
     pageCount: 6,
-    pdfFile: "RODILLA_SPHERE_MEDIAL_PIVOT_CHACO_IMPLANTES_ES.pdf",
+    pdfFile:
+      "Rodilla Sphere Medial Pivot - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     pdfVariable: "sphereMedialPivotPdf",
   },
   {
@@ -172,7 +176,7 @@ const catalogDocumentFixtures = [
     assetDirectory: "RODILLA/GMK-Revision-Legible/output",
     assetPrefix: "gmk-revision",
     pageCount: 7,
-    pdfFile: "Tecnica Quirurgica GMK Revision.pdf",
+    pdfFile: "GMK Revision - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     pdfVariable: "gmkRevisionPdf",
   },
   {
@@ -180,7 +184,7 @@ const catalogDocumentFixtures = [
     assetDirectory: "RODILLA/MOTO-Medial-Legible/output",
     assetPrefix: "moto-medial",
     pageCount: 5,
-    pdfFile: "Tecnica Quirurgica MOTO Medial.pdf",
+    pdfFile: "MOTO Medial - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     pdfVariable: "motoMedialPdf",
   },
   {
@@ -188,7 +192,7 @@ const catalogDocumentFixtures = [
     assetDirectory: "RODILLA/NextAR-Legible/output",
     assetPrefix: "nextar",
     pageCount: 6,
-    pdfFile: "NEXTAR_CHACO_IMPLANTES_ES.pdf",
+    pdfFile: "NextAR Knee - Manual Tecnico - CHACO IMPLANTES.pdf",
     pdfVariable: "nextarPdf",
   },
   {
@@ -196,7 +200,7 @@ const catalogDocumentFixtures = [
     assetDirectory: "COLUMNA/MUST-Legible/output",
     assetPrefix: "must",
     pageCount: 6,
-    pdfFile: "COLUMNA_MUST_CHACO_IMPLANTES_ES.pdf",
+    pdfFile: "Columna MUST - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     pdfVariable: "mustPdf",
   },
   {
@@ -204,7 +208,8 @@ const catalogDocumentFixtures = [
     assetDirectory: "HOMBROS/Hombro-Anatomico-Legible/output",
     assetPrefix: "hombro-anatomico",
     pageCount: 7,
-    pdfFile: "HOMBRO_ANATOMICO_CHACO_IMPLANTES_ES.pdf",
+    pdfFile:
+      "Hombro Anatomico - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     pdfVariable: "hombroAnatomicoPdf",
   },
   {
@@ -212,7 +217,8 @@ const catalogDocumentFixtures = [
     assetDirectory: "HOMBROS/Protesis-Reversa-Hombro-Legible/output",
     assetPrefix: "protesis-reversa-hombro",
     pageCount: 5,
-    pdfFile: "PROTESIS_REVERSA_DE_HOMBRO_CHACO_IMPLANTES_ES.pdf",
+    pdfFile:
+      "Protesis Reversa de Hombro - Tecnica Quirurgica - CHACO IMPLANTES.pdf",
     pdfVariable: "hombroReversoPdf",
   },
   {
@@ -220,7 +226,7 @@ const catalogDocumentFixtures = [
     assetDirectory: "HOMBROS/Sistema-Hombro-Legible/output",
     assetPrefix: "sistema-hombro",
     pageCount: 6,
-    pdfFile: "Sistema de Hombro - Brochure.pdf",
+    pdfFile: "Sistema de Hombro - Folleto - CHACO IMPLANTES.pdf",
     pdfVariable: "sistemaHombroPdf",
   },
 ];
