@@ -55,13 +55,22 @@ async function assertProcessManagementContract() {
   );
 
   const windowsPlan = getPreviewProcessPlan("win32");
-  assert.equal(
-    windowsPlan.command,
-    "npm run preview -- --host 127.0.0.1 --port 4332",
-  );
-  assert.equal(windowsPlan.args, undefined);
-  assert.equal(windowsPlan.options.shell, true);
+  assert.equal(windowsPlan.command, process.execPath);
+  assert.deepEqual(windowsPlan.args, [
+    path.join(root, "node_modules", "astro", "bin", "astro.mjs"),
+    "preview",
+    "--host",
+    host,
+    "--port",
+    String(port),
+  ]);
+  assert.equal(windowsPlan.options.shell, false);
   assert.equal(windowsPlan.options.detached, undefined);
+  assert.equal(
+    windowsPlan.options.env.ASTRO_PREVIEW_BACKGROUND,
+    "0",
+    "Astro 7 no debe convertir la vista previa de la prueba en un proceso de fondo.",
+  );
 
   const signals = [];
   assert.equal(
@@ -293,11 +302,22 @@ function getPreviewProcessPlan(platform = process.platform) {
 
   if (platform === "win32") {
     return {
-      command: "npm run preview -- --host 127.0.0.1 --port 4332",
-      args: undefined,
+      command: process.execPath,
+      args: [
+        path.join(root, "node_modules", "astro", "bin", "astro.mjs"),
+        "preview",
+        "--host",
+        host,
+        "--port",
+        String(port),
+      ],
       options: {
         ...options,
-        shell: true,
+        env: {
+          ...options.env,
+          ASTRO_PREVIEW_BACKGROUND: "0",
+        },
+        shell: false,
       },
     };
   }
