@@ -195,6 +195,7 @@ export const supplierSystems: SupplierSystem[] = [
     logoHeight: 855,
     logoClass: "supplier-logo-wide",
   },
+  /*
   {
     name: "Implantes Villalba",
     href: "https://implantesvillalba.com.ar/",
@@ -204,6 +205,7 @@ export const supplierSystems: SupplierSystem[] = [
     logoHeight: 780,
     logoClass: "supplier-logo-tall",
   },
+  */
   {
     name: "RosMedical",
     href: "https://ros-medical.com/",

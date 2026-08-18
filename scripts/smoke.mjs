@@ -324,7 +324,6 @@ for (const optimizedSupplierLogo of [
   "f_auto,q_auto,c_limit,w_600/v1785295619/BONSS_hbor6w.png",
   "f_auto,q_auto,c_limit,w_600/v1785295629/RosMedical_nomflr.png",
   "f_auto,q_auto,c_limit,w_600/v1785295625/Medacta_international_fxxqfm.png",
-  "f_auto,q_auto,c_limit,w_600/v1785295621/Implantes_Villalba_pan8nq.png",
 ]) {
   assert(
     home.includes(optimizedSupplierLogo),
@@ -363,10 +362,10 @@ assert(
 );
 assert(home.includes("MEDACTA"), "Brands section should mention Medacta");
 assert(home.includes("BONSS"), "Brands section should mention BONSS");
-assert(home.includes("Implantes Villalba"), "Brands section should mention Implantes Villalba");
+assert(!home.includes("Implantes Villalba"), "Brands section should keep Implantes Villalba hidden");
 assert(home.includes('href="https://www.medacta.com/"'), "Medacta brand card should link to the official site");
 assert(home.includes('href="https://es.bonss.com.cn/"'), "BONSS brand card should link to the official site");
-assert(home.includes('href="https://implantesvillalba.com.ar/"'), "Villalba brand card should link to the official site");
+assert(!home.includes('href="https://implantesvillalba.com.ar/"'), "Villalba brand card should remain hidden");
 assert(home.includes('href="https://ros-medical.com/"'), "RosMedical brand card should link to the official site");
 assert(!home.includes("data-institution-card"), "Institutional CTA should be fused into the commercial band");
 assert(home.includes("Consultas comerciales e institucionales"), "Commercial band should cover commercial and institutional contact");

@@ -112,7 +112,7 @@ try {
     const supplierCount = await page
       .locator("[data-home-supplier-mark]")
       .count();
-    assert.equal(supplierCount, 4, `${testCase.name}: four supplier marks`);
+    assert.equal(supplierCount, 3, `${testCase.name}: three supplier marks`);
 
     const supportStepCount = await page
       .locator("[data-home-support-step]")

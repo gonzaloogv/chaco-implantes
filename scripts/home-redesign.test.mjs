@@ -182,7 +182,6 @@ test("uses the approved optimized supplier logos", () => {
     "f_auto,q_auto,c_limit,w_600/v1785295619/BONSS_hbor6w.png",
     "f_auto,q_auto,c_limit,w_600/v1785295629/RosMedical_nomflr.png",
     "f_auto,q_auto,c_limit,w_600/v1785295625/Medacta_international_fxxqfm.png",
-    "f_auto,q_auto,c_limit,w_600/v1785295621/Implantes_Villalba_pan8nq.png",
   ]) {
     assert.ok(siteSource.includes(logo), `missing optimized supplier logo: ${logo}`);
   }
