@@ -53,7 +53,7 @@ const [featuredCategory, ...secondaryCategories] = featuredCategories;
                 <span class="h-2 w-2 rounded-full bg-primary shadow-[0_0_10px_rgba(74,144,196,0.9)]"></span>
                 {slide.eyebrow}
               </span>
-              <h2 class="home-hero-title mt-5 font-display text-4xl font-black leading-[1.02] text-white sm:text-5xl lg:text-7xl">
+              <h2 class="home-hero-title mt-5 font-display font-black leading-[1.04] text-white">
                 {slide.title}
               </h2>
               <p class="home-hero-copy mt-5 max-w-2xl text-base leading-relaxed text-brand sm:text-xl">{slide.text}</p>
@@ -234,7 +234,7 @@ const [featuredCategory, ...secondaryCategories] = featuredCategories;
             href={item.href}
             target="_blank"
             rel="noopener noreferrer"
-            class="home-supplier-mark"
+            class:list={["home-supplier-mark", item.featured && "home-supplier-mark--featured"]}
             aria-label={`Visitar sitio de ${item.name}`}
           >
             <div data-home-supplier-logo class="home-supplier-mark__logo">
@@ -245,19 +245,17 @@ const [featuredCategory, ...secondaryCategories] = featuredCategories;
                 height={item.logoHeight}
                 loading="lazy"
                 decoding="async"
-                class:list={["supplier-logo", item.logoClass]}
+                class="supplier-logo"
+                style={`--logo-aspect: ${(item.logoWidth / item.logoHeight).toFixed(3)}`}
               />
             </div>
-            <div class="home-supplier-mark__footer">
-              <span class="home-supplier-mark__name">{item.name}</span>
-              <span
-                data-home-supplier-link-cue
-                class="home-supplier-mark__arrow"
-                aria-hidden="true"
-              >
-                <Icon name="arrow-right" class="h-3.5 w-3.5" />
-              </span>
-            </div>
+            <span
+              data-home-supplier-link-cue
+              class="home-supplier-mark__arrow"
+              aria-hidden="true"
+            >
+              <Icon name="arrow-right" class="h-3.5 w-3.5" />
+            </span>
           </a>
         ))}
         <a

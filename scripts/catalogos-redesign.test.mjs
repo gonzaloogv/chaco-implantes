@@ -785,36 +785,35 @@ test("El visor muestra cada página completa respetando la proporción del folle
   assert.doesNotMatch(productStyles, /height:\s*clamp\(29rem,\s*132vw,\s*36rem\)/);
 });
 
-test("El visor se ajusta a escritorios de poca altura sin usar 100vh rígido", () => {
+test("El visor se ajusta a escritorios de poca altura sin franjas laterales", () => {
   const compactDesktopStyles =
     productStyles.match(
       /@media \(min-width:\s*60\.0625rem\) and \(max-height:\s*71\.875rem\)\s*{([\s\S]*?)\n}\n\n@media \(max-width:\s*60rem\)/,
     )?.[1] ?? "";
-  const compactFigureRule =
+  const compactLayoutRule =
     compactDesktopStyles.match(
-      /\.catalog-document-canvas figure\s*{([^}]*)}/,
+      /\.catalog-product-layout\s*{([^}]*)}/,
     )?.[1] ?? "";
 
   assert.match(
     productStyles,
     /@media \(min-width:\s*60\.0625rem\) and \(max-height:\s*71\.875rem\)/,
   );
+  // La columna del visor toma el ancho de la hoja A4 que entra en la altura disponible
   assert.match(
-    productStyles,
-    /\.catalog-document-viewer\s*{[\s\S]*?height:\s*min\(calc\(100dvh - 5\.75rem\),\s*65rem\)/,
+    compactLayoutRule,
+    /--viewer-fit-height:\s*calc\(\s*min\(100dvh - 5\.75rem,\s*65rem\)/,
   );
   assert.match(
-    productStyles,
-    /\.catalog-document-canvas\s*{[\s\S]*?min-height:\s*0[\s\S]*?aspect-ratio:\s*auto/,
+    compactLayoutRule,
+    /--viewer-page-width:\s*max\(\s*34rem,\s*calc\(var\(--viewer-fit-height\) \* 1200 \/ 1698\)/,
   );
   assert.match(
-    compactFigureRule,
-    /min-height:\s*0/,
+    compactLayoutRule,
+    /grid-template-columns:\s*min\(calc\(var\(--viewer-page-width\) \+ var\(--viewer-frame-x\)\),\s*64%\)/,
   );
-  assert.match(
-    compactFigureRule,
-    /grid-template-rows:\s*minmax\(0,\s*1fr\)/,
-  );
+  // El lienzo conserva la proporción del folleto: la hoja ocupa todo su ancho
+  assert.doesNotMatch(compactDesktopStyles, /aspect-ratio:\s*auto/);
   assert.doesNotMatch(
     productStyles,
     /\.catalog-document-canvas img\s*{\s*width:\s*auto/,

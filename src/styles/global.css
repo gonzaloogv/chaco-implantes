@@ -74,8 +74,8 @@
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
   --color-ink: var(--ink);
-  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Montserrat", "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-montserrat), var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
   --color-border-white-subtle: var(--border-white-subtle);
 }
 
@@ -96,9 +96,7 @@ body {
     radial-gradient(circle at 20% 0%, rgba(74, 144, 196, 0.2), transparent 34rem),
     linear-gradient(150deg, #0f172a 0%, #192338 46%, #1e2e4f 100%);
   color: var(--foreground);
-  font-family:
-    "Poppins", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+  font-family: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -217,11 +215,6 @@ svg {
   transition:
     color 200ms var(--ease-out),
     opacity 200ms var(--ease-out);
-}
-
-.catalog-card-link {
-  color: var(--primary-foreground);
-  text-shadow: 0 1px 14px rgba(25, 35, 56, 0.35);
 }
 
 .contact-link {
@@ -367,6 +360,34 @@ svg {
   border-color: transparent;
   backdrop-filter: none;
   box-shadow: none;
+}
+
+/* Velo superior: mantiene legible el menú transparente aunque la foto del
+   hero sea clara detrás de los links. Se desvanece al compactar el header. */
+.site-header::before {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: -1;
+  height: calc(100% + 3rem);
+  background: linear-gradient(
+    180deg,
+    rgba(8, 22, 42, 0.78) 0%,
+    rgba(8, 22, 42, 0.46) 55%,
+    rgba(8, 22, 42, 0) 100%
+  );
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms var(--ease-out);
+}
+
+.site-header[data-transparent="true"]::before {
+  opacity: 1;
+}
+
+.site-header[data-transparent="true"] .nav-link {
+  opacity: 0.92;
+  text-shadow: 0 1px 12px rgba(4, 14, 30, 0.55);
 }
 
 /* Menú abierto: fondo sólido inmediato sin colapsar el logo grande. */
@@ -537,14 +558,6 @@ svg {
   background-image: radial-gradient(circle, rgba(217, 225, 241, 0.86) 1.5px, transparent 1.8px);
   background-size: 10px 10px;
   mask-image: linear-gradient(90deg, black 0%, transparent 100%);
-}
-
-.catalog-chip {
-  border-color: color-mix(in srgb, var(--primary) 46%, transparent);
-}
-
-.catalog-card-divider {
-  border-top-color: color-mix(in srgb, var(--primary) 28%, transparent);
 }
 
 .accent-icon-chip {
@@ -822,10 +835,6 @@ svg {
 
   .link-primary-soft:hover {
     opacity: 1;
-  }
-
-  .catalog-card-link:hover {
-    color: var(--brand);
   }
 
   .contact-link:hover {

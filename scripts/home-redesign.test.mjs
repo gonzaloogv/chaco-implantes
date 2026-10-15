@@ -92,7 +92,7 @@ test("declares the approved editorial order and retained data mappings", () => {
   assert.doesNotMatch(indexSource, /home-accent-rail/);
 });
 
-test("curates complete catalog previews without changing the home card structure", () => {
+test("curates complete catalog previews with the image above the card copy", () => {
   const featuredSlugs = siteSource.match(
     /export const featuredCatalogSlugs = \[([\s\S]*?)\] as const;/,
   );
@@ -115,13 +115,18 @@ test("curates complete catalog previews without changing the home card structure
     /data-catalog-category=\{category\.slug\}/,
   );
   assert.match(
-    homeCss,
-    /\.home-page \[data-catalog-image-card\] > img\s*\{[^}]*object-fit:\s*contain/s,
+    catalogCardSource,
+    /class="line-card__media"[\s\S]*class="line-card__body"/,
   );
   assert.match(
     homeCss,
-    /\[data-catalog-category="cadera"\] > img/,
+    /\.home-page \[data-catalog-image-card\] \.line-card__media img\s*\{[^}]*object-fit:\s*contain[^}]*object-position:\s*center/s,
   );
+  assert.match(
+    homeCss,
+    /\.home-page \.catalog-image-card\s*\{[^}]*grid-template-rows:\s*minmax\(0,\s*1fr\)\s+auto/s,
+  );
+  assert.doesNotMatch(catalogCardSource, /line-clamp/);
 
   for (const previewPath of [
     "/catalogos/previews/osteosintesis-maxilofacial.png",
@@ -178,10 +183,14 @@ test("uses the approved optimized Cloudinary images in the home", () => {
 });
 
 test("uses the approved optimized supplier logos", () => {
+  assert.match(
+    siteSource,
+    /const SUPPLIER_LOGO_TRANSFORM = "e_trim,f_auto,q_auto,c_limit,w_600";/,
+  );
   for (const logo of [
-    "f_auto,q_auto,c_limit,w_600/v1785295619/BONSS_hbor6w.png",
-    "f_auto,q_auto,c_limit,w_600/v1785295629/RosMedical_nomflr.png",
-    "f_auto,q_auto,c_limit,w_600/v1785295625/Medacta_international_fxxqfm.png",
+    "${SUPPLIER_LOGO_TRANSFORM}/v1785295619/BONSS_hbor6w.png",
+    "${SUPPLIER_LOGO_TRANSFORM}/v1785295629/RosMedical_nomflr.png",
+    "${SUPPLIER_LOGO_TRANSFORM}/v1785295625/Medacta_international_fxxqfm.png",
   ]) {
     assert.ok(siteSource.includes(logo), `missing optimized supplier logo: ${logo}`);
   }
@@ -302,28 +311,28 @@ test("presents supplier brands as crystal cards with optically balanced logos", 
   );
   assert.match(
     homeCss,
-    /\.home-supplier-mark__logo\s*\{[^}]*min-height:\s*4rem[^}]*align-items:\s*center/s,
+    /\.home-supplier-mark__logo\s*\{[^}]*min-height:\s*4rem[^}]*align-items:\s*center[^}]*justify-content:\s*center/s,
   );
 
-  for (const logoClass of ["wide", "mark", "tall", "ross"]) {
-    assert.match(
-      homeCss,
-      new RegExp(
-        `\\.supplier-logo-${logoClass}\\s*\\{[^}]*--supplier-logo-scale:`,
-        "s",
-      ),
-      `missing optical scale for supplier-logo-${logoClass}`,
-    );
-  }
+  // Sin etiqueta de texto: el logo es la marca
+  assert.doesNotMatch(indexSource, /home-supplier-mark__name/);
+  // Mismo peso óptico: el ancho escala con la raíz de la proporción del logo recortado
+  assert.match(indexSource, /--logo-aspect: \$\{\(item\.logoWidth \/ item\.logoHeight\)/);
+  assert.match(
+    homeCss,
+    /\.supplier-logo\s*\{[^}]*width:\s*min\(\s*100%,\s*calc\(var\(--supplier-logo-area\) \* sqrt\(var\(--logo-aspect/s,
+  );
+  assert.doesNotMatch(homeCss, /\.supplier-logo-(wide|mark|tall|ross)/);
+});
 
+test("gives Medacta a featured full-width supplier card", () => {
+  assert.match(siteSource, /name: "MEDACTA",[\s\S]*?featured: true,/);
+  assert.match(indexSource, /item\.featured && "home-supplier-mark--featured"/);
   assert.match(
     homeCss,
-    /\.supplier-logo-wide\s*\{[^}]*--supplier-logo-scale:\s*1\.12/s,
+    /\.home-supplier-mark--featured\s*\{[^}]*grid-column:\s*1\s*\/\s*-1/s,
   );
-  assert.match(
-    homeCss,
-    /\.supplier-logo-ross\s*\{[^}]*--supplier-logo-scale:\s*1\.3/s,
-  );
+  assert.doesNotMatch(homeCss, /\.home-supplier-mark:first-child/);
 });
 
 test("defines the editorial layout without legacy symmetry rules", () => {

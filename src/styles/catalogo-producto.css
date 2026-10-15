@@ -533,36 +533,33 @@
   align-content: center;
 }
 
+/* Escritorios de poca altura: la columna del visor toma el ancho exacto de la
+   hoja A4 que entra en la pantalla, así no quedan franjas a los lados y el
+   panel lateral aprovecha el resto. Si la hoja quedaría demasiado chica
+   (pantallas muy bajas), se fija un mínimo legible y el visor se extiende. */
 @media (min-width: 60.0625rem) and (max-height: 71.875rem) {
   .catalog-product-layout {
-    grid-template-columns: minmax(0, 1.55fr) minmax(18rem, 1fr);
+    --viewer-frame-x: 1.8rem;
+    --viewer-chrome-y: 10rem;
+    --viewer-fit-height: calc(
+      min(100dvh - 5.75rem, 65rem) - var(--viewer-chrome-y)
+    );
+    --viewer-page-width: max(
+      34rem,
+      calc(var(--viewer-fit-height) * 1200 / 1698)
+    );
+    grid-template-columns:
+      min(calc(var(--viewer-page-width) + var(--viewer-frame-x)), 64%)
+      minmax(18rem, 1fr);
   }
 
   .catalog-document-viewer {
-    display: grid;
-    grid-template-rows: auto minmax(0, 1fr) auto;
-    height: min(calc(100dvh - 5.75rem), 65rem);
     padding: 0.9rem;
   }
 
   .catalog-document-toolbar {
     min-height: 2.3rem;
     padding-bottom: 0.5rem;
-  }
-
-  .catalog-document-canvas {
-    height: 100%;
-    min-height: 0;
-    aspect-ratio: auto;
-  }
-
-  .catalog-document-canvas figure {
-    display: grid;
-    grid-template-rows: minmax(0, 1fr);
-    min-width: 0;
-    min-height: 0;
-    place-items: center;
-    overflow: hidden;
   }
 
   .catalog-document-navigation {
