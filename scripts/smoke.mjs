@@ -346,7 +346,7 @@ assert(home.includes("Productos para traumatología"), "Home should clarify the 
 assert(!home.includes("Al servicio de la salud"), "Home should not render the old health-service tagline");
 assert(home.includes("/catalogos/previews/VERSAFITCUP_2.webp"), "Home catalog cards should use the supplied local catalog previews");
 assert((home.match(/data-catalog-image-card/g) ?? []).length >= 6, "Home should render image-backed catalog cards");
-assert(home.includes("catalog-card-link"), "Catalog cards should render a text-style CTA link");
+assert(home.includes("line-card__link"), "Featured catalog card should render a text-style CTA link");
 assert(!home.includes("catalog-card-cta"), "Catalog cards should not render the catalog action as a button");
 assert((catalogos.match(/data-catalog-category/g) ?? []).length === 9, "Catalog page should render every category as an image-backed card");
 assert(catalogos.includes("page-hero-dark"), "Catalog page should use the dark premium page hero");
@@ -772,7 +772,6 @@ assert(/\[data-gallery-grid\]\[data-filtering="true"\]\s*\.gallery-card:not\(\.h
 assert(/\.catalog-image-card:hover img[\s\S]*transform:\s*scale\(1\.05\)/.test(globalCss), "Image catalog cards should zoom their photography subtly on hover");
 assert(/\.catalog-image-card:focus-visible[\s\S]*border-color/.test(globalCss), "Catalog image cards should have a clear focus motion state");
 assert(/\.catalog-product-card:focus-within[\s\S]*border-color/.test(globalCss), "Catalog product cards should have a clear focus-within motion state");
-assert(/\.catalog-card-link\s*{[\s\S]*color:\s*var\(--primary-foreground\)/.test(globalCss), "Catalog card links should render as white text over image cards");
 assert(/\.contact-field\s*{[\s\S]*background-color:\s*var\(--popover\)/.test(globalCss), "Contact fields should use a white background");
 assert(/\.contact-field\s*{[\s\S]*border-color:\s*color-mix\(in srgb, var\(--brand\) 48%, white\)/.test(globalCss), "Contact fields should use a soft brand border");
 assert(/\.contact-field::placeholder\s*{[\s\S]*color:\s*var\(--deep\)/.test(globalCss), "Contact field placeholders should render dark blue");

@@ -1,4 +1,5 @@
 ---
+import { Font } from "astro:assets";
 import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
@@ -50,12 +51,8 @@ const ogImage = new URL(image, site.baseUrl).toString();
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="preconnect" href="https://res.cloudinary.com" />
     <link rel="preload" as="image" href={images.logoCircularWhite} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Poppins:wght@400;500;600;700&display=swap"
-    />
+    <Font cssVariable="--font-poppins" preload={[{ weight: "400" }]} />
+    <Font cssVariable="--font-montserrat" preload={[{ weight: "900" }]} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Organization",

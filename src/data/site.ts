@@ -139,7 +139,7 @@ export type HeroSlide = {
 export const heroSlides: HeroSlide[] = [
   {
     eyebrow: "NextAR · Planificación 3D",
-    title: "Tecnología aplicada a procedimientos de alta precisión",
+    title: "Tecnología para cirugías de alta precisión",
     text: "Planificación personalizada, realidad aumentada y soporte visual para acompañar el flujo quirúrgico con información clara en cada etapa.",
     ctaLabel: "Consultar tecnología",
     href: "/contacto",
@@ -171,49 +171,50 @@ export type SupplierSystem = {
   href: string;
   logo: string;
   logoAlt: string;
+  // Dimensiones del logo ya recortado (e_trim): definen su proporción para igualar el peso óptico
   logoWidth: number;
   logoHeight: number;
-  logoClass: "supplier-logo-mark" | "supplier-logo-wide" | "supplier-logo-tall" | "supplier-logo-ross";
+  featured?: boolean;
 };
+
+// e_trim quita el margen transparente de cada PNG para que todos los logos se midan igual
+const SUPPLIER_LOGO_TRANSFORM = "e_trim,f_auto,q_auto,c_limit,w_600";
 
 export const supplierSystems: SupplierSystem[] = [
   {
     name: "MEDACTA",
     href: "https://www.medacta.com/",
-    logo: `${CLOUDINARY_BASE}/f_auto,q_auto,c_limit,w_600/v1785295625/Medacta_international_fxxqfm.png`,
+    logo: `${CLOUDINARY_BASE}/${SUPPLIER_LOGO_TRANSFORM}/v1785295625/Medacta_international_fxxqfm.png`,
     logoAlt: "Logo de Medacta International",
-    logoWidth: 2193,
-    logoHeight: 823,
-    logoClass: "supplier-logo-mark",
+    logoWidth: 599,
+    logoHeight: 220,
+    featured: true,
   },
   {
     name: "BONSS",
     href: "https://es.bonss.com.cn/",
-    logo: `${CLOUDINARY_BASE}/f_auto,q_auto,c_limit,w_600/v1785295619/BONSS_hbor6w.png`,
+    logo: `${CLOUDINARY_BASE}/${SUPPLIER_LOGO_TRANSFORM}/v1785295619/BONSS_hbor6w.png`,
     logoAlt: "Logo de BONSS Medical",
-    logoWidth: 1840,
-    logoHeight: 855,
-    logoClass: "supplier-logo-wide",
+    logoWidth: 563,
+    logoHeight: 162,
   },
   /*
   {
     name: "Implantes Villalba",
     href: "https://implantesvillalba.com.ar/",
-    logo: `${CLOUDINARY_BASE}/f_auto,q_auto,c_limit,w_600/v1785295621/Implantes_Villalba_pan8nq.png`,
+    logo: `${CLOUDINARY_BASE}/${SUPPLIER_LOGO_TRANSFORM}/v1785295621/Implantes_Villalba_pan8nq.png`,
     logoAlt: "Logo de Implantes Villalba",
-    logoWidth: 1787,
-    logoHeight: 780,
-    logoClass: "supplier-logo-tall",
+    logoWidth: 595,
+    logoHeight: 262,
   },
   */
   {
     name: "RosMedical",
     href: "https://ros-medical.com/",
-    logo: `${CLOUDINARY_BASE}/f_auto,q_auto,c_limit,w_600/v1785295629/RosMedical_nomflr.png`,
+    logo: `${CLOUDINARY_BASE}/${SUPPLIER_LOGO_TRANSFORM}/v1785295629/RosMedical_nomflr.png`,
     logoAlt: "Logo de RosMedical",
-    logoWidth: 1874,
-    logoHeight: 839,
-    logoClass: "supplier-logo-ross",
+    logoWidth: 527,
+    logoHeight: 123,
   },
 ] as const;
 
@@ -557,7 +558,7 @@ export const featuredCategories = featuredCatalogSlugs
 
 // Último evento institucional destacado — compartido entre la home y la página Eventos
 export const featuredEvent = {
-  badge: "Noviembre 2024",
+  badge: "Último congreso",
   title: "61° Congreso Argentino de Ortopedia y Traumatología",
   venue: "Hotel Hilton, Buenos Aires",
   description:

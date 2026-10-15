@@ -1,0 +1,13 @@
+# Fuerza LF en el working copy: los tests leen el código fuente con regex que esperan "\n"
+* text=auto eol=lf
+
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.mp4 binary

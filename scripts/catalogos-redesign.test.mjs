@@ -45,14 +45,6 @@ const catalogDocumentsSource = await readFile(
   new URL("../src/data/catalog-documents.ts", import.meta.url),
   "utf8",
 ).catch(() => "");
-let catalogViewerScrollModule;
-try {
-  catalogViewerScrollModule = await import(
-    "../src/scripts/catalog-viewer-scroll.mjs"
-  );
-} catch {
-  catalogViewerScrollModule = {};
-}
 let catalogViewerZoomModule;
 try {
   catalogViewerZoomModule = await import(
@@ -785,36 +777,35 @@ test("El visor muestra cada página completa respetando la proporción del folle
   assert.doesNotMatch(productStyles, /height:\s*clamp\(29rem,\s*132vw,\s*36rem\)/);
 });
 
-test("El visor se ajusta a escritorios de poca altura sin usar 100vh rígido", () => {
+test("El visor se ajusta a escritorios de poca altura sin franjas laterales", () => {
   const compactDesktopStyles =
     productStyles.match(
       /@media \(min-width:\s*60\.0625rem\) and \(max-height:\s*71\.875rem\)\s*{([\s\S]*?)\n}\n\n@media \(max-width:\s*60rem\)/,
     )?.[1] ?? "";
-  const compactFigureRule =
+  const compactLayoutRule =
     compactDesktopStyles.match(
-      /\.catalog-document-canvas figure\s*{([^}]*)}/,
+      /\.catalog-product-layout\s*{([^}]*)}/,
     )?.[1] ?? "";
 
   assert.match(
     productStyles,
     /@media \(min-width:\s*60\.0625rem\) and \(max-height:\s*71\.875rem\)/,
   );
+  // La columna del visor toma el ancho de la hoja A4 que entra en la altura disponible
   assert.match(
-    productStyles,
-    /\.catalog-document-viewer\s*{[\s\S]*?height:\s*min\(calc\(100dvh - 5\.75rem\),\s*65rem\)/,
+    compactLayoutRule,
+    /--viewer-fit-height:\s*calc\(\s*min\(100dvh - 5\.75rem,\s*65rem\)/,
   );
   assert.match(
-    productStyles,
-    /\.catalog-document-canvas\s*{[\s\S]*?min-height:\s*0[\s\S]*?aspect-ratio:\s*auto/,
+    compactLayoutRule,
+    /--viewer-page-width:\s*max\(\s*34rem,\s*calc\(var\(--viewer-fit-height\) \* 1200 \/ 1698\)/,
   );
   assert.match(
-    compactFigureRule,
-    /min-height:\s*0/,
+    compactLayoutRule,
+    /grid-template-columns:\s*min\(calc\(var\(--viewer-page-width\) \+ var\(--viewer-frame-x\)\),\s*64%\)/,
   );
-  assert.match(
-    compactFigureRule,
-    /grid-template-rows:\s*minmax\(0,\s*1fr\)/,
-  );
+  // El lienzo conserva la proporción del folleto: la hoja ocupa todo su ancho
+  assert.doesNotMatch(compactDesktopStyles, /aspect-ratio:\s*auto/);
   assert.doesNotMatch(
     productStyles,
     /\.catalog-document-canvas img\s*{\s*width:\s*auto/,
@@ -831,11 +822,13 @@ test("El visor conserva la composición 65 35 y colapsa correctamente en móvil"
     productStyles.match(/\.catalog-product-content\s*{([^}]*)}/)?.[1] ?? "";
   assert.match(
     productStyles,
-    /\.catalog-product-hero\s*{[\s\S]*?padding-block:\s*clamp\(6rem,\s*7\.5vw,\s*6\.5rem\)\s+clamp\(7rem,\s*10vw,\s*8rem\)/,
+    /\.catalog-product-hero\s*{[\s\S]*?padding-block:\s*clamp\(6rem,\s*7\.5vw,\s*6\.5rem\)\s+clamp\(3\.5rem,\s*5vw,\s*4\.5rem\)/,
   );
+  // El visor y la ficha arrancan debajo del encabezado azul, sin superponerse
+  assert.doesNotMatch(productContentRule, /margin-top:\s*-/);
   assert.match(
     productContentRule,
-    /margin-top:\s*-5\.5rem/,
+    /padding-block:\s*clamp\(2\.5rem,\s*4vw,\s*3\.5rem\)/,
   );
   assert.match(
     productStyles,
@@ -849,66 +842,26 @@ test("El visor conserva la composición 65 35 y colapsa correctamente en móvil"
   assert.match(productStyles, /prefers-reduced-motion:\s*reduce/);
 });
 
-test("El visor elimina progresivamente el solapamiento y la ficha conserva su recorrido sticky", () => {
-  assert.equal(
-    typeof catalogViewerScrollModule.computeViewerRevealOffset,
-    "function",
-  );
-  assert.equal(
-    typeof catalogViewerScrollModule.computeViewerMaximumShift,
-    "function",
-  );
-  assert.equal(
-    catalogViewerScrollModule.computeViewerMaximumShift({
-      endSpacing: 102,
-      overlap: 88,
-    }),
-    190,
-  );
-  assert.equal(
-    catalogViewerScrollModule.computeViewerRevealOffset({
-      maxShift: 88,
-      reducedMotion: false,
-      scrollY: 0,
-    }),
-    0,
-  );
-  assert.equal(
-    catalogViewerScrollModule.computeViewerRevealOffset({
-      maxShift: 88,
-      reducedMotion: false,
-      scrollY: 44,
-    }),
-    44,
-  );
-  assert.equal(
-    catalogViewerScrollModule.computeViewerRevealOffset({
-      maxShift: 88,
-      reducedMotion: false,
-      scrollY: 120,
-    }),
-    88,
-  );
-  assert.equal(
-    catalogViewerScrollModule.computeViewerRevealOffset({
-      maxShift: 88,
-      reducedMotion: true,
-      scrollY: 0,
-    }),
-    88,
-  );
-  assert.match(productPageSource, /data-catalog-product-hero/);
-  assert.match(productPageSource, /data-catalog-product-content/);
-  assert.match(productPageSource, /computeViewerMaximumShift/);
-  assert.match(productPageSource, /getComputedStyle\(content\)\.paddingBottom/);
-  assert.match(productPageSource, /computeViewerRevealOffset/);
-  assert.match(productPageSource, /requestAnimationFrame/);
-  assert.match(
-    productStyles,
-    /\.catalog-document-viewer\s*{[\s\S]*?margin-bottom:\s*var\(--catalog-viewer-max-shift,\s*0px\)[\s\S]*?transform:\s*translateY\(var\(--catalog-viewer-reveal-offset,\s*0px\)\)/,
-  );
+test("El visor queda fijo en su lugar y la ficha conserva su recorrido sticky", () => {
+  assert.doesNotMatch(productPageSource, /catalog-viewer-scroll|computeViewerRevealOffset/);
+  assert.doesNotMatch(productStyles, /--catalog-viewer-max-shift|--catalog-viewer-reveal-offset/);
   assert.match(
     productStyles,
     /\.catalog-product-panel\s*{[\s\S]*?position:\s*sticky[\s\S]*?top:\s*6rem/,
+  );
+});
+
+test("La ficha sugiere otros productos de la misma especialidad", () => {
+  assert.match(productPageSource, /const RELATED_LIMIT = 4;/);
+  assert.match(
+    productPageSource,
+    /catalogProducts\.filter\(\s*\(item\) => item\.categorySlug === product\.categorySlug/,
+  );
+  assert.match(productPageSource, /relatedProducts\.length > 0 &&/);
+  assert.match(productPageSource, /data-catalog-related-product/);
+  assert.match(productPageSource, /Otros sistemas de \{categoryTitle\.toLowerCase\(\)\}/);
+  assert.match(
+    productStyles,
+    /\.catalog-related__grid\s*{[^}]*grid-template-columns:\s*repeat\(4,\s*minmax\(0,\s*1fr\)\)/,
   );
 });
