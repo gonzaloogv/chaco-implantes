@@ -124,9 +124,14 @@ test("curates complete catalog previews with the image above the card copy", () 
   );
   assert.match(
     homeCss,
-    /\.home-page \.catalog-image-card\s*\{[^}]*grid-template-rows:\s*minmax\(0,\s*1fr\)\s+auto/s,
+    /\.home-page \[data-catalog-image-card\]\s*\{[^}]*grid-template-rows:\s*minmax\(0,\s*1fr\)\s+auto/s,
   );
   assert.doesNotMatch(catalogCardSource, /line-clamp/);
+  // La grilla no debe alcanzar a las cards de galería y videos (comparten .catalog-image-card)
+  assert.doesNotMatch(
+    homeCss,
+    /\.home-page \.catalog-image-card\s*\{[^}]*display:\s*grid/s,
+  );
 
   for (const previewPath of [
     "/catalogos/previews/osteosintesis-maxilofacial.png",

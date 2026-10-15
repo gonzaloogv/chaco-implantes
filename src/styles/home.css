@@ -353,16 +353,21 @@
 }
 
 .home-page .catalog-image-card {
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
   border-color: color-mix(
     in srgb,
     var(--brand-blue) 18%,
     var(--brand-border)
   );
-  background: #fff;
   border-radius: var(--home-radius);
   box-shadow: 0 22px 48px -40px rgba(16, 41, 76, 0.6);
+}
+
+/* Solo las cards de líneas: las de galería y videos comparten .catalog-image-card
+   pero mantienen su foto de fondo con el texto abajo. */
+.home-page [data-catalog-image-card] {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  background: #fff;
 }
 
 /* Zona de imagen: el producto completo y centrado, sin texto encima */
