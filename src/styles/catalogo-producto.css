@@ -20,7 +20,7 @@
   position: relative;
   overflow: hidden;
   min-height: 24rem;
-  padding-block: clamp(6rem, 7.5vw, 6.5rem) clamp(7rem, 10vw, 8rem);
+  padding-block: clamp(6rem, 7.5vw, 6.5rem) clamp(3.5rem, 5vw, 4.5rem);
   background:
     radial-gradient(circle at 88% 15%, rgb(26 111 212 / 0.23), transparent 28rem),
     var(--catalog-product-navy);
@@ -104,11 +104,12 @@
   line-height: 1.65;
 }
 
+/* El contenido arranca debajo del encabezado azul, sin montarse sobre él:
+   el visor también es azul y perdía su borde al superponerse. */
 .catalog-product-content {
   position: relative;
   z-index: 2;
-  margin-top: -5.5rem;
-  padding-bottom: clamp(4.5rem, 8vw, 7rem);
+  padding-block: clamp(2.5rem, 4vw, 3.5rem) clamp(4.5rem, 8vw, 7rem);
 }
 
 .catalog-product-layout {
@@ -120,14 +121,11 @@
 
 .catalog-document-viewer {
   min-width: 0;
-  margin-bottom: var(--catalog-viewer-max-shift, 0px);
   padding: clamp(0.85rem, 1.7vw, 1.35rem);
   border: 1px solid rgb(255 255 255 / 0.1);
   border-radius: 1.1rem;
   background: var(--catalog-product-navy-soft);
   box-shadow: 0 1.6rem 4.5rem rgb(24 69 116 / 0.22);
-  transform: translateY(var(--catalog-viewer-reveal-offset, 0px));
-  will-change: transform;
 }
 
 .catalog-document-toolbar {
@@ -537,6 +535,196 @@
    hoja A4 que entra en la pantalla, así no quedan franjas a los lados y el
    panel lateral aprovecha el resto. Si la hoja quedaría demasiado chica
    (pantallas muy bajas), se fija un mínimo legible y el visor se extiende. */
+/* Franja de otros productos de la misma especialidad */
+.catalog-related {
+  padding-block: clamp(3.5rem, 6vw, 5rem);
+  border-top: 1px solid var(--catalog-product-line);
+  background: #ffffff;
+}
+
+.catalog-related__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.catalog-related__header .catalog-product-eyebrow {
+  color: var(--catalog-product-electric);
+}
+
+.catalog-related__header h2 {
+  margin: 0.55rem 0 0;
+  color: var(--catalog-product-ink);
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 2.8vw, 2.25rem);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+}
+
+.catalog-related__all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--catalog-product-electric);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.catalog-related__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.875rem, 1.8vw, 1.25rem);
+  margin: clamp(1.75rem, 3vw, 2.25rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.catalog-related-card {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--catalog-product-line);
+  border-radius: 0.9rem;
+  background: #ffffff;
+  color: var(--catalog-product-ink);
+  text-decoration: none;
+  box-shadow: 0 1.4rem 3rem -2.6rem rgb(16 41 76 / 0.5);
+  transition:
+    border-color 200ms var(--ease-out),
+    box-shadow 200ms var(--ease-out),
+    transform 200ms var(--ease-out);
+}
+
+.catalog-related-card__media {
+  aspect-ratio: 4 / 3;
+  background: linear-gradient(155deg, #f8fbff 0%, #e8f2fc 100%);
+}
+
+.catalog-related-card__media img {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  object-fit: contain;
+  filter: drop-shadow(0 0.8rem 0.9rem rgb(16 41 76 / 0.18));
+  transition: transform 300ms var(--ease-out);
+}
+
+.catalog-related-card__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 0.25rem 0.75rem;
+  padding: 1rem 1.1rem 1.1rem;
+}
+
+.catalog-related-card__body p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--catalog-product-electric);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.catalog-related-card__body h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+.catalog-related-card__arrow {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  border: 1px solid var(--catalog-product-line);
+  border-radius: 50%;
+  color: var(--catalog-product-electric);
+  transition:
+    background-color 200ms var(--ease-out),
+    border-color 200ms var(--ease-out),
+    color 200ms var(--ease-out);
+}
+
+.catalog-related-card:focus-visible {
+  outline: 3px solid var(--catalog-product-electric);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .catalog-related-card:hover {
+    border-color: #afd0f4;
+    box-shadow: 0 2rem 3.5rem -2.6rem rgb(16 41 76 / 0.6);
+    transform: translateY(-3px);
+  }
+
+  .catalog-related-card:hover .catalog-related-card__media img {
+    transform: scale(1.03);
+  }
+
+  .catalog-related-card:hover .catalog-related-card__arrow {
+    border-color: var(--catalog-product-electric);
+    background: var(--catalog-product-electric);
+    color: #ffffff;
+  }
+}
+
+@media (max-width: 60rem) {
+  .catalog-related__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Celular: filas horizontales (imagen a la izquierda) para no apretar los títulos */
+@media (max-width: 42rem) {
+  .catalog-related__grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .catalog-related-card {
+    grid-template-columns: 7.5rem minmax(0, 1fr);
+    grid-template-rows: none;
+  }
+
+  .catalog-related-card__media {
+    position: relative;
+    aspect-ratio: auto;
+    min-height: 6.5rem;
+  }
+
+  .catalog-related-card__media img {
+    position: absolute;
+    inset: 0;
+    padding: 0.625rem;
+  }
+
+  .catalog-related-card__body {
+    align-items: center;
+    align-content: center;
+    padding: 0.875rem 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .catalog-related-card,
+  .catalog-related-card__media img {
+    transition: none;
+  }
+
+  .catalog-related-card:hover {
+    transform: none;
+  }
+}
+
 @media (min-width: 60.0625rem) and (max-height: 71.875rem) {
   .catalog-product-layout {
     --viewer-frame-x: 1.8rem;
@@ -599,8 +787,8 @@
   }
 
   .catalog-product-hero {
-    min-height: 22rem;
-    padding-block: 6rem;
+    min-height: 0;
+    padding-block: 6rem 2.75rem;
   }
 
   .catalog-product-hero__copy {
@@ -618,8 +806,7 @@
   }
 
   .catalog-product-content {
-    margin-top: -5.5rem;
-    padding-bottom: 4rem;
+    padding-block: 1.5rem 4rem;
   }
 
   .catalog-document-viewer {

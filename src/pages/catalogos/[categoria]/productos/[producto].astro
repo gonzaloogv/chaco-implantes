@@ -28,6 +28,18 @@ const backLabels: Record<string, string> = {
   "otros-productos": "Volver a productos complementarios",
 };
 const backLabel = backLabels[product.categorySlug] ?? `Volver a ${categoryTitle}`;
+
+// Otros productos de la misma especialidad: los siguientes en el orden del
+// catálogo (circular), para que cada ficha sugiera un recorrido distinto.
+const RELATED_LIMIT = 4;
+const siblings = catalogProducts.filter(
+  (item) => item.categorySlug === product.categorySlug,
+);
+const currentIndex = siblings.findIndex((item) => item.slug === product.slug);
+const relatedProducts = siblings
+  .slice(currentIndex + 1)
+  .concat(siblings.slice(0, currentIndex))
+  .slice(0, RELATED_LIMIT);
 ---
 
 <BaseLayout
@@ -73,100 +85,62 @@ const backLabel = backLabels[product.categorySlug] ?? `Volver a ${categoryTitle}
         />
       </div>
     </section>
+
+    {relatedProducts.length > 0 && (
+      <section
+        class="catalog-related"
+        data-catalog-related
+        aria-labelledby="catalog-related-title"
+      >
+        <div class="catalog-product-shell">
+          <header class="catalog-related__header">
+            <div>
+              <p class="catalog-product-eyebrow">Más de {categoryTitle}</p>
+              <h2 id="catalog-related-title">
+                Otros sistemas de {categoryTitle.toLowerCase()}
+              </h2>
+            </div>
+            <a
+              href={`/catalogos/${product.categorySlug}`}
+              class="catalog-related__all"
+            >
+              Ver todos
+              <Icon name="arrow-right" class="h-4 w-4" />
+            </a>
+          </header>
+
+          <ul class="catalog-related__grid">
+            {relatedProducts.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class="catalog-related-card"
+                  data-catalog-related-product
+                >
+                  <div class="catalog-related-card__media">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      loading="lazy"
+                      decoding="async"
+                      width="1024"
+                      height="768"
+                    />
+                  </div>
+                  <div class="catalog-related-card__body">
+                    <p>{item.label}</p>
+                    <h3>{item.title}</h3>
+                    <span class="catalog-related-card__arrow" aria-hidden="true">
+                      <Icon name="arrow-right" class="h-4 w-4" />
+                    </span>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )}
   </div>
 </BaseLayout>
 
-<script>
-  import {
-    computeViewerMaximumShift,
-    computeViewerRevealOffset,
-  } from "../../../../scripts/catalog-viewer-scroll.mjs";
-
-  const hero = document.querySelector<HTMLElement>(
-    "[data-catalog-product-hero]",
-  );
-  const content = document.querySelector<HTMLElement>(
-    "[data-catalog-product-content]",
-  );
-  const layout = content?.querySelector<HTMLElement>(
-    ".catalog-product-layout",
-  );
-  const viewer = content?.querySelector<HTMLElement>(
-    "[data-catalog-document-viewer]",
-  );
-  const desktopQuery = window.matchMedia("(min-width: 60.0625rem)");
-  const reducedMotionQuery = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  );
-
-  if (hero && content && layout && viewer) {
-    let frameId = 0;
-    let maximumShift = 0;
-
-    const clearReveal = () => {
-      maximumShift = 0;
-      layout.style.removeProperty("--catalog-viewer-max-shift");
-      viewer.style.removeProperty("--catalog-viewer-reveal-offset");
-    };
-
-    const updateReveal = () => {
-      frameId = 0;
-
-      if (!desktopQuery.matches) {
-        clearReveal();
-        return;
-      }
-
-      const offset = computeViewerRevealOffset({
-        maxShift: maximumShift,
-        reducedMotion: reducedMotionQuery.matches,
-        scrollY: window.scrollY,
-      });
-      viewer.style.setProperty(
-        "--catalog-viewer-reveal-offset",
-        `${offset}px`,
-      );
-    };
-
-    const queueRevealUpdate = () => {
-      if (frameId) {
-        return;
-      }
-
-      frameId = window.requestAnimationFrame(updateReveal);
-    };
-
-    const measureReveal = () => {
-      if (!desktopQuery.matches) {
-        clearReveal();
-        return;
-      }
-
-      const heroBottom =
-        hero.getBoundingClientRect().bottom + window.scrollY;
-      const contentTop =
-        content.getBoundingClientRect().top + window.scrollY;
-      const endSpacing =
-        Number.parseFloat(getComputedStyle(content).paddingBottom) || 0;
-      maximumShift = computeViewerMaximumShift({
-        endSpacing,
-        overlap: heroBottom - contentTop,
-      });
-      layout.style.setProperty(
-        "--catalog-viewer-max-shift",
-        `${maximumShift}px`,
-      );
-      queueRevealUpdate();
-    };
-
-    window.addEventListener("scroll", queueRevealUpdate, {
-      passive: true,
-    });
-    window.addEventListener("resize", measureReveal, {
-      passive: true,
-    });
-    desktopQuery.addEventListener("change", measureReveal);
-    reducedMotionQuery.addEventListener("change", queueRevealUpdate);
-    window.requestAnimationFrame(measureReveal);
-  }
-</script>
